@@ -23,9 +23,6 @@ jobs:
         uses: supercharge/redis-github-action@1.4.0
         with:
           redis-version: 5
-      - name: Create env file
-        run: | 
-          echo "${{ secrets.ENV_FILE }}" > .env
       - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
