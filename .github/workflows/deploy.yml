@@ -31,4 +31,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           password: ${{ secrets.PASSWORD }}
-          script: "cd /var/www/tga && sudo ./.scripts/deploy.sh"
+          script: "cd /var/www/tga && ./.scripts/deploy.sh"
