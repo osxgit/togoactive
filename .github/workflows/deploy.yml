@@ -1,44 +1,31 @@
 name: Deploy
 
-# Trigger the workflow on push and
-# pull request events on the production branch
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    branches: [main]
 
-# Authenticate to the the server via ssh
-# and run our deployment script
 jobs:
   deploy:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-
       - name: Configure PHP 8.1
         uses: shivammathur/setup-php@master
         with:
           php-version: 8.1
           extension: mbsting, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, yml
-
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
           node-version: '16.x'
           check-latest: true
-
       - name: Start Redis
         uses: supercharge/redis-github-action@1.4.0
         with:
-          redis-version: '5'
-          
+          redis-version: 5
       - name: Create env file
           run:|
-          echo "${{ secrets.ENV_FILE }}" > .env
-
+            echo "${{ secrets.ENV_FILE }}" > .env
       - name: Deploy to server
         uses: appleboy/ssh-action@master
         with:
