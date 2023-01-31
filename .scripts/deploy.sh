@@ -46,6 +46,9 @@ npm run prod
 # Reload PHP to update opcache
 echo "" | sudo -S service php8.1-fpm reload
 
+# Reload redis-server to update cache
+sudo service redis-server restart
+
 # Exit maintenance mode
 php artisan up
 
