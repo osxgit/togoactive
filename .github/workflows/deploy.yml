@@ -33,4 +33,4 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSHKEY }}
-          script: "cd /var/www/togoactive && ./.scripts/deploy.sh"
+          script: "cd /var/www/tga && ./.scripts/deploy.sh"
