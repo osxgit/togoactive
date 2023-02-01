@@ -8,8 +8,8 @@ echo "Deployment started ..."
 (php artisan down) || true
 
 # Pull the latest version of the app
-git fetch origin main
-git reset --hard origin/main
+git fetch origin release
+git reset --hard origin/release
 
 # Install composer dependencies
 echo "Install composer dependencies"
