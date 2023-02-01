@@ -3,27 +3,50 @@ set -e
 
 echo "Deployment started ..."
 
-# Turn ON Maintenance Mode or return true
+# Enter maintenance mode or return true
 # if already is in maintenance mode
 (php artisan down) || true
 
 # Pull the latest version of the app
-git pull origin master
+git fetch origin main
+git reset --hard origin/main
 
 # Install composer dependencies
-composer install --optimize-autoloader --no-dev --no-interaction
+echo "Install composer dependencies"
+composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-# Clearing Cache
-php artisan cache:clear
-php artisan config:clear
+# Re-generate app key
+php artisan key:generate
 
-# Recreate cache
-php artisan optimize
+# Install npm dependencies
+echo "Install npm dependencies"
+npm ci --prefer-offline --no-audit
+
+echo "Compile assets for production"
+npm run production
 
 # Run database migrations
 php artisan migrate --force
 
-# Turn OFF Maintenance mode
+# Note: If you're using queue workers, this is the place to restart them.
+# TODO restart queue workers
+
+# Clear the old cache
+php artisan clear-compiled
+
+# Recreate cache
+php artisan optimize
+
+# Compile npm assets
+npm run prod
+
+# Reload PHP to update opcache
+echo "" | sudo -S service php8.1-fpm reload
+
+# Reload redis-server to update cache
+sudo service redis-server restart
+
+# Exit maintenance mode
 php artisan up
 
 echo "Deployment finished!"
