@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
+      - uses: oleksiyrudenko/gha-git-credentials@v2-latest
+        with:
+          token: '${{ secrets.PAT }}'
       - name: Configure PHP 8.1
         uses: shivammathur/setup-php@master
         with:
