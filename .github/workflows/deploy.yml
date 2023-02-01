@@ -30,5 +30,5 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.SSHKEY }}
           script: "cd /var/www/tga && ./.scripts/deploy.sh"
