@@ -26,4 +26,9 @@ class EventsDate extends Model
         'results_date'
 
     ];
+
+     public function event()
+        {
+            return $this->belongsTo(Events::class);
+        }
 }

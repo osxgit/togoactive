@@ -1,0 +1,901 @@
+<x-app-layout>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
+    <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://unpkg.com/@yaireo/dragsort@1.3.1/dist/dragsort.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js" integrity="sha512-9pm50HHbDIEyz2RV/g2tn1ZbBdiTlgV7FwcQhIhvykX6qbQitydd6rF19iLmOqmJVUYq90VL2HiIUHjUMQA5fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js?apiKey=4rcnfqnlzfiuwfia3kjfez410ye1smutxh8kj2i126izgth4/tinymce"></script>
+    <script src="//editor.unlayer.com/embed.js"></script>
+    <style>
+        .btn {
+            display: inline-block;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #212529;
+            text-align: center;
+            text-decoration: none;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+            background-color: transparent;
+            border: 1px solid transparent;
+            padding: 0.375rem 0.75rem;
+            font-size: 1rem;
+            border-radius: 0.25rem;
+            transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .btn {
+                transition: none;
+            }
+        }
+        .btn:hover {
+            color: #212529;
+        }
+        .btn-check:focus + .btn, .btn:focus {
+            outline: 0;
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .btn:disabled, .btn.disabled, fieldset:disabled .btn {
+            pointer-events: none;
+            opacity: 0.65;
+        }
+
+        .btn-primary {
+            color: #fff;
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            color: #fff;
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+        }
+        .btn-check:focus + .btn-primary, .btn-primary:focus {
+            color: #fff;
+            background-color: #0b5ed7;
+            border-color: #0a58ca;
+            box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+        }
+        .btn-check:checked + .btn-primary, .btn-check:active + .btn-primary, .btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle {
+            color: #fff;
+            background-color: #0a58ca;
+            border-color: #0a53be;
+        }
+        .btn-check:checked + .btn-primary:focus, .btn-check:active + .btn-primary:focus, .btn-primary:active:focus, .btn-primary.active:focus, .show > .btn-primary.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+        }
+        .btn-primary:disabled, .btn-primary.disabled {
+            color: #fff;
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .btn-secondary {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            color: #fff;
+            background-color: #5c636a;
+            border-color: #565e64;
+        }
+        .btn-check:focus + .btn-secondary, .btn-secondary:focus {
+            color: #fff;
+            background-color: #5c636a;
+            border-color: #565e64;
+            box-shadow: 0 0 0 0.25rem rgba(130, 138, 145, 0.5);
+        }
+        .btn-check:checked + .btn-secondary, .btn-check:active + .btn-secondary, .btn-secondary:active, .btn-secondary.active, .show > .btn-secondary.dropdown-toggle {
+            color: #fff;
+            background-color: #565e64;
+            border-color: #51585e;
+        }
+        .btn-check:checked + .btn-secondary:focus, .btn-check:active + .btn-secondary:focus, .btn-secondary:active:focus, .btn-secondary.active:focus, .show > .btn-secondary.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.25rem rgba(130, 138, 145, 0.5);
+        }
+        .btn-secondary:disabled, .btn-secondary.disabled {
+            color: #fff;
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-success {
+            color: #fff;
+            background-color: #198754;
+            border-color: #198754;
+        }
+        .btn-success:hover {
+            color: #fff;
+            background-color: #157347;
+            border-color: #146c43;
+        }
+        .btn-check:focus + .btn-success, .btn-success:focus {
+            color: #fff;
+            background-color: #157347;
+            border-color: #146c43;
+            box-shadow: 0 0 0 0.25rem rgba(60, 153, 110, 0.5);
+        }
+        .btn-check:checked + .btn-success, .btn-check:active + .btn-success, .btn-success:active, .btn-success.active, .show > .btn-success.dropdown-toggle {
+            color: #fff;
+            background-color: #146c43;
+            border-color: #13653f;
+        }
+        .btn-check:checked + .btn-success:focus, .btn-check:active + .btn-success:focus, .btn-success:active:focus, .btn-success.active:focus, .show > .btn-success.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.25rem rgba(60, 153, 110, 0.5);
+        }
+        .btn-success:disabled, .btn-success.disabled {
+            color: #fff;
+            background-color: #198754;
+            border-color: #198754;
+        }
+
+        .btn-info {
+            color: #000;
+            background-color: #0dcaf0;
+            border-color: #0dcaf0;
+        }
+        .btn-info:hover {
+            color: #000;
+            background-color: #31d2f2;
+            border-color: #25cff2;
+        }
+        .btn-check:focus + .btn-info, .btn-info:focus {
+            color: #000;
+            background-color: #31d2f2;
+            border-color: #25cff2;
+            box-shadow: 0 0 0 0.25rem rgba(11, 172, 204, 0.5);
+        }
+        .btn-check:checked + .btn-info, .btn-check:active + .btn-info, .btn-info:active, .btn-info.active, .show > .btn-info.dropdown-toggle {
+            color: #000;
+            background-color: #3dd5f3;
+            border-color: #25cff2;
+        }
+        .btn-check:checked + .btn-info:focus, .btn-check:active + .btn-info:focus, .btn-info:active:focus, .btn-info.active:focus, .show > .btn-info.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.25rem rgba(11, 172, 204, 0.5);
+        }
+        .btn-info:disabled, .btn-info.disabled {
+            color: #000;
+            background-color: #0dcaf0;
+            border-color: #0dcaf0;
+        }
+
+        .btn-warning {
+            color: #000;
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+        .btn-warning:hover {
+            color: #000;
+            background-color: #ffca2c;
+            border-color: #ffc720;
+        }
+        .btn-check:focus + .btn-warning, .btn-warning:focus {
+            color: #000;
+            background-color: #ffca2c;
+            border-color: #ffc720;
+            box-shadow: 0 0 0 0.25rem rgba(217, 164, 6, 0.5);
+        }
+        .btn-check:checked + .btn-warning, .btn-check:active + .btn-warning, .btn-warning:active, .btn-warning.active, .show > .btn-warning.dropdown-toggle {
+            color: #000;
+            background-color: #ffcd39;
+            border-color: #ffc720;
+        }
+        .btn-check:checked + .btn-warning:focus, .btn-check:active + .btn-warning:focus, .btn-warning:active:focus, .btn-warning.active:focus, .show > .btn-warning.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.25rem rgba(217, 164, 6, 0.5);
+        }
+        .btn-warning:disabled, .btn-warning.disabled {
+            color: #000;
+            background-color: #ffc107;
+            border-color: #ffc107;
+        }
+
+        .btn-danger {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-danger:hover {
+            color: #fff;
+            background-color: #bb2d3b;
+            border-color: #b02a37;
+        }
+        .btn-check:focus + .btn-danger, .btn-danger:focus {
+            color: #fff;
+            background-color: #bb2d3b;
+            border-color: #b02a37;
+            box-shadow: 0 0 0 0.25rem rgba(225, 83, 97, 0.5);
+        }
+        .btn-check:checked + .btn-danger, .btn-check:active + .btn-danger, .btn-danger:active, .btn-danger.active, .show > .btn-danger.dropdown-toggle {
+            color: #fff;
+            background-color: #b02a37;
+            border-color: #a52834;
+        }
+        .btn-check:checked + .btn-danger:focus, .btn-check:active + .btn-danger:focus, .btn-danger:active:focus, .btn-danger.active:focus, .show > .btn-danger.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.25rem rgba(225, 83, 97, 0.5);
+        }
+        .btn-danger:disabled, .btn-danger.disabled {
+            color: #fff;
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-light {
+            color: #000;
+            background-color: #f8f9fa;
+            border-color: #f8f9fa;
+        }
+        .btn-light:hover {
+            color: #000;
+            background-color: #f9fafb;
+            border-color: #f9fafb;
+        }
+        .btn-check:focus + .btn-light, .btn-light:focus {
+            color: #000;
+            background-color: #f9fafb;
+            border-color: #f9fafb;
+            box-shadow: 0 0 0 0.25rem rgba(211, 212, 213, 0.5);
+        }
+        .btn-check:checked + .btn-light, .btn-check:active + .btn-light, .btn-light:active, .btn-light.active, .show > .btn-light.dropdown-toggle {
+            color: #000;
+            background-color: #f9fafb;
+            border-color: #f9fafb;
+        }
+        .btn-check:checked + .btn-light:focus, .btn-check:active + .btn-light:focus, .btn-light:active:focus, .btn-light.active:focus, .show > .btn-light.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.25rem rgba(211, 212, 213, 0.5);
+        }
+        .btn-light:disabled, .btn-light.disabled {
+            color: #000;
+            background-color: #f8f9fa;
+            border-color: #f8f9fa;
+        }
+
+        .btn-dark {
+            color: #fff;
+            background-color: #212529;
+            border-color: #212529;
+        }
+        .btn-dark:hover {
+            color: #fff;
+            background-color: #1c1f23;
+            border-color: #1a1e21;
+        }
+        .btn-check:focus + .btn-dark, .btn-dark:focus {
+            color: #fff;
+            background-color: #1c1f23;
+            border-color: #1a1e21;
+            box-shadow: 0 0 0 0.25rem rgba(66, 70, 73, 0.5);
+        }
+        .btn-check:checked + .btn-dark, .btn-check:active + .btn-dark, .btn-dark:active, .btn-dark.active, .show > .btn-dark.dropdown-toggle {
+            color: #fff;
+            background-color: #1a1e21;
+            border-color: #191c1f;
+        }
+        .btn-check:checked + .btn-dark:focus, .btn-check:active + .btn-dark:focus, .btn-dark:active:focus, .btn-dark.active:focus, .show > .btn-dark.dropdown-toggle:focus {
+            box-shadow: 0 0 0 0.25rem rgba(66, 70, 73, 0.5);
+        }
+        .btn-dark:disabled, .btn-dark.disabled {
+            color: #fff;
+            background-color: #212529;
+            border-color: #212529;
+        }
+        .tox-tinymce{
+            width:100%;
+        }
+        .mce-notification-warning, .tox-notifications-container{
+            display: none;
+        }
+        .mce-statusbar, .tox-statusbar{
+            display: none !important;
+
+        }
+        #div_description{
+            border:none !important;
+        }
+        .tagify {
+            border:none !important;
+            height: 130px;
+        }
+        .peer:checked~.peer-checked\:bg-purple-600 {
+            --tw-bg-opacity: 1;
+            background-color: rgb(147 51 234 / var(--tw-bg-opacity)) !important;
+        }
+        label.error{
+
+            color:red;
+        }
+        .bg-primary {
+            --tw-bg-opacity: 1;
+            background-color: rgb(126 31 246 / var(--tw-bg-opacity)) !important;
+        }
+        .border-primary {
+            --tw-border-opacity: 1;
+            border-color: rgb(126 31 246 / var(--tw-border-opacity))!important;
+        }
+        button.bg-primary:hover:hover {
+            background-color:  rgb(255 255 255 / var(--tw-border-opacity))!important;
+        }
+        .swal2-styled.swal2-confirm {
+            border: 0;
+            border-radius: 0.25em;
+            background: initial;
+            background-color: #F53F14;
+            color: #fff;
+            font-size: 1em;
+        }
+
+        .swal2-styled.swal2-cancel {
+            border: 1px solid #D7DEDD;
+            border-radius: 0.25em;
+            background: initial;
+            background-color: #ffffff;
+            color: #000;
+            font-size: 1em;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #9ca3af;
+            color: #9ca3af;
+        }
+        .swal2-close:focus {
+            outline: 0;
+            box-shadow: none;
+        }
+
+        #div_event_detail{
+            border:none !important;
+        }
+        #sponsor_detail{
+            border:none !important;
+        }
+    </style>
+    @include('layouts.admin.events.subheader')
+    <div class="w-full flex flex-col sm:flex-row flex-grow overflow-hidden bg-light-gray-bg">
+        @include('layouts.admin.events.sidebar')
+        <main role="main" class="w-full h-full flex-grow p-3 overflow-auto">
+            <div class="float-left w-full max-w-screen-xl">
+                <x-admin.breadcrumb>
+                    <x-slot name="header">New Reward</x-slot>
+                    <x-slot name="breadcrumb">
+                        <a class="text-primary font-poppins-semibold text-sm" href="">Landing Page</a> >
+                        <a class="text-nav-gray font-poppins text-sm" href="{{route('admin.events.info.essentials',$id)}}">{{$event->name ?? "Untitled"}}</a> >
+                        <span class="text-nav-gray font-poppins text-sm">{{$active_page}} ></span>
+                        <span class="text-nav-gray font-poppins text-sm">Web View </span> >
+                    </x-slot>
+                </x-admin.breadcrumb>
+
+                @if(session()->has('message'))
+                    <x-infoboxes.success class="mt-4">
+                        <x-slot name="heading">{{session()->get('message')}}</x-slot>
+                    </x-infoboxes.success>
+                @endif
+                @if(session()->has('warining'))
+                    <x-infoboxes.error class="mt-4">
+                        <x-slot name="heading">{{session()->get('warining')}}</x-slot>
+                    </x-infoboxes.error>
+                @endif
+                @if ($errors->any())
+                    <div class="alert alert-danger"  style="color:red">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <div class="flex w-full bg-white p-2">
+                    <a href="#" class="flex justify-center items-center py-3 no-underline" style="text-decoration: none;color:#7E1FF6 !important;width:48%; background:#EEE1FF; color:"><div ><i class="fa fa-window-maximize mr-2" aria-hidden="true"></i>Web view*</div></a>
+                    <div  class="flex justify-center items-center py-3" style="width:4%"> > </div>
+                    <a href="{{route('admin.events.landingPage.mobileSetup',array($id))}}" class="flex justify-center  items-center py-3 no-underline"  style="text-decoration: none;width:48%"><div ><i class="fa fa-mobile mr-2" aria-hidden="true"></i>Mobile view</div></a>
+
+                </div>
+
+
+
+
+                <form method="POST" id="create-event-reward-f_010" name="create-event-reward-f_010" action="{{route('admin.events.landingPage.store',array($id))}}" class="w-full float-left" autocomplete="false" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="challengeId" id="challengeId" value="{{$id}}">
+
+                    <x-forms.section class="mt-8 rounded-xl">
+                        <x-slot name="section_heading">
+                            Event Details
+                        </x-slot>
+                        <x-slot name="section_button">
+
+                        </x-slot>
+                        <x-slot name="section_heading_description_status">hidden</x-slot>
+                        <x-slot name="section_heading_description_text"></x-slot>
+                        <x-slot name="section_content">
+                            <div class="float-left w-full">
+                                <x-forms.toggle id="show_countdown" name="show_countdown" value="{{ $landingPage != NULL ? $landingPage->show_countdown :0 }}">
+                                    <x-slot name="field_id">show_countdown</x-slot>
+                                    <x-slot name="label_text">Show countdown timer</x-slot>
+                                    <x-slot name="label_description">Enabling this will allow you to show countdown timer at the designated section in the landing page</x-slot>
+                                </x-forms.toggle>
+                            </div>
+                            <div class="float-left w-full">
+                                <x-forms.toggle id="show_sponsor" name="show_sponsor" value="{{ $landingPage!= NULL ? $landingPage->show_sponsor :0 }}">
+                                    <x-slot name="field_id">show_sponsor</x-slot>
+                                    <x-slot name="label_text">Enable Sponser & partner section</x-slot>
+                                    <x-slot name="label_description">Enabling this will allow you to show sponser partners on the landing page for a web view</x-slot>
+                                </x-forms.toggle>
+                            </div>
+
+                            <div id="sponsorDetailDiv" class="float-left w-full {{$landingPage== NULL || $landingPage->show_sponsor == 0? 'hidden':'' }}">
+                                <x-forms.textarea id="sponsor_detail" name="sponsor_detail" placeholder="" class="h-32 description ">
+                                    <x-slot name="field_id">sponsor_detail</x-slot>
+                                    <x-slot name="label_text">Share details about the sponser*</x-slot>
+                                    <x-slot name="label_description_status"></x-slot>
+                                    <x-slot name="label_description"></x-slot>
+                                    {{old('sponsor_detail',$landingPage->sponsor_detail? json_decode($landingPage->sponsor_detail) : '' )}}
+                                </x-forms.textarea>
+                                <x-forms.validationerror>
+                                    <x-slot name="field_id">sponsor_detail	</x-slot>
+                                    <x-slot name="error_text">sponsor_detail_error</x-slot>
+                                </x-forms.validationerror>
+
+                            </div>
+{{--                            <div id="editor-container" style=" width:100%;height:700px"></div>--}}
+                            <div class="float-left w-full ">
+                                <x-forms.textarea id="event_detail" name="event_detail" placeholder="" class="h-32 description ">
+                                    <x-slot name="field_id">event_detail</x-slot>
+                                    <x-slot name="label_text">Share info about the event*</x-slot>
+                                    <x-slot name="label_description_status"></x-slot>
+                                    <x-slot name="label_description">Create a distinct section to display on a web view</x-slot>
+                                    {{old('event_detail',$landingPage->event_detail? json_decode($landingPage->event_detail) : '')}}
+                                </x-forms.textarea>
+                                <x-forms.validationerror>
+                                    <x-slot name="field_id">event_detail	</x-slot>
+                                    <x-slot name="error_text">event_detail_error</x-slot>
+                                </x-forms.validationerror>
+
+                            </div>
+                            <div class="float-left w-full mt-4">
+                                <x-forms.toggle id="show_rewards" name="show_rewards" value="{{ $landingPage!= NULL ? $landingPage->show_rewards :0 }}">
+                                    <x-slot name="field_id">show_rewards</x-slot>
+                                    <x-slot name="label_text">Show rewards sku</x-slot>
+                                    <x-slot name="label_description">Enabling this will allow you to show rewards featuring in the landing page</x-slot>
+                                </x-forms.toggle>
+                            </div>
+
+
+                        </x-slot>
+                    </x-forms.section>
+
+                    <x-forms.section class="mt-8 rounded-xl">
+                        <x-slot name="section_heading">
+                            Landing Page Short FAQ
+                        </x-slot>
+                        <x-slot name="section_button">
+
+                        </x-slot>
+                        <x-slot name="section_heading_description_status"></x-slot>
+                        <x-slot name="section_heading_description_text">Click on the below tags to determine the question & Answer. </x-slot>
+                        <x-slot name="section_content">
+
+
+
+                                <div class="float-left w-full ">
+
+                                            <x-forms.textarea id="Short_faq" name="Short_faq" placeholder="" class="h-32 size ">
+                                                <x-slot name="field_id">Short_faq</x-slot>
+                                                <x-slot name="label_text">FAQ *</x-slot>
+                                                <x-slot name="label_description_status">hidden</x-slot>
+                                                <x-slot name="label_description"></x-slot>
+                                                {{old('Short_faq',$landingPage->Short_faq? json_decode($landingPage->Short_faq) : '' )}}
+                                            </x-forms.textarea>
+                                </div>
+
+
+                        </x-slot>
+                    </x-forms.section>
+
+            </div>
+        </main>
+    </div>
+    <div class="float-left w-full text-right" style="position: sticky;
+    bottom: 0;background: white;    padding: 20px;">
+        <x-forms.submit value="Save" name="event_landing_page_save" id="event_landing_page_save">
+            Save
+        </x-forms.submit>
+    </div>
+
+    </form>
+
+    <script>
+        {{--unlayer.init({--}}
+        {{--    id: 'editor-container',--}}
+        {{--    displayMode: 'web',--}}
+        {{--    projectId: "{{$id}}" // REPLACE--}}
+        {{--})--}}
+
+        tinymce.init({
+            selector: 'textarea#event_detail',
+            plugins: 'lists code emoticons table codesample image imagetools link textcolor',
+            table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+
+            toolbar: 'undo redo | styleselect | bold italic |  fontsize |' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'outdent indent | numlist bullist | emoticons  | link image | custom_button | forecolor backcolor',
+            menubar: 'table insert',
+            table_sizing_mode: 'responsive' ,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            table_use_colgroups: true,
+            table_default_attributes: {
+                border: '0'
+            },
+            table_row_class_list: [
+                {title: 'None', value: ''},
+                {title: 'No Border', value: 'table_row_no_border'},
+                {title: 'Red border', value: 'table_row_red_border'},
+                {title: 'Blue border', value: 'table_row_blue_border'},
+                {title: 'Green border', value: 'table_row_green_border'}
+            ],
+            table_advtab: true,
+            table_cell_advtab: true,
+            table_row_advtab: true,
+            emoticons_append: {
+                custom_mind_explode: {
+                    keywords: ['brain', 'mind', 'explode', 'blown'],
+                    char: '🤯'
+                }
+            },
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                /*
+                  Note: In modern browsers input[type="file"] is functional without
+                  even adding it to the DOM, but that might not be the case in some older
+                  or quirky browsers like IE, so you might want to add it to the DOM
+                  just in case, and visually hide it. And do not forget do remove it
+                  once you do not need it anymore.
+                */
+
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        /*
+                          Note: Now we need to register the blob in TinyMCEs image blob
+                          registry. In the next release this part hopefully won't be
+                          necessary, as we are looking to handle it internally.
+                        */
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                        var base64 = reader.result.split(',')[1];
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        /* call the callback and populate the Title field with the file name */
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+
+                input.click();
+            },
+            // plugins: [
+            //     "advlist autolink lists link image charmap print preview anchor",
+            //     "searchreplace visualblocks code fullscreen",
+            //     "insertdatetime media table paste codesample emoticons"
+            // ],
+            // toolbar: 'undo redo | styleselect | bold italic | ' +
+            //     'alignleft aligncenter alignright alignjustify | ' +
+            //     'outdent indent | numlist bullist | emoticons | custom_button',
+            // emoticons_append: {
+            //     custom_mind_explode: {
+            //         keywords: ['brain', 'mind', 'explode', 'blown'],
+            //         char: '🤯'
+            //     }
+            // },
+            content_css: ["/css/custom_css_tinymce.css"],
+            font_formats:"Segoe UI=Segoe UI;",
+            fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px 50px 52px 54px 56px 58px 60px 62px 64px 66px 68px 70px 72px 74px 76px 78px 80px 82px 84px 86px 88px 90px 92px 94px 94px 96px",
+            codesample_languages: [
+                {text: 'HTML/XML', value: 'markup'},
+                {text: 'JavaScript', value: 'javascript'},
+                {text: 'CSS', value: 'css'},
+                {text: 'PHP', value: 'php'},
+                {text: 'Ruby', value: 'ruby'},
+                {text: 'Python', value: 'python'},
+                {text: 'Java', value: 'java'},
+                {text: 'C', value: 'c'},
+                {text: 'C#', value: 'csharp'},
+                {text: 'C++', value: 'cpp'}
+            ],
+            height: 600,
+            setup: function (editor) {
+                editor.ui.registry.addButton('custom_button', {
+                    text: 'Add Button',
+                    onAction: function() {
+                        // Open a Dialog
+                        editor.windowManager.open({
+                            title: 'Add custom button',
+                            body: {
+                                type: 'panel',
+                                items: [{
+                                    type: 'input',
+                                    name: 'button_label',
+                                    label: 'Button label',
+                                    flex: true
+                                },{
+                                    type: 'input',
+                                    name: 'button_href',
+                                    label: 'Button href',
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_target',
+                                    label: 'Target',
+                                    items: [
+                                        {text: 'None', value: ''},
+                                        {text: 'New window', value: '_blank'},
+                                        {text: 'Self', value: '_self'},
+                                        {text: 'Parent', value: '_parent'}
+                                    ],
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_rel',
+                                    label: 'Rel',
+                                    items: [
+                                        {text: 'No value', value: ''},
+                                        {text: 'Alternate', value: 'alternate'},
+                                        {text: 'Help', value: 'help'},
+                                        {text: 'Manifest', value: 'manifest'},
+                                        {text: 'No follow', value: 'nofollow'},
+                                        {text: 'No opener', value: 'noopener'},
+                                        {text: 'No referrer', value: 'noreferrer'},
+                                        {text: 'Opener', value: 'opener'}
+                                    ],
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_style',
+                                    label: 'Style',
+                                    items: [
+                                        {text: 'Success', value: 'success'},
+                                        {text: 'Info', value: 'info'},
+                                        {text: 'Warning', value: 'warning'},
+                                        {text: 'Error', value: 'error'}
+                                    ],
+                                    flex: true
+                                }]
+                            },
+                            onSubmit: function (api) {
+
+                                var html = '<a href="'+api.getData().button_href+'" class="btn btn-'+api.getData().button_style+'" rel="'+api.getData().button_rel+'" target="'+api.getData().button_target+'">'+api.getData().button_label+'</a>';
+
+                                // insert markup
+                                editor.insertContent(html);
+
+                                // close the dialog
+                                api.close();
+                            },
+                            buttons: [
+                                {
+                                    text: 'Close',
+                                    type: 'cancel',
+                                    onclick: 'close'
+                                },
+                                {
+                                    text: 'Insert',
+                                    type: 'submit',
+                                    primary: true,
+                                    enabled: true
+                                }
+                            ]
+                        });
+                    }
+                });
+            }
+        });
+        tinymce.init({
+            selector: 'textarea#sponsor_detail',
+            plugins: 'lists code emoticons table codesample image imagetools link textcolor',
+            table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+
+            toolbar: 'undo redo | styleselect | bold italic |  fontsize |' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'outdent indent | numlist bullist | emoticons  | link image | custom_button | forecolor backcolor',
+            menubar: 'table insert',
+            table_sizing_mode: 'responsive' ,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            table_use_colgroups: true,
+            table_default_attributes: {
+                border: '0'
+            },
+            table_row_class_list: [
+                {title: 'None', value: ''},
+                {title: 'No Border', value: 'table_row_no_border'},
+                {title: 'Red border', value: 'table_row_red_border'},
+                {title: 'Blue border', value: 'table_row_blue_border'},
+                {title: 'Green border', value: 'table_row_green_border'}
+            ],
+            table_advtab: true,
+            table_cell_advtab: true,
+            table_row_advtab: true,
+            emoticons_append: {
+                custom_mind_explode: {
+                    keywords: ['brain', 'mind', 'explode', 'blown'],
+                    char: '🤯'
+                }
+            },
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                /*
+                  Note: In modern browsers input[type="file"] is functional without
+                  even adding it to the DOM, but that might not be the case in some older
+                  or quirky browsers like IE, so you might want to add it to the DOM
+                  just in case, and visually hide it. And do not forget do remove it
+                  once you do not need it anymore.
+                */
+
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        /*
+                          Note: Now we need to register the blob in TinyMCEs image blob
+                          registry. In the next release this part hopefully won't be
+                          necessary, as we are looking to handle it internally.
+                        */
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                        var base64 = reader.result.split(',')[1];
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        /* call the callback and populate the Title field with the file name */
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+
+                input.click();
+            },
+            // plugins: [
+            //     "advlist autolink lists link image charmap print preview anchor",
+            //     "searchreplace visualblocks code fullscreen",
+            //     "insertdatetime media table paste codesample emoticons"
+            // ],
+            // toolbar: 'undo redo | styleselect | bold italic | ' +
+            //     'alignleft aligncenter alignright alignjustify | ' +
+            //     'outdent indent | numlist bullist | emoticons | custom_button',
+            // emoticons_append: {
+            //     custom_mind_explode: {
+            //         keywords: ['brain', 'mind', 'explode', 'blown'],
+            //         char: '🤯'
+            //     }
+            // },
+            content_css: ["/css/custom_css_tinymce.css"],
+            font_formats:"Segoe UI=Segoe UI;",
+            fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px 50px 52px 54px 56px 58px 60px 62px 64px 66px 68px 70px 72px 74px 76px 78px 80px 82px 84px 86px 88px 90px 92px 94px 94px 96px",
+            codesample_languages: [
+                {text: 'HTML/XML', value: 'markup'},
+                {text: 'JavaScript', value: 'javascript'},
+                {text: 'CSS', value: 'css'},
+                {text: 'PHP', value: 'php'},
+                {text: 'Ruby', value: 'ruby'},
+                {text: 'Python', value: 'python'},
+                {text: 'Java', value: 'java'},
+                {text: 'C', value: 'c'},
+                {text: 'C#', value: 'csharp'},
+                {text: 'C++', value: 'cpp'}
+            ],
+            height: 600,
+            setup: function (editor) {
+                editor.ui.registry.addButton('custom_button', {
+                    text: 'Add Button',
+                    onAction: function() {
+                        // Open a Dialog
+                        editor.windowManager.open({
+                            title: 'Add custom button',
+                            body: {
+                                type: 'panel',
+                                items: [{
+                                    type: 'input',
+                                    name: 'button_label',
+                                    label: 'Button label',
+                                    flex: true
+                                },{
+                                    type: 'input',
+                                    name: 'button_href',
+                                    label: 'Button href',
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_target',
+                                    label: 'Target',
+                                    items: [
+                                        {text: 'None', value: ''},
+                                        {text: 'New window', value: '_blank'},
+                                        {text: 'Self', value: '_self'},
+                                        {text: 'Parent', value: '_parent'}
+                                    ],
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_rel',
+                                    label: 'Rel',
+                                    items: [
+                                        {text: 'No value', value: ''},
+                                        {text: 'Alternate', value: 'alternate'},
+                                        {text: 'Help', value: 'help'},
+                                        {text: 'Manifest', value: 'manifest'},
+                                        {text: 'No follow', value: 'nofollow'},
+                                        {text: 'No opener', value: 'noopener'},
+                                        {text: 'No referrer', value: 'noreferrer'},
+                                        {text: 'Opener', value: 'opener'}
+                                    ],
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_style',
+                                    label: 'Style',
+                                    items: [
+                                        {text: 'Success', value: 'success'},
+                                        {text: 'Info', value: 'info'},
+                                        {text: 'Warning', value: 'warning'},
+                                        {text: 'Error', value: 'error'}
+                                    ],
+                                    flex: true
+                                }]
+                            },
+                            onSubmit: function (api) {
+
+                                var html = '<a href="'+api.getData().button_href+'" class="btn btn-'+api.getData().button_style+'" rel="'+api.getData().button_rel+'" target="'+api.getData().button_target+'">'+api.getData().button_label+'</a>';
+
+                                // insert markup
+                                editor.insertContent(html);
+
+                                // close the dialog
+                                api.close();
+                            },
+                            buttons: [
+                                {
+                                    text: 'Close',
+                                    type: 'cancel',
+                                    onclick: 'close'
+                                },
+                                {
+                                    text: 'Insert',
+                                    type: 'submit',
+                                    primary: true,
+                                    enabled: true
+                                }
+                            ]
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</x-app-layout>

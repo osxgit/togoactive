@@ -29,7 +29,7 @@ return new class extends Migration
             $table->float('finisher_distance')->default(0.0);
             $table->float('elite_finisher_distance')->default(0.0);
             $table->tinyInteger('event_status')->default(0)->index();
-            $table->timestamp('created_at')->index();
+            $table->timestamp('created_at')->index()->default(DB::raw('CURRENT_TIMESTAMP'));;
             $table->timestamp('updated_at')->index()->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }

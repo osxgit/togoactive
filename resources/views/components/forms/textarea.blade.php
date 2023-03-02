@@ -5,8 +5,8 @@
     <p class="float-left w-full text-gray text-sm mt-1 {{$label_description_status}}">
         {{$label_description}}
     </p>
-    <div class="float-left w-full bg-white flex items-center rounded-sm border border-ultralightgray p-1 mt-2">
-        <textarea  {{$attributes->merge(['class' => 'float-left w-full border-0 bg-white h-8 font-poppins text-sm text-placeholder placeholder-gray-200 px-2'])}}>{{$slot}}</textarea>
+    <div class="float-left w-full bg-white flex items-center rounded-sm border border-ultralightgray p-1 mt-2" id="div_{{$field_id}}">
+        <textarea  {{$attributes->merge(['class' => 'float-left w-full border-0 bg-white font-poppins text-sm text-placeholder placeholder-gray-200 px-2'])}}>{{$slot}}</textarea>
         <span class="hidden" id="error_{{$field_id}}"><i class="fa fa-warning"></i></span>
     </div>
 </div>

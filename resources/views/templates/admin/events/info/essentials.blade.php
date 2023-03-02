@@ -1,11 +1,67 @@
 <x-app-layout>
+    <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+{{--    <script src="https://unpkg.com/@yaireo/dragsort"></script>--}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    <style>
+        a{
+           color:inherit !important;
+        }
+        label.error{
+
+            color:red;
+        }
+        .tagify {
+        border:none !important;;
+        }
+        .bg-primary {
+            --tw-bg-opacity: 1;
+            background-color: rgb(126 31 246 / var(--tw-bg-opacity)) !important;
+        }
+        .border-primary {
+            --tw-border-opacity: 1;
+            border-color: rgb(126 31 246 / var(--tw-border-opacity))!important;
+        }
+        button.bg-primary:hover:hover {
+            background-color:  rgb(255 255 255 / var(--tw-border-opacity))!important;
+        }
+        .swal2-styled.swal2-confirm {
+            border: 0;
+            border-radius: 0.25em;
+            background: initial;
+            background-color: #F53F14;
+            color: #fff;
+            font-size: 1em;
+        }
+
+        .swal2-styled.swal2-cancel {
+            border: 1px solid #D7DEDD;
+            border-radius: 0.25em;
+            background: initial;
+            background-color: #ffffff;
+            color: #000;
+            font-size: 1em;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #9ca3af;
+            color: #9ca3af;
+        }
+        .swal2-close:focus {
+            outline: 0;
+            box-shadow: none;
+        }
+    </style>
     @include('layouts.admin.events.subheader')
+
     <div class="w-full flex flex-col sm:flex-row flex-grow overflow-hidden bg-light-gray-bg">
         @include('layouts.admin.events.sidebar')
         <main role="main" class="w-full h-full flex-grow p-3 overflow-auto">
             <div class="float-left w-full max-w-screen-xl">
                 <x-admin.breadcrumb>
-                    <x-slot name="header">Event Information</x-slot>
+                    <x-slot name="header">Essentials</x-slot>
                     <x-slot name="breadcrumb">
                         <a class="text-primary font-poppins-semibold text-sm" href="">Events</a> >
                         <a class="text-nav-gray font-poppins text-sm" href="{{route('admin.events.info.essentials',$id)}}">{{$event->name ?? "Untitled"}}</a> >
@@ -19,8 +75,18 @@
                         <x-slot name="heading">{{session()->get('message')}}</x-slot>
                     </x-infoboxes.success>
                 @endif
+                @if(session()->has('warining'))
+                    <x-infoboxes.error class="mt-4">
+                        <x-slot name="heading">{{session()->get('warining')}}</x-slot>
+                    </x-infoboxes.error>
+                @endif
+                @if(session()->has('error'))
+                    <x-infoboxes.error class="mt-4">
+                        <x-slot name="heading">{{session()->get('error')}}</x-slot>
+                    </x-infoboxes.error>
+                @endif
                 @if ($errors->any())
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger" style="color:red">
                         <ul>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>
@@ -33,20 +99,23 @@
 
                     <input type="hidden" name="challengeId" value="{{$id}}">
 
-                    @if($errors->any())
-                        <x-infoboxes.error class="mt-4" :value="$errors"></x-infoboxes.error>
-                    @endif
+{{--                    @if($errors->any())--}}
+{{--                        <x-infoboxes.error class="mt-4" :value="$errors"></x-infoboxes.error>--}}
+{{--                    @endif--}}
 
                     <x-forms.section class="mt-8 rounded-xl">
                         <x-slot name="section_heading">
                             What would you like to name your Event?*
+                        </x-slot>
+                        <x-slot name="section_button">
+
                         </x-slot>
                         <x-slot name="section_heading_description_status"></x-slot>
                         <x-slot name="section_heading_description_text">Example: Togoparts Year-End Celebration Challenge. Togoparts Year-End Celebration Challenge</x-slot>
                         <x-slot name="section_content">
                             <div class="float-left w-full mt-4">
                                 <x-forms.bigtextfield  name="event_name" id="event_name" type="text" placeholder="Untitled Event" :value="old('event_name',$event->name ?? '' )">
-                            </x-forms.bigtextfield>
+                                </x-forms.bigtextfield>
                             </div>
                         </x-slot>
                         <x-forms.validationerror>
@@ -59,12 +128,15 @@
                         <x-slot name="section_heading">
                             Give your event a short name.
                         </x-slot>
+                        <x-slot name="section_button">
+
+                        </x-slot>
                         <x-slot name="section_heading_description_status"></x-slot>
                         <x-slot name="section_heading_description_text">Follow hashtag rules. No special characters are accepted</x-slot>
                         <x-slot name="section_content">
                             <div class="float-left w-full flex justify-start mt-4 items-center">
                                 <span class="font-bold font-poppins text-placeholder text-3xl">#</span>
-                                <x-forms.bigtextfield name="event_hashtag" id="event_hashtag" type="text" class="uppercase" placeholder="UNTITLEDEVENT" :value="old('event_hashtag',$event->hashtag ?? '' )"></x-forms.bigtextfield>
+                                <x-forms.bigtextfield name="event_hashtag" id="event_hashtag" type="text" class="uppercase" placeholder="UNTITLED EVENT" :value="old('event_hashtag',$event->hashtag ?? '' )"></x-forms.bigtextfield>
                             </div>
                         </x-slot>
                         <x-forms.validationerror>
@@ -76,6 +148,9 @@
                     <x-forms.section class="mt-8 rounded-xl">
                         <x-slot name="section_heading">
                             URL
+                        </x-slot>
+                        <x-slot name="section_button">
+
                         </x-slot>
                         <x-slot name="section_heading_description_status">hidden</x-slot>
                         <x-slot name="section_heading_description_text"></x-slot>
@@ -128,26 +203,36 @@
                         <x-slot name="section_heading">
                             Description
                         </x-slot>
+                        <x-slot name="section_button">
+
+                        </x-slot>
                         <x-slot name="section_heading_description_status">hidden</x-slot>
                         <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
-                            <x-forms.textarea id="description" name="description" placeholder="What's so special about the event? Describe why it's important for someone to participate. Keep it simple." class="h-32">
+                            <x-forms.textarea id="description" name="description" rows="4"  placeholder="What's so special about the event? Describe why it's important for someone to participate. Keep it simple." class="h-32">
                                 <x-slot name="field_id">description</x-slot>
                                 <x-slot name="label_text">Share details about the event*</x-slot>
                                 <x-slot name="label_description_status"></x-slot>
                                 <x-slot name="label_description">This description will be shown on the event card which will be displayed on the events page.</x-slot>
                                 {{old('description',$event->description ?? '')}}
                             </x-forms.textarea>
-                            <x-forms.validationerror>
-                                <x-slot name="field_id">description</x-slot>
-                                <x-slot name="error_text">description_error</x-slot>
-                            </x-forms.validationerror>
+                            <div>
+                                <x-forms.validationerror>
+                                    <x-slot name="field_id">description</x-slot>
+                                    <x-slot name="error_text">description_error</x-slot>
+                                </x-forms.validationerror>
+                                <span class="float-right" id="title_count"><span id="desccount">{{$event!= null ?strlen($event->description) : '' }}/</span>200 characters.</span>
+                            </div>
+
                         </x-slot>
                     </x-forms.section>
 
                     <x-forms.section class="mt-8 rounded-xl">
                         <x-slot name="section_heading">
                             Basic Info
+                        </x-slot>
+                        <x-slot name="section_button">
+
                         </x-slot>
                         <x-slot name="section_heading_description_status">hidden</x-slot>
                         <x-slot name="section_heading_description_text"></x-slot>
@@ -206,6 +291,9 @@
                         <x-slot name="section_heading">
                             Type
                         </x-slot>
+                        <x-slot name="section_button">
+
+                        </x-slot>
                         <x-slot name="section_heading_description_status">hidden</x-slot>
                         <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
@@ -239,68 +327,170 @@
 
                             <div class="float-left w-full {{isset($event) && $event->accessibility == "public"? 'hidden' :'' }}" id="private_event_section">
                                 <div class="float-left w-full ">
-                                    <x-forms.textarea id="accepted_domains" name="accepted_domains" placeholder="" class="h-32">
+                                    <x-forms.textarea id="accepted_domains" name="accepted_domains" placeholder="" class="h-32 accepted_domains ">
                                         <x-slot name="field_id">accepted_domains</x-slot>
                                         <x-slot name="label_text">Accepted domains</x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                        <x-slot name="label_description">Type the domain and click the spacebar or comma.</x-slot>
+                                        <x-slot name="label_description">Type the domain and click the tab or enter.</x-slot>
                                         {{old('description',$accepted_domains ?? '')}}
                                     </x-forms.textarea>
                                 </div>
                                 <div class="float-left w-full">
-                                    <x-forms.textarea id="accepted_emails" name="accepted_emails" placeholder="" class="h-32">
+                                    <x-forms.textarea id="accepted_emails" name="accepted_emails" placeholder=""  class="h-32 accepted_emails">
                                         <x-slot name="field_id">accepted_emails</x-slot>
                                         <x-slot name="label_text">Accepted emails</x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                        <x-slot name="label_description">Type the email and click the spacebar or comma.</x-slot>
+                                        <x-slot name="label_description">Type the email and click the tab or enter.</x-slot>
                                         {{old('description',$accepted_emails ?? '')}}
                                     </x-forms.textarea>
                                 </div>
                             </div>
-                            <div class="float-left w-full mt-8 text-right">
-                                <x-forms.submit value="Save" name="event_essentials_save" id="event_essentials_save">
-                                    Save
-                                </x-forms.submit>
-                            </div>
+
                         </x-slot>
                     </x-forms.section>
-                </form>
+
             </div>
         </main>
     </div>
-<script>
+    <div class="float-left w-full text-right" style="position: sticky;
+    bottom: 0;background: white;    padding: 20px;">
+        <x-forms.submit value="Save" name="event_essentials_save" id="event_essentials_save">
+            Save
+        </x-forms.submit>
+    </div>
 
-    $("#create-event-f_010").validate({
-        rules: {
-            event_name:{
-                required: true,
-            },
-            event_hashtag:{
-                required: true,
-            },
-            domain: {
-                required: true,
-            },
-            event_name: {
-                required: true,
-            },
-            slug: {
-                required: true,
-            },
-            description: {
-                required: true,
-            },
-            timezone: {
-                required: true,
-            },
-            email: {
-                required: true,
-                email: true
+    </form>
+    <script>
+
+        $('#description').keyup(function() {
+            $('#desccount').html(this.value.length+'/');
+            if(this.value.length > 200){
+                $("#title_count").css('color','red');
+            } else{
+                $("#title_count").css('color','black');
+
             }
-        },
-        submitHandler : function (form) {
-            return true;
-        }
-    });
-</script>
+            console.log(this.value.length);
+        });
+        $("#create-event-f_010").validate({
+            rules: {
+                event_name:{
+                    required: true,
+                },
+                event_hashtag:{
+                    required: true,
+                    alphanumeric: true
+                },
+                domain: {
+                    required: true,
+                },
+                event_name: {
+                    required: true,
+                },
+                slug: {
+                    required: true,
+
+                    lettersonly: true
+                },
+                description: {
+                    required: true,
+                    maxlength:200
+                },
+                timezone: {
+                    required: true,
+                },
+                email: {
+                    required: true,
+                    email: true
+                }
+            },
+            submitHandler : function (form) {
+                return true;
+            }
+        });
+        jQuery.validator.addMethod("lettersonly", function(value, element) {
+            return this.optional(element) || /^[a-z0-9]+$/i.test(value);
+        }, "Letters and numbers only please");
+
+        var isadd= '{{$isadd}}';
+
+        $(window).on('load', function () {
+
+             $form = $('form');
+            origForm = $form.serialize();
+            formchanged=0;
+            console.log(origForm);
+
+            $('form :input').on('change input', function() {
+                console.log($form.serialize());
+                if($form.serialize() !== origForm){
+                    formchanged=1;
+                    console.log(formchanged);
+                }
+            });
+
+            $('div#admin-sidebar a').click(function(){
+                console.log(formchanged);
+                var response=false;
+                if(formchanged){
+                    var answer =Swal.fire({
+                        title: '',
+                        icon: 'warning',
+                        html:isadd?'Are you sure you want to leave this page  without saving?':"You have unsaved changes on this page. If you leave now, your changes will not be saved.",
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        confirmButtonText:
+                            'Yes, Leave',
+                        confirmButtonAriaLabel: 'Yes, Leave',
+                        cancelButtonText:
+                            'No, cancel',
+                        cancelButtonAriaLabel: 'No, cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            window.location.href = this.href;
+
+                        }
+                    });
+                    return response;
+                }
+
+            });
+        });
+
+
+
+        // The DOM element you wish to replace with Tagify
+        var accepted_domain = document.querySelector('textarea[name=accepted_domains]');
+        var accepted_email = document.querySelector('textarea[name=accepted_emails]');
+        // initialize Tagify on the above input node reference
+        // var tagify = new Tagify(accepted_domain)
+        // var tagify = new Tagify(accepted_email)
+        var tagify = new Tagify(accepted_domain, {
+            originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(',')
+        })
+
+        var tagify1 = new Tagify(accepted_email, {
+            originalInputValueFormat: valuesArr => valuesArr.map(item => item.value).join(',')
+        })
+        // bind "DragSort" to Tagify's main element and tell
+        // it that all the items with the below "selector" are "draggable"
+        // var dragsort = new DragSort(tagify.DOM.scope, {
+        //     selector: '.'+tagify.settings.classNames.accepted_domains,
+        //     callbacks: {
+        //         dragEnd: onDragEnd
+        //     }
+        // })
+
+        // must update Tagify's value according to the re-ordered nodes in the DOM
+        // function onDragEnd(elm){
+        //     tagify.updateValueByDOMTags()
+        // }
+
+        // listen to tagify "change" event and print updated value
+        // tagify.on('change', e => console.log(e.detail.value))
+
+
+    </script>
 </x-app-layout>

@@ -1,1 +1,1 @@
-<label id="{{$error_text}}" class="error" for="{{$field_id}}" style=""></label>
+<label id="{{$error_text}}" class="error text-red font-semibold" for="{{$field_id}}" style="color:red;font-weight: 600; "></label>

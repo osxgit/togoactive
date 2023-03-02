@@ -1,0 +1,1 @@
+<a href="{{$page_url}}" target="_blank" style="text-decoration: none;color: #ffffff !important;background-color:#7E1FF6; border: 1px solid #7E1FF6; padding: 5px 10px; border-radius: 5px; font-weight: bold; font-size: 14px; float: right; position: relative; width: max-content;">{{$button_text}}</a>
