@@ -27,7 +27,7 @@ echo "Compile assets for production"
 
 # Run database migrations
 php artisan migrate --force
-
+ 
 # Note: If you're using queue workers, this is the place to restart them.
 # TODO restart queue workers
 
