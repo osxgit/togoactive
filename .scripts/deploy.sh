@@ -23,7 +23,7 @@ echo "Install npm dependencies"
 npm ci --prefer-offline --no-audit
 
 echo "Compile assets for production"
-npm run production
+#npm run production
 
 # Run database migrations
 php artisan migrate --force
@@ -38,7 +38,7 @@ php artisan clear-compiled
 php artisan optimize
 
 # Compile npm assets
-npm run prod
+#npm run prod
 
 # Reload PHP to update opcache
 echo "" | sudo -S service php8.1-fpm reload
