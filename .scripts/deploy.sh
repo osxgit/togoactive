@@ -33,7 +33,7 @@ php artisan migrate --force
 
 # Clear the old cache
 php artisan clear-compiled
-
+ 
 # Recreate cache
 php artisan optimize
 
