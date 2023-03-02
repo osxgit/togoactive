@@ -34,7 +34,7 @@ php artisan migrate --force
 # Clear the old cache
 php artisan clear-compiled
 
-# Recreate cache 
+# Recreate cache
 php artisan optimize
 
 # Compile npm assets
