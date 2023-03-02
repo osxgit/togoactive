@@ -8,8 +8,8 @@ echo "Deployment started ..."
 (php artisan down) || true
 
 # Pull the latest version of the app
-git fetch origin release
-git reset --hard origin/release
+git fetch origin development
+git reset --hard origin/development
 
 # Install composer dependencies
 echo "Install composer dependencies"
@@ -23,11 +23,11 @@ echo "Install npm dependencies"
 npm ci --prefer-offline --no-audit
 
 echo "Compile assets for production"
-npm run production
+#npm run production
 
 # Run database migrations
 php artisan migrate --force
-
+ 
 # Note: If you're using queue workers, this is the place to restart them.
 # TODO restart queue workers
 
@@ -38,15 +38,15 @@ php artisan clear-compiled
 php artisan optimize
 
 # Compile npm assets
-npm run prod
+#npm run prod
 
 # Reload PHP to update opcache
 echo "" | sudo -S service php8.1-fpm reload
 
 # Reload redis-server to update cache
 sudo service redis-server restart
-
+ 
 # Exit maintenance mode
 php artisan up
 
-echo "Deployment finished!"
+echo "Deployment finished!" 

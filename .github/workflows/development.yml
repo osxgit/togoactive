@@ -1,8 +1,8 @@
-name: Deploy
+name: Deploy On Development
 
 on:
   push:
-    branches: [release]
+    branches: [development]
 
 jobs:
   deploy:
@@ -13,7 +13,7 @@ jobs:
         uses: shivammathur/setup-php@master
         with:
           php-version: 8.1
-          extensions: mbsting, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, yml
+          extensions: mbstring, ctype, fileinfo, openssl, PDO, bcmath, json, tokenizer, yaml
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
@@ -27,8 +27,8 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          port: ${{ secrets.PORT }}
-          key: ${{ secrets.SSHKEY }}
-          script: "cd /var/www/tga && ./.scripts/deploy.sh"
+          host: ${{ secrets.DEVELOPMENT_HOST }}
+          username: ${{ secrets.DEVELOPMENT_USERNAME }}
+          port: ${{ secrets.DEVELOPMENT_PORT }}
+          password: ${{ secrets.DEVELOPMENT_PASSWORD }}
+          script: "cd /var/www/togoactive && ./.scripts/deploy.sh"

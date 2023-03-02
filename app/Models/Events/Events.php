@@ -24,4 +24,14 @@ class Events extends Model
         'visibility',
         'created_at',
     ];
+
+    public function images()
+        {
+            return $this->hasOne(EventImage::class,'event_id');
+        }
+
+        public function dates()
+                {
+                    return $this->hasOne(EventsDate::class,'event_id');
+                }
 }

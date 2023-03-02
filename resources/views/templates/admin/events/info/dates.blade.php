@@ -1,11 +1,51 @@
 <x-app-layout>
+    <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+
     @include('layouts.admin.events.subheader')
+    <style>.bg-primary {
+            --tw-bg-opacity: 1;
+            background-color: rgb(126 31 246 / var(--tw-bg-opacity)) !important;
+        }
+        .border-primary {
+            --tw-border-opacity: 1;
+            border-color: rgb(126 31 246 / var(--tw-border-opacity))!important;
+        }
+        button.bg-primary:hover:hover {
+            background-color:  rgb(255 255 255 / var(--tw-border-opacity))!important;
+        }
+        .swal2-styled.swal2-confirm {
+            border: 0;
+            border-radius: 0.25em;
+            background: initial;
+            background-color: #F53F14;
+            color: #fff;
+            font-size: 1em;
+        }
+
+        .swal2-styled.swal2-cancel {
+            border: 1px solid #D7DEDD;
+            border-radius: 0.25em;
+            background: initial;
+            background-color: #ffffff;
+            color: #000;
+            font-size: 1em;
+        }
+        .swal2-icon.swal2-warning {
+            border-color: #9ca3af;
+            color: #9ca3af;
+        }
+        .swal2-close:focus {
+            outline: 0;
+            box-shadow: none;
+        }
+    </style>
     <div class="w-full flex flex-col sm:flex-row flex-grow overflow-hidden bg-light-gray-bg">
         @include('layouts.admin.events.sidebar')
         <main role="main" class="w-full h-full flex-grow p-3 overflow-auto">
             <div class="float-left w-full max-w-screen-xl">
                 <x-admin.breadcrumb>
-                    <x-slot name="header">Event Information</x-slot>
+                    <x-slot name="header">Dates</x-slot>
                     <x-slot name="breadcrumb">
                         <a class="text-primary font-poppins-semibold text-sm" href="">Events</a> >
                         <a class="text-nav-gray font-poppins text-sm" href="{{route('admin.events.info.essentials',$id)}}">{{$event->name ?? "Untitled"}}</a> >
@@ -19,6 +59,11 @@
                         <x-slot name="heading">{{session()->get('message')}}</x-slot>
                     </x-infoboxes.success>
                 @endif
+                @if(session()->has('warining'))
+                    <x-infoboxes.error class="mt-4">
+                        <x-slot name="heading">{{session()->get('warining')}}</x-slot>
+                    </x-infoboxes.error>
+                @endif
 
                 <form method="POST" id="create-event-date_010" name="create-event-date_010" action="{{route('admin.events.info.essentials.storeDate',array($id))}}" class="w-full float-left" autocomplete="false" enctype="multipart/form-data">
                     @csrf
@@ -26,37 +71,45 @@
                     <input type="hidden" name="challengeId" value="{{$id}}">
 
                     @if($errors->any())
-                        <x-infoboxes.error class="mt-4" :value="$errors"></x-infoboxes.error>
+                        <div class="alert alert-danger"  style="color:red">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
                     @endif
                     <x-forms.section class="mt-8 rounded-xl">
                         <x-slot name="section_heading">
-                           Registration Dates
+                            Registration Dates
+                        </x-slot>
+                        <x-slot name="section_button">
                         </x-slot>
                         <x-slot name="section_heading_description_status">hidden</x-slot>
                         <x-slot name="section_heading_description_text">Registration end date, free registration end date and update info end date can only be after registration start date. </x-slot>
                         <x-slot name="section_content">
-                           <div class="float-left w-full flex justify-center items-center gap-x-4">
+                            <div class="float-left w-full flex justify-center items-center gap-x-4">
                                 <div class="float-left w-1/2">
                                     <x-forms.textfield type="datetime-local"  id="reg_start_date" name="reg_start_date"  :value="old('reg_start_date',$eventDates->registration_start_date ?? '' )" >
                                         <x-slot name="field_id">reg_start_date</x-slot>
                                         <x-slot name="label_text">Registration start date*</x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                        <x-slot name="label_description"></x-slot>
+                                        <x-slot name="label_description">Participants can register for the event from this date </x-slot>
                                     </x-forms.textfield>
 
 
                                 </div>
-                               <div class="float-left w-1/2">
-                                   <x-forms.textfield type="datetime-local" id="reg_end_date" name="reg_end_date"  :value="old('reg_end_date',$eventDates->registration_end_date ?? '' )" >
-                                       <x-slot name="field_id">reg_end_date</x-slot>
-                                       <x-slot name="label_text">Registration end date*</x-slot>
-                                       <x-slot name="label_description_status"></x-slot>
-                                       <x-slot name="label_description"></x-slot>
-                                   </x-forms.textfield>
+                                <div class="float-left w-1/2">
+                                    <x-forms.textfield type="datetime-local" id="reg_end_date" name="reg_end_date"  :value="old('reg_end_date',$eventDates->registration_end_date ?? '' )" >
+                                        <x-slot name="field_id">reg_end_date</x-slot>
+                                        <x-slot name="label_text">Registration end date*</x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                        <x-slot name="label_description">Participants cannot register for the event after this date </x-slot>
+                                    </x-forms.textfield>
 
 
-                               </div>
-                           </div>
+                                </div>
+                            </div>
                             <div class="float-left w-full flex justify-center items-center gap-x-4">
                                 <div class="float-left w-1/2">
                                     <x-forms.validationerror>
@@ -71,27 +124,27 @@
                                     </x-forms.validationerror>
                                 </div>
                             </div>
-                           <div class="float-left w-full flex justify-center items-center gap-x-4">
-                               <div class="float-left w-1/2">
-                                   <x-forms.textfield type="datetime-local" id="free_reg_end_date" name="free_reg_end_date"  :value="old('free_reg_end_date',$eventDates->free_registration_end_date ?? '' )" >
-                                       <x-slot name="field_id">free_reg_end_date</x-slot>
-                                       <x-slot name="label_text">Free registration end date</x-slot>
-                                       <x-slot name="label_description_status"></x-slot>
-                                       <x-slot name="label_description"></x-slot>
-                                   </x-forms.textfield>
+                            <div class="float-left w-full flex justify-center items-center gap-x-4">
+                                <div class="float-left w-1/2">
+                                    <x-forms.textfield type="datetime-local" id="free_reg_end_date" name="free_reg_end_date"  :value="old('free_reg_end_date',$eventDates->free_registration_end_date ?? '' )" >
+                                        <x-slot name="field_id">free_reg_end_date</x-slot>
+                                        <x-slot name="label_text">Free registration end date</x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                        <x-slot name="label_description">Participants cannot register for free after this date</x-slot>
+                                    </x-forms.textfield>
 
 
-                               </div>
-                               <div class="float-left w-1/2">
-                                   <x-forms.textfield type="datetime-local" id="upd_info_end_date" name="upd_info_end_date"  :value="old('upd_info_end_date',$eventDates->update_info_end_date ?? '' )" >
-                                       <x-slot name="field_id">upd_info_end_date</x-slot>
-                                       <x-slot name="label_text">Update info end date*</x-slot>
-                                       <x-slot name="label_description_status"></x-slot>
-                                       <x-slot name="label_description"></x-slot>
-                                   </x-forms.textfield>
+                                </div>
+                                <div class="float-left w-1/2">
+                                    <x-forms.textfield type="datetime-local" id="upd_info_end_date" name="upd_info_end_date"  :value="old('upd_info_end_date',$eventDates->update_info_end_date ?? '' )" >
+                                        <x-slot name="field_id">upd_info_end_date</x-slot>
+                                        <x-slot name="label_text">Update info end date*</x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                        <x-slot name="label_description">Participants cannot update their address or reward size after this date</x-slot>
+                                    </x-forms.textfield>
 
 
-                               </div>
+                                </div>
                             </div>
                             <div class="float-left w-full flex justify-center items-center gap-x-4">
                                 <div class="float-left w-1/2">
@@ -113,6 +166,8 @@
                         <x-slot name="section_heading">
                             Leaderboard Dates
                         </x-slot>
+                        <x-slot name="section_button">
+                        </x-slot>
                         <x-slot name="section_heading_description_status">hidden</x-slot>
                         <x-slot name="section_heading_description_text">Event end date, results date and finisher certificate date can only be after event start date. </x-slot>
                         <x-slot name="section_content">
@@ -122,7 +177,7 @@
                                         <x-slot name="field_id">leaderboard_start_date</x-slot>
                                         <x-slot name="label_text">Leaderboard start date*</x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                        <x-slot name="label_description"></x-slot>
+                                        <x-slot name="label_description">The leaderboard will go live on this date and participants can sync activities.</x-slot>
                                     </x-forms.textfield>
 
 
@@ -132,7 +187,7 @@
                                         <x-slot name="field_id">leaderboard_end_date</x-slot>
                                         <x-slot name="label_text">Leaderboard end date*</x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                        <x-slot name="label_description"></x-slot>
+                                        <x-slot name="label_description">The leaderboard will stop syncing activities after this date. The results have to be finalized after this date.</x-slot>
                                     </x-forms.textfield>
 
 
@@ -158,7 +213,7 @@
                                         <x-slot name="field_id">results_date</x-slot>
                                         <x-slot name="label_text">Results date and Finisher Certificate Date*</x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                        <x-slot name="label_description"></x-slot>
+                                        <x-slot name="label_description">All activities have to be verified before this date. Participants can download the certificate from this day.</x-slot>
                                     </x-forms.textfield>
 
                                     <x-forms.validationerror>
@@ -180,12 +235,14 @@
                         <x-slot name="section_heading">
                             Upgrade
                         </x-slot>
+                        <x-slot name="section_button">
+                        </x-slot>
                         <x-slot name="section_heading_description_status">hidden</x-slot>
                         <x-slot name="section_heading_description_text"> </x-slot>
                         <x-slot name="section_content">
                             <div class="float-left w-full flex  flex-col">
                                 <div class="float-left w-1/2 mt-4">
-                                    <x-forms.toggle id="upgrade" name="upgrade"  value="{{ $eventDates->upgrade_start_date != Null ? 1:0 }}" >
+                                    <x-forms.toggle id="upgrade" name="upgrade"  value="{{ $eventDates != NULL && $eventDates->upgrade_start_date != Null ? 1:0 }}" >
                                         <x-slot name="field_id">upgrade</x-slot>
                                         <x-slot name="label_text">Enable Upgrade</x-slot>
                                         <x-slot name="label_description">Enabling upgrade will allow your team to buy rewards during this period.</x-slot>
@@ -197,7 +254,7 @@
                                             <x-slot name="field_id">upgrade_start_date</x-slot>
                                             <x-slot name="label_text">Upgrade start date*</x-slot>
                                             <x-slot name="label_description_status"></x-slot>
-                                            <x-slot name="label_description"></x-slot>
+                                            <x-slot name="label_description">Participants can start buying rewards from this date.</x-slot>
                                         </x-forms.textfield>
 
 
@@ -207,7 +264,7 @@
                                             <x-slot name="field_id">upgrade_end_date</x-slot>
                                             <x-slot name="label_text">Upgrade end date*</x-slot>
                                             <x-slot name="label_description_status"></x-slot>
-                                            <x-slot name="label_description"></x-slot>
+                                            <x-slot name="label_description">Participants cannot buy rewards after this date.</x-slot>
                                         </x-forms.textfield>
 
 
@@ -228,19 +285,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="float-left w-full mt-8 text-right">
-                                <x-forms.submit value="Save" name="event_essentials_save" id="event_essentials_save">
-                                    Save
-                                </x-forms.submit>
-                            </div>
+
 
                         </x-slot>
                     </x-forms.section>
-                </form>
+
             </div>
         </main>
     </div>
+    <div class="float-left w-full text-right" style="position: sticky;bottom: 0;background: white;    padding: 20px;">
+        <x-forms.submit value="Save" name="event_essentials_save" id="event_essentials_save">
+            Save
+        </x-forms.submit>
+    </div>
+
+    </form>
     <script>
+
+        // var today = new Date().toISOString().slice(0, 16);
+        //
+        // document.getElementsByName("reg_end_date")[0].min = today;
+
         // $.validator.addMethod("greaterThan", function(value, element){
         //     var startdatevalue = $('#reg_start_date').val();
         //     return Date.parse(startdatevalue) &lt;= Date.parse(value);
@@ -328,7 +393,44 @@
 
             }
         });
+        var isadd= '{{$isadd}}';
+        console.log(isadd);
+        var $form = $('form'),
+            origForm = $form.serialize();
+        formchanged=0;
+        $('form :input').on('change input', function() {
+            if($form.serialize() !== origForm){
+                formchanged=1;
+                console.log(formchanged);
+            }
+        });
+        $('div#admin-sidebar a').click(function(){
+            var response=false;
+            if(formchanged){
+                var answer =Swal.fire({
+                    title: '',
+                    icon: 'warning',
+                    html:isadd?'Are you sure you want to leave this page  without saving?':"You have unsaved changes on this page. If you leave now, your changes will not be saved.",
+                    showCloseButton: true,
+                    showCancelButton: true,
+                    focusConfirm: false,
+                    confirmButtonText:
+                        'Yes, Leave',
+                    confirmButtonAriaLabel: 'Yes, Leave',
+                    cancelButtonText:
+                        'No, cancel',
+                    cancelButtonAriaLabel: 'No, cancel'
+                }).then((result) => {
+                    if (result.isConfirmed) {
 
+                        window.location.href = this.href;
+
+                    }
+                });
+                return response;
+            }
+
+        });
     </script>
 
 </x-app-layout>
