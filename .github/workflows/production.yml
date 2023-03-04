@@ -24,7 +24,7 @@ jobs:
         with:
           redis-version: 5
 
-      - name: Deploy to Server
+      - name: Deploy to Production Server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.MAIN_HOST }}
