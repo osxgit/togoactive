@@ -16,9 +16,9 @@ class LandingPage extends Model
         'show_countdown',
         'show_sponsor',
         'sponsor_detail',
-        'sponsor_detail_mob',
+        'event_detail_unlayer',
         'event_detail',
-         'event_detail_mob',
+         'sponsor_detail_unlayer',
         'show_rewards',
         'Short_faq',
     ];

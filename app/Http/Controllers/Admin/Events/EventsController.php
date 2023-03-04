@@ -24,9 +24,7 @@ class EventsController extends Controller
     }
 
     public function index(Request $request){
-
-
-            $rootAssetPath = env('CDN_ROOT_PATH');
+        $rootAssetPath = env('CDN_ROOT_PATH');
         if ($request->ajax()) {
             $data = $this->eventRepository->getEventList();
 
@@ -634,6 +632,7 @@ class EventsController extends Controller
     }
 
     public function submitLandingPageDetails(Request $request,$eventId){
+        // dd($request->all());
         Validator::make($request->all(), [
                   'event_detail' =>  'required',
                     'Short_faq' =>  'required',
@@ -641,16 +640,20 @@ class EventsController extends Controller
                 ])->validate();
         $data=$request->all();
         if(!is_null($data['sponsor_detail'])){
-            $data['sponsor_detail']= json_encode($data['sponsor_detail']);
+            // $data['sponsor_detail']= json_encode($data['sponsor_detail']);
+            $data['sponsor_detail']= $data['sponsor_detail'];
+            $data['sponsor_detail_unlayer']= $data['sponsor_detail_unlayer'];
         }
 
         if(!is_null($data['event_detail'])){
-            $data['event_detail']= json_encode($data['event_detail']);
+            // $data['event_detail']= json_encode($data['event_detail']);
+            $data['event_detail']= $data['event_detail'];
+            $data['event_detail_unlayer']= $data['event_detail_unlayer'];
         }
         if(!is_null($data['Short_faq'])){
             $data['Short_faq']= json_encode($data['Short_faq']);
         }
-
+// dd($data);
         $landingPage = $this->eventRepository->storeLandingPage($eventId, $data);
 
         return redirect()->route('admin.events.landingPage.setup',$eventId )->with('message','Changes saved successfully!');
@@ -659,8 +662,8 @@ class EventsController extends Controller
 
     public function submitLandingPageMobileDetails(Request $request,$eventId){
         Validator::make($request->all(), [
-                  'event_detail_mob' =>  'required',
-                    'sponsor_detail_mob' =>  'sometimes|required',
+                  'event_detail' =>  'required',
+                    'sponsor_detail' =>  'sometimes|required',
                 ])->validate();
         $data=$request->all();
 
@@ -711,8 +714,27 @@ $rootAssetPath = env('CDN_ROOT_PATH');
                 }
 // dd($nowtimestamp );
 // dd($eventDates->registration_start_date);
-// dd($countDownDate);
-        return view('templates.admin.events.info.landingPageView',['nowtimestamp'=>$nowtimestamp,'challengeEnded'=>$challengeEnded,'timerHeading'=>$timerHeading,'countDownDate'=>$countDownDate,'eventslidersubtitle'=> $eventslidersubtitle,'rootAssetPath'=>$rootAssetPath ,'eventDates'=> $eventDates,'eventImages'=> $eventImages,'eventRewards'=> $eventRewards,'landingPage' => $landingPage,'id' => $eventId, 'route_name' => request()->route()->getName(), 'active_page' => 'Landing Page', 'event'=> $event ?? null]);
+
+$order   = array("\r\n\r\n", "\n", "\r");
+$replace = ' ';
+$newstr = str_replace($order, $replace,json_decode($landingPage->Short_faq));
+$shortFaq=explode('Q:',$newstr);
+
+$FaqData=[];
+
+foreach($shortFaq as $faq){
+
+    
+
+       if($faq !=""){
+        array_push($FaqData,explode('A:',$faq));
+       }
+
+    
+
+}
+
+        return view('templates.admin.events.info.landingPageView',['FaqData'=>$FaqData,'nowtimestamp'=>$nowtimestamp,'challengeEnded'=>$challengeEnded,'timerHeading'=>$timerHeading,'countDownDate'=>$countDownDate,'eventslidersubtitle'=> $eventslidersubtitle,'rootAssetPath'=>$rootAssetPath ,'eventDates'=> $eventDates,'eventImages'=> $eventImages,'eventRewards'=> $eventRewards,'landingPage' => $landingPage,'id' => $eventId, 'route_name' => request()->route()->getName(), 'active_page' => 'Landing Page', 'event'=> $event ?? null]);
     }
 
     public function unlayer($eventId){
