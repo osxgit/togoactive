@@ -46,8 +46,7 @@ return new class extends Migration
             $table->tinyInteger('restricted')->default(0)->index();
 
             $table->rememberToken();
-            $table->timestamp('created_at')->index();
-            $table->timestamp('updated_at')->index()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamps();
             $table->timestamp('last_logged_in')->nullable()->index();
         });
 
