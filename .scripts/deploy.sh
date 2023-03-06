@@ -23,17 +23,17 @@ echo "Install npm dependencies"
 npm ci --prefer-offline --no-audit
 
 echo "Compile assets for production"
-#npm run production
+npm run build
 
 # Run database migrations
 php artisan migrate --force
- 
+
 # Note: If you're using queue workers, this is the place to restart them.
-# TODO restart queue workers
+# TODO restart queue workers.
 
 # Clear the old cache
 php artisan clear-compiled
- 
+
 # Recreate cache
 php artisan optimize
 
@@ -45,8 +45,8 @@ echo "" | sudo -S service php8.1-fpm reload
 
 # Reload redis-server to update cache
 sudo service redis-server restart
- 
+
 # Exit maintenance mode
 php artisan up
 
-echo "Deployment finished!" 
+echo "Deployment finished!"

@@ -35,7 +35,7 @@ class ImageHelper
         })->encode($format,$quality);
         $imageName = $path.time().'-'.rand(0,999999).'.'.$format;
 
-        Storage::disk('do')->put($imageName, $image);
+       Storage::disk('do')->put($imageName, $image);
 
         return $imageName;
     }
