@@ -18,6 +18,13 @@ composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 # update composer
 composer update
 
+#clear Cache
+php artisan route:clear
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+
 # Re-generate app key
 php artisan key:generate
 
