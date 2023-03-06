@@ -29,7 +29,7 @@ npm run build
 php artisan migrate --force
 
 # Note: If you're using queue workers, this is the place to restart them.
-# TODO restart queue workers
+# TODO restart queue workers.
 
 # Clear the old cache
 php artisan clear-compiled
