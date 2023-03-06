@@ -30,8 +30,6 @@ echo "Install npm dependencies"
 # npm ci --prefer-offline --no-audit
 npm i
 
-
-
 # Run database migrations
 php artisan migrate --force
 
