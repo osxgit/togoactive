@@ -15,6 +15,9 @@ git reset --hard origin/development
 echo "Install composer dependencies"
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
+# update composer
+composer update
+
 # Re-generate app key
 php artisan key:generate
 
