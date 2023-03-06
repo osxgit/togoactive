@@ -632,7 +632,7 @@ class EventsController extends Controller
     }
 
     public function submitLandingPageDetails(Request $request,$eventId){
-        // dd($request->all());
+        
         Validator::make($request->all(), [
                   'event_detail' =>  'required',
                     'Short_faq' =>  'required',
@@ -653,7 +653,7 @@ class EventsController extends Controller
         if(!is_null($data['Short_faq'])){
             $data['Short_faq']= json_encode($data['Short_faq']);
         }
-// dd($data);
+
         $landingPage = $this->eventRepository->storeLandingPage($eventId, $data);
 
         return redirect()->route('admin.events.landingPage.setup',$eventId )->with('message','Changes saved successfully!');
@@ -713,7 +713,8 @@ class EventsController extends Controller
                     $challengeEnded = false;
                 }
 
-                $order   = array("\r\n\r\n", "\n", "\r");
+                
+                $order   = array("\r\n\r\n", "\n", "\r","<p>","</p>");
                 $replace = ' ';
                 $newstr = str_replace($order, $replace,json_decode($landingPage->Short_faq));
                 $shortFaq=explode('Q:',$newstr);
@@ -721,11 +722,11 @@ class EventsController extends Controller
                 $FaqData=[];
 
                 foreach($shortFaq as $faq){
-                    if($faq !=""){
+                    if(trim($faq) !=""){
                         array_push($FaqData,explode('A:',$faq));
                     }
                 }
-
+                // dd($FaqData);
         return view('templates.admin.events.info.landingPageView',['FaqData'=>$FaqData,'nowtimestamp'=>$nowtimestamp,'challengeEnded'=>$challengeEnded,'timerHeading'=>$timerHeading,'countDownDate'=>$countDownDate,'eventslidersubtitle'=> $eventslidersubtitle,'rootAssetPath'=>$rootAssetPath ,'eventDates'=> $eventDates,'eventImages'=> $eventImages,'eventRewards'=> $eventRewards,'landingPage' => $landingPage,'id' => $eventId, 'route_name' => request()->route()->getName(), 'active_page' => 'Landing Page', 'event'=> $event ?? null]);
     }
 

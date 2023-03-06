@@ -490,13 +490,13 @@ return $data;
                          ]);
      } else{
 
-     $landingPage->show_countdown = $data['show_countdown'] ??  $landingPage->show_countdown;
-     $landingPage->show_sponsor = $data['show_sponsor'] ??  $landingPage->show_sponsor;
+     $landingPage->show_countdown = $data['show_countdown'] ??  0;
+     $landingPage->show_sponsor = $data['show_sponsor'] ?? 0;
      $landingPage->sponsor_detail = $data['sponsor_detail'] ??  $landingPage->sponsor_detail;
-     $landingPage->sponsor_detail_unlayer = $data['sponsor_detail_unlayer'] ??  $landingPage->sponsor_detail_mob;
+     $landingPage->sponsor_detail_unlayer = $data['sponsor_detail_unlayer'] ??  $landingPage->sponsor_detail_unlayer;
      $landingPage->event_detail = $data['event_detail'] ??  $landingPage->event_detail;
-     $landingPage->event_detail_unlayer = $data['event_detail_unlayer'] ??  $landingPage->event_detail_mob;
-     $landingPage->show_rewards = $data['show_rewards'] ??  $landingPage->show_rewards;
+     $landingPage->event_detail_unlayer = $data['event_detail_unlayer'] ??  $landingPage->event_detail_unlayer;
+     $landingPage->show_rewards = $data['show_rewards'] ??  0;
      $landingPage->Short_faq = $data['Short_faq'] ??  $landingPage->Short_faq;
 
      $landingPage->save();

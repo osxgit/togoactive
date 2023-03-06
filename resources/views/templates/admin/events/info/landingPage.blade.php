@@ -21,6 +21,9 @@
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js?apiKey=4rcnfqnlzfiuwfia3kjfez410ye1smutxh8kj2i126izgth4/tinymce"></script>
     <script src="//editor.unlayer.com/embed.js"></script>
     <style>
+        #div_Short_faq{
+            border:none !important;
+        }
         .btn {
             display: inline-block;
             font-weight: 400;
@@ -438,10 +441,11 @@
                                     <x-slot name="label_description">Enabling this will allow you to show sponser partners on the landing page for a web view</x-slot>
                                 </x-forms.toggle>
                             </div>
-                            <label for="sponsor_detail" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">Share details about the sponser*</label>
 
                             <div id="sponsorDetailDiv" class="float-left w-full {{$landingPage== NULL || $landingPage->show_sponsor == 0? 'hidden':'' }}">
-                            <div id="sponsor-container" style=" width:100%;height:400px"></div>
+                            <label for="sponsor_detail" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">Share details about the sponser*</label>
+
+                            <div id="sponsor-container" style=" width:100%;height:400px" ></div>
                                 <input type="hidden" name="sponsor_detail" id="sponsor_detail">
                                 <input type="hidden" name="sponsor_detail_unlayer" id="sponsor_detail_unlayer">
                             <!-- <x-forms.textarea id="sponsor_detail" name="sponsor_detail" placeholder="" class="h-32 description ">
@@ -767,7 +771,7 @@
         //     }
         // });
         tinymce.init({
-            selector: 'textarea#sponsor_detail',
+            selector: 'textarea#Short_faq',
             plugins: 'lists code emoticons table codesample image imagetools link textcolor',
             table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
 
