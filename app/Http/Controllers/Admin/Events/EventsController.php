@@ -680,7 +680,7 @@ class EventsController extends Controller
     }
 
     public function renderLandingPage($eventId){
-$rootAssetPath = env('CDN_ROOT_PATH');
+        $rootAssetPath = env('CDN_ROOT_PATH');
         if($eventId == '-'){
                 return redirect()->route('admin.events.info.essentials','-')->with('warining','Please add the event first');;
             }else {
@@ -712,29 +712,73 @@ $rootAssetPath = env('CDN_ROOT_PATH');
                 if($now < $eventDates->leaderboard_end_date){
                     $challengeEnded = false;
                 }
-// dd($nowtimestamp );
-// dd($eventDates->registration_start_date);
 
-$order   = array("\r\n\r\n", "\n", "\r");
-$replace = ' ';
-$newstr = str_replace($order, $replace,json_decode($landingPage->Short_faq));
-$shortFaq=explode('Q:',$newstr);
+                $order   = array("\r\n\r\n", "\n", "\r");
+                $replace = ' ';
+                $newstr = str_replace($order, $replace,json_decode($landingPage->Short_faq));
+                $shortFaq=explode('Q:',$newstr);
 
-$FaqData=[];
+                $FaqData=[];
 
-foreach($shortFaq as $faq){
-
-    
-
-       if($faq !=""){
-        array_push($FaqData,explode('A:',$faq));
-       }
-
-    
-
-}
+                foreach($shortFaq as $faq){
+                    if($faq !=""){
+                        array_push($FaqData,explode('A:',$faq));
+                    }
+                }
 
         return view('templates.admin.events.info.landingPageView',['FaqData'=>$FaqData,'nowtimestamp'=>$nowtimestamp,'challengeEnded'=>$challengeEnded,'timerHeading'=>$timerHeading,'countDownDate'=>$countDownDate,'eventslidersubtitle'=> $eventslidersubtitle,'rootAssetPath'=>$rootAssetPath ,'eventDates'=> $eventDates,'eventImages'=> $eventImages,'eventRewards'=> $eventRewards,'landingPage' => $landingPage,'id' => $eventId, 'route_name' => request()->route()->getName(), 'active_page' => 'Landing Page', 'event'=> $event ?? null]);
+    }
+
+    public function renderLandingPageApi($eventId){
+        $rootAssetPath = env('CDN_ROOT_PATH');
+        if($eventId == '-'){
+                return redirect()->route('admin.events.info.essentials','-')->with('warining','Please add the event first');;
+            }else {
+                $event = Events::findOrFail($eventId);
+                $eventRewards = $this->eventRepository->getRewards($eventId);
+                 $landingPage = $this->eventRepository->getLandingPage($eventId);
+                 $eventImages = $this->eventRepository->getEventImages($eventId);
+                 $eventDates = $this->eventRepository->getEventDates($eventId);
+                 $eventslidersubtitle = $this->eventRepository->getEventMeta($eventId,'slider_sub_title');
+            }
+            $now = Carbon::now()->timezone($event->timezone);
+            $nowtimestamp = Carbon::Parse( $now)->timestamp;
+
+            if($now < $eventDates->registration_start_date){
+                $timerHeading = "COMING SOON";
+                $countDownDate = $eventDates->registration_start_date;
+                $countDownDate=Carbon::Parse( $countDownDate)->timestamp;
+                }else if($now >=$eventDates->registration_start_date && $now < $eventDates->registration_end_date){
+                $timerHeading ="CHALLENGE IS LIVE";
+                $countDownDate =$eventDates->leaderboard_end_date;
+
+                $countDownDate=Carbon::Parse( $countDownDate)->timestamp;
+            }else{
+                $timerHeading = "";
+
+                $countDownDate = '__';
+                }
+                $challengeEnded = true;
+                if($now < $eventDates->leaderboard_end_date){
+                    $challengeEnded = false;
+                }
+
+                $order   = array("\r\n\r\n", "\n", "\r");
+                $replace = ' ';
+                $newstr = str_replace($order, $replace,json_decode($landingPage->Short_faq));
+                $shortFaq=explode('Q:',$newstr);
+
+                $FaqData=[];
+
+                foreach($shortFaq as $faq){
+                    if($faq !=""){
+                        array_push($FaqData,explode('A:',$faq));
+                    }
+                }
+
+                $returnHTML = view('templates.admin.events.info.landingPageView',['FaqData'=>$FaqData,'nowtimestamp'=>$nowtimestamp,'challengeEnded'=>$challengeEnded,'timerHeading'=>$timerHeading,'countDownDate'=>$countDownDate,'eventslidersubtitle'=> $eventslidersubtitle,'rootAssetPath'=>$rootAssetPath ,'eventDates'=> $eventDates,'eventImages'=> $eventImages,'eventRewards'=> $eventRewards,'landingPage' => $landingPage,'id' => $eventId, 'route_name' => request()->route()->getName(), 'active_page' => 'Landing Page', 'event'=> $event ?? null])->render();
+         return response()->json( array('success' => true, 'html'=>$returnHTML) );
+ 
     }
 
     public function unlayer($eventId){
