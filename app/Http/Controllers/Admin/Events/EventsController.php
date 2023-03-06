@@ -618,8 +618,12 @@ class EventsController extends Controller
         }
         $event = Events::findOrFail($eventId);
         $landingPage = $this->eventRepository->getLandingPage($eventId);
-
-        return view('templates.admin.events.info.landingPage',['landingPage' => $landingPage,'id' => $eventId, 'route_name' => request()->route()->getName(), 'active_page' => 'Landing Page', 'event'=> $event ?? null]);
+        if($landingPage){
+            $isadd=false;
+        } else{
+            $isadd=true;
+        }
+        return view('templates.admin.events.info.landingPage',['isadd' =>$isadd,'landingPage' => $landingPage,'id' => $eventId, 'route_name' => request()->route()->getName(), 'active_page' => 'Landing Page', 'event'=> $event ?? null]);
     }
     public function renderLandingPageMobileSection($eventId){
         if($eventId == '-'){
