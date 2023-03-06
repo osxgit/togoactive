@@ -23,9 +23,9 @@ return new class extends Migration
             $table->timestamp('update_info_end_date')->index()->nullable();
             $table->timestamp('upgrade_start_date')->index()->nullable();
             $table->timestamp('upgrade_end_date')->index()->nullable();
-            $table->timestamp('leaderboard_start_date')->index();
-            $table->timestamp('leaderboard_end_date')->index();
-            $table->timestamp('results_date')->index();
+            $table->timestamp('leaderboard_start_date')->index()->nullable();
+            $table->timestamp('leaderboard_end_date')->index()->nullable();
+            $table->timestamp('results_date')->index()->nullable();
             $table->timestamps();
         });
     }
