@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Use App\Http\Controllers\Api\Client\ClientController;
 Use App\Http\Controllers\Api\UserController;
+Use App\Http\Controllers\Api\EventsController;
 
 /*
 |--------------------------------------------------------------------------
