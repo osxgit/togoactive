@@ -1,15 +1,17 @@
 {
-  "public/fonts/poppins/Poppins-Bold.ttf": {
-    "file": "assets/Poppins-Bold.7219547e.ttf",
-    "src": "public/fonts/poppins/Poppins-Bold.ttf"
-  },
   "public/fonts/poppins/Poppins-Regular.ttf": {
     "file": "assets/Poppins-Regular.707fdc5c.ttf",
     "src": "public/fonts/poppins/Poppins-Regular.ttf"
   },
+<<<<<<< HEAD
   "public/fonts/poppins/Poppins-Light.ttf": {
     "file": "assets/Poppins-Light.647f014d.ttf",
     "src": "public/fonts/poppins/Poppins-Light.ttf"
+=======
+  "public/fonts/poppins/Poppins-Bold.ttf": {
+    "file": "assets/Poppins-Bold.7219547e.ttf",
+    "src": "public/fonts/poppins/Poppins-Bold.ttf"
+>>>>>>> 2d13b984730090b047c2be935623b764c150003a
   },
   "public/fonts/poppins/Poppins-SemiBold.ttf": {
     "file": "assets/Poppins-SemiBold.248c0244.ttf",
@@ -23,6 +25,13 @@
     "file": "assets/fa-brands-400.f4617423.woff2",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2"
   },
+<<<<<<< HEAD
+=======
+  "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2": {
+    "file": "assets/fa-regular-400.7ba24c41.woff2",
+    "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-regular-400.woff2"
+  },
+>>>>>>> 2d13b984730090b047c2be935623b764c150003a
   "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2": {
     "file": "assets/fa-solid-900.e2c5cf54.woff2",
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2"
@@ -48,12 +57,12 @@
     "src": "node_modules/@fortawesome/fontawesome-free/webfonts/fa-solid-900.ttf"
   },
   "resources/js/app.js": {
-    "file": "assets/app.9e0225f9.js",
+    "file": "assets/app.0c9e1bff.js",
     "src": "resources/js/app.js",
     "isEntry": true
   },
   "resources/js/events/script.js": {
-    "file": "assets/script.7b71a452.js",
+    "file": "assets/script.18c9fc95.js",
     "src": "resources/js/events/script.js",
     "isEntry": true
   },
@@ -63,7 +72,11 @@
     "isEntry": true
   },
   "resources/css/app.css": {
+<<<<<<< HEAD
     "file": "assets/app.4505d2db.css",
+=======
+    "file": "assets/app.e7127793.css",
+>>>>>>> 2d13b984730090b047c2be935623b764c150003a
     "src": "resources/css/app.css",
     "isEntry": true
   }

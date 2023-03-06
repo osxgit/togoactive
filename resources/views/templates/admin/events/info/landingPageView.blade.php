@@ -868,7 +868,7 @@ line-height: 1.75rem;
                 <div class="panel panel-default" style="background:#FFFFFF; margin-bottom:10px;">
                     <div class="panel-heading">
                         <h4 class="panel-title" style="margin-bottom: 0px;">
-                            <a class="faq_quest" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$key}}" style="display: flex;width: 100%;">
+                            <a class="faq_quest" data-toggle="collapse" data-parent="#accordion" href="#collapse{{$key}}" style="display: flex;width: 100%;    justify-content: space-between;padding: 5px;align-items: center;">
                                 <span>{{$faq[0]}}</span>
                                 <span class="caret">
                                     <svg width="20" height="11" viewBox="0 0 20 11" fill="none" xmlns="http://www.w3.org/2000/svg">
