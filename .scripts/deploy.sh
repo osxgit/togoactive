@@ -51,7 +51,7 @@ npm run build
 php artisan optimize
 
 # Compile npm assets
-#npm run prod
+#npm run prod.
 
 # Reload PHP to update opcache
 echo "" | sudo -S service php8.1-fpm reload
