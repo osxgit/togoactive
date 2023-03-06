@@ -493,7 +493,9 @@
 
                         </x-slot>
                         <x-slot name="section_heading_description_status"></x-slot>
-                        <x-slot name="section_heading_description_text">Click on the below tags to determine the question & Answer. </x-slot>
+                        <x-slot name="section_heading_description_text">Please type the most commonly asked question in this field 
+<br>Use Q: to type the question
+<br>use A: to type the answer</x-slot>
                         <x-slot name="section_content">
 
 
@@ -526,6 +528,54 @@
     </form>
 
     <script>
+
+var isadd= '{{$isadd}}';
+
+$(window).on('load', function () {
+
+    $form = $('form');
+    origForm = $form.serialize();
+    formchanged=0;
+    console.log(origForm);
+
+    $('form :input').on('change input', function() {
+        console.log($form.serialize());
+        if($form.serialize() !== origForm){
+            formchanged=1;
+            console.log(formchanged);
+        }
+    });
+    $('div#admin-sidebar a').click(function(){
+                console.log(formchanged);
+                var response=false;
+                if(formchanged){
+                    var answer =Swal.fire({
+                        title: '',
+                        icon: 'warning',
+                        html:isadd?'Are you sure you want to leave this page  without saving?':"You have unsaved changes on this page. If you leave now, your changes will not be saved.",
+                        showCloseButton: true,
+                        showCancelButton: true,
+                        focusConfirm: false,
+                        confirmButtonText:
+                            'Yes, Leave',
+                        confirmButtonAriaLabel: 'Yes, Leave',
+                        cancelButtonText:
+                            'No, cancel',
+                        cancelButtonAriaLabel: 'No, cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+
+                            window.location.href = this.href;
+
+                        }
+                    });
+                    return response;
+                }
+
+            });
+        });
+
+
          sponsor = unlayer.createEditor({
         id: 'sponsor-container',
         projectId: 1234,
@@ -539,7 +589,14 @@
             projectId: "12345", // REPLACE
             customCSS:"/css/tailwind.css"
         })
-
+        sponsor.addEventListener('design:updated', function(data) {
+            formchanged=1;
+                    console.log(formchanged);
+        });
+        eventdetail.addEventListener('design:updated', function(data) {
+            formchanged=1;
+                    console.log(formchanged);
+});
          design= <?php echo $landingPage->event_detail_unlayer??"''"?>;
         
         if(design !=""){
@@ -772,6 +829,7 @@
         // });
         tinymce.init({
             selector: 'textarea#Short_faq',
+            
             plugins: 'lists code emoticons table codesample image imagetools link textcolor',
             table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
 
@@ -870,6 +928,10 @@
             ],
             height: 600,
             setup: function (editor) {
+                editor.on('Paste Change input Undo Redo', function () {
+                    formchanged=1;
+                    console.log(formchanged);
+                });
                 editor.ui.registry.addButton('custom_button', {
                     text: 'Add Button',
                     onAction: function() {
