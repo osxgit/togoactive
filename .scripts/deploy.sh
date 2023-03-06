@@ -56,7 +56,7 @@ php artisan optimize
 # Reload PHP to update opcache
 echo "" | sudo -S service php8.1-fpm reload
 
-# Reload redis-server to update cache
+# Reload redis-server to update cache.
 sudo service redis-server restart
 
 composer update
