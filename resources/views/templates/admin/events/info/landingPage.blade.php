@@ -591,12 +591,12 @@ $(window).on('load', function () {
         })
         sponsor.addEventListener('design:updated', function(data) {
             formchanged=1;
-                    console.log(formchanged);
+            console.log(formchanged);
         });
         eventdetail.addEventListener('design:updated', function(data) {
             formchanged=1;
-                    console.log(formchanged);
-});
+            console.log(formchanged);
+        });
          design= <?php echo $landingPage->event_detail_unlayer??"''"?>;
         
         if(design !=""){
