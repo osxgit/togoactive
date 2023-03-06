@@ -15,9 +15,6 @@ git reset --hard origin/development
 echo "Install composer dependencies"
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-# update composer
-composer update
-
 #clear Cache
 php artisan route:clear
 php artisan cache:clear
@@ -32,8 +29,6 @@ php artisan key:generate
 echo "Install npm dependencies"
 npm ci --prefer-offline --no-audit
 
-echo "Compile assets for production"
-npm run build
 
 # Run database migrations
 php artisan migrate --force
@@ -43,6 +38,14 @@ php artisan migrate --force
 
 # Clear the old cache
 php artisan clear-compiled
+
+# update composer
+echo "composer Update"
+composer update
+
+#run build
+echo "Compile assets for production"
+npm run build
 
 # Recreate cache
 php artisan optimize

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Events\{
     SocialSeoController,
     RewardsController
 };
+use App\Http\Controllers\Public\RegistrationController;
 // use App\Http\Controllers\Admin\Events\{
 //     SocialSeoController
 // };
