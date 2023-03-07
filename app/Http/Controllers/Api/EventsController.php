@@ -87,18 +87,5 @@ class EventsController extends Controller
 //  return $this->sendAPIResponse();
                              return response()->json( array('success' => true, 'html'=>$returnHTML) );
 
-
-
-            }
-
-            public function getEventLandingPageDetail(Request $request){
-
-                $eventSlug= $request->slug;
-                $rootAssetPath = env('CDN_ROOT_PATH');
-                $eventDetail = $this->eventRepository->getEventIdFromSlug($eventSlug);
-            
-                $this->setResponseData(array( 'data' => array('success' => true, 'event'=>$eventDetail,'rootAssetPath'=>'$rootAssetPath') ));
-                return $this->sendAPIResponse();
-
             }
     }

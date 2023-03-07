@@ -92,6 +92,4 @@ interface EventRepositoryInterface
 
       public function storeLandingPage($eventId, $data);
 
-    public function getEventIdFromSlug($slug);
-
 }
