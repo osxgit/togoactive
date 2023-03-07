@@ -30,7 +30,7 @@ Route::middleware('validateJsonRequest')->group(function () {
 });
 
 Route::post('landingPageView', [EventsController::class, 'renderLandingPageApi'])->name('landingPage');
-
+ 
 Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
 
 Route::post('getEventLandingPageDetail', [EventsController::class, 'getEventLandingPageDetail'])->name('getEventLandingPageDetail');
