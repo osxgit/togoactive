@@ -506,13 +506,6 @@ return $data;
 
     }
 
-    public function getEventIdFromSlug($slug){
-
-       $event =  Events::where('slug','LIKE','%'.$slug.'%')->with('images','dates','landingPage','rewards','eventMeta')->first();
-     
-       return $event;
-    }
-
 
 
 }
