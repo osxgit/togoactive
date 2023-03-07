@@ -15,9 +15,6 @@ git reset --hard origin/development
 echo "Install composer dependencies"
 composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-# update composer
-composer update
-
 #clear Cache
 php artisan route:clear
 php artisan cache:clear
@@ -30,10 +27,8 @@ php artisan key:generate
 
 # Install npm dependencies
 echo "Install npm dependencies"
-npm ci --prefer-offline --no-audit
-
-echo "Compile assets for production"
-npm run build
+# npm ci --prefer-offline --no-audit
+npm i
 
 # Run database migrations
 php artisan migrate --force
@@ -44,19 +39,28 @@ php artisan migrate --force
 # Clear the old cache
 php artisan clear-compiled
 
+# update composer
+echo "composer Update"
+composer update
+
+#run build
+echo "Compile assets for production"
+npm run build
+
 # Recreate cache
 php artisan optimize
 
 # Compile npm assets
-#npm run prod
+#npm run prod.
 
 # Reload PHP to update opcache
 echo "" | sudo -S service php8.1-fpm reload
 
-# Reload redis-server to update cache
+# Reload redis-server to update cache.
 sudo service redis-server restart
 
-# Exit maintenance mode
-php artisan up
+composer update
 
+# Exit maintenance mode.
+php artisan up
 echo "Deployment finished!"
