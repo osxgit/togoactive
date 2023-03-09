@@ -196,7 +196,7 @@ class EventsController extends Controller
     }
 
     public function submitEssentialsDetails(Request $request,$eventId){
-dd($request->all());
+
         try{
 
         Validator::make($request->all(), [
