@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Redis;
 
-use App\Models\User;
+use App\Models\User; 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
