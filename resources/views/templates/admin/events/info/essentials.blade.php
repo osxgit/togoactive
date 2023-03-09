@@ -277,7 +277,7 @@
                                             By default, forward is set to the email, alerts@togoparts.com. By checking this box, your custom email will be used if already set.
                                         </p>
                                         <div class="float-left w-full flex items-center rounded-sm mt-2">
-                                            <input type="checkbox" id="email_forward" name="email_forward" class="mr-2 border border-gray">
+                                            <input type="checkbox" id="email_forward" name="email_forward" class="mr-2 border border-gray" value="{{ $event != NULL && isset($event->email_forward) ?$event->email_forward:0 }}" {{ $event != NULL && $event->email_forward ==1 ?'checked':'' }}>
                                             <span class="text-sm text-gray">Email forward has been created</span>
                                         </div>
                                     </div>

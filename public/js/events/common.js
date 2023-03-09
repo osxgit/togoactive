@@ -21,6 +21,7 @@ $(document).ready(function(){
         if(vall == 0){
             $(this).val(1);
             $("#event_dates_upgrade_section").removeClass('hidden');
+            
             // $("#event_dates_upgrade_section").slideDown();
         } else{
             $(this).val(0);
@@ -29,7 +30,16 @@ $(document).ready(function(){
         }
     })
 
-
+    $('#email_forward').on('change',function(){
+        let vall = $(this).val();
+        if(vall == 0){
+            $(this).val(1);
+            $("#email_forward").prop('checked', true);
+        } else{
+            $(this).val(0);
+            $("#email_forward").prop('checked', false);
+        }
+    })
 
 
 })
