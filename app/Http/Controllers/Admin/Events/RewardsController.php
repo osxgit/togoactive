@@ -368,7 +368,7 @@ Validator::make($request->all(), [
                 $eventRewards = $this->eventRepository->getEventRewards($eventId, $rewardId);
                 $rewardImages = json_decode($eventRewards->rewards_images);
                 $rewardCount= count($rewardImages->large);
-
+// dd( $rewardImages);
              } else {
                 return redirect()->route('admin.events.rewards.add','-')->with('warining','Please add the reward first');;
              }
@@ -391,57 +391,54 @@ Validator::make($request->all(), [
 
                 $eventRewards = $this->eventRepository->getEventRewards($eventId, $rewardId);
                 $rewardImages = json_decode($eventRewards->rewards_images);
-                   $data= $request->all();
+                $data= $request->all();
                 foreach($rewardImages as $key=>$reward_img){
-                foreach($reward_img as $rewardImg){
-                $data['reward_image'][$key][]=$rewardImg;
+                    foreach($reward_img as $rewardImg){
+                        $data['reward_image'][$key][]=$rewardImg;
+                    }
                 }
 
-
-                }
-
-
+               
              for($i=1; $i<=9 ;$i++){
-             $count=$i-1;
-                        if(isset($data['images_'.$i])){
-                            $rewardimages= FilesUploadsLogs::where('eventid',$rewardId)->where('module','Rewards')->where('image_type','rewards_image-'.$i)->get();
-                            foreach($rewardimages as $rewardimage){
-                                $data['reward_image'][$rewardimage->file_type][ $count]=$rewardimage->path;
-                                if($rewardimage){
-                                    $rewardimage->active = 1;
-                                    $rewardimage->save();
-                                }
-                            }
-
+                $count=$i-1;
+                if(isset($data['images_'.$i])){
+                    $rewardimages= FilesUploadsLogs::where('eventid',$rewardId)->where('module','Rewards')->where('image_type','rewards_image-'.$i)->get();
+                    foreach($rewardimages as $rewardimage){
+                        $data['reward_image'][$rewardimage->file_type][ $count]=$rewardimage->path;
+                        if($rewardimage){
+                            $rewardimage->active = 1;
+                            $rewardimage->save();
                         }
                     }
 
-                    if(isset($data['sizing_images'])){
-                         $sizingimage= FilesUploadsLogs::where('eventid',$eventId)->where('module','Rewards')->where('image_type','sizing_image')->where('active',0)->first();
-                         $data['sizing_images']=$sizingimage->path;
-                         if($sizingimage){
-                             $sizingimage->active = 1;
-                             $sizingimage->save();
-                         }
-                    } else{
-                        $data['sizing_images']=$eventRewards->sizing_images;
-                    }
-if(isset($request->size)){
-$sizevalue=[];
+                }
+            }
 
-                        foreach(json_decode($request->size) as $size){
+            if(isset($data['sizing_images'])){
+                $sizingimage= FilesUploadsLogs::where('eventid',$eventId)->where('module','Rewards')->where('image_type','sizing_image')->where('active',0)->first();
+                $data['sizing_images']=$sizingimage->path;
+                if($sizingimage){
+                    $sizingimage->active = 1;
+                    $sizingimage->save();
+                }
+            } else{
+                $data['sizing_images']=$eventRewards->sizing_images;
+            }
+            if(isset($request->size)){
+                $sizevalue=[];
 
-                            array_push($sizevalue,$size->value);
-                        }
-                    $data['size']=json_encode($sizevalue);
-} else{
- $data['size']='';
-}
+                foreach(json_decode($request->size) as $size){
 
+                    array_push($sizevalue,$size->value);
+                }
+                $data['size']=json_encode($sizevalue);
+            } else{
+                $data['size']='';
+            }
 
-                    $eventRewards = $this->eventRepository->editEventRewards($data,$rewardId);
+            $eventRewards = $this->eventRepository->editEventRewards($data,$rewardId);
 
-                    return redirect()->route('admin.events.rewards',$eventId )->with('message','Changes saved successfully!');
+            return redirect()->route('admin.events.rewards',$eventId )->with('message','Changes saved successfully!');
 
         }
 
