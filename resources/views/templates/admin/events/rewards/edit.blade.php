@@ -161,7 +161,7 @@
                                 </div>
                                 <div class="flex flex-col w-full">
                                     <div class="flex flex-row justify-evenly w-full">
-                                        <div id="images_2-label" class="float-left pr-2 mt-4 {{ $rewardCount >=1 && $rewardCount <= 2  ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                        <div id="images_2-label" class="float-left pr-2 mt-4 {{ $rewardCount+1 >=2  ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
                                             @if($rewardCount >=2)
                                                 <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -187,7 +187,7 @@
                                             </x-forms.file_input>
                                             </label>
                                         </div>
-                                        <div id="images_3-label" class="float-left pr-2 mt-4 {{ $rewardCount >=2 && $rewardCount <= 3 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                        <div id="images_3-label" class="float-left pr-2 mt-4 {{ $rewardCount+1 >=3  ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
                                             @if($rewardCount >=3)
                                                 <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -210,7 +210,7 @@
                                             </x-forms.file_input>
                                             </label>
                                         </div>
-                                        <div id="images_4-label" class="float-left pr-2 mt-4 {{ $rewardCount >=3 && $rewardCount <= 4 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                        <div id="images_4-label" class="float-left pr-2 mt-4 {{ $rewardCount+1 >=4 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
                                             @if($rewardCount >=4)
                                             <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -234,7 +234,7 @@
                                             </x-forms.file_input>
                                             </label>
                                         </div>
-                                        <div id="images_5-label" class="float-left pr-2 mt-4 {{ $rewardCount >=4 && $rewardCount <= 5 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                        <div id="images_5-label" class="float-left pr-2 mt-4 {{ $rewardCount+1 >= 5 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
                                             @if($rewardCount >=5)
                                                 <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -261,7 +261,7 @@
                                         </div>
                                     </div>
                                     <div class="flex flex-row justify-evenly w-full">
-                                        <div id="images_6-label" class="float-left pr-2 mt-4 {{ $rewardCount >=5 && $rewardCount <= 6 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                        <div id="images_6-label" class="float-left pr-2 mt-4 {{ $rewardCount+1 >=6 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
                                             @if($rewardCount >=6)
                                             <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -286,7 +286,7 @@
                                             </x-forms.file_input>
                                             </label>
                                         </div>
-                                        <div id="images_7-label" class="float-left pr-2 mt-4 {{ $rewardCount >=6 && $rewardCount <= 7 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                        <div id="images_7-label" class="float-left pr-2 mt-4 {{ $rewardCount+1 >=7  ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
                                             @if($rewardCount >=7)
                                             <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -312,7 +312,7 @@
                                             </x-forms.file_input>
                                             </label>
                                         </div>
-                                        <div id="images_8-label" class="float-left pr-2 mt-4 {{ $rewardCount >=7 && $rewardCount <= 8? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                        <div id="images_8-label" class="float-left pr-2 mt-4 {{ $rewardCount+1 >=8 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
                                             @if($rewardCount >=8)
                                             <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -336,7 +336,7 @@
                                             </x-forms.file_input>
                                             </label>
                                         </div>
-                                        <div id="images_9-label" class="float-left pr-2 mt-4 {{ $rewardCount >=8 && $rewardCount <= 9? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                        <div id="images_9-label" class="float-left pr-2 mt-4 {{ $rewardCount+1 ==9 ? '': 'hidden'}}"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
                                             @if($rewardCount >=9)
                                             <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
                                                 <x-slot name="uploder_title"  class="text-base"><b>Click to upload</b> or drag and drop </x-slot>
