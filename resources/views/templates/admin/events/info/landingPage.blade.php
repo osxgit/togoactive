@@ -493,7 +493,7 @@
 
                         </x-slot>
                         <x-slot name="section_heading_description_status"></x-slot>
-                        <x-slot name="section_heading_description_text">Please type the most commonly asked question in this field 
+                        <x-slot name="section_heading_description_text">Please type the most commonly asked question in this field
 <br>Use Q: to type the question
 <br>use A: to type the answer</x-slot>
                         <x-slot name="section_content">
@@ -598,16 +598,16 @@ $(window).on('load', function () {
             console.log(formchanged);
         });
          design= <?php echo $landingPage->event_detail_unlayer??"''"?>;
-        
+
         if(design !=""){
             eventdetail.loadDesign(design);
         }
          sponsor_design= <?php echo $landingPage->sponsor_detail_unlayer??"''"?>;
-        
+
         if(sponsor_design !=""){
             sponsor.loadDesign(sponsor_design);
         }
-       
+
 
         $('#event_landing_page_save').click(function(){
             eventdetail.saveDesign(function(design) {
@@ -616,8 +616,8 @@ $(window).on('load', function () {
             sponsor.saveDesign(function(sponsor_design) {
                 console.log('design', sponsor_design);
             });
-           
-           
+
+
             sponsor.exportHtml(function(data) {
                  soposorjson = data.design; // design json
                  sponsorhtml = data.html; // final html
@@ -630,14 +630,14 @@ $(window).on('load', function () {
                  eventjson = data.design; // design json
                  eventhtml = data.html; // final html
                 // console.log(JSON.stringify(json));
-               
+
                 $('#event_detail_unlayer').val(JSON.stringify(eventjson));
                 $('#event_detail').val(JSON.stringify(eventhtml));
                 $('#create-event-landingPage-f_010').submit();
             })
             // console.log($('#sponsor_detail').val());
-               
-             
+
+
             //  $('#create-event-landingPage-f_010').submit();
 
         })
@@ -829,7 +829,7 @@ $(window).on('load', function () {
         // });
         tinymce.init({
             selector: 'textarea#Short_faq',
-            
+
             plugins: 'lists code emoticons table codesample image imagetools link textcolor',
             table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
 

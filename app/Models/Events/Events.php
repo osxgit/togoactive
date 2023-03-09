@@ -31,7 +31,12 @@ class Events extends Model
         }
 
         public function dates()
-                {
-                    return $this->hasOne(EventsDate::class,'event_id');
-                }
+        {
+            return $this->hasOne(EventsDate::class,'event_id');
+        }
+
+        public function faq()
+        {
+            return $this->hasOne(EventsFaq::class, 'event_id');
+        }
 }

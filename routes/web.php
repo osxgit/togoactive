@@ -4,7 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\Events\{
     EventsController,
     SocialSeoController,
-    RewardsController
+    RewardsController,
+    EventsFaqController
 };
 use App\Http\Controllers\Public\RegistrationController;
 // use App\Http\Controllers\Admin\Events\{
@@ -44,6 +45,12 @@ Route::middleware('auth')->group(function () {
 
 ## Event Info
 Route::middleware('auth')->group(function () {
+    Route::get('/admin/event/{id}/faq', [EventsFaqController::class, 'create'])->name('admin.events.faq.create');
+    Route::post('/admin/event/{id}/faq', [EventsFaqController::class, 'store'])->name('admin.events.faq.store');
+
+    Route::get('/admin/event/{id}/tnc', [EventsFaqController::class, 'createTnc'])->name('admin.events.faq.createtnc');
+    Route::post('/admin/event/{id}/tnc', [EventsFaqController::class, 'storeTnc'])->name('admin.events.faq.storetnc');
+
     Route::get('/admin/event/{id}/info/essentials', [EventsController::class, 'renderEssentialsSection'])->name('admin.events.info.essentials');
     Route::post('/admin/event/{id}/info/essentials', [EventsController::class, 'submitEssentialsDetails'])->name('admin.events.info.essentials.store');
 
