@@ -387,13 +387,13 @@
             <x-slot name="field_id">size</x-slot>
             <x-slot name="label_text">Values for selection*</x-slot>
             <x-slot name="label_description_status"></x-slot>
-            <x-slot name="label_description">These values will appear in the dropdown. To add sizes, simply type in and do a space. To  order, drag the pills from left to right. The value of the left most item will be sorted first.</x-slot>
+            <x-slot name="label_description">These values will appear in the dropdown. To add sizes, simply type in and do a tab. To  order, drag the pills from left to right. The value of the left most item will be sorted first.</x-slot>
         </x-forms.textfield>
 {{--        <x-forms.textarea id="size" name="size" placeholder="Add reward sizes" class="h-32 size ">--}}
 {{--            <x-slot name="field_id">size</x-slot>--}}
 {{--            <x-slot name="label_text">Values for selection*</x-slot>--}}
 {{--            <x-slot name="label_description_status"></x-slot>--}}
-{{--            <x-slot name="label_description">These values will appear in the dropdown. To add sizes, simply type in and do a space. To  order, drag the pills from left to right. The value of the left most item will be sorted first.</x-slot>--}}
+{{--            <x-slot name="label_description">These values will appear in the dropdown. To add sizes, simply type in and do a tab. To  order, drag the pills from left to right. The value of the left most item will be sorted first.</x-slot>--}}
 
 {{--        </x-forms.textarea>--}}
     </div>

@@ -89,19 +89,20 @@ class RewardsController extends Controller
         }
 
         Validator::make($request->all(), [
-
+                    'images_1'=>'required',
                     'name' => 'required',
                     'sku' => 'required',
-                    'description' => 'required',
+                    // 'description' => 'required',
                     'max_quantity' => 'required|numeric|min:1',
                     'size' => 'sometimes|required_with:enable_sizing',
                     'sizing_images' => 'sometimes|required_with:enable_sizing',
-                ])->validate();
+        ],['images_1.required'=>'please add a reward image'])->validate();
 
-
+        dd($request->all());
         $data=$request->all();
         $data['reward_image']=[];
         $alldata=$request->all();
+   
         for($i=1; $i<=9 ;$i++){
             if(isset($alldata['images_'.$i])){
                 $rewardimages= FilesUploadsLogs::where('eventid',0)->where('module','Rewards')->where('image_type','rewards_image-'.$i)->where('active',0)->get();
@@ -381,7 +382,7 @@ Validator::make($request->all(), [
             Validator::make($request->all(), [
                     'name' => 'required',
                     'sku' => 'required',
-                    'description' => 'required',
+                    // 'description' => 'required',
                     'max_quantity' => 'required|numeric|min:1',
                     'size' => 'sometimes|required_with:enable_sizing',
                     'sizing_images' => 'sometimes|required_with:enable_sizing',
