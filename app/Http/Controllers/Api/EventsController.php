@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Redis;
 
-use App\Models\User;
+use App\Models\User; 
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -86,19 +86,6 @@ class EventsController extends Controller
 //                   $this->setResponseData(array( 'data' => array('success' => true, 'html'=>$returnHTML) ));
 //  return $this->sendAPIResponse();
                              return response()->json( array('success' => true, 'html'=>$returnHTML) );
-
-
-
-            }
-
-            public function getEventLandingPageDetail(Request $request){
-
-                $eventSlug= $request->slug;
-                $rootAssetPath = env('CDN_ROOT_PATH');
-                $eventDetail = $this->eventRepository->getEventIdFromSlug($eventSlug);
-            
-                $this->setResponseData(array( 'data' => array('success' => true, 'event'=>$eventDetail,'rootAssetPath'=>'$rootAssetPath') ));
-                return $this->sendAPIResponse();
 
             }
     }

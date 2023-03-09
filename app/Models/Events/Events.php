@@ -31,23 +31,7 @@ class Events extends Model
         }
 
         public function dates()
-        {
-            return $this->hasOne(EventsDate::class,'event_id');
-        }
-
-        public function landingPage()
-        {
-            return $this->hasOne(LandingPage::class,'event_id');
-        }
-
-        public function rewards()
-        {
-            return $this->hasMany(Reward::class,'event_id','id');
-        }
-
-        public function eventMeta()
-        {
-            return $this->hasMany(EventsMeta::class,'event_id','id');
-        }
-
+                {
+                    return $this->hasOne(EventsDate::class,'event_id');
+                }
 }
