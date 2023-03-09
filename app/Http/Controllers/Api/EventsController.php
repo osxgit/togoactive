@@ -90,13 +90,14 @@ class EventsController extends Controller
                 $rootAssetPath = env('CDN_ROOT_PATH');
                 $eventData = $this->eventRepository->getEventDataThroughSlug($request->slug);
                 $this->setResponseData(array( 'data' => array('success' => true, 'event'=>$eventData, 'rootAssetPath'=>$rootAssetPath) ));
-                 return $this->sendAPIResponse();
-//             dd($request->all());
-
+                return $this->sendAPIResponse();
             }
 
             public function getRegistrationPageDetail(Request $request){
-                $eventID= $request->eventId;
-
+                $eventId= $request->eventId;
+                $registrationData = $this->eventRepository->getRegistrationSetup($eventId);
+                $rewards= $this->eventRepository->getRewards($eventId);
+                $this->setResponseData(array( 'data' => array('success' => true, 'registrationData'=>$registrationData,'rewards'=>$rewards) ));
+                return $this->sendAPIResponse();
             }
     }
