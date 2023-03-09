@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\Api\SendResponse;
 use App\Models\Events\Events;
 use Carbon\Carbon;
+
 class EventsController extends Controller
 {
     use SendResponse;
@@ -27,18 +28,12 @@ class EventsController extends Controller
 
         public function renderLandingPageApi(Request $request){
         $eventId= $request->eventId;
-//         return response()->json( array('success' => true, ));
-//           $this->setResponseData(array( 'data' => array('success' => true) ));
-//  return $this->sendAPIResponse();
-//          try {
-//                     throw new \Exception('Testing my application!!');
-//                 }
-//                 catch(\Throwable $e){
-//                     echo $e->getMessage();
-//                 }
+
                 $rootAssetPath = env('CDN_ROOT_PATH');
+
                 if($eventId == '-'){
-                        return redirect()->route('admin.events.info.essentials','-')->with('warining','Please add the event first');;
+                  $this->setResponseData(array( 'data' => array('success' => false) ));
+                        return $this->sendAPIResponse();
                     }else {
                         $event = Events::findOrFail($eventId);
                         $eventRewards = $this->eventRepository->getRewards($eventId);
@@ -69,7 +64,7 @@ class EventsController extends Controller
                             $challengeEnded = false;
                         }
 
-                        $order   = array("\r\n\r\n", "\n", "\r");
+                        $order   = array("\r\n\r\n", "\n", "\r","<p>","</p>");
                         $replace = ' ';
                         $newstr = str_replace($order, $replace,json_decode($landingPage->Short_faq));
                         $shortFaq=explode('Q:',$newstr);
@@ -77,15 +72,26 @@ class EventsController extends Controller
                         $FaqData=[];
 
                         foreach($shortFaq as $faq){
-                            if($faq !=""){
+                            if(trim($faq) !=""){
                                 array_push($FaqData,explode('A:',$faq));
                             }
                         }
 
+
                         $returnHTML = view('templates.admin.events.info.landingPageView',['FaqData'=>$FaqData,'nowtimestamp'=>$nowtimestamp,'challengeEnded'=>$challengeEnded,'timerHeading'=>$timerHeading,'countDownDate'=>$countDownDate,'eventslidersubtitle'=> $eventslidersubtitle,'rootAssetPath'=>$rootAssetPath ,'eventDates'=> $eventDates,'eventImages'=> $eventImages,'eventRewards'=> $eventRewards,'landingPage' => $landingPage,'id' => $eventId, 'route_name' => request()->route()->getName(), 'active_page' => 'Landing Page', 'event'=> $event ?? null])->render();
-//                   $this->setResponseData(array( 'data' => array('success' => true, 'html'=>$returnHTML) ));
-//  return $this->sendAPIResponse();
-                             return response()->json( array('success' => true, 'html'=>$returnHTML) );
+
+                        $this->setResponseData(array( 'data' => array('success' => true, 'html'=>$returnHTML) ));
+                        return $this->sendAPIResponse();
+//                              return response()->json( array('success' => true, 'html'=>$returnHTML) );
+
+            }
+
+            public function getEventLandingPageDetail(Request $request){
+                $rootAssetPath = env('CDN_ROOT_PATH');
+                $eventData = $this->eventRepository->getEventDataThroughSlug($request->slug);
+                $this->setResponseData(array( 'data' => array('success' => true, 'event'=>$eventData, 'rootAssetPath'=>$rootAssetPath) ));
+                 return $this->sendAPIResponse();
+//             dd($request->all());
 
             }
     }
