@@ -415,7 +415,7 @@
             }
             cropper = new Cropper(image, {
                 aspectRatio: $('#width').val()/$('#height').val(),
-                viewMode: 3,
+                viewMode: 0,
                 preview: '.preview',
                 minCropBoxWidth: $('#width').val(),
                 minCropBoxHeight: $('#height').val(),

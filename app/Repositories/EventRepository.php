@@ -413,20 +413,20 @@ return $data;
     public function updateRegistrationSetup($request, $eventId){
         $registrationSetup= RegistrationSetup::Where('event_id',$eventId)->first();
 
-        $registrationSetup->intro_message =  $request['intro_message'] ?? $registrationSetup->intro_message;
-        $registrationSetup->enable_teams = $request['enable_teams'] ??$registrationSetup->enable_teams;
-        $registrationSetup->min_members =  $request['min_members'] ?? $registrationSetup->min_members;
-        $registrationSetup->max_members =$request['max_members'] ?? $registrationSetup->max_members;
-        $registrationSetup->enable_referral =$request['enable_referral'] ??  $registrationSetup->enable_referral;
-        $registrationSetup->enable_coupon =$request['enable_coupon'] ??  $registrationSetup->enable_coupon;
-        $registrationSetup->enable_delivery_address =$request['enable_delivery_address'] ??  $registrationSetup->enable_delivery_address;
-        $registrationSetup->reason_for_collecting_address =$request['reason'] ??  $registrationSetup->reason_for_collecting_address;
-        $registrationSetup->enable_grouping =$request['enable_grouping'] ?? $registrationSetup->enable_grouping;
-        $registrationSetup->grouping_header =$request['grouping_header'] ??  $registrationSetup->grouping_header;
-        $registrationSetup->field_value =$request['field_value'] ??  $registrationSetup->field_value;
-        $registrationSetup->enable_random_allocation =$request['enable_random_allocation'] ??  $registrationSetup->enable_random_allocation;
-        $registrationSetup->geo_json = $request['geo_json'] ??  $registrationSetup->geo_json;
-        $registrationSetup->enable_map_view = $request['enable_map_view'] ??  $registrationSetup->enable_map_view;
+        $registrationSetup->intro_message =  $request['intro_message'] ?? '';
+        $registrationSetup->enable_teams = $request['enable_teams'] ??0;
+        $registrationSetup->min_members =  $request['min_members'] ?? 0;
+        $registrationSetup->max_members =$request['max_members'] ?? 0;
+        $registrationSetup->enable_referral =$request['enable_referral'] ??  0;
+        $registrationSetup->enable_coupon =$request['enable_coupon'] ??  0;
+        $registrationSetup->enable_delivery_address =$request['enable_delivery_address'] ?? 0;
+        $registrationSetup->reason_for_collecting_address =$request['reason'] ?? '';
+        $registrationSetup->enable_grouping =$request['enable_grouping'] ?? 0;
+        $registrationSetup->grouping_header =$request['grouping_header'] ??  '';
+        $registrationSetup->field_value =$request['field_value'] ??  '';
+        $registrationSetup->enable_random_allocation =$request['enable_random_allocation'] ??  0;
+        $registrationSetup->geo_json = $request['geo_json'] ??  '';
+        $registrationSetup->enable_map_view = $request['enable_map_view'] ??  0;
         $registrationSetup->save();
         return $registrationSetup;
     }
@@ -506,6 +506,8 @@ return $data;
 
     }
 
-
+    public function getEventDataThroughSlug($slug){
+        return Events::where('slug','LIKE','%'.$slug.'%')->with('images','dates','landingPage','rewards','eventMeta')->first();
+    }
 
 }

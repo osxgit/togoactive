@@ -637,11 +637,11 @@ class EventsController extends Controller
 
     public function submitLandingPageDetails(Request $request,$eventId){
         
-        Validator::make($request->all(), [
-                  'event_detail' =>  'required',
-                    'Short_faq' =>  'required',
-                    'sponsor_detail' =>  'sometimes|required_with:show_sponsor',
-                ])->validate();
+//         Validator::make($request->all(), [
+//                   'event_detail' =>  'required',
+//                     'Short_faq' =>  'required',
+//                     'sponsor_detail' =>  'sometimes|required_with:show_sponsor',
+//                 ])->validate();
         $data=$request->all();
         if(!is_null($data['sponsor_detail'])){
             // $data['sponsor_detail']= json_encode($data['sponsor_detail']);
