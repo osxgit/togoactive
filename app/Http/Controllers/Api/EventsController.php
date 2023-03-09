@@ -94,4 +94,9 @@ class EventsController extends Controller
 //             dd($request->all());
 
             }
+
+            public function getRegistrationPageDetail(Request $request){
+                $eventID= $request->eventId;
+
+            }
     }
