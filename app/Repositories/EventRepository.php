@@ -32,7 +32,7 @@ return $data;
               'description' => $request->description,
               'timezone' => $request->timezone,
               'email' => $request->email,
-              'email_active' => $request->email_active ?? 0,
+              'email_active' => $request->email_forward ?? 0,
               'accessibility' => $request->event_type,
               'visibility' => $request->event_type == 'public' ? $request->visibility : 0,
 
@@ -51,7 +51,7 @@ return $data;
              $event->description = $request->description;
              $event->timezone = $request->timezone;
              $event->email = $request->email;
-             $event->email_active = $request->email_active ?? 0;
+             $event->email_active = $request->email_forward ?? 0;
              $event->accessibility = $request->event_type;
              $event->visibility = $request->event_type == 'public' ? $request->visibility : 0;
 

@@ -31,7 +31,9 @@ Route::middleware('validateJsonRequest')->group(function () {
     Route::post('landingPageView', [EventsController::class, 'renderLandingPageApi'])->name('landingPage');
 
 });
+
 Route::post('getEventLandingPageDetail', [EventsController::class, 'getEventLandingPageDetail'])->name('getEventLandingPageDetail');
+Route::post('getRegistrationPageDetail', [EventsController::class, 'getRegistrationPageDetail'])->name('getRegistrationPageDetail');
 
 Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
 Route::get('landingPageViewApi1', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi1');
