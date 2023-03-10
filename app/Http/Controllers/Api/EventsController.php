@@ -96,8 +96,18 @@ class EventsController extends Controller
             public function getRegistrationPageDetail(Request $request){
                 $eventId= $request->eventId;
                 $registrationData = $this->eventRepository->getRegistrationSetup($eventId);
-                $rewards= $this->eventRepository->getRewards($eventId);
-                $this->setResponseData(array( 'data' => array('success' => true, 'registrationData'=>$registrationData,'rewards'=>$rewards) ));
+                // $rewards= $this->eventRepository->getRewards($eventId);
+                $coreRewards = $this->eventRepository->getCoreRewards($eventId);
+                $addonRewards = $this->eventRepository->getAddonRewards($eventId);
+                $multiQtyDisc= $this->eventRepository->getMultiQuantityDiscount($eventId);
+                if($coreRewards){
+                    $rewardInstruction = $this->eventRepository->getEventMeta($eventId, 'reward_instructions');
+                }
+                if($addonRewards){
+                    $addonInstruction = $this->eventRepository->getEventMeta($eventId, 'addon_instructions');
+                }
+                
+                $this->setResponseData(array( 'data' => array('success' => true, 'registrationData'=>$registrationData,'coreRewards'=>$coreRewards,'addonRewards'=>$addonRewards,'multiQtyDisc'=>$multiQtyDisc,'rewardInstruction'=>$rewardInstruction??null,'addonInstruction'=>$addonInstruction ?? null) ));
                 return $this->sendAPIResponse();
             }
     }
