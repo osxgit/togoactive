@@ -411,7 +411,7 @@
                                     <x-slot name="label_text"></x-slot>
                                     <x-slot name="label_description_status">hidden</x-slot>
                                     <x-slot name="label_description"></x-slot>
-                                    {{ $event->faq ? json_decode($event->faq->event_faq) : '' }}
+                                    {{ $event->faq ? $event->faq->event_faq : '' }}
                                 </x-forms.textarea>
                                 </div>
                         </x-slot>

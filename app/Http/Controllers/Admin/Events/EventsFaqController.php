@@ -55,7 +55,7 @@ class EventsFaqController extends Controller
             'faq.required' => 'FAQ is required.'
         ])->validate();
 
-        $data['faq'] = json_encode($request->get('faq'));
+        $data['faq'] = $request->get('faq');
         $data['event_id'] = $eventId;
         $event = Events::findOrFail($eventId);
 
