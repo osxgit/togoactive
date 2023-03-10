@@ -98,7 +98,7 @@ class RewardsController extends Controller
                     'sizing_images' => 'sometimes|required_with:enable_sizing',
         ],['images_1.required'=>'please add a reward image'])->validate();
 
-        dd($request->all());
+        // dd($request->all());
         $data=$request->all();
         $data['reward_image']=[];
         $alldata=$request->all();
