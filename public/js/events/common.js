@@ -21,6 +21,7 @@ $(document).ready(function(){
         if(vall == 0){
             $(this).val(1);
             $("#event_dates_upgrade_section").removeClass('hidden');
+            
             // $("#event_dates_upgrade_section").slideDown();
         } else{
             $(this).val(0);
@@ -28,7 +29,6 @@ $(document).ready(function(){
             // $("#event_dates_upgrade_section").slideUp();
         }
     })
-
 
 
 

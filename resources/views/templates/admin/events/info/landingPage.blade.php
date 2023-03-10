@@ -374,7 +374,7 @@
         <main role="main" class="w-full h-full flex-grow p-3 overflow-auto">
             <div class="float-left w-full max-w-screen-xl">
                 <x-admin.breadcrumb>
-                    <x-slot name="header">New Reward</x-slot>
+                    <x-slot name="header">Landing Page</x-slot>
                     <x-slot name="breadcrumb">
                         <a class="text-primary font-poppins-semibold text-sm" href="">Landing Page</a> >
                         <a class="text-nav-gray font-poppins text-sm" href="{{route('admin.events.info.essentials',$id)}}">{{$event->name ?? "Untitled"}}</a> >

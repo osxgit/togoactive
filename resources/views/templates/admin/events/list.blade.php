@@ -81,6 +81,7 @@
         }
         .dropdown-menu.show {
             transform: translate3d(760px, 95px, 0px) !important;
+            display:contents;
         }
     </style>
     @include('layouts.admin.events.subheader')
