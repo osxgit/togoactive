@@ -3,9 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Use App\Http\Controllers\Api\Client\ClientController;
-Use App\Http\Controllers\Api\UserController;
-Use App\Http\Controllers\Api\EventsController;
+use App\Http\Controllers\Api\Client\ClientController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\EventsController;
+use App\Http\Controllers\Api\EventsFaqTncController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,13 +27,15 @@ Use App\Http\Controllers\Api\EventsController;
 Route::middleware('validateJsonRequest')->group(function () {
 //    Route::post('create_client',[ClientController::class,'create'])->name('client.create');
     Route::post('test',[UserController::class,'test'])->name('user.test');
-    Route::post('create_user',[UserController::class,'create'])->name('user.create');
+    Route::post('create_user', [UserController::class,'create'])->name('user.create');
     Route::post('landingPageView', [EventsController::class, 'renderLandingPageApi'])->name('landingPage');
 
 });
-    Route::post('getEventLandingPageDetail', [EventsController::class, 'getEventLandingPageDetail'])->name('getEventLandingPageDetail');
+Route::post('getEventLandingPageDetail', [EventsController::class, 'getEventLandingPageDetail'])->name('getEventLandingPageDetail');
 
 Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
 Route::get('landingPageViewApi1', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi1');
+
+Route::post('faqAndTnc', [EventsFaqTncController::class, 'index'])->name('events.faqtnc.get');
 
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');

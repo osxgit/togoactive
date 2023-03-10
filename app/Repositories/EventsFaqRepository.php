@@ -2,6 +2,7 @@
 namespace App\Repositories;
 
 use App\Models\Events\EventsFaq;
+use App\Models\Events\Events;
 use App\Repositories\Interfaces\CrudRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +35,8 @@ class EventsFaqRepository implements CrudRepositoryInterface
 
     public function get(int $id): Model
     {
-        return EventsFaq::find($id);
+        $event = Events::findOrFail($id);
+        return $event->faq ? $event->faq : null;
     }
 
     public function update(int $id, array $data): bool
