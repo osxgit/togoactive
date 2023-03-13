@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('team_users', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('team_id');
+            $table->foreign('team_id')->references('id')->on('teams');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->tinyInteger('is_owner')->default(0)->index();
             $table->timestamps();
         });
     }
