@@ -19,10 +19,8 @@ return new class extends Migration
             $table->foreign('event_id')->references('id')->on('events');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
-            $table->text('strava_id')->nullable()->index();
-            $table->text('strava_access_token')->nullable();
-            $table->text('strava_refresh_token')->nullable();
-            $table->text('strava_token_expiry')->nullable();
+            $table->unsignedBigInteger('strava_account_id')->nullable();
+            $table->foreign('strava_account_id')->references('id')->on('strava_accounts');
             $table->string('gender')->index();
             $table->date('dob')->index();
             $table->string('referral_code')->nullable()->index();
