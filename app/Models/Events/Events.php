@@ -48,4 +48,9 @@ class Events extends Model
     {
         return $this->hasMany(EventsMeta::class,'event_id');
     }
+
+    public function faq()
+    {
+        return $this->hasOne(EventsFaq::class, 'event_id');
+    }
 }

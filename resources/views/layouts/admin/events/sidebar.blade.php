@@ -159,10 +159,36 @@
                 </a>
             </li>
 
-            <li class="lg:py-4 flex py-4  pl-8 font-arial text-lg {{($id != '-' ? 'hover:bg-active-nav' : '')}}">
-                <a class="truncate float-left w-full text-gray {{($id == '-' ? 'cursor-not-allowed' : 'hover:text-primary')}}" href="#" {{($id == '-' ? 'disabled' : '')}}>
-                    <span class="inline"><i class="fa fa-question fa-solid text-center w-5 mr-1 text-gray"></i>FAQ & Rules Manager</span>
+            <li class="lg:py-4 flex py-4 pl-8 pr-4 font-arial text-lg hover:bg-active-nav text-gray hover:text-primary {{$route_name == 'admin.events.rewards.add' ? 'bg-active-nav' : ''}}">
+                <a class="truncate float-left w-full" href="">
+                    <span class="inline">
+                        <i class="fa fa-question fa-solid text-center w-5 mr-1 text-gray"></i>
+                        FAQ & Rules Manager
+                    </span>
+                    <i class="fa fa-angle-down float-right text-right top-1.5 relative"></i>
                 </a>
+            </li>
+            <li>
+                <div class="float-left w-full py-4 pl-14 hover:bg-active-nav hover:text-primary {{$route_name == 'admin.events.faq.create' ? 'bg-active-nav text-primary' : 'text-gray'}}">
+                    <a class="truncate float-left w-full text-gray {{($id == '-' ? 'cursor-not-allowed' : 'hover:text-primary')}} {{request()->route()->getName() == 'admin.events.faq.create' ? 'text-primary' : 'text-gray'}}" href="{{route('admin.events.faq.create',array($id))}}" {{($id == '-' ? 'disabled' : '')}}>
+                        <span class="flex">
+                            <svg class="mr-2" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M11.922 1.41049C10.7693 0.334713 8.98067 0.334712 7.82805 1.41049L4.95692 4.0902C4.57464 4.44701 4.57464 5.05299 4.95692 5.4098V5.4098C5.30333 5.7331 5.84077 5.73348 6.18762 5.41065L6.54338 5.07954C7.4541 4.2319 8.9375 4.87774 8.9375 6.12189V12.5625C8.9375 13.0803 9.35723 13.5 9.875 13.5V13.5C10.3928 13.5 10.8125 13.0803 10.8125 12.5625V6.12189C10.8125 4.87774 12.2959 4.2319 13.2066 5.07954L13.5624 5.41065C13.9092 5.73348 14.4467 5.7331 14.7931 5.4098V5.4098C15.1754 5.05299 15.1754 4.44701 14.7931 4.0902L11.922 1.41049ZM0.5 12.625C0.5 12.1418 0.891751 11.75 1.375 11.75H6.1875C6.67075 11.75 7.0625 12.1418 7.0625 12.625V12.625C7.0625 13.1082 6.67075 13.5 6.1875 13.5H1.375C0.891751 13.5 0.5 13.1082 0.5 12.625V12.625ZM0.5 16.125C0.5 15.6418 0.891751 15.25 1.375 15.25H14.625C15.1082 15.25 15.5 15.6418 15.5 16.125V16.125C15.5 16.6082 15.1082 17 14.625 17H1.375C0.891751 17 0.5 16.6082 0.5 16.125V16.125ZM0.5 19.625C0.5 19.1418 0.891751 18.75 1.375 18.75H14.625C15.1082 18.75 15.5 19.1418 15.5 19.625V19.625C15.5 20.1082 15.1082 20.5 14.625 20.5H1.375C0.891751 20.5 0.5 20.1082 0.5 19.625V19.625Z" fill="{{$route_name == 'admin.events.faq.create' ? '#7E1FF6':'#979797'}}" />
+                            </svg>
+                            FAQ Manager
+                        </span>
+                    </a>
+                </div>
+                <div class="float-left w-full py-4 pl-14 hover:bg-active-nav hover:text-primary {{$route_name == 'admin.events.faq.createtnc' ? 'bg-active-nav text-primary' : 'text-gray'}}">
+                    <a class="truncate float-left w-full text-gray {{($id == '-' ? 'cursor-not-allowed' : 'hover:text-primary')}} {{request()->route()->getName() == 'admin.events.faq.createtnc' ? 'text-primary' : 'text-gray'}}" href="{{route('admin.events.faq.createtnc',array($id))}}" {{($id == '-' ? 'disabled' : '')}}>
+                        <span class="flex">
+                            <svg class="mr-2" width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0.5 3.5C0.5 1.84315 1.84315 0.5 3.5 0.5H15.5C17.1569 0.5 18.5 1.84315 18.5 3.5V18.5C18.5 20.1569 17.1569 21.5 15.5 21.5H3.5C1.84315 21.5 0.5 20.1569 0.5 18.5V3.5ZM17.375 3.5C17.375 2.67157 16.7034 2 15.875 2H3.125C2.29657 2 1.625 2.67157 1.625 3.5C1.625 4.32843 2.29657 5 3.125 5H15.875C16.7034 5 17.375 4.32843 17.375 3.5ZM1.625 17C1.625 18.6569 2.96815 20 4.625 20H14.375C16.0319 20 17.375 18.6569 17.375 17V9.5C17.375 7.84315 16.0319 6.5 14.375 6.5H4.625C2.96815 6.5 1.625 7.84315 1.625 9.5V17ZM4.4375 12.5C3.50552 12.5 2.75 11.7445 2.75 10.8125V9.6875C2.75 8.75552 3.50552 8 4.4375 8C5.36948 8 6.125 8.75552 6.125 9.6875V10.8125C6.125 11.7445 5.36948 12.5 4.4375 12.5ZM4.4375 9.5C4.12684 9.5 3.875 9.75184 3.875 10.0625V10.4375C3.875 10.7482 4.12684 11 4.4375 11C4.74816 11 5 10.7482 5 10.4375V10.0625C5 9.75184 4.74816 9.5 4.4375 9.5ZM4.4375 18.5C3.50552 18.5 2.75 17.7445 2.75 16.8125V15.6875C2.75 14.7555 3.50552 14 4.4375 14C5.36948 14 6.125 14.7555 6.125 15.6875V16.8125C6.125 17.7445 5.36948 18.5 4.4375 18.5ZM4.4375 15.5C4.12684 15.5 3.875 15.7518 3.875 16.0625V16.4375C3.875 16.7482 4.12684 17 4.4375 17C4.74816 17 5 16.7482 5 16.4375V16.0625C5 15.7518 4.74816 15.5 4.4375 15.5ZM9.125 11C8.71079 11 8.375 10.6642 8.375 10.25C8.375 9.83579 8.71079 9.5 9.125 9.5H14.375C14.7892 9.5 15.125 9.83579 15.125 10.25C15.125 10.6642 14.7892 11 14.375 11H9.125ZM9.125 17C8.71079 17 8.375 16.6642 8.375 16.25C8.375 15.8358 8.71079 15.5 9.125 15.5H14.375C14.7892 15.5 15.125 15.8358 15.125 16.25C15.125 16.6642 14.7892 17 14.375 17H9.125Z" fill="{{$route_name == 'admin.events.tnc.create' ? '#7E1FF6':'#979797'}}" />
+                            </svg>
+                            Rules Manager
+                        </span>
+                    </a>
+                </div>
             </li>
 
             <li class="lg:py-4 flex py-4  pl-8 font-arial text-lg {{($id != '-' ? 'hover:bg-active-nav' : '')}}">

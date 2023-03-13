@@ -1,27 +1,13 @@
 <x-app-layout>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js?apiKey=4rcnfqnlzfiuwfia3kjfez410ye1smutxh8kj2i126izgth4/tinymce"></script>
     <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-    <script src="https://unpkg.com/@yaireo/dragsort@1.3.1/dist/dragsort.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
-
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js" integrity="sha512-9pm50HHbDIEyz2RV/g2tn1ZbBdiTlgV7FwcQhIhvykX6qbQitydd6rF19iLmOqmJVUYq90VL2HiIUHjUMQA5fw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
-
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js?apiKey=4rcnfqnlzfiuwfia3kjfez410ye1smutxh8kj2i126izgth4/tinymce"></script>
-    <script src="//editor.unlayer.com/embed.js"></script>
     <style>
-        #div_Short_faq{
+        #div_rules{
+            border:none !important;
+        }
+        #div_tnc{
             border:none !important;
         }
         .btn {
@@ -374,12 +360,13 @@
         <main role="main" class="w-full h-full flex-grow p-3 overflow-auto">
             <div class="float-left w-full max-w-screen-xl">
                 <x-admin.breadcrumb>
-                    <x-slot name="header">Landing Page</x-slot>
+                    <x-slot name="header">Rules T&C Manager</x-slot>
                     <x-slot name="breadcrumb">
-                        <a class="text-primary font-poppins-semibold text-sm" href="">Landing Page</a> >
-                        <a class="text-nav-gray font-poppins text-sm" href="{{route('admin.events.info.essentials',$id)}}">{{$event->name ?? "Untitled"}}</a> >
-                        <span class="text-nav-gray font-poppins text-sm">{{$active_page}} ></span>
-                        <span class="text-nav-gray font-poppins text-sm">Web View </span> >
+                        <a class="text-primary font-poppins-semibold text-sm" href="">Events</a> >
+                        <a class="text-nav-gray font-poppins text-sm" href="{{route('admin.events.info.essentials',$id)}}">
+                            {{$event->name ?? "Untitled"}}
+                        </a> >
+                        <span class="text-nav-gray font-poppins text-sm">{{$active_page}}></span>
                     </x-slot>
                 </x-admin.breadcrumb>
 
@@ -403,133 +390,65 @@
                     </div>
                 @endif
 
-                <!-- <div class="flex w-full bg-white p-2">
-                    <a href="#" class="flex justify-center items-center py-3 no-underline" style="text-decoration: none;color:#7E1FF6 !important;width:48%; background:#EEE1FF; color:"><div ><i class="fa fa-window-maximize mr-2" aria-hidden="true"></i>Web view*</div></a>
-                    <div  class="flex justify-center items-center py-3" style="width:4%"> > </div>
-                    <a href="{{route('admin.events.landingPage.mobileSetup',array($id))}}" class="flex justify-center  items-center py-3 no-underline"  style="text-decoration: none;width:48%"><div ><i class="fa fa-mobile mr-2" aria-hidden="true"></i>Mobile view</div></a>
-
-                </div> -->
-
-
-
-
-                <form method="POST" id="create-event-landingPage-f_010" name="create-event-landingPage-f_010" action="{{route('admin.events.landingPage.store',array($id))}}" class="w-full float-left" autocomplete="false" enctype="multipart/form-data">
+                <form method="POST" id="create-event-tnc" name="create-event-tnc" action="{{route('admin.events.faq.storetnc', array($id))}}" class="w-full float-left" autocomplete="false" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="challengeId" id="challengeId" value="{{$id}}">
 
                     <x-forms.section class="mt-8 rounded-xl">
                         <x-slot name="section_heading">
-                            Event Details
-                        </x-slot>
-                        <x-slot name="section_button">
-
-                        </x-slot>
-                        <x-slot name="section_heading_description_status">hidden</x-slot>
-                        <x-slot name="section_heading_description_text"></x-slot>
-                        <x-slot name="section_content">
-                            <div class="float-left w-full">
-                                <x-forms.toggle id="show_countdown" name="show_countdown" value="{{ $landingPage != NULL ? $landingPage->show_countdown :0 }}">
-                                    <x-slot name="field_id">show_countdown</x-slot>
-                                    <x-slot name="label_text">Show countdown timer</x-slot>
-                                    <x-slot name="label_description">Enabling this will allow you to show countdown timer at the designated section in the landing page</x-slot>
-                                </x-forms.toggle>
-                            </div>
-                            <div class="float-left w-full">
-                                <x-forms.toggle id="show_sponsor" name="show_sponsor" value="{{ $landingPage!= NULL ? $landingPage->show_sponsor :0 }}">
-                                    <x-slot name="field_id">show_sponsor</x-slot>
-                                    <x-slot name="label_text">Enable Sponser & partner section</x-slot>
-                                    <x-slot name="label_description">Enabling this will allow you to show sponser partners on the landing page for a web view</x-slot>
-                                </x-forms.toggle>
-                            </div>
-
-                            <div id="sponsorDetailDiv" class="float-left w-full {{$landingPage== NULL || $landingPage->show_sponsor == 0? 'hidden':'' }}">
-                            <label for="sponsor_detail" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">Share details about the sponser*</label>
-
-                            <div id="sponsor-container" style=" width:100%;height:400px" ></div>
-                                <input type="hidden" name="sponsor_detail" id="sponsor_detail">
-                                <input type="hidden" name="sponsor_detail_unlayer" id="sponsor_detail_unlayer">
-                            <!-- <x-forms.textarea id="sponsor_detail" name="sponsor_detail" placeholder="" class="h-32 description ">
-                                    <x-slot name="field_id">sponsor_detail</x-slot>
-                                    <x-slot name="label_text">Share details about the sponser*</x-slot>
-                                    <x-slot name="label_description_status"></x-slot>
-                                    <x-slot name="label_description"></x-slot>
-                                    {{old('sponsor_detail',$landingPage != null && $landingPage->sponsor_detail? json_decode($landingPage->sponsor_detail) : '' )}}
-                                </x-forms.textarea> -->
-                                <x-forms.validationerror>
-                                    <x-slot name="field_id">sponsor_detail	</x-slot>
-                                    <x-slot name="error_text">sponsor_detail_error</x-slot>
-                                </x-forms.validationerror>
-
-                            </div>
-                            <div class="float-left w-full ">
-                            <label for="event_detail" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">Share info about the event*</label>
-                            <p class="float-left w-full text-gray text-sm mt-1 "> Create a distinct section to display on a web view</p>
-                            <div id="editor-container" style=" width:100%;height:700px"></div>
-                                <input type="hidden" name="event_detail" id="event_detail">
-                                <input type="hidden" name="event_detail_unlayer" id="event_detail_unlayer">
-                                <x-forms.validationerror>
-                                    <x-slot name="field_id">event_detail	</x-slot>
-                                    <x-slot name="error_text">event_detail_error</x-slot>
-                                </x-forms.validationerror>
-
-                            </div>
-                            <div class="float-left w-full mt-24">
-                                <x-forms.toggle id="show_rewards" name="show_rewards" value="{{ $landingPage!= NULL ? $landingPage->show_rewards :0 }}">
-                                    <x-slot name="field_id">show_rewards</x-slot>
-                                    <x-slot name="label_text">Show rewards sku</x-slot>
-                                    <x-slot name="label_description">Enabling this will allow you to show rewards featuring in the landing page</x-slot>
-                                </x-forms.toggle>
-                            </div>
-
-
-                        </x-slot>
-                    </x-forms.section>
-
-                    <x-forms.section class="mt-8 rounded-xl">
-                        <x-slot name="section_heading">
-                            Landing Page Short FAQ
+                            Event Specific Rules & Regulations*
                         </x-slot>
                         <x-slot name="section_button">
 
                         </x-slot>
                         <x-slot name="section_heading_description_status"></x-slot>
-                        <x-slot name="section_heading_description_text">Please type the most commonly asked question in this field
-<br>Use Q: to type the question
-<br>use A: to type the answer</x-slot>
+                        <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
-
-
-
-                                <div class="float-left w-full ">
-
-                                            <x-forms.textarea id="Short_faq" name="Short_faq" placeholder="" class="h-32 size ">
-                                                <x-slot name="field_id">Short_faq</x-slot>
-                                                <x-slot name="label_text">FAQ *</x-slot>
-                                                <x-slot name="label_description_status">hidden</x-slot>
-                                                <x-slot name="label_description"></x-slot>
-                                                {{old('Short_faq',$landingPage != null && $landingPage->Short_faq? json_decode($landingPage->Short_faq) : '' )}}
-                                            </x-forms.textarea>
+                            <div class="float-left w-full ">
+                                <x-forms.textarea id="rules" name="rules" placeholder="" class="h-32 size ">
+                                    <x-slot name="field_id">rules</x-slot>
+                                    <x-slot name="label_text"></x-slot>
+                                    <x-slot name="label_description_status">hidden</x-slot>
+                                    <x-slot name="label_description"></x-slot>
+                                    {{ $event->faq && $event->faq->event_rules ? $event->faq->event_rules : '' }}
+                                </x-forms.textarea>
                                 </div>
-
-
                         </x-slot>
                     </x-forms.section>
+                    <x-forms.section class="mt-8 rounded-xl">
+                        <x-slot name="section_heading">
+                            Terms and Conditions / Disclaimer*
+                        </x-slot>
+                        <x-slot name="section_button">
 
+                        </x-slot>
+                        <x-slot name="section_heading_description_status"></x-slot>
+                        <x-slot name="section_heading_description_text"></x-slot>
+                        <x-slot name="section_content">
+                            <div class="float-left w-full ">
+                                <x-forms.textarea id="tnc" name="tnc" placeholder="" class="h-32 size ">
+                                    <x-slot name="field_id">tnc</x-slot>
+                                    <x-slot name="label_text" class="hidden"></x-slot>
+                                    <x-slot name="label_description_status">hidden</x-slot>
+                                    <x-slot name="label_description"></x-slot>
+                                    {{ $event->faq && $event->faq->event_tnc ? $event->faq->event_tnc : '' }}
+                                </x-forms.textarea>
+                                </div>
+                        </x-slot>
+                    </x-forms.section>
             </div>
         </main>
     </div>
     <div class="float-left w-full text-right" style="position: sticky;
     bottom: 0;background: white;    padding: 20px;">
-        <x-forms.submit type="button" value="Save" name="event_landing_page_save" id="event_landing_page_save">
+        <x-forms.submit type="button" value="Save" name="event_tnc_save" id="event_tnc_save">
             Save
         </x-forms.submit>
     </div>
 
     </form>
 
-    <script>
-
-var isadd= '{{$isadd}}';
+<script>
 
 $(window).on('load', function () {
 
@@ -552,7 +471,7 @@ $(window).on('load', function () {
                     var answer =Swal.fire({
                         title: '',
                         icon: 'warning',
-                        html:isadd?'Are you sure you want to leave this page  without saving?':"You have unsaved changes on this page. If you leave now, your changes will not be saved.",
+                        html:"You have unsaved changes on this page. If you leave now, your changes will not be saved.",
                         showCloseButton: true,
                         showCancelButton: true,
                         focusConfirm: false,
@@ -575,262 +494,14 @@ $(window).on('load', function () {
             });
         });
 
-
-         sponsor = unlayer.createEditor({
-        id: 'sponsor-container',
-        projectId: 1234,
-        displayMode:'web',
-        customCSS:"/css/tailwind.css"
-        })
-
-         eventdetail = unlayer.createEditor({
-            id: 'editor-container',
-            displayMode: 'web',
-            projectId: "12345", // REPLACE
-            customCSS:"/css/tailwind.css"
-        })
-        sponsor.addEventListener('design:updated', function(data) {
-            formchanged=1;
-            console.log(formchanged);
+        $('#event_tnc_save').click(function(){
+            $('#create-event-tnc').submit();
         });
-        eventdetail.addEventListener('design:updated', function(data) {
-            formchanged=1;
-            console.log(formchanged);
-        });
-         design= <?php echo $landingPage->event_detail_unlayer??"''"?>;
 
-        if(design !=""){
-            eventdetail.loadDesign(design);
-        }
-         sponsor_design= <?php echo $landingPage->sponsor_detail_unlayer??"''"?>;
-
-        if(sponsor_design !=""){
-            sponsor.loadDesign(sponsor_design);
-        }
-
-
-        $('#event_landing_page_save').click(function(){
-            eventdetail.saveDesign(function(design) {
-                console.log('design', design);
-            });
-            sponsor.saveDesign(function(sponsor_design) {
-                console.log('design', sponsor_design);
-            });
-
-
-            sponsor.exportHtml(function(data) {
-                 soposorjson = data.design; // design json
-                 sponsorhtml = data.html; // final html
-                // console.log(JSON.stringify(json));
-                $('#sponsor_detail_unlayer').val(JSON.stringify(soposorjson));
-                $('#sponsor_detail').val(JSON.stringify(sponsorhtml));
-
-            })
-            eventdetail.exportHtml(function(data) {
-                 eventjson = data.design; // design json
-                 eventhtml = data.html; // final html
-                // console.log(JSON.stringify(json));
-
-                $('#event_detail_unlayer').val(JSON.stringify(eventjson));
-                $('#event_detail').val(JSON.stringify(eventhtml));
-                $('#create-event-landingPage-f_010').submit();
-            })
-            // console.log($('#sponsor_detail').val());
-
-
-            //  $('#create-event-landingPage-f_010').submit();
-
-        })
-
-        // tinymce.init({
-        //     selector: 'textarea#event_detail',
-        //     plugins: 'lists code emoticons table codesample image imagetools link textcolor',
-        //     table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
-
-        //     toolbar: 'undo redo | styleselect | bold italic |  fontsize |' +
-        //         'alignleft aligncenter alignright alignjustify | ' +
-        //         'outdent indent | numlist bullist | emoticons  | link image | custom_button | forecolor backcolor',
-        //     menubar: 'table insert',
-        //     table_sizing_mode: 'responsive' ,
-        //     automatic_uploads: true,
-        //     file_picker_types: 'image',
-        //     table_use_colgroups: true,
-        //     table_default_attributes: {
-        //         border: '0'
-        //     },
-        //     table_row_class_list: [
-        //         {title: 'None', value: ''},
-        //         {title: 'No Border', value: 'table_row_no_border'},
-        //         {title: 'Red border', value: 'table_row_red_border'},
-        //         {title: 'Blue border', value: 'table_row_blue_border'},
-        //         {title: 'Green border', value: 'table_row_green_border'}
-        //     ],
-        //     table_advtab: true,
-        //     table_cell_advtab: true,
-        //     table_row_advtab: true,
-        //     emoticons_append: {
-        //         custom_mind_explode: {
-        //             keywords: ['brain', 'mind', 'explode', 'blown'],
-        //             char: '🤯'
-        //         }
-        //     },
-        //     file_picker_callback: function (cb, value, meta) {
-        //         var input = document.createElement('input');
-        //         input.setAttribute('type', 'file');
-        //         input.setAttribute('accept', 'image/*');
-
-        //         /*
-        //           Note: In modern browsers input[type="file"] is functional without
-        //           even adding it to the DOM, but that might not be the case in some older
-        //           or quirky browsers like IE, so you might want to add it to the DOM
-        //           just in case, and visually hide it. And do not forget do remove it
-        //           once you do not need it anymore.
-        //         */
-
-        //         input.onchange = function () {
-        //             var file = this.files[0];
-
-        //             var reader = new FileReader();
-        //             reader.onload = function () {
-        //                 /*
-        //                   Note: Now we need to register the blob in TinyMCEs image blob
-        //                   registry. In the next release this part hopefully won't be
-        //                   necessary, as we are looking to handle it internally.
-        //                 */
-        //                 var id = 'blobid' + (new Date()).getTime();
-        //                 var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
-        //                 var base64 = reader.result.split(',')[1];
-        //                 var blobInfo = blobCache.create(id, file, base64);
-        //                 blobCache.add(blobInfo);
-
-        //                 /* call the callback and populate the Title field with the file name */
-        //                 cb(blobInfo.blobUri(), { title: file.name });
-        //             };
-        //             reader.readAsDataURL(file);
-        //         };
-
-        //         input.click();
-        //     },
-            // plugins: [
-            //     "advlist autolink lists link image charmap print preview anchor",
-            //     "searchreplace visualblocks code fullscreen",
-            //     "insertdatetime media table paste codesample emoticons"
-            // ],
-            // toolbar: 'undo redo | styleselect | bold italic | ' +
-            //     'alignleft aligncenter alignright alignjustify | ' +
-            //     'outdent indent | numlist bullist | emoticons | custom_button',
-            // emoticons_append: {
-            //     custom_mind_explode: {
-            //         keywords: ['brain', 'mind', 'explode', 'blown'],
-            //         char: '🤯'
-            //     }
-            // },
-        //     content_css: ["/css/custom_css_tinymce.css"],
-        //     font_formats:"Segoe UI=Segoe UI;",
-        //     fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px 50px 52px 54px 56px 58px 60px 62px 64px 66px 68px 70px 72px 74px 76px 78px 80px 82px 84px 86px 88px 90px 92px 94px 94px 96px",
-        //     codesample_languages: [
-        //         {text: 'HTML/XML', value: 'markup'},
-        //         {text: 'JavaScript', value: 'javascript'},
-        //         {text: 'CSS', value: 'css'},
-        //         {text: 'PHP', value: 'php'},
-        //         {text: 'Ruby', value: 'ruby'},
-        //         {text: 'Python', value: 'python'},
-        //         {text: 'Java', value: 'java'},
-        //         {text: 'C', value: 'c'},
-        //         {text: 'C#', value: 'csharp'},
-        //         {text: 'C++', value: 'cpp'}
-        //     ],
-        //     height: 600,
-        //     setup: function (editor) {
-        //         editor.ui.registry.addButton('custom_button', {
-        //             text: 'Add Button',
-        //             onAction: function() {
-        //                 // Open a Dialog
-        //                 editor.windowManager.open({
-        //                     title: 'Add custom button',
-        //                     body: {
-        //                         type: 'panel',
-        //                         items: [{
-        //                             type: 'input',
-        //                             name: 'button_label',
-        //                             label: 'Button label',
-        //                             flex: true
-        //                         },{
-        //                             type: 'input',
-        //                             name: 'button_href',
-        //                             label: 'Button href',
-        //                             flex: true
-        //                         },{
-        //                             type: 'selectbox',
-        //                             name: 'button_target',
-        //                             label: 'Target',
-        //                             items: [
-        //                                 {text: 'None', value: ''},
-        //                                 {text: 'New window', value: '_blank'},
-        //                                 {text: 'Self', value: '_self'},
-        //                                 {text: 'Parent', value: '_parent'}
-        //                             ],
-        //                             flex: true
-        //                         },{
-        //                             type: 'selectbox',
-        //                             name: 'button_rel',
-        //                             label: 'Rel',
-        //                             items: [
-        //                                 {text: 'No value', value: ''},
-        //                                 {text: 'Alternate', value: 'alternate'},
-        //                                 {text: 'Help', value: 'help'},
-        //                                 {text: 'Manifest', value: 'manifest'},
-        //                                 {text: 'No follow', value: 'nofollow'},
-        //                                 {text: 'No opener', value: 'noopener'},
-        //                                 {text: 'No referrer', value: 'noreferrer'},
-        //                                 {text: 'Opener', value: 'opener'}
-        //                             ],
-        //                             flex: true
-        //                         },{
-        //                             type: 'selectbox',
-        //                             name: 'button_style',
-        //                             label: 'Style',
-        //                             items: [
-        //                                 {text: 'Success', value: 'success'},
-        //                                 {text: 'Info', value: 'info'},
-        //                                 {text: 'Warning', value: 'warning'},
-        //                                 {text: 'Error', value: 'error'}
-        //                             ],
-        //                             flex: true
-        //                         }]
-        //                     },
-        //                     onSubmit: function (api) {
-
-        //                         var html = '<a href="'+api.getData().button_href+'" class="btn btn-'+api.getData().button_style+'" rel="'+api.getData().button_rel+'" target="'+api.getData().button_target+'">'+api.getData().button_label+'</a>';
-
-        //                         // insert markup
-        //                         editor.insertContent(html);
-
-        //                         // close the dialog
-        //                         api.close();
-        //                     },
-        //                     buttons: [
-        //                         {
-        //                             text: 'Close',
-        //                             type: 'cancel',
-        //                             onclick: 'close'
-        //                         },
-        //                         {
-        //                             text: 'Insert',
-        //                             type: 'submit',
-        //                             primary: true,
-        //                             enabled: true
-        //                         }
-        //                     ]
-        //                 });
-        //             }
-        //         });
-        //     }
-        // });
         tinymce.init({
-            selector: 'textarea#Short_faq',
+            selector: 'textarea#rules',
 
-            plugins: 'lists code emoticons table codesample image imagetools link textcolor',
+            plugins: 'lists code emoticons table codesample image link',
             table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
 
             toolbar: 'undo redo | styleselect | bold italic |  fontsize |' +
@@ -897,20 +568,183 @@ $(window).on('load', function () {
 
                 input.click();
             },
-            // plugins: [
-            //     "advlist autolink lists link image charmap print preview anchor",
-            //     "searchreplace visualblocks code fullscreen",
-            //     "insertdatetime media table paste codesample emoticons"
-            // ],
-            // toolbar: 'undo redo | styleselect | bold italic | ' +
-            //     'alignleft aligncenter alignright alignjustify | ' +
-            //     'outdent indent | numlist bullist | emoticons | custom_button',
-            // emoticons_append: {
-            //     custom_mind_explode: {
-            //         keywords: ['brain', 'mind', 'explode', 'blown'],
-            //         char: '🤯'
-            //     }
-            // },
+            content_css: ["/css/custom_css_tinymce.css"],
+            font_formats:"Segoe UI=Segoe UI;",
+            fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px 50px 52px 54px 56px 58px 60px 62px 64px 66px 68px 70px 72px 74px 76px 78px 80px 82px 84px 86px 88px 90px 92px 94px 94px 96px",
+            codesample_languages: [
+                {text: 'HTML/XML', value: 'markup'},
+                {text: 'JavaScript', value: 'javascript'},
+                {text: 'CSS', value: 'css'},
+                {text: 'PHP', value: 'php'},
+                {text: 'Ruby', value: 'ruby'},
+                {text: 'Python', value: 'python'},
+                {text: 'Java', value: 'java'},
+                {text: 'C', value: 'c'},
+                {text: 'C#', value: 'csharp'},
+                {text: 'C++', value: 'cpp'}
+            ],
+            height: 600,
+            setup: function (editor) {
+                editor.on('Paste Change input Undo Redo', function () {
+                    formchanged=1;
+                    console.log(formchanged);
+                });
+                editor.ui.registry.addButton('custom_button', {
+                    text: 'Add Button',
+                    onAction: function() {
+                        // Open a Dialog
+                        editor.windowManager.open({
+                            title: 'Add custom button',
+                            body: {
+                                type: 'panel',
+                                items: [{
+                                    type: 'input',
+                                    name: 'button_label',
+                                    label: 'Button label',
+                                    flex: true
+                                },{
+                                    type: 'input',
+                                    name: 'button_href',
+                                    label: 'Button href',
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_target',
+                                    label: 'Target',
+                                    items: [
+                                        {text: 'None', value: ''},
+                                        {text: 'New window', value: '_blank'},
+                                        {text: 'Self', value: '_self'},
+                                        {text: 'Parent', value: '_parent'}
+                                    ],
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_rel',
+                                    label: 'Rel',
+                                    items: [
+                                        {text: 'No value', value: ''},
+                                        {text: 'Alternate', value: 'alternate'},
+                                        {text: 'Help', value: 'help'},
+                                        {text: 'Manifest', value: 'manifest'},
+                                        {text: 'No follow', value: 'nofollow'},
+                                        {text: 'No opener', value: 'noopener'},
+                                        {text: 'No referrer', value: 'noreferrer'},
+                                        {text: 'Opener', value: 'opener'}
+                                    ],
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_style',
+                                    label: 'Style',
+                                    items: [
+                                        {text: 'Success', value: 'success'},
+                                        {text: 'Info', value: 'info'},
+                                        {text: 'Warning', value: 'warning'},
+                                        {text: 'Error', value: 'error'}
+                                    ],
+                                    flex: true
+                                }]
+                            },
+                            onSubmit: function (api) {
+
+                                var html = '<a href="'+api.getData().button_href+'" class="btn btn-'+api.getData().button_style+'" rel="'+api.getData().button_rel+'" target="'+api.getData().button_target+'">'+api.getData().button_label+'</a>';
+
+                                // insert markup
+                                editor.insertContent(html);
+
+                                // close the dialog
+                                api.close();
+                            },
+                            buttons: [
+                                {
+                                    text: 'Close',
+                                    type: 'cancel',
+                                    onclick: 'close'
+                                },
+                                {
+                                    text: 'Insert',
+                                    type: 'submit',
+                                    primary: true,
+                                    enabled: true
+                                }
+                            ]
+                        });
+                    }
+                });
+            }
+        });
+
+        tinymce.init({
+            selector: 'textarea#tnc',
+
+            plugins: 'lists code emoticons table codesample image link',
+            table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+
+            toolbar: 'undo redo | styleselect | bold italic |  fontsize |' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'outdent indent | numlist bullist | emoticons  | link image | custom_button | forecolor backcolor',
+            menubar: 'table insert',
+            table_sizing_mode: 'responsive' ,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            table_use_colgroups: true,
+            table_default_attributes: {
+                border: '0'
+            },
+            table_row_class_list: [
+                {title: 'None', value: ''},
+                {title: 'No Border', value: 'table_row_no_border'},
+                {title: 'Red border', value: 'table_row_red_border'},
+                {title: 'Blue border', value: 'table_row_blue_border'},
+                {title: 'Green border', value: 'table_row_green_border'}
+            ],
+            table_advtab: true,
+            table_cell_advtab: true,
+            table_row_advtab: true,
+            emoticons_append: {
+                custom_mind_explode: {
+                    keywords: ['brain', 'mind', 'explode', 'blown'],
+                    char: '🤯'
+                }
+            },
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                /*
+                  Note: In modern browsers input[type="file"] is functional without
+                  even adding it to the DOM, but that might not be the case in some older
+                  or quirky browsers like IE, so you might want to add it to the DOM
+                  just in case, and visually hide it. And do not forget do remove it
+                  once you do not need it anymore.
+                */
+
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        /*
+                          Note: Now we need to register the blob in TinyMCEs image blob
+                          registry. In the next release this part hopefully won't be
+                          necessary, as we are looking to handle it internally.
+                        */
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                        var base64 = reader.result.split(',')[1];
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        /* call the callback and populate the Title field with the file name */
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+
+                input.click();
+            },
             content_css: ["/css/custom_css_tinymce.css"],
             font_formats:"Segoe UI=Segoe UI;",
             fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px 50px 52px 54px 56px 58px 60px 62px 64px 66px 68px 70px 72px 74px 76px 78px 80px 82px 84px 86px 88px 90px 92px 94px 94px 96px",
