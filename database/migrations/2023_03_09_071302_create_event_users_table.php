@@ -32,8 +32,8 @@ return new class extends Migration
             $table->text('subdistrict,255')->nullable();
             $table->text('postal_code,255')->nullable();
             $table->string('country')->index();
-            $table->text('bib',255)->index();
-            $table->text('token',255)->index();
+            $table->string('bib',100)->index();
+            $table->string('token',100)->index();
             $table->text('remarks',255)->nullable();
             $table->tinyInteger('is_paid_user')->default(0)->index();
             $table->tinyInteger('has_upgraded')->default(0)->index();
