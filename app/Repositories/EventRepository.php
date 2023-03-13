@@ -12,7 +12,13 @@ use App\Models\Events\MultiQuantityDiscount;
 use App\Models\Events\RegistrationSetup;
 use App\Models\Events\Coupon;
 use App\Models\Events\LandingPage;
+use App\Models\Events\Team;
+use App\Models\Events\TeamUser;
+use App\Models\Events\Payment;
+use App\Models\Events\UserReward;
+use App\Models\Events\EventUser;
 
+use Carbon\Carbon;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 
 class EventRepository implements EventRepositoryInterface
@@ -509,5 +515,73 @@ return $data;
     public function getEventDataThroughSlug($slug){
         return Events::where('slug','LIKE','%'.$slug.'%')->with('images','dates','landingPage','rewards','eventMeta')->first();
     }
+
+    public function getEventIdThroughSlug($slug){
+        return Events::select('id')->where('slug','LIKE','%'.$slug.'%')->first();
+    }
+    
+    public function getAllTeams($eventId){
+        return Team::where('event_id',$eventId)->get();
+    }
+
+    public function createNewTeam($data){
+        $team =  Team::create([
+            'event_id' =>$data['eventId'],
+            'team_name' => $data['team_name'],
+        ]);
+
+        if($team  ){
+            $teamUser =  TeamUser::create([
+                'user_id' =>$data['userid'],
+                'team_id' => $team->id,
+                'is_owner'=>1
+            ]);
+
+        }
+
+        return $team;
+    }
+    
+    public function validateCouponCode($data){
+        $coupon = Coupon::where('event_id',$data['eventId'])->where('name','LIKE','%'.$data['couponCode'].'%')->first();
+        if($coupon){
+            $couponExpiryDate= $coupon->expiry_date;
+            $couponExpiryDate = Carbon::Parse($couponExpiryDate)->toDateTimeString();
+            $now = Carbon::now()->toDateTimeString();
+            if($couponExpiryDate >= $now){
+
+                if($coupon->max_use != -1){
+                    $couponUsed = Payment::where('event_id',$data['eventId'])->where('coupon_code','LIKE','%'.$data['couponCode'].'%')->where('status',1)->count();
+                    if($couponUsed >= $coupon->max_use){
+                        return (['success'=>false,'error'=>'Coupon Limit Reached']); 
+                    }
+                }
+                $membership= explode(",",$data['membership']);
+                $couponRewards = json_decode($coupon->rewards, true);
+                $validRewards = [];
+                foreach($membership as $memb){
+                    if(in_array($memb, $couponRewards)){
+                        array_push($validRewards, $memb);
+                    }
+                }
+                if(count($validRewards) >0){
+                    return (['success'=>true,'rewards'=>json_encode($validRewards),'coupon'=>$coupon]);
+                } else{
+                    return (['success'=>false,'error'=>'Coupon Not Applicable For Selected Items']);
+                }
+            } else{
+                return (['success'=>false,'error'=>'Coupon Expired']);
+            }
+        } else{
+            return (['success'=>false,'error'=>'Invalid Coupon']);
+        }
+    }
+    
+    public function validateReferralCode($data){
+        
+
+        
+    }
+
 
 }

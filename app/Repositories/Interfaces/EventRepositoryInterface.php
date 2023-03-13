@@ -90,8 +90,19 @@ interface EventRepositoryInterface
 
      public function getLandingPage($eventId);
 
-      public function storeLandingPage($eventId, $data);
+    public function storeLandingPage($eventId, $data);
 
-      public function getEventDataThroughSlug($slug);
+    public function getEventDataThroughSlug($slug);
+      
+    public function getEventIdThroughSlug($slug);
+
+    public function getAllTeams($eventId);
+
+    public function createNewTeam( $data);
+
+    public function validateCouponCode( $data);
+
+    public function validateReferralCode( $data);
+
 
 }

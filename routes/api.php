@@ -40,4 +40,10 @@ Route::get('landingPageViewApi1', [EventsController::class, 'renderLandingPageAp
 
 Route::post('faqAndTnc', [EventsFaqTncController::class, 'index'])->name('events.faqtnc.get');
 
+Route::post('validateCouponCode', [EventsController::class, 'validateCouponCode'])->name('validateCouponCode');
+Route::post('validateReferralCode', [EventsController::class, 'validateReferralCode'])->name('validateReferralCode');
+Route::post('getEventIdFromSlug', [EventsController::class, 'getEventIdFromSlug'])->name('getEventIdFromSlug');
+Route::post('getAllTeams', [EventsController::class, 'getAllTeams'])->name('getAllTeams');
+Route::post('createNewTeam', [EventsController::class, 'createNewTeam'])->name('createNewTeam');
+
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
