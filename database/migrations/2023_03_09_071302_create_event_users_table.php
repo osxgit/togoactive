@@ -13,6 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('event_users');
         Schema::create('event_users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('event_id');
@@ -25,15 +26,15 @@ return new class extends Migration
             $table->date('dob')->index();
             $table->string('referral_code')->nullable()->index();
             $table->integer('address_id')->index();
-            $table->text('address')->nullable();
-            $table->text('city')->nullable();
-            $table->text('state')->nullable();
-            $table->text('subdistrict')->nullable();
-            $table->text('postal_code')->nullable();
+            $table->text('address',255)->nullable();
+            $table->text('city',255)->nullable();
+            $table->text('state',255)->nullable();
+            $table->text('subdistrict,255')->nullable();
+            $table->text('postal_code,255')->nullable();
             $table->string('country')->index();
-            $table->text('bib')->index();
-            $table->text('token')->index();
-            $table->text('remarks')->nullable();
+            $table->text('bib',255)->index();
+            $table->text('token',255)->index();
+            $table->text('remarks',255)->nullable();
             $table->tinyInteger('is_paid_user')->default(0)->index();
             $table->tinyInteger('has_upgraded')->default(0)->index();
             $table->tinyInteger('is_finisher')->default(0)->index();
