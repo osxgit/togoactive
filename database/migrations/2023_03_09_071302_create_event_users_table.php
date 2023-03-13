@@ -26,7 +26,12 @@ return new class extends Migration
             $table->string('gender')->index();
             $table->date('dob')->index();
             $table->string('referral_code')->nullable()->index();
-            $table->integer('address_id');
+            $table->integer('address_id')->index();
+            $table->text('address')->nullable();
+            $table->text('city')->nullable();
+            $table->text('state')->nullable();
+            $table->text('subdistrict')->nullable();
+            $table->text('postal_code')->nullable();
             $table->string('country')->index();
             $table->text('bib')->index();
             $table->text('token')->index();
@@ -35,6 +40,7 @@ return new class extends Migration
             $table->tinyInteger('has_upgraded')->default(0)->index();
             $table->tinyInteger('is_finisher')->default(0)->index();
             $table->tinyInteger('is_elite_finisher')->default(0)->index();
+            $table->tinyInteger('is_autoPorted')->default(0)->index();
             $table->timestamps();
         });
     }
