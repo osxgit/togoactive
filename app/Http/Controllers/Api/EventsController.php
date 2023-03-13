@@ -110,4 +110,38 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'registrationData'=>$registrationData,'coreRewards'=>$coreRewards,'addonRewards'=>$addonRewards,'multiQtyDisc'=>$multiQtyDisc,'rewardInstruction'=>$rewardInstruction??null,'addonInstruction'=>$addonInstruction ?? null) ));
                 return $this->sendAPIResponse();
             }
+
+            public function getEventIdFromSlug(Request $request){
+
+                $eventId = $this->eventRepository->getEventIdThroughSlug($request->slug);
+                $this->setResponseData(array( 'data' => array('success' => true, 'event'=>$eventId) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function validateCouponCode(Request $request){
+                $couponResponse = $this->eventRepository->validateCouponCode($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$couponResponse) ));
+                return $this->sendAPIResponse();
+          
+
+            }
+
+            public function getAllTeams(Request $request){
+                $teams = $this->eventRepository->getAllTeams($request->eventId);
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$teams) ));
+                return $this->sendAPIResponse();
+
+            }
+
+            public function createNewTeam(Request $request){
+                $team = $this->eventRepository->createNewTeam($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$team) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function validateReferralCode(Request $request){
+                $referralCode = $this->eventRepository->validateReferralCode($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$referralCode) ));
+                return $this->sendAPIResponse();
+            }
     }
