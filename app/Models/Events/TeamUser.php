@@ -17,4 +17,9 @@ class TeamUser extends Model
         'is_owner'
     ];
 
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\User;
 use App\Models\Events\Events;
 use App\Models\Events\EventsMeta;
 use App\Models\Events\EventsDate;
@@ -521,25 +522,32 @@ return $data;
     }
     
     public function getAllTeams($eventId){
-        return Team::where('event_id',$eventId)->get();
+        return Team::where('event_id',$eventId)->with('teamUsers','teamUsers.user')->get();
     }
 
     public function createNewTeam($data){
-        $team =  Team::create([
-            'event_id' =>$data['eventId'],
-            'team_name' => $data['team_name'],
-        ]);
-
-        if($team  ){
-            $teamUser =  TeamUser::create([
-                'user_id' =>$data['userid'],
-                'team_id' => $team->id,
-                'is_owner'=>1
+        $teamExist=  Team::where('event_id',$data['eventId'])->where('team_name','LIKE','%'.$data['team_name'].'%')->first();
+        if($teamExist){
+            return (['success' =>false,'data'=>"Team name already taken, please enter another one!"]);
+        } else{
+            $team =  Team::create([
+                'event_id' =>$data['eventId'],
+                'team_name' => $data['team_name'],
             ]);
-
+    
+            if($team  ){
+                $user= User::select('id')->where('tgp_userid',$data['userId'])->first();
+                $teamUser =  TeamUser::create([
+                    'user_id' =>$user->id,
+                    'team_id' => $team->id,
+                    'is_owner'=>1
+                ]);
+    
+            }
+    
+            return (['success' =>true,'team'=>$team]);
         }
-
-        return $team;
+        
     }
     
     public function validateCouponCode($data){
