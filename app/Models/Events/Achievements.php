@@ -22,7 +22,7 @@ class Achievements extends Model
         'notification_type', 'notification_destination_url',
         'notification_hero_image', 'is_primary_cta_enabled',
         'primary_cta_button_text', 'primary_cta_link',
-        'is_secondary_cta_enabled', 'secondary_cta_burron_text',
+        'is_secondary_cta_enabled', 'secondary_cta_button_text',
         'secondary_cta_link', 'is_share_option_enabled',
         'enable_share_option_link', 'is_sponsor_content_enabled',
         'sponsor_content_image', 'sponsor_content_text', 'list_order'

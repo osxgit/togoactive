@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Repositories\AchievementsRepository;
 use App\Repositories\EventsFaqRepository;
 use App\Repositories\Interfaces\CrudRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -17,7 +18,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             CrudRepositoryInterface::class,
-            EventsFaqRepository::class
+            EventsFaqRepository::class,
+            AchievementsRepository::class
         );
     }
 
