@@ -53,4 +53,9 @@ class Events extends Model
     {
         return $this->hasOne(EventsFaq::class, 'event_id');
     }
+
+    public function achievements()
+    {
+        return $this->hasMany(Achievements::class, 'event_id');
+    }
 }
