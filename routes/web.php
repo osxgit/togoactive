@@ -1,5 +1,7 @@
 <?php
 
+use App\Controllers\Admin\Events\Achievements;
+use App\Controllers\Admin\Events\AchievementsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\Events\{
     EventsController,
@@ -103,6 +105,12 @@ Route::middleware('auth')->group(function () {
 
 
     Route::get('/admin/event/{id}/info/activities', [EventsController::class, 'renderActivitiesSection'])->name('admin.events.info.activities');
+
+    Route::get('/admin/event/{id}/achievements', [AchievementsController::class, 'index'])->name('admin.events.achievements.list');
+    Route::post('/admin/event/{id}/achievements', [AchievementsController::class, 'store'])->name('admin.events.achievements.store');
+    Route::get('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'get'])->name('admin.events.achievements.create');
+    Route::post('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'update'])->name('admin.events.achievements.update');
+    Route::delete('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'delete'])->name('admin.events.achievements.delete');
 });
     Route::get('/admin/event/{id}/unlayer', [EventsController::class, 'unlayer'])->name('admin.events.unlayer');
 
