@@ -595,7 +595,17 @@ return $data;
     }
     
     public function validateReferralCode($data){
-        
+        $user= User::select('id')->where('username','LIKE','%'.$data['referralCode'].'%')->first();
+        if($user){
+            $userExistInEvent = EventUser::where('event_id',$data['eventId'])->where('user_id',$user->id)->first();
+            if($userExistInEvent){
+                return (['success'=>false,'error'=>'Referral Code Applied']);
+            } else{
+                return (['success'=>false,'error'=>'Invalid Code']);
+            }
+
+        }
+        return (['success'=>false,'error'=>'Invalid Code']);
 
         
     }
