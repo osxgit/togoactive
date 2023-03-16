@@ -545,7 +545,17 @@ class EventsController extends Controller
         } else{
             $data['geo_json']='';
         }
-
+        if(isset($request->field_value)){
+            $fieldValue=[];
+    
+                                    foreach(json_decode($request->field_value) as $field_value){
+    
+                                        array_push($fieldValue,$field_value->value);
+                                    }
+                                $data['field_value']=json_encode($fieldValue);
+            } else{
+             $data['field_value']='';
+            }
         $registrationSetup = $this->eventRepository->getRegistrationSetup($eventId);
         if(  $registrationSetup){
             if($data['geo_json'] != ''){

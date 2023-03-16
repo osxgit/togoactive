@@ -535,15 +535,15 @@ return $data;
                 'team_name' => $data['team_name'],
             ]);
     
-            if($team  ){
-                $user= User::select('id')->where('tgp_userid',$data['userId'])->first();
-                $teamUser =  TeamUser::create([
-                    'user_id' =>$user->id,
-                    'team_id' => $team->id,
-                    'is_owner'=>1
-                ]);
+            // if($team  ){
+            //     $user= User::select('id')->where('tgp_userid',$data['userId'])->first();
+            //     $teamUser =  TeamUser::create([
+            //         'user_id' =>$user->id,
+            //         'team_id' => $team->id,
+            //         'is_owner'=>1
+            //     ]);
     
-            }
+            // }
     
             return (['success' =>true,'team'=>$team]);
         }
