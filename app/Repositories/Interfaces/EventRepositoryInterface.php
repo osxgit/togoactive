@@ -98,6 +98,8 @@ interface EventRepositoryInterface
 
     public function getAllTeams($eventId);
 
+    public function validateTeam($data);
+
     public function createNewTeam( $data);
 
     public function validateCouponCode( $data);

@@ -525,6 +525,15 @@ return $data;
         return Team::where('event_id',$eventId)->with('teamUsers','teamUsers.user')->get();
     }
 
+    public function validateTeam($data){
+        $teamExist=  Team::where('event_id',$data['eventId'])->where('team_name','LIKE','%'.$data['team_name'].'%')->first();
+        if($teamExist){
+            return (['success' =>false,'data'=>"Team name already taken, please enter another one!"]);
+        } else{
+            return (['success' =>true,'data'=>"Team name available"]);
+        }
+    }
+
     public function createNewTeam($data){
         $teamExist=  Team::where('event_id',$data['eventId'])->where('team_name','LIKE','%'.$data['team_name'].'%')->first();
         if($teamExist){
