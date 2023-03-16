@@ -133,6 +133,12 @@ class EventsController extends Controller
 
             }
 
+            public function validateTeam(Request $request){
+                $team = $this->eventRepository->validateTeam($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$team) ));
+                return $this->sendAPIResponse();
+            }
+
             public function createNewTeam(Request $request){
                 $team = $this->eventRepository->createNewTeam($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$team) ));

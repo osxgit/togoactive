@@ -45,5 +45,6 @@ Route::post('validateReferralCode', [EventsController::class, 'validateReferralC
 Route::post('getEventIdFromSlug', [EventsController::class, 'getEventIdFromSlug'])->name('getEventIdFromSlug');
 Route::post('getAllTeams', [EventsController::class, 'getAllTeams'])->name('getAllTeams');
 Route::post('createNewTeam', [EventsController::class, 'createNewTeam'])->name('createNewTeam');
+Route::post('validateTeam', [EventsController::class, 'validateTeam'])->name('validateTeam');
 
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
