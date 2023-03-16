@@ -5,6 +5,7 @@ namespace App\Repositories\Interfaces;
 use App\Models\Events\Events;
 use App\Models\Events\EventsMeta;
 use App\Models\Events\EventImage;
+use App\Models\Events\EventSuccessPage;
 interface EventRepositoryInterface
 {
     public function createEventEssential($request);
@@ -93,7 +94,7 @@ interface EventRepositoryInterface
     public function storeLandingPage($eventId, $data);
 
     public function getEventDataThroughSlug($slug);
-      
+
     public function getEventIdThroughSlug($slug);
 
     public function getAllTeams($eventId);
@@ -105,6 +106,10 @@ interface EventRepositoryInterface
     public function validateCouponCode( $data);
 
     public function validateReferralCode( $data);
+
+    public function createEventSuccessPage($request,$rewardId);
+
+    public function getEventSuccessPage($eventId);
 
 
 }

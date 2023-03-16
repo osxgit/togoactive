@@ -18,6 +18,7 @@ use App\Models\Events\TeamUser;
 use App\Models\Events\Payment;
 use App\Models\Events\UserReward;
 use App\Models\Events\EventUser;
+use App\Models\Events\EventSuccessPage;
 
 use Carbon\Carbon;
 use App\Repositories\Interfaces\EventRepositoryInterface;
@@ -520,7 +521,7 @@ return $data;
     public function getEventIdThroughSlug($slug){
         return Events::select('id')->where('slug','LIKE','%'.$slug.'%')->first();
     }
-    
+
     public function getAllTeams($eventId){
         return Team::where('event_id',$eventId)->with('teamUsers','teamUsers.user')->get();
     }
@@ -543,7 +544,7 @@ return $data;
                 'event_id' =>$data['eventId'],
                 'team_name' => $data['team_name'],
             ]);
-    
+
             // if($team  ){
             //     $user= User::select('id')->where('tgp_userid',$data['userId'])->first();
             //     $teamUser =  TeamUser::create([
@@ -551,14 +552,14 @@ return $data;
             //         'team_id' => $team->id,
             //         'is_owner'=>1
             //     ]);
-    
+
             // }
-    
+
             return (['success' =>true,'team'=>$team]);
         }
-        
+
     }
-    
+
     public function validateCouponCode($data){
         $coupon = Coupon::where('event_id',$data['eventId'])->where('name','LIKE','%'.$data['couponCode'].'%')->first();
         if($coupon){
@@ -570,7 +571,7 @@ return $data;
                 if($coupon->max_use != -1){
                     $couponUsed = Payment::where('event_id',$data['eventId'])->where('coupon_code','LIKE','%'.$data['couponCode'].'%')->where('status',1)->count();
                     if($couponUsed >= $coupon->max_use){
-                        return (['success'=>false,'error'=>'Coupon Limit Reached']); 
+                        return (['success'=>false,'error'=>'Coupon Limit Reached']);
                     }
                 }
                 $membership= explode(",",$data['membership']);
@@ -593,12 +594,25 @@ return $data;
             return (['success'=>false,'error'=>'Invalid Coupon']);
         }
     }
-    
-    public function validateReferralCode($data){
-        
 
-        
+    public function validateReferralCode($data){
+
+
+
     }
 
+    public function createEventSuccessPage($request,$rewardId){
+        $rewards= EventSuccessPage::Where('id',$rewardId)->first();
+        $rewards->restrict_to_country =  $request['restrict_to_country'] ?? $rewards->restrict_to_country;
+        $rewards->countries_allowed = isset($request['countries_allowed']) ? json_encode($request['countries_allowed'] ):$rewards->countries_allowed;
+        $rewards->price =  isset($request['price']) ? json_encode($request['price'] ):$rewards->price;
+        $rewards->save();
+        return $rewards;
+    }
+
+    public function getEventSuccessPage($eventId){
+        $success_page = EventSuccessPage::Where('event_id',$eventId)->first();
+        return $success_page;
+    }
 
 }
