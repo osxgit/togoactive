@@ -6,7 +6,7 @@
         {{$label_description}}
     </p>
     <div class="float-left w-full bg-white flex items-center rounded-sm border border-ultralightgray p-1 mt-2" id="div_{{$field_id}}">
-        <textarea  {{$attributes->merge(['class' => 'float-left w-full border-0 bg-white font-poppins text-sm text-placeholder placeholder-gray-200 px-2'])}}>{{$slot}}</textarea>
+        <textarea id="{{ $field_id }}" name="{{ $field_id }}"  {{$attributes->merge(['class' => 'float-left w-full border-0 bg-white font-poppins text-sm text-placeholder placeholder-gray-200 px-2'])}}>{{$slot}}</textarea>
         <span class="hidden" id="error_{{$field_id}}"><i class="fa fa-warning"></i></span>
     </div>
 </div>

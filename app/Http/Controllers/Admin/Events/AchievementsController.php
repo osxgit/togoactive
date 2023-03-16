@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Events;
 
 use App\Http\Controllers\Controller;
+use App\Models\Events\Events;
 use App\Repositories\AchievementsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -48,16 +49,30 @@ class AchievementsController extends Controller
 
     public function index(Request $request, $eventId)
     {
+        $event = Events::findOrFail($eventId);
         $achievements = $this->repository->list($eventId);
 
-        return view('templates.admin.events.achievements.list', ['achievements' => $achievements]);
+        return view('templates.admin.events.achievements.list', [
+            'route_name' => request()->route()->getName(),
+            'active_page' => 'Achievements Manager',
+            'id' => $eventId,
+            'event' => $event,
+            'achievements' => $achievements
+        ]);
     }
 
-    public function get(Request $request, $eventId, $achievementId)
+    public function get(Request $request, $eventId, $achievementId = null)
     {
-        $achievement = $this->repository->get($achievementId);
+        $event = Events::findOrFail($eventId);
+        $achievement = $achievementId !== null ? $this->repository->get($achievementId) : null;
 
-        return view('templates.admin.events.achievements.create', ['achievement' => $achievement]);
+        return view('templates.admin.events.achievements.create', [
+            'route_name' => request()->route()->getName(),
+            'active_page' => 'Achievement Manager',
+            'id' => $eventId,
+            'event' => $event ?? null,
+            'achievement' => $achievement
+        ]);
     }
 
     public function store(Request $request, $eventId)

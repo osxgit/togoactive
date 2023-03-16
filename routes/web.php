@@ -1,13 +1,12 @@
 <?php
 
-use App\Controllers\Admin\Events\Achievements;
-use App\Controllers\Admin\Events\AchievementsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\Events\{
     EventsController,
     SocialSeoController,
     RewardsController,
-    EventsFaqController
+    EventsFaqController,
+    AchievementsController
 };
 use App\Http\Controllers\Public\RegistrationController;
 // use App\Http\Controllers\Admin\Events\{
@@ -108,7 +107,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/event/{id}/achievements', [AchievementsController::class, 'index'])->name('admin.events.achievements.list');
     Route::post('/admin/event/{id}/achievements', [AchievementsController::class, 'store'])->name('admin.events.achievements.store');
-    Route::get('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'get'])->name('admin.events.achievements.create');
+    Route::get('/admin/event/{id}/achievements/edit/{achievementId}', [AchievementsController::class, 'get'])->name('admin.events.achievements.edit');
+    Route::get('/admin/event/{id}/achievements/create', [AchievementsController::class, 'get'])->name('admin.events.achievements.create');
     Route::post('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'update'])->name('admin.events.achievements.update');
     Route::delete('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'delete'])->name('admin.events.achievements.delete');
 });
