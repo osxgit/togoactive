@@ -616,7 +616,7 @@ return $data;
         $discount= MultiQuantityDiscount::Where('event_id',$data['eventId'])->get();
         $country=$data['country'];
         $membership= explode(",",$data['membership']);
-        $couponCode=$data['couponCode'];
+        $couponCode=isset($data['couponCode'])?$data['couponCode'] : '';
 
         $countryHelper = new CountryHelper();
         $countryCurrency= $countryHelper->country_currency();
