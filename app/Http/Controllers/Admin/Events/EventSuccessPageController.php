@@ -39,6 +39,7 @@ class EventSuccessPageController extends Controller
     }
 
     public function submitSuccessPageDetails(Request $request,$eventId){
+
         if($eventId == '-'){
             return  back()->with('error','Please add an event!');
         }
@@ -64,5 +65,14 @@ class EventSuccessPageController extends Controller
 
         return redirect()->route('admin.events.success',$eventId )->with('message','Changes saved successfully!');
 
+    }
+
+    /*
+    * This function will call when user click on send test email from event success page
+    */
+    public function sendSuccessEmail(Request $request){
+        if ($request->ajax()) {
+            // here we need to write logic for send email
+        }
     }
 }

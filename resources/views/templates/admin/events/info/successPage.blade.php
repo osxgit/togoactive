@@ -391,11 +391,29 @@
             $(".tag_insert").click(function(e){ // inserting tag into tinymce
                 e.preventDefault();
 
-                let tag_name = $(this).data('tag_name');
+                let tag_name_val = $(this).data('tag_name');
+                let email_placeholder = "{"+ tag_name_val + "}";
 
-                let string = "{{"+ tag_name + "}}";
-                tinymce.get('email_body').execCommand('mceInsertContent', true, string)
+                tinymce.get('email_body').execCommand('mceInsertContent', true, email_placeholder)
             });
+
+
+            $("#send_test_email").click(function(e){
+
+                let subject = $("#email_subject").val();
+                let email_body = tinyMCE.get('email_body').getContent();
+
+                $.ajax({
+                        type: "POST",
+                        dataType: "json",
+                        url: "{{route('admin.events.success.setSuccessEmail')}}",
+                        data: {'_token':  $('input[name="_token"]').val(),'subject':subject, email_body:email_body},
+                        success: function(data){
+                            console.log(data);
+                        }
+                    });
+
+            })
 
 
         });
