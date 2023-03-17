@@ -727,5 +727,20 @@ return $data;
         return  $responseData;
     }
 
+    public function getActiveRewards($eventId){
+        $rewards= Reward::Where('event_id',$eventId)->where('is_hidden',0)->get();
+        return $rewards;
+    }
+
+    public function getActiveCoreRewards($eventId){
+        $coreRewards= Reward::Where('event_id',$eventId)->where('is_hidden',0)->where('is_core_item',1)->get();
+        return $coreRewards->sortBy('sort_id');
+    }
+    
+    public function getActiveAddonRewards($eventId){
+        $addonRewards= Reward::Where('event_id',$eventId)->where('is_hidden',0)->where('is_core_item',0)->get();
+        return $addonRewards->sortBy('sort_id');
+    }
+
 
 }
