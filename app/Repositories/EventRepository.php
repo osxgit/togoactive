@@ -601,18 +601,36 @@ return $data;
 
     }
 
-    public function createEventSuccessPage($request,$rewardId){
-        $rewards= EventSuccessPage::Where('id',$rewardId)->first();
-        $rewards->restrict_to_country =  $request['restrict_to_country'] ?? $rewards->restrict_to_country;
-        $rewards->countries_allowed = isset($request['countries_allowed']) ? json_encode($request['countries_allowed'] ):$rewards->countries_allowed;
-        $rewards->price =  isset($request['price']) ? json_encode($request['price'] ):$rewards->price;
-        $rewards->save();
-        return $rewards;
+    public function createEventSuccessPage($request,$eventId){
+
+        $success_page = EventSuccessPage::create([
+            'event_id' => $eventId,
+            'no_purchase_made' => $request['no_purchase_made'] ?? $success_page->no_purchase_made,
+            'partial_purchase_made' => $request['partial_purchase_made'] ?? $success_page->partial_purchase_made,
+            'all_purchase_made' => $request['all_purchase_made'] ?? $success_page->all_purchase_made,
+            'active_custom_message' => $request['active_custom_message'] ?? 0,
+            'invite_friend' => $request['invite_friend'] ?? 0
+            ]);
+        return $success_page;
     }
 
     public function getEventSuccessSetup($eventId){
         $success_page = EventSuccessPage::Where('event_id',$eventId)->first();
         return $success_page;
+    }
+
+    public function updateEventSuccessSetup($request,$eventId){
+        $success_page = EventSuccessPage::Where('event_id',$eventId)->first();
+        if ($success_page) {
+            $success_page->event_id = $eventId;
+            $success_page->no_purchase_made =  $request['no_purchase_made'] ?? $success_page->no_purchase_made ;
+            $success_page->partial_purchase_made = $request['partial_purchase_made'] ?? $success_page->partial_purchase_made;
+            $success_page->all_purchase_made =  $request['all_purchase_made'] ?? $success_page->all_purchase_made;
+            $success_page->active_custom_message = $request['active_custom_message'] ??  0;
+            $success_page->invite_friend =  $request['invite_friend'] ?? $success_page->invite_friend;
+            $success_page->save();
+            return $success_page;
+        }
     }
 
 }

@@ -111,5 +111,7 @@ interface EventRepositoryInterface
 
     public function getEventSuccessSetup($eventId);
 
+    public function updateEventSuccessSetup($request,$rewardId);
+
 
 }

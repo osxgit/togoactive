@@ -20,7 +20,7 @@ return new class extends Migration
             $table->longText('no_purchase_made')->nullable();
             $table->longText('partial_purchase_made')->nullable();
             $table->longText('all_purchase_made')->nullable();
-            $table->enum('active_custom_message', ['Yes', 'No'])->default('No');
+            $table->tinyInteger('active_custom_message')->default(0);
             $table->longText('invite_friend')->nullable();
             $table->timestamps();
         });

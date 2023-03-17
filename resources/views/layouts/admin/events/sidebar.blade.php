@@ -101,6 +101,28 @@
                     </span>
                 </a>
             </li>
+            <li class="lg:py-4 flex py-4 pl-8 pr-4 font-arial text-lg hover:bg-active-nav text-gray hover:text-primary {{$route_name == 'admin.events.success' ? 'bg-active-nav' : ''}}">
+                <a class="truncate float-left w-full" href="">
+                    <span class="inline">
+                        <i class="fa fa-bookmark fa-solid text-center w-5 mr-1 text-gray"></i>
+                        Page setup*
+                    </span>
+                    <i class="fa fa-angle-down float-right text-right top-1.5 relative"></i>
+                </a>
+            </li>
+            <li>
+                <div class="float-left w-full py-4 pl-14 hover:bg-active-nav hover:text-primary {{$route_name == 'admin.events.success' ? 'bg-active-nav text-primary' : 'text-gray'}}">
+                    <a class="truncate float-left w-full" href="{{route('admin.events.success',array($id))}}">
+                        <span class="flex">
+                            <svg class="mr-2" width="20" height="19" viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.83984 5.35547L6.41406 1.3125C6.23828 0.996094 5.85156 0.75 5.46484 0.75H1.5625C1.10547 0.75 0.824219 1.27734 1.07031 1.66406L5.00781 7.25391C6.02734 6.26953 7.36328 5.60156 8.83984 5.35547ZM18.4023 0.75H14.5C14.1133 0.75 13.7617 0.960938 13.5508 1.3125L11.125 5.35547C12.6016 5.60156 13.9375 6.26953 14.957 7.25391L18.8945 1.66406C19.1406 1.27734 18.8594 0.75 18.4023 0.75ZM10 6.375C6.55469 6.375 3.8125 9.15234 3.8125 12.5625C3.8125 16.0078 6.55469 18.75 10 18.75C13.4102 18.75 16.1875 16.0078 16.1875 12.5625C16.1875 9.15234 13.4102 6.375 10 6.375ZM13.2344 11.9297L11.8984 13.2305L12.2148 15.0586C12.2852 15.375 11.9336 15.6211 11.6172 15.4805L10 14.6016L8.34766 15.4805C8.03125 15.6211 7.67969 15.375 7.75 15.0586L8.06641 13.2305L6.73047 11.9297C6.48438 11.6836 6.625 11.2969 6.94141 11.2266L8.80469 10.9805L9.61328 9.29297C9.68359 9.15234 9.82422 9.08203 9.96484 9.08203C10.1406 9.08203 10.2812 9.15234 10.3516 9.29297L11.1602 10.9805L13.0234 11.2266C13.3398 11.2969 13.4805 11.6836 13.2344 11.9297Z" fill="{{$route_name == 'admin.events.success' ? '#7E1FF6':'#979797'}}"/>
+                            </svg>
+                            Success page
+                        </span>
+                    </a>
+                </div>
+
+            </li>
             <li class="lg:py-4 flex py-4 pl-8 pr-4 font-arial text-lg hover:bg-active-nav text-gray hover:text-primary {{$route_name == 'admin.events.rewards.add' ? 'bg-active-nav' : ''}}">
                 <a class="truncate float-left w-full" href="">
                     <span class="inline">

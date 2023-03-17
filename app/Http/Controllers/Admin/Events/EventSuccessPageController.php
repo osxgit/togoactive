@@ -22,39 +22,44 @@ class EventSuccessPageController extends Controller
     }
 
     public function renderSuccessPage($eventId){
-        $eventSeo = $this->eventRepository->getEventSocialSeo($eventId);
+
         $eventSuccessPage = $this->eventRepository->getEventSuccessSetup($eventId);
-        dd($eventSuccessPage);
+
         if($eventId == '-'){
                 return redirect()->route('admin.events.info.essentials','-')->with('warining','Please add the event first');;
         }else {
                 $event = Events::findOrFail($eventId);
         }
-        $isadd = true;
-        return view('templates.admin.events.info.successPage',['id' => $eventId,'isadd' =>$isadd, 'route_name' => request()->route()->getName(), 'active_page' => 'Success Page','event'=> $event ?? null, 'eventsocials' => $eventSeo ?? null,'eventsuccess' => $eventSuccessPage ?? null]);
+        if($eventSuccessPage){
+            $isadd=false;
+        } else{
+            $isadd=true;
+        }
+        return view('templates.admin.events.info.successPage',['id' => $eventId,'isadd' =>$isadd, 'route_name' => request()->route()->getName(), 'active_page' => 'Success Page','event'=> $event ?? null,'eventsuccess' => $eventSuccessPage ?? null]);
     }
 
-    public function submitSuccessPage(Request $request,$eventId){
+    public function submitSuccessPageDetails(Request $request,$eventId){
         if($eventId == '-'){
             return  back()->with('error','Please add an event!');
         }
-
-        /* Validator::make($request->all(), [
+        Validator::make($request->all(), [
                     'no_purchase_made'=>'required',
                     'partial_purchase_made' => 'required',
                     'all_purchase_made' => 'required',
-                    'active_custom_message' => 'required',
                     'invite_friend' => 'required'
                    ])->validate();
 
-        // dd($request->all());
+        $eventSuccessPage = $this->eventRepository->getEventSuccessSetup($eventId);
+
         $data = $request->all();
 
-        $alldata = $request->all();
+        if( $eventSuccessPage){
+            $eventSuccessPage = $this->eventRepository->updateEventSuccessSetup($data,$eventId);
+        } else{
+            $eventSuccessPage = $this->eventRepository->createEventSuccessPage($data,$eventId);
+        }
 
-        $eventRewards = $this->eventRepository->createEventSuccessPage($data,$eventId);
-
-        return redirect()->route('admin.events.success.add',array($eventId, $eventRewards->id))->with('message','Changes saved successfully!'); */
+        return redirect()->route('admin.events.success',$eventId )->with('message','Changes saved successfully!');
 
     }
 }
