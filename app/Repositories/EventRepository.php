@@ -665,6 +665,7 @@ return $data;
                             if(in_array($rewardId, $couponRewards)){
                                 $CouponDiscApplyAmount +=$userPrice;
                                 array_push($validRewards, $rewardId);
+                                $discountAmount += ($coupon->discount/100)*$userPrice;
                             }
                         }
                         $responseData['membership'][$rewardId]['price']=$userPrice;
@@ -676,6 +677,7 @@ return $data;
                             if(in_array($rewardId, $couponRewards)){
                             array_push($validRewards, $rewardId);
                                 $CouponDiscApplyAmount +=$globalPrice;
+                                 $discountAmount += ($coupon->discount/100)*$globalPrice;
                             }
                         }
                         $responseData['membership'][$rewardId]['price']=$globalPrice;
@@ -688,7 +690,7 @@ return $data;
             }
             
             if( $coupon){
-                $discountAmount = ($coupon->discount/100)*$totalPrice;
+//                 $discountAmount = ($coupon->discount/100)*$totalPrice;
                 $discountpercentage=$coupon->discount;
             } else if(count($discount)){
                 $membershipCount= count($membership);
