@@ -315,14 +315,19 @@
                                         <x-slot name="field_id">email_body</x-slot>
                                         <x-slot name="label_text">Body</x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                        <x-slot name="label_description"></x-slot>
+                                        <x-slot name="label_description">The body message will be appearing above the order summary in your emails
+                                        </x-slot>
                                         {{ $eventsuccess->email_body ?? '' }}
                                     </x-forms.textarea>
+
+                                    <div class="sort_tags_for_email">
+                                       <a href="#" id="tag_user_name" class="tag_insert text-primary" data-tag_name="user_name"> Username</a>
+                                       <a href="#" id="tag_user_name" class="tag_insert text-primary" data-tag_name="first_name"> First name</a>
+                                       <a href="#" id="tag_user_name" class="tag_insert text-primary" data-tag_name="last_name"> Last name</a>
+                                    </div>
                                     <div>
-                                        <x-forms.validationerror>
-                                            <x-slot name="field_id">invite_friend</x-slot>
-                                            <x-slot name="error_text">invite_friend</x-slot>
-                                        </x-forms.validationerror>
+                                        <p>Click on the above tags to include them in the body message
+                                        </p>
                                     </div>
 
                                 </div>
@@ -382,6 +387,17 @@
                     $("#custom_messsage_div").addClass('hidden');
                 }
             })
+
+            $(".tag_insert").click(function(e){ // inserting tag into tinymce
+                e.preventDefault();
+
+                let tag_name = $(this).data('tag_name');
+
+                let string = "{{"+ tag_name + "}}";
+                tinymce.get('email_body').execCommand('mceInsertContent', true, string)
+            });
+
+
         });
         formchanged = 0;
 
