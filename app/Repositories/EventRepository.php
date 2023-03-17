@@ -610,7 +610,7 @@ return $data;
         return $rewards;
     }
 
-    public function getEventSuccessPage($eventId){
+    public function getEventSuccessSetup($eventId){
         $success_page = EventSuccessPage::Where('event_id',$eventId)->first();
         return $success_page;
     }

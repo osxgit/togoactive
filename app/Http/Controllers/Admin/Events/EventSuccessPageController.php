@@ -21,15 +21,17 @@ class EventSuccessPageController extends Controller
         $this->eventRepository = $eventRepository;
     }
 
-    public function addSuccessPage($eventId){
-
+    public function renderSuccessPage($eventId){
+        $eventSeo = $this->eventRepository->getEventSocialSeo($eventId);
+        $eventSuccessPage = $this->eventRepository->getEventSuccessSetup($eventId);
+        dd($eventSuccessPage);
         if($eventId == '-'){
                 return redirect()->route('admin.events.info.essentials','-')->with('warining','Please add the event first');;
         }else {
                 $event = Events::findOrFail($eventId);
         }
         $isadd = true;
-        return view('templates.admin.events.info.eventSuccess',['id' => $eventId,'isadd' =>$isadd, 'route_name' => request()->route()->getName(), 'active_page' => 'Basic details','event'=> $event ?? null, 'rewards' =>$rewards ?? null]);
+        return view('templates.admin.events.info.successPage',['id' => $eventId,'isadd' =>$isadd, 'route_name' => request()->route()->getName(), 'active_page' => 'Success Page','event'=> $event ?? null, 'eventsocials' => $eventSeo ?? null,'eventsuccess' => $eventSuccessPage ?? null]);
     }
 
     public function submitSuccessPage(Request $request,$eventId){

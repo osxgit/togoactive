@@ -109,7 +109,7 @@ interface EventRepositoryInterface
 
     public function createEventSuccessPage($request,$rewardId);
 
-    public function getEventSuccessPage($eventId);
+    public function getEventSuccessSetup($eventId);
 
 
 }

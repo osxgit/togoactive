@@ -103,11 +103,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/event/{id}/info/activities', [EventsController::class, 'renderActivitiesSection'])->name('admin.events.info.activities');
 
-    Route::get('/admin/event/{id}/success-page/add', [EventSuccessPageController::class, 'addSuccessPage'])->name('admin.events.success.add');
-    Route::post('/admin/event/{id}/success-page', [EventSuccessPageController::class, 'submitSuccessPage'])->name('admin.events.success.store');
-
-    Route::get('/admin/event/{id}/success-page/edit/{success_id}', [EventSuccessPageController::class, 'editSuccessPage'])->name('admin.events.success.edit');
-    Route::post('/admin/event/{id}/success-page/edit/{success_id}', [EventSuccessPageController::class, 'updateSuccessPage'])->name('admin.events.success.update');
+    Route::get('/admin/event/{id}/info/success_page', [EventSuccessPageController::class, 'renderSuccessPage'])->name('admin.events.success');
+    Route::post('/admin/event/{id}/info/success_page', [EventSuccessPageController::class, 'submitSuccessPageDetails'])->name('admin.events.success.store');
 });
     Route::get('/admin/event/{id}/unlayer', [EventsController::class, 'unlayer'])->name('admin.events.unlayer');
 
