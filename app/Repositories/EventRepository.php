@@ -638,10 +638,12 @@ return $data;
             }
 
         } 
+        $totalPrice=0;
+        $userCurrency='';
+        $discountAmount=0;
+        $amountAfterDiscount=0;
         if(count($membership) > 0){
-            $totalPrice=0;
-            $userCurrency='';
-            $discountAmount=0;
+           
             foreach($membership as $rewardId){
                 $reward= Reward::Where('event_id',$data['eventId'])->where('id',$rewardId)->first();
                 $rewardPrice= $reward->price != '' ?json_decode($reward->price) :null;
