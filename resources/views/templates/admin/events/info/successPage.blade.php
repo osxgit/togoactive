@@ -76,7 +76,7 @@
         .tox-tinymce{
                width:100%;
            }
-        .tinyEditor, #div_no_purchase_made, #div_partial_purchase_made, #div_all_purchase_made, #div_email_body{
+        .tinyEditor, #div_no_purchase_made, #div_partial_purchase_made, #div_all_purchase_made, #div_email_body, #div_custom_message{
             border: none !important;
         }
     </style>
@@ -230,6 +230,29 @@
                                 </x-forms.toggle>
                             </div>
 
+                            <div class="float-left w-full flex  justify-center items-end @if ($eventsuccess->active_custom_message!=1)
+                                hidden
+                            @endif " id="custom_messsage_div">
+
+                                <div class="float-left w-auto">
+
+                                    <x-forms.textarea id="custom_message" name="custom_message" placeholder=""
+                                        class="h-32 custom_message tinyEditor">
+                                        <x-slot name="field_id">custom_message</x-slot>
+                                        <x-slot name="label_text">Enable custom message section *</x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                        <x-slot name="label_description">This will allow you to show customized message for participants.</x-slot>
+                                        {{ $eventsuccess->custom_message ?? '' }}
+                                    </x-forms.textarea>
+                                    <div>
+                                        <x-forms.validationerror>
+                                            <x-slot name="field_id">invite_friend</x-slot>
+                                            <x-slot name="error_text">invite_friend</x-slot>
+                                        </x-forms.validationerror>
+                                    </div>
+
+                                </div>
+                            </div>
                             <div class="float-left w-full flex  justify-center items-end">
 
                                 <div class="float-left w-auto">
@@ -352,9 +375,11 @@
                 if(vall == 0){
                     $(this).val(1);
                     $("#active_custom_message").prop('checked', true);
+                    $("#custom_messsage_div").removeClass('hidden');
                 }else{
                     $(this).val(0);
                     $("#active_custom_message").prop('checked', false);
+                    $("#custom_messsage_div").addClass('hidden');
                 }
             })
         });

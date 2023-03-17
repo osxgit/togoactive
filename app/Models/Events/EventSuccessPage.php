@@ -19,6 +19,7 @@ class EventSuccessPage extends Model
         'active_custom_message',
         'invite_friend',
         'email_subject',
-        'email_body'
+        'email_body',
+        'custom_message'
     ];
 }

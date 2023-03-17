@@ -48,7 +48,8 @@ class EventSuccessPageController extends Controller
                     'all_purchase_made' => 'required',
                     'invite_friend' => 'required',
                     'email_subject' => 'required',
-                    'email_body' => 'required'
+                    'email_body' => 'required',
+                    'custom_message' => 'required_if:active_custom_message,=,1',
                    ])->validate();
 
         $eventSuccessPage = $this->eventRepository->getEventSuccessSetup($eventId);

@@ -612,6 +612,7 @@ return $data;
             'invite_friend' => $request['invite_friend'] ?? '',
             'email_subject' => $request['email_subject'] ?? '',
             'email_body' => $request['email_body'] ?? '',
+            'custom_message' => (isset($request['active_custom_message']) && $request['active_custom_message']==1)? $request['custom_message']:''
             ]);
         return $success_page;
     }
@@ -632,6 +633,8 @@ return $data;
             $success_page->invite_friend =  $request['invite_friend'] ?? $success_page->invite_friend;
             $success_page->email_subject =  $request['email_subject'] ?? $success_page->email_subject;
             $success_page->email_body =  $request['email_body'] ?? $success_page->email_body;
+            $success_page->custom_message = (isset($request['active_custom_message']) && $request['active_custom_message']==1)? $request['custom_message']: '';
+
             $success_page->save();
 
             return $success_page;
