@@ -267,14 +267,20 @@
                         <x-slot name="section_heading_description_status">hidden</x-slot>
                         <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
-                            <div class="float-left w-1/2">
-
-                                <x-forms.textfield id="email_subject" name="email_subject" placeholder="Thank you for registering for #goMAD22" value="{{$eventsuccess->email_subject ?? ''}}" maxlength="255">
-                                    <x-slot name="field_id">email_subject</x-slot>
-                                    <x-slot name="label_text">Subject*</x-slot>
-                                    <x-slot name="label_description_status"></x-slot>
-                                    <x-slot name="label_description"></x-slot>
-                                </x-forms.textfield>
+                            <div class="float-left w-full">
+                                <div class="float-left w-1/2">
+                                    <x-forms.textfield id="email_subject" name="email_subject" placeholder="Thank you for registering for #goMAD22" value="{{$eventsuccess->email_subject ?? ''}}" maxlength="255">
+                                        <x-slot name="field_id">email_subject</x-slot>
+                                        <x-slot name="label_text">Subject*</x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                        <x-slot name="label_description"></x-slot>
+                                    </x-forms.textfield>
+                                </div>
+                                <div class="float-left text-right w-1/2">
+                                    <button type='button' id="send_test_email" class='bg-primary inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'>
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>  Send Test Email
+                                    </button>
+                                </div>
                             </div>
 
                             <div class="float-left w-full flex items-end">
