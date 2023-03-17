@@ -2,39 +2,42 @@
 
     <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/additional-methods.min.js" integrity="sha512-6S5LYNn3ZJCIm0f9L6BCerqFlQ4f5MwNKq+EthDXabtaJvg3TuFLhpno9pcm+5Ynm6jdA9xfpQoMz2fcjVMk9g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js?apiKey=4rcnfqnlzfiuwfia3kjfez410ye1smutxh8kj2i126izgth4/tinymce"></script>
 
 
     <style>
-        label.error {
 
-            color: red;
-        }
-
-        .peer:checked~.peer-checked\:bg-purple-600 {
+         .peer:checked~.peer-checked\:bg-purple-600 {
             --tw-bg-opacity: 1;
             background-color: rgb(147 51 234 / var(--tw-bg-opacity)) !important;
         }
 
+        a{
+            color:inherit !important;
+        }
+        label.error{
+
+            color:red;
+        }
+
+        .tagify {
+            border:none !important;
+            height: 130px;
+        }
         .bg-primary {
             --tw-bg-opacity: 1;
             background-color: rgb(126 31 246 / var(--tw-bg-opacity)) !important;
         }
-
         .border-primary {
             --tw-border-opacity: 1;
-            border-color: rgb(126 31 246 / var(--tw-border-opacity)) !important;
+            border-color: rgb(126 31 246 / var(--tw-border-opacity))!important;
         }
-
         button.bg-primary:hover:hover {
-            background-color: rgb(255 255 255 / var(--tw-border-opacity)) !important;
+            background-color:  rgb(255 255 255 / var(--tw-border-opacity))!important;
         }
-
         .swal2-styled.swal2-confirm {
             border: 0;
             border-radius: 0.25em;
@@ -52,98 +55,20 @@
             color: #000;
             font-size: 1em;
         }
-
         .swal2-icon.swal2-warning {
             border-color: #9ca3af;
             color: #9ca3af;
         }
-
         .swal2-close:focus {
             outline: 0;
             box-shadow: none;
-        }
-
-        #div_intro_message {
-            border: none !important;
-        }
-
-        #grouping_div label.float-left.w-full.mt-4.text-lg.text-placeholder.font-poppins-bold {
-
-            color: #777777;
-            font-size: 16px;
-        }
-
-        #grouping_div span.ml-3.text-lg.text-placeholder.font-poppins-bold {
-
-            color: #777777;
-            font-size: 16px;
-        }
-
-
-
-
-        a {
-            color: inherit !important;
-        }
-
-        label.error {
-
-            color: red;
-        }
-
-        .bg-primary {
-            --tw-bg-opacity: 1;
-            background-color: rgb(126 31 246 / var(--tw-bg-opacity)) !important;
-        }
-
-        .border-primary {
-            --tw-border-opacity: 1;
-            border-color: rgb(126 31 246 / var(--tw-border-opacity)) !important;
-        }
-
-        button.bg-primary:hover:hover {
-            background-color: rgb(255 255 255 / var(--tw-border-opacity)) !important;
-        }
-
-        .swal2-styled.swal2-confirm {
-            border: 0;
-            border-radius: 0.25em;
-            background: initial;
-            background-color: #F53F14;
-            color: #fff;
-            font-size: 1em;
-        }
-
-        .swal2-styled.swal2-cancel {
-            border: 1px solid #D7DEDD;
-            border-radius: 0.25em;
-            background: initial;
-            background-color: #ffffff;
-            color: #000;
-            font-size: 1em;
-        }
-
-        .swal2-icon.swal2-warning {
-            border-color: #9ca3af;
-            color: #9ca3af;
-        }
-
-        .swal2-close:focus {
-            outline: 0;
-            box-shadow: none;
-        }
-
-        .tox-tinymce {
-            width: 100%;
-        }
-
-        .mce-notification-warning,
-        .tox-notifications-container {
+        }  .tox-tinymce{
+               width:100%;
+           }
+        .mce-notification-warning, .tox-notifications-container{
             display: none;
         }
-
-        .mce-statusbar,
-        .tox-statusbar {
+        .mce-statusbar, .tox-statusbar{
             display: none !important;
 
         }
@@ -295,18 +220,15 @@
                         <x-slot name="section_heading_description_status">hidden</x-slot>
                         <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
-
                             <div class="py-2  float-left">
-                                <x-forms.toggle id="active_custom_message" name="active_custom_message"
-                                    value="{{ $eventsuccess->active_custom_message ?? 0 }}">
+
+                                <x-forms.toggle id="active_custom_message" name="active_custom_message" value="{{ $eventsuccess->active_custom_message ?? 0 }}">
                                     <x-slot name="field_id">active_custom_message</x-slot>
                                     <x-slot name="label_text">Enable custom message section</x-slot>
                                     <x-slot name="label_description">This will allow you to show customized message for
                                         participants.</x-slot>
                                 </x-forms.toggle>
                             </div>
-
-
 
                             <div class="float-left w-full flex  justify-center items-end">
 
@@ -369,6 +291,21 @@
 
 
     <script>
+        $(document).ready(function(){
+            if($("#active_custom_message").val() == 1){
+                $("#active_custom_message").prop('checked', true);
+            }
+            $("#active_custom_message").on('change',function(){
+                let vall = $(this).val();
+                if(vall == 0){
+                    $(this).val(1);
+                    $("#active_custom_message").prop('checked', true);
+                }else{
+                    $(this).val(0);
+                    $("#active_custom_message").prop('checked', false);
+                }
+            })
+        });
         formchanged = 0;
 
         tinymce.init({
