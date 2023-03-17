@@ -22,6 +22,8 @@ return new class extends Migration
             $table->longText('all_purchase_made')->nullable();
             $table->tinyInteger('active_custom_message')->default(0);
             $table->longText('invite_friend')->nullable();
+            $table->string('email_subject',255)->nullable();
+            $table->longText('email_body')->nullable();
             $table->timestamps();
         });
     }

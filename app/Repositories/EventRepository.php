@@ -605,11 +605,13 @@ return $data;
 
         $success_page = EventSuccessPage::create([
             'event_id' => $eventId,
-            'no_purchase_made' => $request['no_purchase_made'] ?? $success_page->no_purchase_made,
-            'partial_purchase_made' => $request['partial_purchase_made'] ?? $success_page->partial_purchase_made,
-            'all_purchase_made' => $request['all_purchase_made'] ?? $success_page->all_purchase_made,
+            'no_purchase_made' => $request['no_purchase_made'] ?? '',
+            'partial_purchase_made' => $request['partial_purchase_made'] ?? '',
+            'all_purchase_made' => $request['all_purchase_made'] ?? '',
             'active_custom_message' => $request['active_custom_message'] ?? 0,
-            'invite_friend' => $request['invite_friend'] ?? 0
+            'invite_friend' => $request['invite_friend'] ?? '',
+            'email_subject' => $request['email_subject'] ?? '',
+            'email_body' => $request['email_body'] ?? '',
             ]);
         return $success_page;
     }
@@ -628,7 +630,10 @@ return $data;
             $success_page->all_purchase_made =  $request['all_purchase_made'] ?? $success_page->all_purchase_made;
             $success_page->active_custom_message = $request['active_custom_message'] ??  0;
             $success_page->invite_friend =  $request['invite_friend'] ?? $success_page->invite_friend;
+            $success_page->email_subject =  $request['email_subject'] ?? $success_page->email_subject;
+            $success_page->email_body =  $request['email_body'] ?? $success_page->email_body;
             $success_page->save();
+
             return $success_page;
         }
     }

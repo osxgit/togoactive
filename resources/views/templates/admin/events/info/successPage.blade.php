@@ -76,7 +76,7 @@
         .tox-tinymce{
                width:100%;
            }
-        .tinyEditor, #div_no_purchase_made, #div_partial_purchase_made, #div_all_purchase_made {
+        .tinyEditor, #div_no_purchase_made, #div_partial_purchase_made, #div_all_purchase_made, #div_email_body{
             border: none !important;
         }
     </style>
@@ -242,6 +242,52 @@
                                         <x-slot name="label_description">This section will be shown to participants for
                                             sharing their referral.</x-slot>
                                         {{ $eventsuccess->invite_friend ?? '' }}
+                                    </x-forms.textarea>
+                                    <div>
+                                        <x-forms.validationerror>
+                                            <x-slot name="field_id">invite_friend</x-slot>
+                                            <x-slot name="error_text">invite_friend</x-slot>
+                                        </x-forms.validationerror>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </x-slot>
+
+                    </x-forms.section>
+
+                    <x-forms.section class="mt-8 rounded-xl">
+                        <x-slot name="section_heading">
+                            Success email setup*
+
+                        </x-slot>
+                        <x-slot name="section_button">
+
+                        </x-slot>
+                        <x-slot name="section_heading_description_status">hidden</x-slot>
+                        <x-slot name="section_heading_description_text"></x-slot>
+                        <x-slot name="section_content">
+                            <div class="float-left w-1/2">
+
+                                <x-forms.textfield id="email_subject" name="email_subject" placeholder="Thank you for registering for #goMAD22" value="{{$eventsuccess->email_subject ?? ''}}" maxlength="255">
+                                    <x-slot name="field_id">email_subject</x-slot>
+                                    <x-slot name="label_text">Subject*</x-slot>
+                                    <x-slot name="label_description_status"></x-slot>
+                                    <x-slot name="label_description"></x-slot>
+                                </x-forms.textfield>
+                            </div>
+
+                            <div class="float-left w-full flex items-end">
+
+                                <div class="float-left w-auto">
+
+                                    <x-forms.textarea id="email_body" name="email_body" placeholder=""
+                                        class="h-32 invite_friend tinyEditor">
+                                        <x-slot name="field_id">email_body</x-slot>
+                                        <x-slot name="label_text">Body</x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                        <x-slot name="label_description"></x-slot>
+                                        {{ $eventsuccess->email_body ?? '' }}
                                     </x-forms.textarea>
                                     <div>
                                         <x-forms.validationerror>

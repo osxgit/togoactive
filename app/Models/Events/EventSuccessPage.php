@@ -17,6 +17,8 @@ class EventSuccessPage extends Model
         'partial_purchase_made',
         'all_purchase_made',
         'active_custom_message',
-        'invite_friend'
+        'invite_friend',
+        'email_subject',
+        'email_body'
     ];
 }
