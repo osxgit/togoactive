@@ -108,5 +108,9 @@ interface EventRepositoryInterface
 
     public function calculatePrice($data);
 
+    public function getActiveRewards($eventId);
 
+    public function getActiveCoreRewards($eventId);
+    
+    public function getActiveAddonRewards($eventId);
 }
