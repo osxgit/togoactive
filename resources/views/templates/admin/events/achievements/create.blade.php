@@ -415,19 +415,18 @@
                                     <x-forms.image_uploader>
                                         <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                         <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 150x150px)</x-slot>
-                                        <x-slot name="field_id">icon</x-slot>
+                                        <x-slot name="field_id">icon_uploader</x-slot>
                                         <x-slot name="uploaded_img"></x-slot>
-                                    </x-forms.image_uploader_edit>
+                                    </x-forms.image_uploader>
 
-                                    <x-forms.file_input>
-                                        <x-slot name="width">1080</x-slot>
-                                        <x-slot name="height">1080</x-slot>
+                                    <x-forms.file_input name="icon">
+                                        <x-slot name="width">150</x-slot>
+                                        <x-slot name="height">150</x-slot>
                                         <x-slot name="field_id">icon</x-slot>
                                     </x-forms.file_input>
-                                    </label>
                                 </div>
                                 <div id="title-label" class="w-full">
-                                    <x-forms.textfield>
+                                    <x-forms.textfield name="title">
                                         <x-slot name="field_id">title</x-slot>
                                         <x-slot name="label_text">Title*</x-slot>
                                         <x-slot name="label_description"></x-slot>
@@ -435,12 +434,297 @@
                                     </x-text-input>
                                 </div>
                                 <div id="achievement-description-label" class="w-full">
-                                    <x-forms.textarea>
+                                    <x-forms.textarea name="description">
                                         <x-slot name="field_id">achievement-description</x-slot>
                                         <x-slot name="label_text">Description*</x-slot>
                                         <x-slot name="label_description"></x-slot>
                                         <x-slot name="label_description_status"></x-slot>
                                     </x-text-input>
+                                </div>
+                            </div>
+                        </x-slot>
+                    </x-forms.section>
+                    <x-forms.section class="mt-8 rounded-xl">
+                        <x-slot name="section_heading">
+                            Category*
+                        </x-slot>
+                        <x-slot name="section_button"></x-slot>
+                        <x-slot name="section_heading_description_status"></x-slot>
+                        <x-slot name="section_heading_description_text"></x-slot>
+                        <x-slot name="section_content">
+                            <div class="float-left w-full ">
+                                <x-forms.select id="achievement_type" name="type[]" multiple>
+                                    <x-slot name="field_id">achievement_type</x-slot>
+                                    <x-slot name="label_text">Achievement type*</x-slot>
+                                    <x-slot name="label_description_status"></x-slot>
+                                    <x-slot name="label_description"></x-slot>
+                                    <x-slot name="options">
+                                        <option value="" >--Select Type--</option>
+                                        <option value="Individual">
+                                            Individual
+                                        </option>
+                                        <option value="Team'">
+                                            Team
+                                        </option>
+                                        <option value="Indoor">
+                                            Indoor
+                                        </option>
+                                        <option value="Outdoor">
+                                            Outdoor
+                                        </option>
+                                    </x-slot>
+                                </x-forms.select>
+                                <x-forms.select id="achievement_level" name="level">
+                                    <x-slot name="field_id">achievement_level</x-slot>
+                                    <x-slot name="label_text">Achievement level*</x-slot>
+                                    <x-slot name="label_description_status"></x-slot>
+                                    <x-slot name="label_description"></x-slot>
+                                    <x-slot name="options">
+                                        <option value="" >--Select Level--</option>
+                                        <option value="Easy">
+                                            Easy
+                                        </option>
+                                        <option value="Intermediate'">
+                                            Intermediate
+                                        </option>
+                                        <option value="Difficult">
+                                            Difficult
+                                        </option>
+                                        <option value="Insane">
+                                            Insane
+                                        </option>
+                                    </x-slot>
+                                </x-forms.select>
+                            </div>
+                        </x-slot>
+                    </x-forms.section>
+                    <x-forms.section class="mt-8 rounded-xl">
+                        <x-slot name="section_heading">
+                            "More Info" Modal Pop-up
+                        </x-slot>
+                        <x-slot name="section_button"></x-slot>
+                        <x-slot name="section_heading_description_status"></x-slot>
+                        <x-slot name="section_heading_description_text"></x-slot>
+                        <x-slot name="section_content">
+                            <div class="float-left w-full">
+                                <div class="float-left mt-4">
+                                    <x-forms.toggle id="more_info_toggle" name="is_more_info_enabled"  value="0" >
+                                        <x-slot name="field_id">more_info_toggle</x-slot>
+                                        <x-slot name="label_text">Enable More Info” Modal Pop-up  </x-slot>
+                                        <x-slot name="label_description">
+                                            By enabling this, you'll be able to display additional information about this achievement
+                                        </x-slot>
+                                    </x-forms.toggle>
+                                </div>
+                                <div class="float-left mt-4 hidden w-full">
+                                    <div class="w-1/2">
+                                        <h1 class="float-left w-full font-poppins-bold text-2xl">
+                                            <span>“More Info” Modal Pop-up</span>
+                                        </h1>
+                                        <label for="more_info_image_uploader" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
+                                            Image*
+                                            <span class="font-poppins">(1280 x 640 px)</span>
+                                        </label>
+                                        <x-forms.image_uploader>
+                                            <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x640px)</x-slot>
+                                            <x-slot name="field_id">more_info_image_uploader</x-slot>
+                                            <x-slot name="uploaded_img"></x-slot>
+                                        </x-forms.image_uploader>
+
+                                        <x-forms.file_input name="more_info_image">
+                                            <x-slot name="width">1280</x-slot>
+                                            <x-slot name="height">640</x-slot>
+                                            <x-slot name="field_id">more_info_image</x-slot>
+                                        </x-forms.file_input>
+                                    </div>
+                                    <div id="more-info-description-label" class="w-full">
+                                        <x-forms.textarea name="more_info_description">
+                                            <x-slot name="field_id">more_info_description</x-slot>
+                                            <x-slot name="label_text">Description*</x-slot>
+                                            <x-slot name="label_description"></x-slot>
+                                            <x-slot name="label_description_status"></x-slot>
+                                        </x-text-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </x-slot>
+                    </x-forms.section>
+                    <x-forms.section class="mt-8 rounded-xl">
+                        <x-slot name="section_heading">
+                            Communication - Email*
+                        </x-slot>
+                        <x-slot name="section_button">
+                            <button
+                                type="button"
+                                style="color: #7E1FF6 !important;border: 1px solid #7E1FF6;
+                                padding: 0px 5px; border-radius: 5px;
+                                font-weight: bold; font-size: 14px; float: right;  width: max-content;"
+                                onclick=""
+                            >
+                                Send test email
+                            </button>
+                        </x-slot>
+                        <x-slot name="section_heading_description_status"></x-slot>
+                        <x-slot name="section_heading_description_text">The following communication will be triggered when the achievement is unlocked</x-slot>
+                        <x-slot name="section_content">
+                            <div class="float-left w-full">
+                                <div id="email-subject-label" class="w-full">
+                                    <x-forms.textfield name="email_subject">
+                                        <x-slot name="field_id">email_subject</x-slot>
+                                        <x-slot name="label_text">Email Subject</x-slot>
+                                        <x-slot name="label_description"></x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                    </x-text-input>
+                                </div>
+                                <div id="email-text-label" class="w-full">
+                                    <x-forms.textarea name="email_text">
+                                        <x-slot name="field_id">email_text</x-slot>
+                                        <x-slot name="label_text">Body</x-slot>
+                                        <x-slot name="label_description"></x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                    </x-text-input>
+                                </div>
+                            </div>
+                        </x-slot>
+                    </x-forms.section>
+                    <x-forms.section class="mt-8 rounded-xl">
+                        <x-slot name="section_heading">
+                            Communication - Notification*
+                        </x-slot>
+                        <x-slot name="section_button">
+                            <button
+                                type="button"
+                                style="color: #7E1FF6 !important;border: 1px solid #7E1FF6;
+                                padding: 0px 5px; border-radius: 5px;
+                                font-weight: bold; font-size: 14px; float: right;  width: max-content;"
+                                onclick=""
+                            >
+                                Preview notification
+                            </button>
+                        </x-slot>
+                        <x-slot name="section_heading_description_status"></x-slot>
+                        <x-slot name="section_heading_description_text">The following communication will be triggered when the achievement is unlocked</x-slot>
+                        <x-slot name="section_content">
+                            <div class="float-left w-full">
+                                <div id="notification-title-label" class="w-full">
+                                    <x-forms.textfield name="notification_title">
+                                        <x-slot name="field_id">notification_title</x-slot>
+                                        <x-slot name="label_text">Notification Title</x-slot>
+                                        <x-slot name="label_description"></x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                    </x-text-input>
+                                </div>
+                                <div id="notification-description-label" class="w-full">
+                                    <x-forms.textarea name="notification_description">
+                                        <x-slot name="field_id">notification_description</x-slot>
+                                        <x-slot name="label_text">Text</x-slot>
+                                        <x-slot name="label_description"></x-slot>
+                                        <x-slot name="label_description_status"></x-slot>
+                                    </x-text-input>
+                                </div>
+                                <div id="notification-type-label" class="w-full">
+                                    <label for="notification-type-options" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
+                                        Select the type of notification*
+                                    </label>
+                                    <div id="notification-type-options">
+                                        <input type="radio" name="notification_type" id="notification_type_a" value="Type A" class="w-4 h-4 text-purple-700	 bg-gray-100 border-gray-300 focus:ring-0 focus:ring-offset-0 dark:bg-gray-700 dark:border-gray-600" />
+                                        <label for="notification_type_a" class="mt-4 text-placeholder font-poppins">
+                                            Type A
+                                        </label>
+                                        <input type="radio" name="notification_type" id="notification_type_b" value="Type B" class="w-4 h-4 ml-4 text-purple-700	 bg-gray-100 border-gray-300 focus:ring-0 focus:ring-offset-0 dark:bg-gray-700 dark:border-gray-600" />
+                                        <label for="notification_type_b" class="mt-4 text-placeholder font-poppins">
+                                            Type B
+                                        </label>
+                                    </div>
+                                </div>
+                                <div id="notification-type-a-label" class="float-left mt-4 hidden w-full">
+                                    <div id="destination-url-label" class="w-full">
+                                        <x-forms.textfield name="notification_destination_url">
+                                            <x-slot name="field_id">notification_destination_url</x-slot>
+                                            <x-slot name="label_text">Destination URL*</x-slot>
+                                            <x-slot name="label_description"></x-slot>
+                                            <x-slot name="label_description_status"></x-slot>
+                                        </x-text-input>
+                                    </div>
+                                </div>
+                                <div id="notification-type-b-label" class="float-left mt-4 hidden w-full">
+                                    <div class="w-1/2">
+                                        <h1 class="float-left w-full font-poppins-bold text-2xl">
+                                            <span>“More Info” Modal Pop-up</span>
+                                        </h1>
+                                        <label for="notification_type_b_image_uploader" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
+                                            Hero Image*
+                                            <span class="font-poppins">(1280 x 600 px)</span>
+                                        </label>
+                                        <x-forms.image_uploader>
+                                            <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x600px)</x-slot>
+                                            <x-slot name="field_id">notification_type_b_image_uploader</x-slot>
+                                            <x-slot name="uploaded_img"></x-slot>
+                                        </x-forms.image_uploader>
+
+                                        <x-forms.file_input name="notification_hero_image">
+                                            <x-slot name="width">1280</x-slot>
+                                            <x-slot name="height">600</x-slot>
+                                            <x-slot name="field_id">notification_hero_image</x-slot>
+                                        </x-forms.file_input>
+                                    </div>
+                                    <div id="enable-primary-cta-button-label" class="float-left mt-4">
+                                        <x-forms.toggle id="primary_cta_toggle" name="is_primary_cta_enabled"  value="0" >
+                                            <x-slot name="field_id">primary_cta_toggle</x-slot>
+                                            <x-slot name="label_text">Enable primary CTA button</x-slot>
+                                            <x-slot name="label_description"></x-slot>
+                                        </x-forms.toggle>
+                                    </div>
+                                    <div id="primary-cta-button-text-label" class="float-left mt-4 hidden w-full">
+                                        <div id="primary_cta_button_text" class="w-full">
+                                            <x-forms.textfield name="primary_cta_button_text">
+                                                <x-slot name="field_id">primary-cta-button-text</x-slot>
+                                                <x-slot name="label_text">CTA button text</x-slot>
+                                                <x-slot name="label_description"></x-slot>
+                                                <x-slot name="label_description_status"></x-slot>
+                                            </x-text-input>
+                                        </div>
+                                    </div>
+                                    <div id="primary-cta-link-label" class="float-left mt-4 hidden w-full">
+                                        <div id="primary_cta_link" class="w-full">
+                                            <x-forms.textfield name="primary_cta_link">
+                                                <x-slot name="field_id">primary_cta_link</x-slot>
+                                                <x-slot name="label_text">CTA button link</x-slot>
+                                                <x-slot name="label_description"></x-slot>
+                                                <x-slot name="label_description_status"></x-slot>
+                                            </x-text-input>
+                                        </div>
+                                    </div>
+                                    <div id="primary-cta-link-label" class="float-left mt-4 hidden w-full">
+                                        <div id="secondary_cta_button_enable" class="w-full">
+                                            <a href="#" id="enable_secondary_cta_button" class="font-poppins-bold">
+                                                <i class="fa-plus"></i>
+                                                <span>secondary CTA button</span>
+                                            </a>
+                                        </div>
+                                        <div id="primary-cta-button-text-label" class="float-left mt-4 w-full">
+                                            <div id="primary_cta_button_text" class="w-full">
+                                                <x-forms.textfield name="secondary_cta_button_text">
+                                                    <x-slot name="field_id">secondary-cta-button-text</x-slot>
+                                                    <x-slot name="label_text">CTA button text</x-slot>
+                                                    <x-slot name="label_description"></x-slot>
+                                                    <x-slot name="label_description_status"></x-slot>
+                                                </x-text-input>
+                                            </div>
+                                        </div>
+                                        <div id="primary-cta-link-label" class="float-left mt-4 w-full">
+                                            <div id="secondary_cta_link" class="w-full">
+                                                <x-forms.textfield name="secondary_cta_link">
+                                                    <x-slot name="field_id">secondary_cta_link</x-slot>
+                                                    <x-slot name="label_text">CTA button link</x-slot>
+                                                    <x-slot name="label_description"></x-slot>
+                                                    <x-slot name="label_description_status"></x-slot>
+                                                </x-text-input>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </x-slot>
@@ -459,7 +743,6 @@
 
     <script>
         $(window).on('load', function () {
-
             $form = $('form');
             origForm = $form.serialize();
             formchanged = 0;
