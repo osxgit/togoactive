@@ -714,17 +714,17 @@ return $data;
             }
         }
 
-    if($discountAmount >0){
-        $amountAfterDiscount=$totalPrice-$discountAmount;
-    }
-    $responseData['AmountAfterDiscount']=$amountAfterDiscount;
-    $responseData['TotalAmount']=$totalPrice;
-    $responseData['discountpercentage']=$discountpercentage;
-    $responseData['discountAmount']=$discountAmount;
-    $responseData['checkoutCurrency']=$checkoutCurrency;
-     $responseData['validRewards']=$validRewards;
+        if($discountAmount >0){
+            $amountAfterDiscount=$totalPrice-$discountAmount;
+        }
+        $responseData['AmountAfterDiscount']=$amountAfterDiscount;
+        $responseData['TotalAmount']=$totalPrice;
+        $responseData['discountpercentage']=$discountpercentage;
+        $responseData['discountAmount']=$discountAmount;
+        $responseData['checkoutCurrency']=$checkoutCurrency;
+        $responseData['validRewards']=$validRewards;
 
-    return  $responseData;
+        return  $responseData;
     }
 
 
