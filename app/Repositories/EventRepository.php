@@ -611,6 +611,7 @@ return $data;
     }
     
     public function calculatePrice($data){
+
         $responseData=[];
         $discount= MultiQuantityDiscount::Where('event_id',$data['eventId'])->get();
         $country=$data['country'];
@@ -621,31 +622,31 @@ return $data;
         $countryCurrency= $countryHelper->country_currency();
 
         foreach($countryCurrency as $country_currency){
-
             if($country_currency['country'] == $country){
                 $currency= $country_currency['currency_code'];
             }
         }
         $coupon=null;
         if( $couponCode !=''){
-
             $coupon = Coupon::where('event_id',$data['eventId'])->where('name','LIKE','%'.$couponCode.'%')->first();
-            
             if($coupon){
                 $couponRewards = json_decode($coupon->rewards, true);
-                $CouponDiscApplyAmount=0;
-               
-            }
 
-        } 
+            }
+        }
+        $CouponDiscApplyAmount=0;
         $totalPrice=0;
         $userCurrency='';
         $discountAmount=0;
         $amountAfterDiscount=0;
+        $checkoutCurrency='';
+        $discountpercentage=0;
+        $validRewards=[];
         if(count($membership) > 0){
            
             foreach($membership as $rewardId){
                 $reward= Reward::Where('event_id',$data['eventId'])->where('id',$rewardId)->first();
+
                 $rewardPrice= $reward->price != '' ?json_decode($reward->price) :null;
                 $userPrice=0;
                 if($rewardPrice){
@@ -658,31 +659,32 @@ return $data;
                             $userPrice=$price->price;
                             $userCurrency=$price->currency ;
                         }
-                        if($userPrice){
-                            if($coupon){
-                                if(in_array($rewardId, $couponRewards)){
-                                    $CouponDiscApplyAmount +=$userPrice;  
-                                }
-                            }
-                            $responseData['membership'][$rewardId]['price']=$userPrice;
-                            $totalPrice +=$userPrice;
-                            $checkoutCurrency=  $userCurrency;
-                        } else{
-                            if($coupon){
-                                if(in_array($rewardId, $couponRewards)){
-                                    $CouponDiscApplyAmount +=$globalPrice;    
-                                }
-                            }
-                            $responseData['membership'][$rewardId]['price']=$globalPrice;
-                            $totalPrice +=$globalPrice;
-                            $checkoutCurrency=  $globalCurrency;
-                        }
-                        
-
                     }
-                }
-                
+                    if($userPrice){
+                        if($coupon){
+                            if(in_array($rewardId, $couponRewards)){
+                                $CouponDiscApplyAmount +=$userPrice;
+                                array_push($validRewards, $rewardId);
+                            }
+                        }
+                        $responseData['membership'][$rewardId]['price']=$userPrice;
+                        $totalPrice +=$userPrice;
+                        $checkoutCurrency=  $userCurrency;
 
+                    } else{
+                        if($coupon){
+                            if(in_array($rewardId, $couponRewards)){
+                            array_push($validRewards, $rewardId);
+                                $CouponDiscApplyAmount +=$globalPrice;
+                            }
+                        }
+                        $responseData['membership'][$rewardId]['price']=$globalPrice;
+                        $totalPrice +=$globalPrice;
+                        $checkoutCurrency=  $globalCurrency;
+                    }
+
+
+                }
             }
             
             if( $coupon){
@@ -717,6 +719,8 @@ return $data;
     $responseData['discountpercentage']=$discountpercentage;
     $responseData['discountAmount']=$discountAmount;
     $responseData['checkoutCurrency']=$checkoutCurrency;
+     $responseData['validRewards']=$validRewards;
+
     return  $responseData;
     }
 
