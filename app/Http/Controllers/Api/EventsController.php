@@ -150,4 +150,10 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$referralCode) ));
                 return $this->sendAPIResponse();
             }
+
+            public function calculatePrice(Request $request){
+                $totalPrice = $this->eventRepository->calculatePrice($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$totalPrice) ));
+                return $this->sendAPIResponse();
+            }
     }

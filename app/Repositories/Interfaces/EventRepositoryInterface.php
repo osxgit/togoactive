@@ -106,5 +106,7 @@ interface EventRepositoryInterface
 
     public function validateReferralCode( $data);
 
+    public function calculatePrice($data);
+
 
 }
