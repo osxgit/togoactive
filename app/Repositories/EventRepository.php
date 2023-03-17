@@ -689,6 +689,7 @@ return $data;
             
             if( $coupon){
                 $discountAmount = ($coupon->discount/100)*$totalPrice;
+                $discountpercentage=$coupon->discount;
             } else if(count($discount)){
                 $membershipCount= count($membership);
                 
