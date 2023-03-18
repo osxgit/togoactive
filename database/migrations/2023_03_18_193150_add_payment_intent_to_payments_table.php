@@ -13,9 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('payments', function (Blueprint $table) {
-            $table->text('payment_intent',255)->after('payment_method');
-        });
+        if (!Schema::hasColumn('payments', 'payment_intent'))
+        {
+            Schema::table('payments', function (Blueprint $table) {
+                $table->text('payment_intent',255)->after('payment_method');
+            });
+
+        }
     }
 
     /**
@@ -26,7 +30,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('payments', function (Blueprint $table) {
-            
+            $table->dropColumn('payment_intent');
         });
     }
 };
