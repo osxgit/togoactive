@@ -50,5 +50,7 @@ Route::post('calculatePrice', [EventsController::class, 'calculatePrice'])->name
 Route::post('getExistingUserData', [UserController::class, 'getExistingUserData'])->name('getExistingUserData');
 Route::post('storeUserData', [UserController::class, 'storeUserData'])->name('storeUserData');
 Route::post('getCheckoutRewards', [EventsController::class, 'getCheckoutRewards'])->name('getCheckoutRewards');
+Route::post('processFreeRegistration', [EventsController::class, 'processFreeRegistration'])->name('processFreeRegistration');
+
 
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
