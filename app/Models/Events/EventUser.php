@@ -34,7 +34,7 @@ class EventUser extends Model
         'has_upgraded',
         'is_finisher',
         'is_elite_finisher',
-        'is_autoPorted',
+        'is_autoPorted', 
     ];
 
    
