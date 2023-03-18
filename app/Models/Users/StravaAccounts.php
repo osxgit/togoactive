@@ -9,7 +9,7 @@ class StravaAccounts extends Model
 {
     use HasFactory;
 
-    protected $table = 'strava_Accounts';
+    protected $table = 'strava_accounts';
 
     protected $fillable = [
         'strava_access_token',
