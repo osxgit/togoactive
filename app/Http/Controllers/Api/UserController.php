@@ -172,7 +172,7 @@ class UserController extends Controller
                     'email' => $request->email,
                     'dob'=> $request->dob,
                     'email' => $request->email,
-                    'strava_id ' => $request->strava_id ,
+                    'strava_id' => $request->strava_id??0,
                     'strava_error' => $request->strava_error,
                     'gender'=> $request->gender,
                     'ip' => $request->ip ,
