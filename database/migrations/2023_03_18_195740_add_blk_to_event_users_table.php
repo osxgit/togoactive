@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('event_users', function (Blueprint $table) {
-            $table->text('blk',255)->after('state')->nullable();
-        });
+        if (!Schema::hasColumn('payments', 'payment_intent'))
+        {
+            Schema::table('event_users', function (Blueprint $table) {
+                $table->text('blk',255)->after('state')->nullable();
+            });
+        }
     }
 
     /**
