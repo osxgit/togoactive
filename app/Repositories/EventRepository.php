@@ -814,7 +814,7 @@ return $data;
             'status'=>'successful',
         ]);
 
-        return (['event_user'=>$eventUser , 'payment'=>$payment]);
+        return(['event_user'=>$eventUser , 'payment'=>$payment]);
     }
 
 
