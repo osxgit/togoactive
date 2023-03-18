@@ -742,5 +742,11 @@ return $data;
         return $addonRewards->sortBy('sort_id');
     }
 
+    public function getCheckoutRewards($data){
+
+        $addonRewards= Reward::whereIn('id', $data)->get();
+        return $addonRewards;
+    }
+
 
 }

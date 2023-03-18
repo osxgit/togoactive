@@ -159,4 +159,11 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$totalPrice) ));
                 return $this->sendAPIResponse();
             }
+
+            public function getCheckoutRewards(Request $request){
+                $rewards = $this->eventRepository->getCheckoutRewards($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$rewards) ));
+                return $this->sendAPIResponse();
+
+            }
     }
