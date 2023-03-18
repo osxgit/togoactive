@@ -16,6 +16,7 @@ class Payment extends Model
         'user_id',
         'payment_type',
         'payment_method',
+        'payment_intent',
         'total_amount',
         'discount',
         'total_paid',

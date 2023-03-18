@@ -23,6 +23,7 @@ class EventUser extends Model
         'address',
         'city',
         'state',
+        'blk',
         'subdistrict',
         'postal_code',
         'country',
