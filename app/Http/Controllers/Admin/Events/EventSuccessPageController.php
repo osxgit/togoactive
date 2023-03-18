@@ -28,6 +28,7 @@ class EventSuccessPageController extends Controller
     public function renderSuccessPage($eventId){
 
         $eventSuccessPage = $this->eventRepository->getEventSuccessSetup($eventId);
+        $email = Auth::user()->email;
 
         if($eventId == '-'){
                 return redirect()->route('admin.events.info.essentials','-')->with('warining','Please add the event first');;
@@ -39,10 +40,11 @@ class EventSuccessPageController extends Controller
         } else{
             $isadd=true;
         }
-        return view('templates.admin.events.info.successPage',['id' => $eventId,'isadd' =>$isadd, 'route_name' => request()->route()->getName(), 'active_page' => 'Success Page','event'=> $event ?? null,'eventsuccess' => $eventSuccessPage ?? null]);
+        return view('templates.admin.events.info.successPage',['id' => $eventId,'isadd' =>$isadd, 'route_name' => request()->route()->getName(), 'active_page' => 'Success Page','event'=> $event ?? null,'eventsuccess' => $eventSuccessPage ?? null, 'user_email'=>$email]);
     }
 
     public function submitSuccessPageDetails(Request $request,$eventId){
+
 
         if($eventId == '-'){
             return  back()->with('error','Please add an event!');
@@ -105,15 +107,14 @@ class EventSuccessPageController extends Controller
             $response = Mail::to($email)->send(new SendEmail($mailData));
 
             if($response){
-                $message = "Test email has been successfully sent to ".$email;
 
-                Session::flash('message', $message);
-                return ['status' => true, 'message'=> $message];
+                $message = "Test email has been successfully sent to ".$email;
+                return response()->json(['status' => true, 'message'=> $message]);
             }else{
                 $message = "Failed to send test email";
-                Session::flash('warining', $message);
-                return ['status' => false, 'message'=> $message];
+                return response()->json(['status' => false, 'message'=> $message]);
             }
+            die();
 
         }
     }
