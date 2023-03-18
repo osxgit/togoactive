@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('event_users', function (Blueprint $table) {
-            $table->text('blk',255)->after('subdistrict')->nullable();
+            $table->text('blk',255)->after('state')->nullable();
         });
     }
 
