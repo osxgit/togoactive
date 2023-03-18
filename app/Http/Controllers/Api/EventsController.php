@@ -166,4 +166,10 @@ class EventsController extends Controller
                 return $this->sendAPIResponse();
 
             }
+
+            public function processFreeRegistration(Request $request){
+                $response = $this->eventRepository->processFreeRegistration($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
     }

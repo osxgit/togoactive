@@ -115,4 +115,6 @@ interface EventRepositoryInterface
     public function getActiveAddonRewards($eventId);
 
     public function getCheckoutRewards($data);
+
+    public function processFreeRegistration($data);
 }

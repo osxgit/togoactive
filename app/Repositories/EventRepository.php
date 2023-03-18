@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\User;
+use App\Models\Users\StravaAccounts;
 use App\Models\Events\Events;
 use App\Models\Events\EventsMeta;
 use App\Models\Events\EventsDate;
@@ -746,6 +747,74 @@ return $data;
 
         $addonRewards= Reward::whereIn('id', $data)->get();
         return $addonRewards;
+    }
+
+    public function processFreeRegistration($data){
+   
+        $user= User::where('tgp_userid',$data['userId'])->first();
+        $StravaAccounts= StravaAccounts::select('id')->where('userid',$user->id)->first();
+        ## Bib
+        $exists = true;
+        while($exists){
+            $bib = rand(0,99999);
+            $bib = str_pad($bib,5,'0',STR_PAD_LEFT);
+
+            $cuserBibE = EventUser::where('event_id',$data['eventId'])->where('bib', $bib)->get(); 
+            if($cuserBibE){
+                $exists = false;
+            }
+        }
+
+        $userbib = $bib;
+
+
+        ## Token
+        $exists = true;
+        while($exists){
+            $token = bin2hex(openssl_random_pseudo_bytes(8));
+            $cuserTokenE = EventUser::where('token', $token)->get(); 
+            if($cuserTokenE){
+                $exists = false;
+            }
+        }
+
+        $cutoken = $token;
+
+        $eventUser =  EventUser::create([
+            'event_id' =>$data['eventId'],
+            'user_id' => $user->id,
+            'is_paid_user'=>0,
+            'referral_code'=>$data['referral_code'],
+            'address_id'=>$data['address_id'],
+            'postal_code'=>$data['address']['postal_code'],
+            'country'=>$data['address']['country'],
+            'city'=>$data['address']['city'],
+            'state'=>$data['address']['state'],
+            'subdistrict'=>$data['address']['subdistrict'],
+            'address'=>$data['address']['address'],
+            'blk'=>$data['address']['blk'],
+            'strava_account_id'=>$StravaAccounts->id??0,
+            'gender'=>$user->gender,
+            'dob'=> $user->dob,
+            'bib'=>$userbib, 
+            'token'=>$cutoken
+        ]);
+
+        $payment =  Payment::create([
+            'event_id' =>$data['eventId'],
+            'user_id' => $user->id,
+            'payment_type'=>'registration',
+            'payment_method'=>'Free',
+            'payment_intent'=>'Free_'+$eventUser->id,
+            'total_amount'=>'0.00',
+            'discount'=>'0.00',
+            'total_paid'=>'0.00',
+            'currency'=>$data['currency'],
+            'coupon_code'=>'',
+            'status'=>'successful',
+        ]);
+
+        return (['event_user'=>$eventUser , 'payment'=>$payment]);
     }
 
 
