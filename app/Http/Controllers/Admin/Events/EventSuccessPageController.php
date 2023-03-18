@@ -11,6 +11,10 @@ use App\Repositories\Interfaces\EventRepositoryInterface;
 use Illuminate\Support\Facades\Validator;
 use App\Models\FilesUploadsLogs;
 use App\Helpers\CountryHelper;
+use Mail;
+use App\Mail\SendEmail;
+use Illuminate\Support\Facades\Auth;
+use Session;
 
 class EventSuccessPageController extends Controller
 {
@@ -72,7 +76,45 @@ class EventSuccessPageController extends Controller
     */
     public function sendSuccessEmail(Request $request){
         if ($request->ajax()) {
-            // here we need to write logic for send email
+
+            $user =  Auth::user();
+            $user_id = $user->id;
+            $user_name = $user->username;
+            $fullname = $user->fullname;
+            $email = $user->email;
+
+            $subject = '';
+            $email_body = '';
+            $replace_body = '';
+
+            if(!empty($request->subject)){
+                $subject = $request->subject;
+            }
+
+            if(!empty($request->email_body)){
+                $email_body = $request->email_body;
+                $replace_body = str_replace(['{user_name}','{full_name}'],[$user_name,$fullname],$email_body);
+            }
+
+            $mailData = [
+                'title' => $subject,
+                'subject' => $subject,
+                'body' => $replace_body
+            ];
+
+            $response = Mail::to($email)->send(new SendEmail($mailData));
+
+            if($response){
+                $message = "Test email has been successfully sent to ".$email;
+
+                Session::flash('message', $message);
+                return ['status' => true, 'message'=> $message];
+            }else{
+                $message = "Failed to send test email";
+                Session::flash('warining', $message);
+                return ['status' => false, 'message'=> $message];
+            }
+
         }
     }
 }

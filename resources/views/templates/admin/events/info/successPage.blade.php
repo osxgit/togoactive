@@ -107,6 +107,7 @@
                         <x-slot name="heading">{{ session()->get('warining') }}</x-slot>
                     </x-infoboxes.error>
                 @endif
+
                 @if ($errors->any())
                     <div class="alert alert-danger" style="color:red">
                         <ul>
@@ -322,8 +323,7 @@
 
                                     <div class="sort_tags_for_email">
                                        <a href="#" id="tag_user_name" class="tag_insert text-primary" data-tag_name="user_name"> Username</a>
-                                       <a href="#" id="tag_user_name" class="tag_insert text-primary" data-tag_name="first_name"> First name</a>
-                                       <a href="#" id="tag_user_name" class="tag_insert text-primary" data-tag_name="last_name"> Last name</a>
+                                       <a href="#" id="tag_user_name" class="tag_insert text-primary" data-tag_name="full_name"> Full name</a>
                                     </div>
                                     <div>
                                         <p>Click on the above tags to include them in the body message
@@ -397,25 +397,28 @@
                 tinymce.get('email_body').execCommand('mceInsertContent', true, email_placeholder)
             });
 
-
+            /*
+            * Sending test email to login user
+            */
             $("#send_test_email").click(function(e){
 
                 let subject = $("#email_subject").val();
                 let email_body = tinyMCE.get('email_body').getContent();
 
-                $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: "{{route('admin.events.success.setSuccessEmail')}}",
-                        data: {'_token':  $('input[name="_token"]').val(),'subject':subject, email_body:email_body},
-                        success: function(data){
-                            console.log(data);
-                        }
-                    });
-
+                if(subject!='' && email_body!=''){
+                    $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "{{route('admin.events.success.setSuccessEmail')}}",
+                            data: {'_token':  $('input[name="_token"]').val(),'subject':subject, email_body:email_body},
+                            success: function(data){
+                                window.location.reload()
+                            }
+                        });
+                }else{
+                    alert('Please fill email subject and body to send test email');
+                }
             })
-
-
         });
         formchanged = 0;
 
