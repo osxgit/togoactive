@@ -113,4 +113,6 @@ interface EventRepositoryInterface
     public function getActiveCoreRewards($eventId);
     
     public function getActiveAddonRewards($eventId);
+
+    public function getCheckoutRewards($data);
 }
