@@ -301,13 +301,6 @@
                                     </x-forms.textfield>
                                 </div>
                                 <div class="float-left text-right w-1/2">
-                                    <x-infoboxes.error class="mt-4 hidden" id="show_test_email_error">
-                                        <x-slot name="heading">Please fill email subject and body to send test email</x-slot>
-                                    </x-infoboxes.error>
-
-                                    <x-infoboxes.success class="mt-4 hidden" id="show_test_email_success">
-                                        <x-slot name="heading">Test email has been successfully sent to {{ $user_email }}</x-slot>
-                                    </x-infoboxes.success>
                                     <button type='button' id="send_test_email" class='bg-primary inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150'>
                                         <i class="fa fa-envelope" aria-hidden="true"></i>  Send Test Email
                                     </button>
@@ -379,6 +372,9 @@
 
     <script>
         $(document).ready(function(){
+
+            toastr.options.timeOut = 10000;
+
             if($("#active_custom_message").val() == 1){
                 $("#active_custom_message").prop('checked', true);
             }
@@ -411,7 +407,6 @@
 
                 let subject = $("#email_subject").val();
                 let email_body = tinyMCE.get('email_body').getContent();
-                $("#show_test_email_success").addClass('hidden');
 
                 if(subject!='' && email_body!=''){
                     $("#show_test_email_error").addClass('hidden');
@@ -421,27 +416,16 @@
                             url: "{{route('admin.events.success.setSuccessEmail')}}",
                             data: {'_token':  $('input[name="_token"]').val(),'subject':subject, email_body:email_body},
                             success: function(data){
-                                //window.location.reload()
+
                                 if(data.status==true){
-                                    $("#show_test_email_success").removeClass('hidden');
-                                    $("#show_test_email_error").addClass('hidden');
-
-                                    setTimeout(() => { // after 10 secods hide success message
-                                        $("#show_test_email_success").addClass('hidden');
-                                    }, 10000);
+                                    toastr.success(data.message);
                                 }else{
-                                    $("#show_test_email_success").addClass('hidden');
-                                    $("#show_test_email_error").removeClass('hidden');
-
-                                    setTimeout(() => { // after 10 secods hide error message
-                                        $("#show_test_email_error").addClass('hidden');
-                                    }, 10000);
+                                    toastr.error(data.message);
                                 }
                             },
                         });
-                }else{
-
-                    $("#show_test_email_error").removeClass('hidden');
+                }else {
+                    toastr.error('Please fill email subject and body to send test email');
                 }
             })
         });
