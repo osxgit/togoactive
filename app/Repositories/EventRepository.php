@@ -782,27 +782,27 @@ return $data;
                 }
         
                 $cutoken = $token;
-        
+
                 $eventUser =  EventUser::create([
                     'event_id' =>$data['eventId'],
                     'user_id' => $user->id,
                     'is_paid_user'=>0,
                     'referral_code'=>$data['referral_code']??null,
-                    'address_id'=>$data['address_id'],
-                    'postal_code'=>$data['address']->postal_code,
-                    'country'=>$data['address']->country,
-                    'city'=>$data['address']->city,
-                    'state'=>$data['address']->state,
-                    'subdistrict'=>$data['address']->subdistrict,
-                    'address'=>$data['address']->address,
-                    'blk'=>$data['address']->blk,
+                    'address_id'=>$data['address_id']??0,
+//                     'postal_code'=>$data['address']['postal_code']??'',
+                    'country'=>$data['country']??'',
+//                     'city'=>$data['address']['city']??'',
+//                     'state'=>$data['address']['state']??'',
+//                     'subdistrict'=>$data['address']['subdistrict']??'',
+//                     'address'=>$data['address']['address']??'',
+//                     'blk'=>$data['address']['blk']??'',
                     'strava_account_id'=>$StravaAccounts->id??0,
                     'gender'=>$user->gender,
                     'dob'=> $user->dob,
                     'bib'=>$userbib, 
                     'token'=>$cutoken
                 ]);
-        
+ 
                 $payment =  Payment::create([
                     'event_id' =>$data['eventId'],
                     'user_id' => $user->id,
