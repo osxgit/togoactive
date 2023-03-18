@@ -47,6 +47,7 @@ Route::post('getAllTeams', [EventsController::class, 'getAllTeams'])->name('getA
 Route::post('createNewTeam', [EventsController::class, 'createNewTeam'])->name('createNewTeam');
 Route::post('validateTeam', [EventsController::class, 'validateTeam'])->name('validateTeam');
 Route::post('calculatePrice', [EventsController::class, 'calculatePrice'])->name('calculatePrice');
-
+Route::post('getExistingUserData', [UserController::class, 'getExistingUserData'])->name('getExistingUserData');
+Route::post('storeUserData', [UserController::class, 'storeUserData'])->name('storeUserData');
 
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
