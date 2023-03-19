@@ -52,7 +52,7 @@ Route::post('storeUserData', [UserController::class, 'storeUserData'])->name('st
 Route::post('getCheckoutRewards', [EventsController::class, 'getCheckoutRewards'])->name('getCheckoutRewards');
 Route::post('processFreeRegistration', [EventsController::class, 'processFreeRegistration'])->name('processFreeRegistration');
 Route::post('processPaidRegistration', [EventsController::class, 'processPaidRegistration'])->name('processPaidRegistration');
-
+Route::post('updatePayment', [EventsController::class, 'updatePayment'])->name('updatePayment');
 
 Route::post('getEventUserData', [EventsController::class, 'getEventUserData'])->name('getEventUserData');
 

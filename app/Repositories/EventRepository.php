@@ -913,19 +913,20 @@ return $data;
         
                 $cutoken = $token;
 
+
                 $eventUser =  EventUser::create([
                     'event_id' =>$data['eventId'],
                     'user_id' => $user->id,
                     'is_paid_user'=>0,
-                    'referral_code'=>$data['referral_code']??null,
+                    'referral_code'=>$data['referral_code']??'',
                     'address_id'=>$data['address_id']??0,
-                    'postal_code'=>$data['address']['postal_code']??'',
-                    'country'=>$data['country']??'',
-                    'city'=>$data['address']['city']??'',
-                    'state'=>$data['address']['state']??'',
-                    'subdistrict'=>$data['address']['subdistrict']??'',
-                    'address'=>$data['address']['address']??'',
-                    'blk'=>$data['address']['blk']??'',
+                    'postal_code'=>$data['address']['postal_code']??null,
+                    'country'=>$data['country']??null,
+                    'city'=>$data['address']['city']??null,
+                    'state'=>$data['address']['state']??null,
+                    'subdistrict'=>$data['address']['subdistrict']??null,
+                    'address'=>$data['address']['address']??null,
+                    'blk'=>$data['address']['blk']??null,
                     'strava_account_id'=>$StravaAccounts->id??0,
                     'gender'=>$user->gender,
                     'dob'=> $user->dob,
@@ -967,7 +968,7 @@ return $data;
                         'event_id' =>$data['eventId'],
                         'user_id' => $user->id,
                         'reward_id'=>$membership['reward'],
-                        'size'=>$membership['size'],
+                        'size'=>$membership['size']??null,
                         'payment_id'=>$payment->id,
                         'quantity'=>$membership['quantity'],
                         'amount'=>$membership['rewardPrice']*$membership['quantity'],
