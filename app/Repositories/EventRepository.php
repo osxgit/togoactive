@@ -20,6 +20,7 @@ use App\Models\Events\UserReward;
 use App\Models\Events\EventUser;
 use App\Models\Events\EventSuccessPage;
 
+use App\Helpers\CountryHelper;
 use Carbon\Carbon;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 
@@ -596,9 +597,158 @@ return $data;
     }
 
     public function validateReferralCode($data){
+        $user= User::select('id')->where('username','LIKE','%'.$data['referralCode'].'%')->first();
+        if($user){
+            $userExistInEvent = EventUser::where('event_id',$data['eventId'])->where('user_id',$user->id)->first();
+            if($userExistInEvent){
+                return (['success'=>false,'error'=>'Referral Code Applied']);
+            } else{
+                return (['success'=>false,'error'=>'Invalid Code']);
+            }
+
+        }
+        return (['success'=>false,'error'=>'Invalid Code']);
 
 
 
+    }
+    
+    public function calculatePrice($data){
+
+        $responseData=[];
+        $discount= MultiQuantityDiscount::Where('event_id',$data['eventId'])->get();
+        $country=$data['country'];
+        $membership= explode(",",$data['membership']);
+        $couponCode=isset($data['couponCode'])?$data['couponCode'] : '';
+
+        $countryHelper = new CountryHelper();
+        $countryCurrency= $countryHelper->country_currency();
+
+        foreach($countryCurrency as $country_currency){
+            if($country_currency['country'] == $country){
+                $currency= $country_currency['currency_code'];
+            }
+        }
+        $coupon=null;
+        if( $couponCode !=''){
+            $coupon = Coupon::where('event_id',$data['eventId'])->where('name','LIKE','%'.$couponCode.'%')->first();
+            if($coupon){
+                $couponRewards = json_decode($coupon->rewards, true);
+
+            }
+        }
+        $CouponDiscApplyAmount=0;
+        $totalPrice=0;
+        $userCurrency='';
+        $discountAmount=0;
+        $amountAfterDiscount=0;
+        $checkoutCurrency='';
+        $discountpercentage=0;
+        $validRewards=[];
+        if(count($membership) > 0){
+           
+            foreach($membership as $rewardId){
+                $reward= Reward::Where('event_id',$data['eventId'])->where('id',$rewardId)->first();
+
+                $rewardPrice= $reward->price != '' ?json_decode($reward->price) :null;
+                $userPrice=0;
+                if($rewardPrice){
+                    foreach($rewardPrice as $price){
+                        if($price->country == 'Global'){
+                            $globalPrice=$price->price;
+                            $globalCurrency=$price->currency ;
+                        }
+                        if($price->currency == $currency){
+                            $userPrice=$price->price;
+                            $userCurrency=$price->currency ;
+                        }
+                    }
+                    if($userPrice){
+                        if($coupon){
+                            if(in_array($rewardId, $couponRewards)){
+                                $CouponDiscApplyAmount +=$userPrice;
+                                array_push($validRewards, $rewardId);
+                                $discountAmount += ($coupon->discount/100)*$userPrice;
+                            }
+                        }
+                        $responseData['membership'][$rewardId]['price']=$userPrice;
+                        $totalPrice +=$userPrice;
+                        $checkoutCurrency=  $userCurrency;
+
+                    } else{
+                        if($coupon){
+                            if(in_array($rewardId, $couponRewards)){
+                            array_push($validRewards, $rewardId);
+                                $CouponDiscApplyAmount +=$globalPrice;
+                                 $discountAmount += ($coupon->discount/100)*$globalPrice;
+                            }
+                        }
+                        $responseData['membership'][$rewardId]['price']=$globalPrice;
+                        $totalPrice +=$globalPrice;
+                        $checkoutCurrency=  $globalCurrency;
+                    }
+
+
+                }
+            }
+            
+            if( $coupon){
+//                 $discountAmount = ($coupon->discount/100)*$totalPrice;
+                $discountpercentage=$coupon->discount;
+            } else if(count($discount)){
+                $membershipCount= count($membership);
+                
+                $discountpercentage=0;
+                foreach($discount as $disc){
+                    
+                    if($disc->condition == 'Equal to'){
+                        if($disc->quantity == $membershipCount){
+                            $discountpercentage=$disc->discount;
+                        }
+                    }
+                    if($disc->condition == 'More than'){
+                     
+                        if($membershipCount> $disc->quantity ){
+                            $discountpercentage=$disc->discount;
+                        }
+                    }
+                }
+                $discountAmount = ($discountpercentage/100)*$totalPrice;
+            }
+        }
+
+        if($discountAmount >0){
+            $amountAfterDiscount=$totalPrice-$discountAmount;
+        }
+        $responseData['AmountAfterDiscount']=$amountAfterDiscount;
+        $responseData['TotalAmount']=$totalPrice;
+        $responseData['discountpercentage']=$discountpercentage;
+        $responseData['discountAmount']=$discountAmount;
+        $responseData['checkoutCurrency']=$checkoutCurrency;
+        $responseData['validRewards']=$validRewards;
+
+        return  $responseData;
+    }
+
+    public function getActiveRewards($eventId){
+        $rewards= Reward::Where('event_id',$eventId)->where('is_hidden',0)->get();
+        return $rewards;
+    }
+
+    public function getActiveCoreRewards($eventId){
+        $coreRewards= Reward::Where('event_id',$eventId)->where('is_hidden',0)->where('is_core_item',1)->get();
+        return $coreRewards->sortBy('sort_id');
+    }
+    
+    public function getActiveAddonRewards($eventId){
+        $addonRewards= Reward::Where('event_id',$eventId)->where('is_hidden',0)->where('is_core_item',0)->get();
+        return $addonRewards->sortBy('sort_id');
+    }
+
+    public function getCheckoutRewards($data){
+
+        $addonRewards= Reward::whereIn('id', $data)->get();
+        return $addonRewards;
     }
 
     public function createEventSuccessPage($request,$eventId){
@@ -639,6 +789,20 @@ return $data;
 
             return $success_page;
         }
+    }
+
+    public function getEventUserData($data){
+        $eventUserId=$data['eventUser'];
+        $paymentId=$eventId=$data['payment'];
+        $eventUser = EventUser::where('id',$eventUserId)->with('team')->first();
+        $payment = Payment::where('id',$paymentId)->with('user_reward','user_reward.rewards')->first();
+        dd($eventUser);
+            dd($payment);
+    }
+
+    public function getEventSuccessPage($data){
+        $eventId=$data['eventId'];
+dd($data);
     }
 
 }

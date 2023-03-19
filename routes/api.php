@@ -46,5 +46,13 @@ Route::post('getEventIdFromSlug', [EventsController::class, 'getEventIdFromSlug'
 Route::post('getAllTeams', [EventsController::class, 'getAllTeams'])->name('getAllTeams');
 Route::post('createNewTeam', [EventsController::class, 'createNewTeam'])->name('createNewTeam');
 Route::post('validateTeam', [EventsController::class, 'validateTeam'])->name('validateTeam');
+Route::post('calculatePrice', [EventsController::class, 'calculatePrice'])->name('calculatePrice');
+Route::post('getExistingUserData', [UserController::class, 'getExistingUserData'])->name('getExistingUserData');
+Route::post('storeUserData', [UserController::class, 'storeUserData'])->name('storeUserData');
+Route::post('getCheckoutRewards', [EventsController::class, 'getCheckoutRewards'])->name('getCheckoutRewards');
+
+Route::post('getEventUserData', [EventsController::class, 'getEventUserData'])->name('getEventUserData');
+
+Route::post('getEventSuccessPage', [EventsController::class, 'getEventSuccessPage'])->name('getEventSuccessPage');
 
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');

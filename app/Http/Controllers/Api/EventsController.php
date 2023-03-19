@@ -36,7 +36,8 @@ class EventsController extends Controller
                         return $this->sendAPIResponse();
                     }else {
                         $event = Events::findOrFail($eventId);
-                        $eventRewards = $this->eventRepository->getRewards($eventId);
+                        // $eventRewards = $this->eventRepository->getRewards($eventId);
+                        $eventRewards = $this->eventRepository->getActiveRewards($eventId);
                          $landingPage = $this->eventRepository->getLandingPage($eventId);
                          $eventImages = $this->eventRepository->getEventImages($eventId);
                          $eventDates = $this->eventRepository->getEventDates($eventId);
@@ -97,8 +98,10 @@ class EventsController extends Controller
                 $eventId= $request->eventId;
                 $registrationData = $this->eventRepository->getRegistrationSetup($eventId);
                 // $rewards= $this->eventRepository->getRewards($eventId);
-                $coreRewards = $this->eventRepository->getCoreRewards($eventId);
-                $addonRewards = $this->eventRepository->getAddonRewards($eventId);
+                // $coreRewards = $this->eventRepository->getCoreRewards($eventId);
+                // $addonRewards = $this->eventRepository->getAddonRewards($eventId);
+                $coreRewards = $this->eventRepository->getActiveCoreRewards($eventId);
+                $addonRewards = $this->eventRepository->getActiveAddonRewards($eventId);
                 $multiQtyDisc= $this->eventRepository->getMultiQuantityDiscount($eventId);
                 if($coreRewards){
                     $rewardInstruction = $this->eventRepository->getEventMeta($eventId, 'reward_instructions');
@@ -149,5 +152,18 @@ class EventsController extends Controller
                 $referralCode = $this->eventRepository->validateReferralCode($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$referralCode) ));
                 return $this->sendAPIResponse();
+            }
+
+            public function calculatePrice(Request $request){
+                $totalPrice = $this->eventRepository->calculatePrice($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$totalPrice) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getCheckoutRewards(Request $request){
+                $rewards = $this->eventRepository->getCheckoutRewards($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$rewards) ));
+                return $this->sendAPIResponse();
+
             }
     }
