@@ -1018,7 +1018,7 @@ return $data;
             public function checkEventUser($data){
 
                  return EventUser::where('event_id',$data['eventId'])->where('user_id',$data['userId'])->first();   
-            }
+            } 
         
             public function getTermConditions($data){
                 return EventsFaq::where('event_id', $data['eventId'])->first();
