@@ -20,6 +20,7 @@ use App\Models\Events\Payment;
 use App\Models\Events\UserReward;
 use App\Models\Events\EventUser;
 use App\Models\Events\EventSuccessPage;
+use App\Models\Events\EventsFaq;
 
 use App\Helpers\CountryHelper;
 use Carbon\Carbon;
@@ -1007,5 +1008,19 @@ return $data;
                     $payment->save();
                     return $payment;
                 }
+            }
+
+            public function getEventData($slug){
+                return Events::where('slug','LIKE','%'.$slug.'%')->first();
+
+            }
+
+            public function checkEventUser($data){
+
+                 return EventUser::where('event_id',$data['eventId'])->where('user_id',$data['userId'])->first();   
+            }
+        
+            public function getTermConditions($data){
+                return EventsFaq::where('event_id', $data['eventId'])->first();
             }
 }

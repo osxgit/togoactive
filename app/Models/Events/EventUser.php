@@ -40,7 +40,7 @@ class EventUser extends Model
 
     public function team_user()
     {
-        return $this->belongsTo(TeamUser::class);
+        return $this->belongsTo(TeamUser::class,'user_id');
     }
 
     public function user()

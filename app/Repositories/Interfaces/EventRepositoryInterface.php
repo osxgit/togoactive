@@ -133,4 +133,11 @@ interface EventRepositoryInterface
     public function getEventUserData($data);
 
     public function getEventSuccessPage($data);
+
+    public function getEventData($data);
+
+    public function checkEventUser($data);
+
+    public function getTermConditions($data);
+
 };

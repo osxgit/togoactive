@@ -53,6 +53,9 @@ Route::post('getCheckoutRewards', [EventsController::class, 'getCheckoutRewards'
 Route::post('processFreeRegistration', [EventsController::class, 'processFreeRegistration'])->name('processFreeRegistration');
 Route::post('processPaidRegistration', [EventsController::class, 'processPaidRegistration'])->name('processPaidRegistration');
 Route::post('updatePayment', [EventsController::class, 'updatePayment'])->name('updatePayment');
+Route::post('getEventData', [EventsController::class, 'getEventData'])->name('getEventData');
+Route::post('checkEventUser', [EventsController::class, 'checkEventUser'])->name('checkEventUser');
+Route::post('getTermConditions', [EventsController::class, 'getTermConditions'])->name('getTermConditions');
 
 Route::post('getEventUserData', [EventsController::class, 'getEventUserData'])->name('getEventUserData');
 
