@@ -917,7 +917,7 @@ return $data;
                 $eventUser =  EventUser::create([
                     'event_id' =>$data['eventId'],
                     'user_id' => $user->id,
-                    'is_paid_user'=>0,
+                    'is_paid_user'=>1,
                     'referral_code'=>$data['referral_code']??'',
                     'address_id'=>$data['address_id']??0,
                     'postal_code'=>$data['address']['postal_code']??null,
