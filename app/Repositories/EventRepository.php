@@ -598,11 +598,11 @@ return $data;
     }
 
     public function validateReferralCode($data){
-        $user= User::select('id')->where('username','LIKE','%'.$data['referralCode'].'%')->first();
+        $user= User::select('id')->where('username',$data['referralCode'])->first();
         if($user){
             $userExistInEvent = EventUser::where('event_id',$data['eventId'])->where('user_id',$user->id)->first();
             if($userExistInEvent){
-                return (['success'=>false,'error'=>'Referral Code Applied']);
+                return (['success'=>true,'error'=>'Referral Code Applied']);
             } else{
                 return (['success'=>false,'error'=>'Invalid Code']);
             }
@@ -619,7 +619,9 @@ return $data;
         $responseData=[];
         $discount= MultiQuantityDiscount::Where('event_id',$data['eventId'])->get();
         $country=$data['country'];
-        $membership= explode(",",$data['membership']);
+        $membership=json_decode(stripslashes($data['membership']),true);
+//         $membership= explode(",",$data['membership']);
+
         $couponCode=isset($data['couponCode'])?$data['couponCode'] : '';
 
         $countryHelper = new CountryHelper();
@@ -649,7 +651,8 @@ return $data;
         if(count($membership) > 0){
            
             foreach($membership as $rewardId){
-                $reward= Reward::Where('event_id',$data['eventId'])->where('id',$rewardId)->first();
+
+                $reward= Reward::Where('event_id',$data['eventId'])->where('id',$rewardId[0])->first();
 
                 $rewardPrice= $reward->price != '' ?json_decode($reward->price) :null;
                 $userPrice=0;
@@ -666,26 +669,26 @@ return $data;
                     }
                     if($userPrice){
                         if($coupon){
-                            if(in_array($rewardId, $couponRewards)){
-                                $CouponDiscApplyAmount +=$userPrice;
-                                array_push($validRewards, $rewardId);
-                                $discountAmount += ($coupon->discount/100)*$userPrice;
+                            if(in_array($rewardId[0], $couponRewards)){
+                                $CouponDiscApplyAmount += ($userPrice*$rewardId[1]);
+                                array_push($validRewards, $rewardId[0]);
+                                $discountAmount += ($coupon->discount/100)*($userPrice*$rewardId[1]);
                             }
                         }
-                        $responseData['membership'][$rewardId]['price']=$userPrice;
-                        $totalPrice +=$userPrice;
+                        $responseData['membership'][$rewardId[0]]['price']=($userPrice*$rewardId[1]);
+                        $totalPrice +=($userPrice*$rewardId[1]);
                         $checkoutCurrency=  $userCurrency;
 
                     } else{
                         if($coupon){
-                            if(in_array($rewardId, $couponRewards)){
-                            array_push($validRewards, $rewardId);
-                                $CouponDiscApplyAmount +=$globalPrice;
-                                 $discountAmount += ($coupon->discount/100)*$globalPrice;
+                            if(in_array($rewardId[0], $couponRewards)){
+                            array_push($validRewards, $rewardId[0]);
+                                $CouponDiscApplyAmount +=($globalPrice*$rewardId[1]);
+                                 $discountAmount += ($coupon->discount/100)*($globalPrice*$rewardId[1]);
                             }
                         }
-                        $responseData['membership'][$rewardId]['price']=$globalPrice;
-                        $totalPrice +=$globalPrice;
+                        $responseData['membership'][$rewardId[0]]['price']=($globalPrice*$rewardId[1]);
+                        $totalPrice +=($globalPrice*$rewardId[1]);
                         $checkoutCurrency=  $globalCurrency;
                     }
 
