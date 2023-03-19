@@ -882,6 +882,105 @@ return $data;
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
 
+            public function processPaidRegistration($data){
+                $user= User::where('tgp_userid',$data['userId'])->first();
+                $StravaAccounts= StravaAccounts::select('id')->where('userid',$user->id)->first();
+        
+                ## Bib
+                $exists = true;
+                while($exists){
+                    $bib = rand(0,99999);
+                    $bib = str_pad($bib,5,'0',STR_PAD_LEFT);
+        
+                    $cuserBibE = EventUser::where('event_id',$data['eventId'])->where('bib', $bib)->get(); 
+                    if($cuserBibE){
+                        $exists = false;
+                    }
+                }
+        
+                $userbib = $bib;
+        
+        
+                ## Token
+                $exists = true;
+                while($exists){
+                    $token = bin2hex(openssl_random_pseudo_bytes(8));
+                    $cuserTokenE = EventUser::where('token', $token)->get(); 
+                    if($cuserTokenE){
+                        $exists = false;
+                    }
+                }
+        
+                $cutoken = $token;
+
+                $eventUser =  EventUser::create([
+                    'event_id' =>$data['eventId'],
+                    'user_id' => $user->id,
+                    'is_paid_user'=>0,
+                    'referral_code'=>$data['referral_code']??null,
+                    'address_id'=>$data['address_id']??0,
+                    'postal_code'=>$data['address']['postal_code']??'',
+                    'country'=>$data['country']??'',
+                    'city'=>$data['address']['city']??'',
+                    'state'=>$data['address']['state']??'',
+                    'subdistrict'=>$data['address']['subdistrict']??'',
+                    'address'=>$data['address']['address']??'',
+                    'blk'=>$data['address']['blk']??'',
+                    'strava_account_id'=>$StravaAccounts->id??0,
+                    'gender'=>$user->gender,
+                    'dob'=> $user->dob,
+                    'bib'=>$userbib, 
+                    'token'=>$cutoken,
+                    'group'=>$data['group']??'',
+                ]);
+
+                if(isset($data['team']) && $data['team'] > 0){
+                    $teamAdmin = TeamUser::where('team_id',$data['team'])->where('is_owner',1)->first();
+                    if(  $teamAdmin ){
+                        $teamOwner=0;
+                    }else{
+                        $teamOwner=1;
+                    }
+                    $teamUser =  TeamUser::create([
+                        'user_id' =>$user->id,
+                        'team_id' => $data['team'],
+                        'is_owner'=> $teamOwner
+                    ]);
+                }
+
+                $payment =  Payment::create([
+                    'event_id' =>$data['eventId'],
+                    'user_id' => $user->id,
+                    'payment_type'=>'registration',
+                    'payment_method'=>'Stripe',
+                    'payment_intent'=>'Free_'.$eventUser->id,
+                    'total_amount'=>$data['totalPrice'],
+                    'discount'=>$data['discountAmount'],
+                    'total_paid'=>$data['priceToPay'],
+                    'currency'=>$data['currency'],
+                    'coupon_code'=>$data['coupon_code']??'',
+                    'status'=>'processing',
+                ]);
+
+                foreach($data['memb'] as $membership){
+                    $reward =  UserReward::create([
+                        'event_id' =>$data['eventId'],
+                        'user_id' => $user->id,
+                        'reward_id'=>$membership['reward'],
+                        'size'=>$membership['size'],
+                        'payment_id'=>$payment->id,
+                        'quantity'=>$membership['quantity'],
+                        'amount'=>$membership['rewardPrice']*$membership['quantity'],
+                        'discount'=>$membership['discountedPrice']??0,
+                        'currency'=>$data['currency']
+                    ]);
+
+                }
+        
+                return (['event_user'=>$eventUser , 'payment'=>$payment]);
+
+            }
+
             public function getEventUserData($data){
                 $eventUserId=$data['eventUser'];
                 $paymentId=$eventId=$data['payment'];
