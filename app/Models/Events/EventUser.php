@@ -27,6 +27,7 @@ class EventUser extends Model
         'subdistrict',
         'postal_code',
         'country',
+        'group',
         'bib',
         'token',
         'remarks',
@@ -40,6 +41,11 @@ class EventUser extends Model
     public function team_user()
     {
         return $this->belongsTo(TeamUser::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }
