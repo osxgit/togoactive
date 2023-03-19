@@ -5,7 +5,8 @@ use App\Http\Controllers\Admin\Events\{
     EventsController,
     SocialSeoController,
     RewardsController,
-    EventsFaqController
+    EventsFaqController,
+    EventSuccessPageController
 };
 use App\Http\Controllers\Public\RegistrationController;
 // use App\Http\Controllers\Admin\Events\{
@@ -100,9 +101,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/event/{id}/landingPage/view', [EventsController::class, 'renderLandingPage'])->name('admin.events.landingPage.view');
 
-
-
     Route::get('/admin/event/{id}/info/activities', [EventsController::class, 'renderActivitiesSection'])->name('admin.events.info.activities');
+
+    Route::get('/admin/event/{id}/info/success_page', [EventSuccessPageController::class, 'renderSuccessPage'])->name('admin.events.success');
+    Route::post('/admin/event/{id}/info/success_page', [EventSuccessPageController::class, 'submitSuccessPageDetails'])->name('admin.events.success.store');
+    Route::post('/admin/event/set_event_success_email', [EventSuccessPageController::class, 'sendSuccessEmail'])->name('admin.events.success.setSuccessEmail');
 });
     Route::get('/admin/event/{id}/unlayer', [EventsController::class, 'unlayer'])->name('admin.events.unlayer');
 

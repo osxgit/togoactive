@@ -53,4 +53,8 @@ Route::post('getCheckoutRewards', [EventsController::class, 'getCheckoutRewards'
 Route::post('processFreeRegistration', [EventsController::class, 'processFreeRegistration'])->name('processFreeRegistration');
 
 
+Route::post('getEventUserData', [EventsController::class, 'getEventUserData'])->name('getEventUserData');
+
+Route::post('getEventSuccessPage', [EventsController::class, 'getEventSuccessPage'])->name('getEventSuccessPage');
+
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');

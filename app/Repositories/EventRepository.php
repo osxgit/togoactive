@@ -19,6 +19,8 @@ use App\Models\Events\TeamUser;
 use App\Models\Events\Payment;
 use App\Models\Events\UserReward;
 use App\Models\Events\EventUser;
+use App\Models\Events\EventSuccessPage;
+
 use App\Helpers\CountryHelper;
 use Carbon\Carbon;
 use App\Repositories\Interfaces\EventRepositoryInterface;
@@ -521,7 +523,7 @@ return $data;
     public function getEventIdThroughSlug($slug){
         return Events::select('id')->where('slug','LIKE','%'.$slug.'%')->first();
     }
-    
+
     public function getAllTeams($eventId){
         return Team::where('event_id',$eventId)->with('teamUsers','teamUsers.user')->get();
     }
@@ -544,7 +546,7 @@ return $data;
                 'event_id' =>$data['eventId'],
                 'team_name' => $data['team_name'],
             ]);
-    
+
             // if($team  ){
             //     $user= User::select('id')->where('tgp_userid',$data['userId'])->first();
             //     $teamUser =  TeamUser::create([
@@ -552,14 +554,14 @@ return $data;
             //         'team_id' => $team->id,
             //         'is_owner'=>1
             //     ]);
-    
+
             // }
-    
+
             return (['success' =>true,'team'=>$team]);
         }
-        
+
     }
-    
+
     public function validateCouponCode($data){
         $coupon = Coupon::where('event_id',$data['eventId'])->where('name','LIKE','%'.$data['couponCode'].'%')->first();
         if($coupon){
@@ -571,7 +573,7 @@ return $data;
                 if($coupon->max_use != -1){
                     $couponUsed = Payment::where('event_id',$data['eventId'])->where('coupon_code','LIKE','%'.$data['couponCode'].'%')->where('status',1)->count();
                     if($couponUsed >= $coupon->max_use){
-                        return (['success'=>false,'error'=>'Coupon Limit Reached']); 
+                        return (['success'=>false,'error'=>'Coupon Limit Reached']);
                     }
                 }
                 $membership= explode(",",$data['membership']);
@@ -594,7 +596,7 @@ return $data;
             return (['success'=>false,'error'=>'Invalid Coupon']);
         }
     }
-    
+
     public function validateReferralCode($data){
         $user= User::select('id')->where('username','LIKE','%'.$data['referralCode'].'%')->first();
         if($user){
@@ -608,7 +610,8 @@ return $data;
         }
         return (['success'=>false,'error'=>'Invalid Code']);
 
-        
+
+
     }
     
     public function calculatePrice($data){
@@ -746,9 +749,50 @@ return $data;
     public function getCheckoutRewards($data){
 
         $addonRewards= Reward::whereIn('id', $data)->get();
-        return $addonRewards;
+        return $addonRewards; 
     }
 
+    public function createEventSuccessPage($request,$eventId){
+
+        $success_page = EventSuccessPage::create([
+            'event_id' => $eventId,
+            'no_purchase_made' => $request['no_purchase_made'] ?? '',
+            'partial_purchase_made' => $request['partial_purchase_made'] ?? '',
+            'all_purchase_made' => $request['all_purchase_made'] ?? '',
+            'active_custom_message' => $request['active_custom_message'] ?? 0,
+            'invite_friend' => $request['invite_friend'] ?? '',
+            'email_subject' => $request['email_subject'] ?? '',
+            'email_body' => $request['email_body'] ?? '',
+            'custom_message' => (isset($request['active_custom_message']) && $request['active_custom_message']==1)? $request['custom_message']:''
+            ]);
+        return $success_page;
+    }
+
+    public function getEventSuccessSetup($eventId){
+        $success_page = EventSuccessPage::Where('event_id',$eventId)->first();
+        return $success_page;
+    }
+
+    public function updateEventSuccessSetup($request,$eventId){
+        $success_page = EventSuccessPage::Where('event_id',$eventId)->first();
+        if ($success_page) {
+            $success_page->event_id = $eventId;
+            $success_page->no_purchase_made =  $request['no_purchase_made'] ?? $success_page->no_purchase_made ;
+            $success_page->partial_purchase_made = $request['partial_purchase_made'] ?? $success_page->partial_purchase_made;
+            $success_page->all_purchase_made =  $request['all_purchase_made'] ?? $success_page->all_purchase_made;
+            $success_page->active_custom_message = $request['active_custom_message'] ??  0;
+            $success_page->invite_friend =  $request['invite_friend'] ?? $success_page->invite_friend;
+            $success_page->email_subject =  $request['email_subject'] ?? $success_page->email_subject;
+            $success_page->email_body =  $request['email_body'] ?? $success_page->email_body;
+            $success_page->custom_message = (isset($request['active_custom_message']) && $request['active_custom_message']==1)? $request['custom_message']: '';
+
+            $success_page->save();
+
+            return $success_page;
+        }
+    }
+
+    
     public function processFreeRegistration($data){
         //     dd($data);
         //   dd(json_decode($data['address']));
@@ -800,9 +844,24 @@ return $data;
                     'gender'=>$user->gender,
                     'dob'=> $user->dob,
                     'bib'=>$userbib, 
-                    'token'=>$cutoken
+                    'token'=>$cutoken,
+                    'group'=>$data['group']??'',
                 ]);
- 
+
+                if(isset($data['team']) && $data['team'] > 0){
+                    $teamAdmin = TeamUser::where('team_id',$data['team'])->where('is_owner',1)->first();
+                    if(  $teamAdmin ){
+                        $teamOwner=0;
+                    }else{
+                        $teamOwner=1;
+                    }
+                    $teamUser =  TeamUser::create([
+                        'user_id' =>$user->id,
+                        'team_id' => $data['team'],
+                        'is_owner'=> $teamOwner
+                    ]);
+                }
+
                 $payment =  Payment::create([
                     'event_id' =>$data['eventId'],
                     'user_id' => $user->id,
@@ -820,5 +879,18 @@ return $data;
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
 
+            public function getEventUserData($data){
+                $eventUserId=$data['eventUser'];
+                $paymentId=$eventId=$data['payment'];
+                $eventUser = EventUser::where('id',$eventUserId)->with('team_user','team_user.team')->first();
+                $payment = Payment::where('id',$paymentId)->with('user_reward','user_reward.rewards')->first();
+                return (['event_user'=>$eventUser , 'payment'=>$payment]);
+            }
+        
+            public function getEventSuccessPage($data){
+                $eventId=$data['eventId']; 
+                $success_page = EventSuccessPage::Where('event_id',$eventId)->first();
+                return  $success_page;
 
+            }
 }

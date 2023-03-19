@@ -23,4 +23,9 @@ class UserReward extends Model
         'discount',
         'currency',
     ];
+
+    public function rewards()
+    {
+        return $this->belongsTo(Reward::class);
+    }
 }

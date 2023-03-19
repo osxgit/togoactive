@@ -37,6 +37,9 @@ class EventUser extends Model
         'is_autoPorted', 
     ];
 
-   
+    public function team_user()
+    {
+        return $this->belongsTo(TeamUser::class);
+    }
 
 }
