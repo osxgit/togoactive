@@ -1,6 +1,10 @@
 <x-app-layout>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js?apiKey=4rcnfqnlzfiuwfia3kjfez410ye1smutxh8kj2i126izgth4/tinymce"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
     <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <style>
@@ -407,7 +411,7 @@
                         <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
                             <div class="float-left w-full ">
-                                <div id="icon-label" class="float-left pr-2 mt-4"  ondrop="drop(event, this)" ondragover="allowDrop(event)">
+                                <div id="icon-label" class="float-left pr-2 mt-4">
                                     <label for="icon" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
                                         Icon*
                                         <span class="font-poppins">(1:1 ratio)</span>
@@ -516,7 +520,7 @@
                                         </x-slot>
                                     </x-forms.toggle>
                                 </div>
-                                <div class="float-left mt-4 hidden w-full">
+                                <div id="more-info-content" class="float-left mt-4 hidden w-full">
                                     <div class="w-1/2">
                                         <h1 class="float-left w-full font-poppins-bold text-2xl">
                                             <span>“More Info” Modal Pop-up</span>
@@ -593,12 +597,11 @@
                             Communication - Notification*
                         </x-slot>
                         <x-slot name="section_button">
-                            <button
-                                type="button"
+                            <button onclick="showNotificationPreview()"
+                                type="button" id="notification_preview_button"
                                 style="color: #7E1FF6 !important;border: 1px solid #7E1FF6;
                                 padding: 0px 5px; border-radius: 5px;
                                 font-weight: bold; font-size: 14px; float: right;  width: max-content;"
-                                onclick=""
                             >
                                 Preview notification
                             </button>
@@ -638,7 +641,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div id="notification-type-a-label" class="float-left mt-4 hidden w-full">
+                                <div id="notification-type-a-label" class="float-left hidden w-full">
                                     <div id="destination-url-label" class="w-full">
                                         <x-forms.textfield name="notification_destination_url">
                                             <x-slot name="field_id">notification_destination_url</x-slot>
@@ -648,14 +651,15 @@
                                         </x-text-input>
                                     </div>
                                 </div>
-                                <div id="notification-type-b-label" class="float-left mt-4 hidden w-full">
+                                <div id="notification-type-b-label" class="float-left hidden w-full mt-4">
                                     <div class="w-1/2">
                                         <h1 class="float-left w-full font-poppins-bold text-2xl">
-                                            <span>“More Info” Modal Pop-up</span>
+                                            <span>Type B notifications*</span>
                                         </h1>
                                         <label for="notification_type_b_image_uploader" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
                                             Hero Image*
                                             <span class="font-poppins">(1280 x 600 px)</span>
+                                            <p class="font-poppins">This image will be shown on all notifications</p>
                                         </label>
                                         <x-forms.image_uploader>
                                             <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -670,60 +674,124 @@
                                             <x-slot name="field_id">notification_hero_image</x-slot>
                                         </x-forms.file_input>
                                     </div>
-                                    <div id="enable-primary-cta-button-label" class="float-left mt-4">
+                                    <div id="enable-primary-cta-button-label" class="float-left mt-4 w-full">
                                         <x-forms.toggle id="primary_cta_toggle" name="is_primary_cta_enabled"  value="0" >
                                             <x-slot name="field_id">primary_cta_toggle</x-slot>
                                             <x-slot name="label_text">Enable primary CTA button</x-slot>
                                             <x-slot name="label_description"></x-slot>
                                         </x-forms.toggle>
                                     </div>
-                                    <div id="primary-cta-button-text-label" class="float-left mt-4 hidden w-full">
+                                    <div id="primary-cta-button-label" class="float-left ml-5 pl-1 w-1/2">
                                         <div id="primary_cta_button_text" class="w-full">
                                             <x-forms.textfield name="primary_cta_button_text">
                                                 <x-slot name="field_id">primary-cta-button-text</x-slot>
-                                                <x-slot name="label_text">CTA button text</x-slot>
+                                                <x-slot name="label_text">CTA button text*</x-slot>
                                                 <x-slot name="label_description"></x-slot>
                                                 <x-slot name="label_description_status"></x-slot>
                                             </x-text-input>
                                         </div>
-                                    </div>
-                                    <div id="primary-cta-link-label" class="float-left mt-4 hidden w-full">
                                         <div id="primary_cta_link" class="w-full">
                                             <x-forms.textfield name="primary_cta_link">
                                                 <x-slot name="field_id">primary_cta_link</x-slot>
-                                                <x-slot name="label_text">CTA button link</x-slot>
+                                                <x-slot name="label_text">Link*</x-slot>
                                                 <x-slot name="label_description"></x-slot>
                                                 <x-slot name="label_description_status"></x-slot>
                                             </x-text-input>
                                         </div>
-                                    </div>
-                                    <div id="primary-cta-link-label" class="float-left mt-4 hidden w-full">
-                                        <div id="secondary_cta_button_enable" class="w-full">
-                                            <a href="#" id="enable_secondary_cta_button" class="font-poppins-bold">
+                                        <div id="secondary_cta_button_enable" class="float-left w-full mt-4">
+                                            <a href="#" id="enable_secondary_cta_button" class="text-primary font-poppins-semibold text-sm mt-4">
                                                 <i class="fa-plus"></i>
                                                 <span>secondary CTA button</span>
                                             </a>
                                         </div>
-                                        <div id="primary-cta-button-text-label" class="float-left mt-4 w-full">
-                                            <div id="primary_cta_button_text" class="w-full">
-                                                <x-forms.textfield name="secondary_cta_button_text">
-                                                    <x-slot name="field_id">secondary-cta-button-text</x-slot>
-                                                    <x-slot name="label_text">CTA button text</x-slot>
-                                                    <x-slot name="label_description"></x-slot>
-                                                    <x-slot name="label_description_status"></x-slot>
-                                                </x-text-input>
+                                        <div class="float-left w-full hidden">
+                                            <div id="secondary-cta-button-text-label" class="float-left w-full">
+                                                <div id="secondary_cta_button_text" class="w-full">
+                                                    <x-forms.textfield name="secondary_cta_button_text">
+                                                        <x-slot name="field_id">secondary-cta-button-text</x-slot>
+                                                        <x-slot name="label_text">CTA button text*</x-slot>
+                                                        <x-slot name="label_description"></x-slot>
+                                                        <x-slot name="label_description_status"></x-slot>
+                                                    </x-text-input>
+                                                </div>
+                                            </div>
+                                            <div id="secondary-cta-link-label" class="float-left w-full">
+                                                <div id="secondary_cta_link" class="w-full">
+                                                    <x-forms.textfield name="secondary_cta_link">
+                                                        <x-slot name="field_id">secondary_cta_link</x-slot>
+                                                        <x-slot name="label_text">Link*</x-slot>
+                                                        <x-slot name="label_description"></x-slot>
+                                                        <x-slot name="label_description_status"></x-slot>
+                                                    </x-text-input>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div id="primary-cta-link-label" class="float-left mt-4 w-full">
+                                    </div>
+                                    <div id="enable-share-option-label" class="float-left mt-4 w-full">
+                                        <x-forms.toggle id="share_option_toggle" name="is_share_option_enabled"  value="0" >
+                                            <x-slot name="field_id">share_option_toggle</x-slot>
+                                            <x-slot name="label_text">Enable share option</x-slot>
+                                            <x-slot name="label_description">This will allow you to create an share option for the notification </x-slot>
+                                        </x-forms.toggle>
+                                    </div>
+                                    <div id="share-option-link-label" class="float-left ml-5 pl-1 w-1/2 hidden">
+                                        <div id="secondary-cta-link-label" class="float-left w-full">
                                             <div id="secondary_cta_link" class="w-full">
-                                                <x-forms.textfield name="secondary_cta_link">
-                                                    <x-slot name="field_id">secondary_cta_link</x-slot>
-                                                    <x-slot name="label_text">CTA button link</x-slot>
+                                                <x-forms.textfield name="enable_share_option_link">
+                                                    <x-slot name="field_id">enable_share_option_link</x-slot>
+                                                    <x-slot name="label_text">Link*</x-slot>
                                                     <x-slot name="label_description"></x-slot>
                                                     <x-slot name="label_description_status"></x-slot>
                                                 </x-text-input>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </x-slot>
+                    </x-forms.section>
+                    <x-forms.section class="mt-8 rounded-xl">
+                        <x-slot name="section_heading">
+                            Sponsored content
+                        </x-slot>
+                        <x-slot name="section_button"></x-slot>
+                        <x-slot name="section_heading_description_status"></x-slot>
+                        <x-slot name="section_heading_description_text"></x-slot>
+                        <x-slot name="section_content">
+                            <div class="float-left w-full">
+                                <div id="enable-sponsor-content-label" class="float-left mt-4 w-full">
+                                    <x-forms.toggle id="sponsor_content_toggle" name="is_sponsor_content_enabled"  value="0" >
+                                        <x-slot name="field_id">sponsor_content_toggle</x-slot>
+                                        <x-slot name="label_text">Enable sponsor content</x-slot>
+                                        <x-slot name="label_description">By enabling this, you'll be able to display information about sponsor content</x-slot>
+                                    </x-forms.toggle>
+                                </div>
+                                <div id="sponsor-content-label" class="float-left ml-5 pl-1 w-full hidden">
+                                    <div id="sponsor-content-image-label" class="float-left w-1/2">
+                                        <label for="notification_type_b_image_uploader" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
+                                            Image*
+                                            <span class="font-poppins">(300 x 150 px)</span>
+                                        </label>
+                                        <x-forms.image_uploader>
+                                            <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 300x150px)</x-slot>
+                                            <x-slot name="field_id">sponsored_content_image_uploader</x-slot>
+                                            <x-slot name="uploaded_img"></x-slot>
+                                        </x-forms.image_uploader>
+
+                                        <x-forms.file_input name="sponsor_content_image">
+                                            <x-slot name="width">300</x-slot>
+                                            <x-slot name="height">150</x-slot>
+                                            <x-slot name="field_id">sponsor_content_image</x-slot>
+                                        </x-forms.file_input>
+                                    </div>
+                                    <div id="sponsor-content-text-label" class="float-left w-full">
+                                        <x-forms.textarea name="sponsor_content_text">
+                                            <x-slot name="field_id">sponsor_content_text</x-slot>
+                                            <x-slot name="label_text">Text*</x-slot>
+                                            <x-slot name="label_description"></x-slot>
+                                            <x-slot name="label_description_status"></x-slot>
+                                        </x-text-input>
                                     </div>
                                 </div>
                             </div>
@@ -741,32 +809,384 @@
 
     </form>
 
+    <div class="modal fade" id="notification_type_a_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div id="notification_a_time">
+                    Just now
+                </div>
+                <div id="notification_a_body" class="flex">
+                    <div class="w-40">
+                        <img id="icon_image_modal" src="/images/dummy.png" />
+                    </div>
+                    <div id="notification_a_content">
+                        <div id="notification_a_header">
+                            Nice header here
+                        </div>
+                        <div id="notification_a_text">
+                            Hey! Congrats! You ahieved a lot! Keep up and get more achievements!
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="notification_type_b_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="img-container">
+                        <input type="hidden" id="imgtype" value=''>
+                        <input type="hidden" id="height" value=''>
+                        <input type="hidden" id="width" value=''>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <img id="image" src="https://avatars0.githubusercontent.com/u/3456749">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="crop">Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="img-container">
+                        <input type="hidden" id="imgtype" value=''>
+                        <input type="hidden" id="height" value=''>
+                        <input type="hidden" id="width" value=''>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <img id="image" src="https://avatars0.githubusercontent.com/u/3456749" alt="No image">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="preview"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="crop">Crop</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        $(window).on('load', function () {
-            $form = $('form');
+        $(document).ready(function() {
+            var formchanged = 0;
+
+            function drag(ev) {
+                ev.dataTransfer.setData('Text/html', ev.target.id);
+            }
+
+            var $modal = $('#modal');
+            var $modalNotificationA = $('#notification_type_a_modal');
+            var $modalNotificationB = $('#notification_type_b_modal');
+            var image = document.getElementById('image');
+            var cropper;
+            var $previewModal = $('#previewModal');
+            imgwidth='';
+            imgheight='';
+
+            $modal.on('shown.bs.modal', function () {
+
+                if(imgwidth < width  ||  imgheight < height){
+                    $modal.modal("hide");
+                }
+
+                cropper = new Cropper(image, {
+                    aspectRatio: $('#width').val()/$('#height').val(),
+                    viewMode: 3,
+                    preview: '.preview',
+                    minCropBoxWidth: $('#width').val(),
+                    minCropBoxHeight: $('#height').val(),
+
+                    data: {
+                        width: $('#width').val(),
+                        height: $('#height').val(),
+                    }
+                });
+
+            }).on('hidden.bs.modal', function () {
+                cropper.destroy();
+                cropper = null;
+            });
+
+            $('#icon-label').on('drop', function(ev) {
+                formchanged=1;
+                ev.preventDefault();
+                console.log(target.id, ev.target.id);
+                element=target.id;
+                const myArray = element.split("-");
+                let elementid = myArray[0];
+                console.log(elementid);
+                var url = ev.dataTransfer.getData('text/plain');
+                // for img elements, url is the img src so
+                // create an Image Object & draw to canvas
+                if(url){
+                    var img = new Image();
+                    img.onload = function(){ctx.drawImage(this,0,0);}
+                    img.src = url;
+                    // for img file(s), read the file & draw to canvas
+                }else{
+                    document.querySelector('#'+elementid).files = ev.dataTransfer.files;
+
+                    handleFiles(ev.dataTransfer.files, elementid);
+                }
+            });
+
+            $('#icon-label').on('dragover', function(ev) {
+                ev.preventDefault();
+            });
+
+            function showNotificationPreview() {
+                console.log($('input[name=notification_type]').val());
+                if (!$('input[name=notification_type]:first').prop('checked') && !$('input[name=notification_type]:last').prop('checked')) {
+                    alert('Please select notification type.');
+                    return;
+                }
+
+                $modalNotification = $('input[name=notification_type]:first').prop('checked') === true
+                    ? $modalNotificationA.modal('show') : $modalNotificationB.modal('show');
+            };
+
+            function handleFiles(files, elementid) {
+                console.log('in handle files');
+                var imgtype= elementid;
+                var _URL = window.URL || window.webkitURL;
+                var file, img;
+                if ((file = files[0])) {
+                    img = new Image();
+                    var objectUrl = _URL.createObjectURL(file);
+                    img.onload = function () {
+                        $('#imgtype').val(imgtype);
+                        var height =  $('#'+imgtype).data("height");
+                        var width =  $('#'+imgtype).data("width");
+                        imgwidth=this.width;
+                        imgheight=this.height;
+                        console.log(imgwidth);
+                        if(this.width < width  ||  this.height < height){
+                            $("#imgerror-"+imgtype).css('display','block')
+                            if($('#modal').is(':visible')){
+                                $("#modal").modal('hide');
+                            }
+                        }  else{
+                            $("#imgerror-"+imgtype).css('display','none');
+
+                        }
+                        _URL.revokeObjectURL(objectUrl);
+                    };
+                    img.src = objectUrl;
+                }
+
+                // var files = e.target.files;
+                var imgtype= elementid;
+
+                $('#imgtype').val(imgtype);
+                height =  $('#'+imgtype).data("height");
+                width =  $('#'+imgtype).data("width");
+                $('#height').val(height);
+                $('#width').val(width);
+
+                var done = function (url) {
+                    image.src = url;
+
+                    $modal.modal('show');
+
+
+
+                };
+                var reader;
+                var file;
+                var url;
+                if (files && files.length > 0) {
+                    file = files[0];
+                    if (URL) {
+                        done(URL.createObjectURL(file));
+                    } else if (FileReader) {
+                        reader = new FileReader();
+                        reader.onload = function (e) {
+                            done(reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+
+                }
+            }
+
+            $("body").on("change", ".image", function(e){
+                formchanged=1;
+
+                var imgtype = $(this).attr('id');
+                var _URL = window.URL || window.webkitURL;
+                var file, img;
+                if ((file = this.files[0])) {
+                    console.log(this.files);
+                    img = new Image();
+                    var objectUrl = _URL.createObjectURL(file);
+                    console.log(img);
+                    img.onload = function () {
+                        $('#imgtype').val(imgtype);
+                        var height =  $('#'+imgtype).data("height");
+                        var width =  $('#'+imgtype).data("width");
+                        imgwidth=this.width;
+                        imgheight=this.height;
+                        console.log('image width:' + imgwidth);
+                        if(this.width < width  ||  this.height < height){
+                            $("#imgerror-"+imgtype).css('display','block')
+                            if($('#modal').is(':visible')){
+                                $("#modal").modal('hide');
+                            }
+                        }  else{
+                            $("#imgerror-"+imgtype).css('display','none');
+
+                        }
+                        _URL.revokeObjectURL(objectUrl);
+                    };
+                    img.src = objectUrl;
+                }
+
+                var files = e.target.files;
+                var imgtype = $(this).attr('id');
+
+                $('#imgtype').val(imgtype);
+                height =  $('#'+imgtype).data("height");
+                width =  $('#'+imgtype).data("width");
+                $('#height').val(height);
+                $('#width').val(width);
+
+                var done = function (url) {
+                    image.src = url;
+
+                    console.log(image);
+
+                    $modal.modal('show');
+                };
+
+                var reader;
+                var file;
+                var url;
+                if (files && files.length > 0) {
+                    file = files[0];
+                    if (URL) {
+                        done(URL.createObjectURL(file));
+                    } else if (FileReader) {
+                        reader = new FileReader();
+                        reader.onload = function (e) {
+                            done(reader.result);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+
+                }
+
+            });
+
+            $("#crop").click(function(){
+                var width=$('#width').val();
+                var height=$('#height').val();
+
+                canvas = cropper.getCroppedCanvas({
+                    width: width,
+                    height: height,
+                });
+                canvas.toBlob(function(blob) {
+                    url = URL.createObjectURL(blob);
+                    var reader = new FileReader();
+                    reader.readAsDataURL(blob);
+                    reader.onloadend = function() {
+                        var base64data = reader.result;
+
+                        $.ajax({
+                            type: "POST",
+                            dataType: "json",
+                            url: "{{route('ajax.upload-file')}}",
+                            data: {'_token':  $('input[name="_token"]').val(), 'image': base64data,'eventId':$('#challengeId').val(),'idd':$('#imgtype').val()},
+                            success: function(data){
+                                console.log(data);
+                                $modal.modal('hide');
+                                uploadFileResponse(data,$('#imgtype').val())
+                                //alert("Crop image successfully uploaded");
+                            }
+                        });
+                    }
+                });
+            });
+
+            function uploadFileResponse(response,idd){
+
+                $("#label-"+idd).removeClass('opacity-30');
+                if(response.err == 1){
+                    showErrorModal("Upload was failed. Please try again!");
+                    return false;
+                }
+                $("#path-"+response.data.idd).val(response.data.path);
+
+                const arr = ['cover','icon','profile_icon','ebib','certificate','notification'];
+                if(idd){
+                    $("#label-"+response.data.idd).css('background-image','url('+response.data.fullpath+')');
+                    $("#label-"+response.data.idd).css('border','none');
+
+                    $("#span-"+response.data.idd+"-add").css('visibility','hidden');
+                    $("#span-"+response.data.idd+"-edit").css('visibility','visible');
+                }else if(idd == 'list_upload' || idd == 'geojson_upload'){
+                    $("#label-"+idd+" input[type='text']").val(response.data.path);
+                }
+
+            }
+
+            function previewModal(imgname, title, description){
+                console.log(imgname);
+                console.log(title);
+                console.log(description);
+                $('.preview-modal-title').html(title);
+                $('.preview-modal-desc').html(description);
+                var img_url = "/images/"+imgname+".png";
+                $('.preview-img').prop('src', img_url);
+                $previewModal.modal('show');
+            }
+
+            var $form = $('form'),
             origForm = $form.serialize();
-            formchanged = 0;
-            console.log(origForm);
 
             $('form :input').on('change input', function() {
-                console.log($form.serialize());
-
                 if($form.serialize() !== origForm){
-                    formchanged = 1;
+                    formchanged=1;
                     console.log(formchanged);
                 }
             });
 
-            $('div#admin-sidebar a').click(function() {
-                console.log(formchanged);
-
-                var response = false;
-
-                if(formchanged) {
+            $('div#admin-sidebar a').click(function(){
+                var response=false;
+                if(formchanged){
                     var answer =Swal.fire({
                         title: '',
                         icon: 'warning',
-                        html:"You have unsaved changes on this page. If you leave now, your changes will not be saved.",
+                        html: 'Are you sure you want to leave this page  without saving?',
                         showCloseButton: true,
                         showCancelButton: true,
                         focusConfirm: false,
@@ -778,11 +1198,46 @@
                         cancelButtonAriaLabel: 'No, cancel'
                     }).then((result) => {
                         if (result.isConfirmed) {
+
                             window.location.href = this.href;
+
                         }
                     });
-
                     return response;
+                }
+
+            });
+
+            $("#more_info_toggle").on('click', function() {
+                if ($("#more_info_toggle").is(':checked')) {
+                    $("#more-info-content").removeClass('hidden');
+                    $("#more_info_toggle").prop('checked', true);
+                    $("#more_info_toggle").prop('value', 1);
+                } else {
+                    $("#more-info-content").addClass('hidden');
+                    $("#more_info_toggle").prop('checked', false);
+                    $("#more_info_toggle").prop('value', 0);
+                }
+            });
+
+            $('input[name=notification_type]').on('click', function() {
+                $(this).prop('checked', true);
+                console.log($(this).val());
+                console.log($('input[name=notification_type]:first').val());
+                console.log($('input[name=notification_type]:last').val());
+
+                if ($(this).val() === 'Type A') {
+                    if (!$('#notification-type-b-label').hasClass('hidden')) {
+                        $('#notification-type-b-label').addClass('hidden');
+                    }
+
+                    $('#notification-type-a-label').removeClass('hidden');
+                } else {
+                    if (!$('#notification-type-a-label').hasClass('hidden')) {
+                        $('#notification-type-a-label').addClass('hidden');
+                    }
+
+                    $('#notification-type-b-label').removeClass('hidden');
                 }
             });
         });
