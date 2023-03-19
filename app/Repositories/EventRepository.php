@@ -882,7 +882,7 @@ return $data;
             public function getEventUserData($data){
                 $eventUserId=$data['eventUser'];
                 $paymentId=$eventId=$data['payment'];
-                $eventUser = EventUser::where('id',$eventUserId)->with('team_user','team_user.team')->first();
+                $eventUser = EventUser::where('id',$eventUserId)->with('user','team_user','team_user.team')->first();
                 $payment = Payment::where('id',$paymentId)->with('user_reward','user_reward.rewards')->first();
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
