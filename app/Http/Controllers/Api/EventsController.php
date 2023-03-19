@@ -173,7 +173,7 @@ class EventsController extends Controller
                 return $this->sendAPIResponse();
             }
 
-            public function processPaidRegistration(){
+            public function processPaidRegistration(Request $request){ 
                 $response = $this->eventRepository->processPaidRegistration($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
                 return $this->sendAPIResponse();
