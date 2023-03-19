@@ -1,7 +1,6 @@
 <x-app-layout>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
@@ -896,38 +895,40 @@
     </div>
 
     <script>
-        $(document).ready(function() {
+        jQuery.noConflict();
+
+        jQuery(document).ready(function() {
             var formchanged = 0;
 
             function drag(ev) {
                 ev.dataTransfer.setData('Text/html', ev.target.id);
             }
 
-            var $modal = $('#modal');
-            var $modalNotificationA = $('#notification_type_a_modal');
-            var $modalNotificationB = $('#notification_type_b_modal');
+            var $modal = jQuery('#modal');
+            var $modalNotificationA = jQuery('#notification_type_a_modal');
+            var $modalNotificationB = jQuery('#notification_type_b_modal');
             var image = document.getElementById('image');
             var cropper;
-            var $previewModal = $('#previewModal');
+            var $previewModal = jQuery('#previewModal');
             imgwidth='';
             imgheight='';
 
-            $modal.on('shown.bs.modal', function () {
+            $modal.one('shown.bs.modal', function () {
 
                 if(imgwidth < width  ||  imgheight < height){
                     $modal.modal("hide");
                 }
 
                 cropper = new Cropper(image, {
-                    aspectRatio: $('#width').val()/$('#height').val(),
+                    aspectRatio: jQuery('#width').val() / jQuery('#height').val(),
                     viewMode: 3,
                     preview: '.preview',
-                    minCropBoxWidth: $('#width').val(),
-                    minCropBoxHeight: $('#height').val(),
+                    minCropBoxWidth: jQuery('#width').val(),
+                    minCropBoxHeight: jQuery('#height').val(),
 
                     data: {
-                        width: $('#width').val(),
-                        height: $('#height').val(),
+                        width: jQuery('#width').val(),
+                        height: jQuery('#height').val(),
                     }
                 });
 
@@ -936,7 +937,7 @@
                 cropper = null;
             });
 
-            $('#icon-label').on('drop', function(ev) {
+            jQuery('#icon-label').on('drop', function(ev) {
                 formchanged=1;
                 ev.preventDefault();
                 console.log(target.id, ev.target.id);
@@ -959,18 +960,18 @@
                 }
             });
 
-            $('#icon-label').on('dragover', function(ev) {
+            jQuery('#icon-label').on('dragover', function(ev) {
                 ev.preventDefault();
             });
 
             function showNotificationPreview() {
-                console.log($('input[name=notification_type]').val());
-                if (!$('input[name=notification_type]:first').prop('checked') && !$('input[name=notification_type]:last').prop('checked')) {
+                console.log(jQuery('input[name=notification_type]').val());
+                if (!jQuery('input[name=notification_type]:first').prop('checked') && !jQuery('input[name=notification_type]:last').prop('checked')) {
                     alert('Please select notification type.');
                     return;
                 }
 
-                $modalNotification = $('input[name=notification_type]:first').prop('checked') === true
+                $modalNotification = jQuery('input[name=notification_type]:first').prop('checked') === true
                     ? $modalNotificationA.modal('show') : $modalNotificationB.modal('show');
             };
 
@@ -983,19 +984,19 @@
                     img = new Image();
                     var objectUrl = _URL.createObjectURL(file);
                     img.onload = function () {
-                        $('#imgtype').val(imgtype);
-                        var height =  $('#'+imgtype).data("height");
-                        var width =  $('#'+imgtype).data("width");
+                        jQuery('#imgtype').val(imgtype);
+                        var height =  jQuery('#'+imgtype).data("height");
+                        var width =  jQuery('#'+imgtype).data("width");
                         imgwidth=this.width;
                         imgheight=this.height;
                         console.log(imgwidth);
                         if(this.width < width  ||  this.height < height){
-                            $("#imgerror-"+imgtype).css('display','block')
-                            if($('#modal').is(':visible')){
-                                $("#modal").modal('hide');
+                            jQuery("#imgerror-"+imgtype).css('display','block')
+                            if(jQuery('#modal').is(':visible')){
+                                jQuery("#modal").modal('hide');
                             }
                         }  else{
-                            $("#imgerror-"+imgtype).css('display','none');
+                            jQuery("#imgerror-"+imgtype).css('display','none');
 
                         }
                         _URL.revokeObjectURL(objectUrl);
@@ -1006,11 +1007,11 @@
                 // var files = e.target.files;
                 var imgtype= elementid;
 
-                $('#imgtype').val(imgtype);
-                height =  $('#'+imgtype).data("height");
-                width =  $('#'+imgtype).data("width");
-                $('#height').val(height);
-                $('#width').val(width);
+                jQuery('#imgtype').val(imgtype);
+                height =  jQuery('#'+imgtype).data("height");
+                width =  jQuery('#'+imgtype).data("width");
+                jQuery('#height').val(height);
+                jQuery('#width').val(width);
 
                 var done = function (url) {
                     image.src = url;
@@ -1038,10 +1039,10 @@
                 }
             }
 
-            $("body").on("change", ".image", function(e){
+            jQuery("body").on("change", ".image", function(e){
                 formchanged=1;
 
-                var imgtype = $(this).attr('id');
+                var imgtype = jQuery(this).attr('id');
                 var _URL = window.URL || window.webkitURL;
                 var file, img;
                 if ((file = this.files[0])) {
@@ -1050,19 +1051,19 @@
                     var objectUrl = _URL.createObjectURL(file);
                     console.log(img);
                     img.onload = function () {
-                        $('#imgtype').val(imgtype);
-                        var height =  $('#'+imgtype).data("height");
-                        var width =  $('#'+imgtype).data("width");
-                        imgwidth=this.width;
-                        imgheight=this.height;
+                        jQuery('#imgtype').val(imgtype);
+                        var height =  jQuery('#'+imgtype).data("height");
+                        var width =  jQuery('#'+imgtype).data("width");
+                        imgwidth = this.width;
+                        imgheight = this.height;
                         console.log('image width:' + imgwidth);
                         if(this.width < width  ||  this.height < height){
-                            $("#imgerror-"+imgtype).css('display','block')
-                            if($('#modal').is(':visible')){
-                                $("#modal").modal('hide');
+                            jQuery("#imgerror-"+imgtype).css('display','block')
+                            if(jQuery('#modal').is(':visible')){
+                                jQuery("#modal").modal('hide');
                             }
                         }  else{
-                            $("#imgerror-"+imgtype).css('display','none');
+                            jQuery("#imgerror-"+imgtype).css('display','none');
 
                         }
                         _URL.revokeObjectURL(objectUrl);
@@ -1071,16 +1072,16 @@
                 }
 
                 var files = e.target.files;
-                var imgtype = $(this).attr('id');
+                var imgtype = jQuery(this).attr('id');
 
-                $('#imgtype').val(imgtype);
-                height =  $('#'+imgtype).data("height");
-                width =  $('#'+imgtype).data("width");
-                $('#height').val(height);
-                $('#width').val(width);
+                jQuery('#imgtype').val(imgtype);
+                height =  jQuery('#'+imgtype).data("height");
+                width =  jQuery('#'+imgtype).data("width");
+                jQuery('#height').val(height);
+                jQuery('#width').val(width);
 
                 var done = function (url) {
-                    image.src = url;
+                    jQuery(image).prop('src', url);
 
                     console.log(image);
 
@@ -1106,9 +1107,9 @@
 
             });
 
-            $("#crop").click(function(){
-                var width=$('#width').val();
-                var height=$('#height').val();
+            jQuery("#crop").click(function(){
+                var width=jQuery('#width').val();
+                var height=jQuery('#height').val();
 
                 canvas = cropper.getCroppedCanvas({
                     width: width,
@@ -1125,11 +1126,11 @@
                             type: "POST",
                             dataType: "json",
                             url: "{{route('ajax.upload-file')}}",
-                            data: {'_token':  $('input[name="_token"]').val(), 'image': base64data,'eventId':$('#challengeId').val(),'idd':$('#imgtype').val()},
+                            data: {'_token':  jQuery('input[name="_token"]').val(), 'image': base64data,'eventId':jQuery('#challengeId').val(),'idd':jQuery('#imgtype').val()},
                             success: function(data){
                                 console.log(data);
                                 $modal.modal('hide');
-                                uploadFileResponse(data,$('#imgtype').val())
+                                uploadFileResponse(data,jQuery('#imgtype').val())
                                 //alert("Crop image successfully uploaded");
                             }
                         });
@@ -1139,22 +1140,22 @@
 
             function uploadFileResponse(response,idd){
 
-                $("#label-"+idd).removeClass('opacity-30');
+                jQuery("#label-"+idd).removeClass('opacity-30');
                 if(response.err == 1){
                     showErrorModal("Upload was failed. Please try again!");
                     return false;
                 }
-                $("#path-"+response.data.idd).val(response.data.path);
+                jQuery("#path-"+response.data.idd).val(response.data.path);
 
                 const arr = ['cover','icon','profile_icon','ebib','certificate','notification'];
                 if(idd){
-                    $("#label-"+response.data.idd).css('background-image','url('+response.data.fullpath+')');
-                    $("#label-"+response.data.idd).css('border','none');
+                    jQuery("#label-"+response.data.idd).css('background-image','url('+response.data.fullpath+')');
+                    jQuery("#label-"+response.data.idd).css('border','none');
 
-                    $("#span-"+response.data.idd+"-add").css('visibility','hidden');
-                    $("#span-"+response.data.idd+"-edit").css('visibility','visible');
+                    jQuery("#span-"+response.data.idd+"-add").css('visibility','hidden');
+                    jQuery("#span-"+response.data.idd+"-edit").css('visibility','visible');
                 }else if(idd == 'list_upload' || idd == 'geojson_upload'){
-                    $("#label-"+idd+" input[type='text']").val(response.data.path);
+                    jQuery("#label-"+idd+" input[type='text']").val(response.data.path);
                 }
 
             }
@@ -1163,24 +1164,24 @@
                 console.log(imgname);
                 console.log(title);
                 console.log(description);
-                $('.preview-modal-title').html(title);
-                $('.preview-modal-desc').html(description);
+                jQuery('.preview-modal-title').html(title);
+                jQuery('.preview-modal-desc').html(description);
                 var img_url = "/images/"+imgname+".png";
-                $('.preview-img').prop('src', img_url);
+                jQuery('.preview-img').prop('src', img_url);
                 $previewModal.modal('show');
             }
 
-            var $form = $('form'),
+            var $form = jQuery('form'),
             origForm = $form.serialize();
 
-            $('form :input').on('change input', function() {
+            jQuery('form :input').on('change input', function() {
                 if($form.serialize() !== origForm){
                     formchanged=1;
                     console.log(formchanged);
                 }
             });
 
-            $('div#admin-sidebar a').click(function(){
+            jQuery('div#admin-sidebar a').click(function(){
                 var response=false;
                 if(formchanged){
                     var answer =Swal.fire({
@@ -1208,42 +1209,42 @@
 
             });
 
-            $("#more_info_toggle").on('click', function() {
-                if ($("#more_info_toggle").is(':checked')) {
-                    $("#more-info-content").removeClass('hidden');
-                    $("#more_info_toggle").prop('checked', true);
-                    $("#more_info_toggle").prop('value', 1);
+            jQuery("#more_info_toggle").on('click', function() {
+                if (jQuery("#more_info_toggle").is(':checked')) {
+                    jQuery("#more-info-content").removeClass('hidden');
+                    jQuery("#more_info_toggle").prop('checked', true);
+                    jQuery("#more_info_toggle").prop('value', 1);
                 } else {
-                    $("#more-info-content").addClass('hidden');
-                    $("#more_info_toggle").prop('checked', false);
-                    $("#more_info_toggle").prop('value', 0);
+                    jQuery("#more-info-content").addClass('hidden');
+                    jQuery("#more_info_toggle").prop('checked', false);
+                    jQuery("#more_info_toggle").prop('value', 0);
                 }
             });
 
-            $('input[name=notification_type]').on('click', function() {
-                $(this).prop('checked', true);
-                console.log($(this).val());
-                console.log($('input[name=notification_type]:first').val());
-                console.log($('input[name=notification_type]:last').val());
+            jQuery('input[name=notification_type]').on('click', function() {
+                jQuery(this).prop('checked', true);
+                console.log(jQuery(this).val());
+                console.log(jQuery('input[name=notification_type]:first').val());
+                console.log(jQuery('input[name=notification_type]:last').val());
 
-                if ($(this).val() === 'Type A') {
-                    if (!$('#notification-type-b-label').hasClass('hidden')) {
-                        $('#notification-type-b-label').addClass('hidden');
+                if (jQuery(this).val() === 'Type A') {
+                    if (!jQuery('#notification-type-b-label').hasClass('hidden')) {
+                        jQuery('#notification-type-b-label').addClass('hidden');
                     }
 
-                    $('#notification-type-a-label').removeClass('hidden');
+                    jQuery('#notification-type-a-label').removeClass('hidden');
                 } else {
-                    if (!$('#notification-type-a-label').hasClass('hidden')) {
-                        $('#notification-type-a-label').addClass('hidden');
+                    if (!jQuery('#notification-type-a-label').hasClass('hidden')) {
+                        jQuery('#notification-type-a-label').addClass('hidden');
                     }
 
-                    $('#notification-type-b-label').removeClass('hidden');
+                    jQuery('#notification-type-b-label').removeClass('hidden');
                 }
             });
         });
 
-        $('#event_achievement_save').click(function(){
-            $('#create-event-achievement').submit();
+        jQuery('#event_achievement_save').click(function(){
+            jQuery('#create-event-achievement').submit();
         });
     </script>
 </x-app-layout>
