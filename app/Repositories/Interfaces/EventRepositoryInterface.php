@@ -128,6 +128,8 @@ interface EventRepositoryInterface
 
     public function processPaidRegistration($data);
 
+    public function updatePayment($data);
+
     public function getEventUserData($data);
 
     public function getEventSuccessPage($data);
