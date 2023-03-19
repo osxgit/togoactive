@@ -231,7 +231,7 @@
                                 </x-forms.toggle>
                             </div>
 
-                            <div class="float-left w-full flex  justify-center items-end @if ($eventsuccess->active_custom_message!=1)
+                            <div class="float-left w-full flex  justify-center items-end @if (isset($eventsuccess->active_custom_message) && $eventsuccess->active_custom_message!=1)
                                 hidden
                             @endif " id="custom_messsage_div">
 
