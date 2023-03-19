@@ -26,6 +26,6 @@ class UserReward extends Model
 
     public function rewards()
     {
-        return $this->belongsTo(Reward::class);
+        return $this->belongsTo(Reward::class, 'reward_id');
     }
 }

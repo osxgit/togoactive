@@ -196,4 +196,22 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$eventSuccess) ));
                 return $this->sendAPIResponse();
             }
+
+            public function getEventData(Request $request){
+                $eventData = $this->eventRepository->getEventData($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$eventData) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function checkEventUser(Request $request){
+                $eventUser = $this->eventRepository->checkEventUser($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$eventUser) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getTermConditions(Request $request){
+                $termConditions = $this->eventRepository->getTermConditions($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$termConditions) ));
+                return $this->sendAPIResponse();
+            }
     }
