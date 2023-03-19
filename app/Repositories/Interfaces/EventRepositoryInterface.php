@@ -126,6 +126,8 @@ interface EventRepositoryInterface
 
     public function processFreeRegistration($data);
 
+    public function processPaidRegistration($data);
+
     public function getEventUserData($data);
 
     public function getEventSuccessPage($data);

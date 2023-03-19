@@ -172,6 +172,13 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
                 return $this->sendAPIResponse();
             }
+
+            public function processPaidRegistration(){
+                $response = $this->eventRepository->processPaidRegistration($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
+
             public function getEventUserData(Request $request){
                 $eventUser = $this->eventRepository->getEventUserData($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$eventUser) ));

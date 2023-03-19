@@ -51,6 +51,7 @@ Route::post('getExistingUserData', [UserController::class, 'getExistingUserData'
 Route::post('storeUserData', [UserController::class, 'storeUserData'])->name('storeUserData');
 Route::post('getCheckoutRewards', [EventsController::class, 'getCheckoutRewards'])->name('getCheckoutRewards');
 Route::post('processFreeRegistration', [EventsController::class, 'processFreeRegistration'])->name('processFreeRegistration');
+Route::post('processPaidRegistration', [EventsController::class, 'processPaidRegistration'])->name('processPaidRegistration');
 
 
 Route::post('getEventUserData', [EventsController::class, 'getEventUserData'])->name('getEventUserData');
