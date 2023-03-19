@@ -29,8 +29,8 @@ return new class extends Migration
             $table->text('address',255)->nullable();
             $table->text('city',255)->nullable();
             $table->text('state',255)->nullable();
-            $table->text('subdistrict,255')->nullable();
-            $table->text('postal_code,255')->nullable();
+            $table->text('subdistrict',255)->nullable();
+            $table->text('postal_code',255)->nullable();
             $table->string('country')->index();
             $table->string('bib',100)->index();
             $table->string('token',100)->index();

@@ -123,4 +123,10 @@ interface EventRepositoryInterface
     public function getActiveAddonRewards($eventId);
 
     public function getCheckoutRewards($data);
-}
+
+    public function processFreeRegistration($data);
+
+    public function getEventUserData($data);
+
+    public function getEventSuccessPage($data);
+};

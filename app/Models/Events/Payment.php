@@ -16,6 +16,7 @@ class Payment extends Model
         'user_id',
         'payment_type',
         'payment_method',
+        'payment_intent', 
         'total_amount',
         'discount',
         'total_paid',
@@ -24,4 +25,10 @@ class Payment extends Model
         'status',
         'full_response',
     ];
+
+    public function user_reward()
+    {
+        return $this->hasMany(UserReward::class,'payment_id');
+    }
+
 }
