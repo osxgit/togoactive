@@ -996,4 +996,16 @@ return $data;
                 return  $success_page;
 
             }
+            
+            public function updatePayment($data){
+
+                $payment = Payment::Where('id',$data['paymentId'])->first();
+                if ($payment) {
+                    $payment->payment_intent =$data['payment_intent'];
+                    $payment->status  =  $data['status'];
+                    $payment->full_response = $data['fullresponse'];
+                    $payment->save();
+                    return $payment;
+                }
+            }
 }
