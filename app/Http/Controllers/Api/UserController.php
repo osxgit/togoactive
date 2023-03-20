@@ -238,22 +238,28 @@ class UserController extends Controller
     }
 
     public function getUserPaymentHistory(Request $request) {
+        $allUser = User::all();
         $user = User::where('tgp_userid',$request->userid)->first();
-        $events = EventUser::where('user_id', $user->id)
-            // ->where('event_id', $request->eventid)
-            ->where('is_paid_user', 1)
-            ->get()->toArray();
+        $events = '';
+        if( $user != null ) {
+            $events = EventUser::where('user_id', $user->id)
+                // ->where('event_id', $request->eventid)
+                ->where('is_paid_user', 1)
+                ->get()->toArray();
+        }
         $paymentData = [];
         foreach( $events as $event ) {
-
-            $paymentData[] = Payment::where('user_id', $user->id)
-            ->where('event_id', $event['event_id'])
-            ->get()->toArray();
+            if( $user != null ) {
+                $paymentData[] = Payment::where('user_id', $user->id)
+                ->where('event_id', $event['event_id'])
+                ->get()->toArray();
+            }
         }
         $response = array(
             'userData' => $user,
             'event' => $events,
-            'payment' => $paymentData
+            'payment' => $paymentData,
+            'allUser' => $allUser
         );
         $this->setResponseData(array( 'data' => array('success' => false, 'data' => $response), ));
         return $this->sendAPIResponse();
