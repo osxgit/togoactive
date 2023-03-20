@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Redis;
 
-use App\Models\User; 
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -109,7 +109,7 @@ class EventsController extends Controller
                 if($addonRewards){
                     $addonInstruction = $this->eventRepository->getEventMeta($eventId, 'addon_instructions');
                 }
-                
+
                 $this->setResponseData(array( 'data' => array('success' => true, 'registrationData'=>$registrationData,'coreRewards'=>$coreRewards,'addonRewards'=>$addonRewards,'multiQtyDisc'=>$multiQtyDisc,'rewardInstruction'=>$rewardInstruction??null,'addonInstruction'=>$addonInstruction ?? null) ));
                 return $this->sendAPIResponse();
             }
@@ -125,7 +125,7 @@ class EventsController extends Controller
                 $couponResponse = $this->eventRepository->validateCouponCode($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$couponResponse) ));
                 return $this->sendAPIResponse();
-          
+
 
             }
 
@@ -173,7 +173,7 @@ class EventsController extends Controller
                 return $this->sendAPIResponse();
             }
 
-            public function processPaidRegistration(Request $request){ 
+            public function processPaidRegistration(Request $request){
                 $response = $this->eventRepository->processPaidRegistration($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
                 return $this->sendAPIResponse();
@@ -212,6 +212,12 @@ class EventsController extends Controller
             public function getTermConditions(Request $request){
                 $termConditions = $this->eventRepository->getTermConditions($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$termConditions) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getEventSocial(Request $request) {
+                $termConditions = $this->eventRepository->getSocialData($request->all());
+                $this->setResponseData(array('data' => array('success' => true, 'data' => $termConditions)));
                 return $this->sendAPIResponse();
             }
     }
