@@ -242,26 +242,16 @@ class UserController extends Controller
         $events = '';
         if( $user != null ) {
             $events = EventUser::where('user_id', $user->id)
-                // ->where('event_id', $request->eventid)
+                ->where('event_id', $request->eventid)
                 ->where('is_paid_user', 1)
-                ->get()->toArray();
-            $paymentData = [];
-
-            foreach( $events as $event ) {
-                if( $user != null ) {
-                    $paymentData[] = Payment::where('user_id', $user->id)
-                    ->where('event_id', $event['event_id'])
-                    ->where('status', 'successful')
-                    ->get()->toArray();
-                }
-            }
+                ->first();
+            $paymentData = Payment::where('user_id', $user->id)
+                ->where('event_id', $request->eventid)
+                ->where('status', 'successful')
+                ->with('user_reward','user_reward.rewards')
+                ->get();
+            $this->setResponseData(array( 'data' => array('success' => false, 'data' => $paymentData), ));
+            return $this->sendAPIResponse();
         }
-        $response = array(
-            'userData' => $user,
-            'event' => $events,
-            'payment' => $paymentData,
-        );
-        $this->setResponseData(array( 'data' => array('success' => false, 'data' => $response), ));
-        return $this->sendAPIResponse();
     }
 }
