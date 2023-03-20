@@ -117,19 +117,19 @@ class UserController extends Controller
                 $user->save();
                 $stravaDetailExist = StravaAccounts::where('userid',$user->id)->first();
                 if($stravaDetailExist){
-                    $stravaDetailExist->strava_access_token=$request->strava_access_token;
-                    $stravaDetailExist->strava_refresh_token=$request->strava_refresh_token;
-                    $stravaDetailExist->strava_token_expiry=$request->strava_token_expiry;
-                    $stravaDetailExist->strava_error=$request->strava_error;
-                    $stravaDetailExist->strava_id=$request->strava_id;
+                    $stravaDetailExist->strava_access_token=$request->strava_access_token??'';
+                    $stravaDetailExist->strava_refresh_token=$request->strava_refresh_token??'';
+                    $stravaDetailExist->strava_token_expiry=$request->strava_token_expiry??'';
+                    $stravaDetailExist->strava_error=$request->strava_error??0;
+                    $stravaDetailExist->strava_id=$request->strava_id??0;
                     $stravaDetailExist->save();
                 } else{
                     $stravaArr= [  
-                        'strava_access_token'=>$request->strava_access_token,
-                        'strava_refresh_token'=>$request->strava_refresh_token,
-                        'strava_token_expiry'=>$request->strava_token_expiry,
-                        'strava_error'=>$request->strava_error,
-                        'strava_id'=>$request->strava_id,
+                        'strava_access_token'=>$request->strava_access_token??'',
+                        'strava_refresh_token'=>$request->strava_refresh_token??'',
+                        'strava_token_expiry'=>$request->strava_token_expiry??'',
+                        'strava_error'=>$request->strava_error??0,
+                        'strava_id'=>$request->strava_id??0,
                         'userid'=>$user->id
                     ];
                     $staravDetail = StravaAccounts::create($stravaArr);
@@ -138,28 +138,28 @@ class UserController extends Controller
        
              $userProfileExist= UserMedia::where('user_id',$user->id)->where('image_type','profile_image')->first();
              if($userProfileExist){
-                $userProfileExist->path=$request->profile_pic;
+                $userProfileExist->path=$request->profile_pic??'';
                 $userProfileExist->save();
              }else{
                 $profile_imageArr=[
                     'user_id'=>$user->id,
                     'module'=>'profile',
                     'image_type'=>'profile_image',
-                    'path'=>$request->profile_pic,
+                    'path'=>$request->profile_pic??'',
                 ];
                 $profileImgDetail = UserMedia::create($profile_imageArr);
              }
                 
              $userCoverExist= UserMedia::where('user_id',$user->id)->where('image_type','cover_image')->first();
              if($userCoverExist){
-                $userCoverExist->path=$request->cover_pic;
+                $userCoverExist->path=$request->cover_pic??'';
                 $userCoverExist->save();
              }else{
                 $cover_imageArr=[
                     'user_id'=>$user->id,
                     'module'=>'profile',
                     'image_type'=>'cover_image',
-                    'path'=>$request->cover_pic,
+                    'path'=>$request->cover_pic??'',
                 ];
                 $coverImgDetail = UserMedia::create($cover_imageArr);
              }
@@ -190,35 +190,40 @@ class UserController extends Controller
                     'apple_id'=> $request->apple_id??0,
                     'password' => "",
                 );
-    
+
                 $user = User::create($userArr);
+
                 $stravaArr= [  
-                    'strava_access_token'=>$request->strava_access_token,
-                    'strava_refresh_token'=>$request->strava_refresh_token,
-                    'strava_token_expiry'=>$request->strava_token_expiry,
-                    'strava_error'=>$request->strava_error,
-                    'strava_id'=>$request->strava_id,
+                    'strava_access_token'=>$request->strava_access_token??'',
+                    'strava_refresh_token'=>$request->strava_refresh_token??'',
+                    'strava_token_expiry'=>$request->strava_token_expiry??'',
+                    'strava_error'=>$request->strava_error??0,
+                    'strava_id'=>$request->strava_id??0,
                     'userid'=>$user->id
                 ];
+
                 $staravDetail = StravaAccounts::create($stravaArr);
+
                 $profile_imageArr=[
                     'user_id'=>$user->id,
                     'module'=>'profile',
                     'image_type'=>'profile_image',
-                    'path'=>$request->profile_pic,
+                    'path'=>$request->profile_pic??'',
                 ];
                 $profileImgDetail = UserMedia::create($profile_imageArr);
+
                 $cover_imageArr=[
                     'user_id'=>$user->id,
                     'module'=>'profile',
                     'image_type'=>'cover_image',
-                    'path'=>$request->cover_pic,
+                    'path'=>$request->cover_pic??'',
                 ];
                 $coverImgDetail = UserMedia::create($cover_imageArr);
-                event(new Registered($user));
+
+//                 event(new Registered($user));
             }
             
-           
+
             DB::commit();
             $this->setResponseData(array( 'data' => array('success' => true, 'user'=>$user) ));
             return $this->sendAPIResponse();

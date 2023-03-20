@@ -614,7 +614,7 @@ return $data;
 
 
     }
-    
+
     public function calculatePrice($data){
 
         $responseData=[];
@@ -650,7 +650,7 @@ return $data;
         $discountpercentage=0;
         $validRewards=[];
         if(count($membership) > 0){
-           
+
             foreach($membership as $rewardId){
 
                 $reward= Reward::Where('event_id',$data['eventId'])->where('id',$rewardId[0])->first();
@@ -696,23 +696,23 @@ return $data;
 
                 }
             }
-            
+
             if( $coupon){
 //                 $discountAmount = ($coupon->discount/100)*$totalPrice;
                 $discountpercentage=$coupon->discount;
             } else if(count($discount)){
                 $membershipCount= count($membership);
-                
+
                 $discountpercentage=0;
                 foreach($discount as $disc){
-                    
+
                     if($disc->condition == 'Equal to'){
                         if($disc->quantity == $membershipCount){
                             $discountpercentage=$disc->discount;
                         }
                     }
                     if($disc->condition == 'More than'){
-                     
+
                         if($membershipCount> $disc->quantity ){
                             $discountpercentage=$disc->discount;
                         }
@@ -744,7 +744,7 @@ return $data;
         $coreRewards= Reward::Where('event_id',$eventId)->where('is_hidden',0)->where('is_core_item',1)->get();
         return $coreRewards->sortBy('sort_id');
     }
-    
+
     public function getActiveAddonRewards($eventId){
         $addonRewards= Reward::Where('event_id',$eventId)->where('is_hidden',0)->where('is_core_item',0)->get();
         return $addonRewards->sortBy('sort_id');
@@ -753,7 +753,7 @@ return $data;
     public function getCheckoutRewards($data){
 
         $addonRewards= Reward::whereIn('id', $data)->get();
-        return $addonRewards; 
+        return $addonRewards;
     }
 
     public function createEventSuccessPage($request,$eventId){
@@ -796,39 +796,39 @@ return $data;
         }
     }
 
-    
+
     public function processFreeRegistration($data){
         //     dd($data);
         //   dd(json_decode($data['address']));
         // $data['address']=json_decode($data['address']);
                 $user= User::where('tgp_userid',$data['userId'])->first();
                 $StravaAccounts= StravaAccounts::select('id')->where('userid',$user->id)->first();
-        
+
                 ## Bib
                 $exists = true;
                 while($exists){
                     $bib = rand(0,99999);
                     $bib = str_pad($bib,5,'0',STR_PAD_LEFT);
-        
-                    $cuserBibE = EventUser::where('event_id',$data['eventId'])->where('bib', $bib)->get(); 
+
+                    $cuserBibE = EventUser::where('event_id',$data['eventId'])->where('bib', $bib)->get();
                     if($cuserBibE){
                         $exists = false;
                     }
                 }
-        
+
                 $userbib = $bib;
-        
-        
+
+
                 ## Token
                 $exists = true;
                 while($exists){
                     $token = bin2hex(openssl_random_pseudo_bytes(8));
-                    $cuserTokenE = EventUser::where('token', $token)->get(); 
+                    $cuserTokenE = EventUser::where('token', $token)->get();
                     if($cuserTokenE){
                         $exists = false;
                     }
                 }
-        
+
                 $cutoken = $token;
 
                 $eventUser =  EventUser::create([
@@ -847,7 +847,7 @@ return $data;
                     'strava_account_id'=>$StravaAccounts->id??0,
                     'gender'=>$user->gender,
                     'dob'=> $user->dob,
-                    'bib'=>$userbib, 
+                    'bib'=>$userbib,
                     'token'=>$cutoken,
                     'group'=>$data['group']??'',
                 ]);
@@ -879,39 +879,39 @@ return $data;
                     'coupon_code'=>'',
                     'status'=>'successful',
                 ]);
-        
+
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
 
             public function processPaidRegistration($data){
                 $user= User::where('tgp_userid',$data['userId'])->first();
                 $StravaAccounts= StravaAccounts::select('id')->where('userid',$user->id)->first();
-        
+
                 ## Bib
                 $exists = true;
                 while($exists){
                     $bib = rand(0,99999);
                     $bib = str_pad($bib,5,'0',STR_PAD_LEFT);
-        
-                    $cuserBibE = EventUser::where('event_id',$data['eventId'])->where('bib', $bib)->get(); 
+
+                    $cuserBibE = EventUser::where('event_id',$data['eventId'])->where('bib', $bib)->get();
                     if($cuserBibE){
                         $exists = false;
                     }
                 }
-        
+
                 $userbib = $bib;
-        
-        
+
+
                 ## Token
                 $exists = true;
                 while($exists){
                     $token = bin2hex(openssl_random_pseudo_bytes(8));
-                    $cuserTokenE = EventUser::where('token', $token)->get(); 
+                    $cuserTokenE = EventUser::where('token', $token)->get();
                     if($cuserTokenE){
                         $exists = false;
                     }
                 }
-        
+
                 $cutoken = $token;
 
 
@@ -931,7 +931,7 @@ return $data;
                     'strava_account_id'=>$StravaAccounts->id??0,
                     'gender'=>$user->gender,
                     'dob'=> $user->dob,
-                    'bib'=>$userbib, 
+                    'bib'=>$userbib,
                     'token'=>$cutoken,
                     'group'=>$data['group']??'',
                 ]);
@@ -978,7 +978,7 @@ return $data;
                     ]);
 
                 }
-        
+
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
 
             }
@@ -990,14 +990,14 @@ return $data;
                 $payment = Payment::where('id',$paymentId)->with('user_reward','user_reward.rewards')->first();
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
-        
+
             public function getEventSuccessPage($data){
-                $eventId=$data['eventId']; 
+                $eventId=$data['eventId'];
                 $success_page = EventSuccessPage::Where('event_id',$eventId)->first();
                 return  $success_page;
 
             }
-            
+
             public function updatePayment($data){
 
                 $payment = Payment::Where('id',$data['paymentId'])->first();
@@ -1016,11 +1016,16 @@ return $data;
             }
 
             public function checkEventUser($data){
+                $user= User::where('tgp_userid',$data['userId'])->first();
+                return EventUser::where('event_id',$data['eventId'])->where('user_id', $user->id)->with('user')->first();
+           }
 
-                 return EventUser::where('event_id',$data['eventId'])->where('user_id',$data['userId'])->first();   
-            } 
-        
             public function getTermConditions($data){
                 return EventsFaq::where('event_id', $data['eventId'])->first();
+            }
+
+            public function getSocialData($data)
+            {
+                return SocialSeo::where('event_id', $data['eventId'])->first();
             }
 }
