@@ -238,7 +238,6 @@ class UserController extends Controller
     }
 
     public function getUserPaymentHistory(Request $request) {
-        $allUser = User::all();
         $user = User::where('tgp_userid',$request->userid)->first();
         $events = '';
         if( $user != null ) {
@@ -252,6 +251,7 @@ class UserController extends Controller
                 if( $user != null ) {
                     $paymentData[] = Payment::where('user_id', $user->id)
                     ->where('event_id', $event['event_id'])
+                    ->where('status', 'successful')
                     ->get()->toArray();
                 }
             }
@@ -260,7 +260,6 @@ class UserController extends Controller
             'userData' => $user,
             'event' => $events,
             'payment' => $paymentData,
-            'allUser' => $allUser
         );
         $this->setResponseData(array( 'data' => array('success' => false, 'data' => $response), ));
         return $this->sendAPIResponse();
