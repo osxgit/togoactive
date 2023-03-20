@@ -6,7 +6,8 @@ use App\Http\Controllers\Admin\Events\{
     SocialSeoController,
     RewardsController,
     EventsFaqController,
-    EventSuccessPageController
+    EventSuccessPageController,
+    AchievementsController
 };
 use App\Http\Controllers\Public\RegistrationController;
 // use App\Http\Controllers\Admin\Events\{
@@ -106,6 +107,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/event/{id}/info/success_page', [EventSuccessPageController::class, 'renderSuccessPage'])->name('admin.events.success');
     Route::post('/admin/event/{id}/info/success_page', [EventSuccessPageController::class, 'submitSuccessPageDetails'])->name('admin.events.success.store');
     Route::post('/admin/event/set_event_success_email', [EventSuccessPageController::class, 'sendSuccessEmail'])->name('admin.events.success.setSuccessEmail');
+    
+    Route::get('/admin/event/{id}/achievements', [AchievementsController::class, 'index'])->name('admin.events.achievements.list');
+    Route::post('/admin/event/{id}/achievements', [AchievementsController::class, 'store'])->name('admin.events.achievements.store');
+    Route::get('/admin/event/{id}/achievements/edit/{achievementId}', [AchievementsController::class, 'get'])->name('admin.events.achievements.edit');
+    Route::get('/admin/event/{id}/achievements/create', [AchievementsController::class, 'get'])->name('admin.events.achievements.create');
+    Route::post('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'update'])->name('admin.events.achievements.update');
+    Route::delete('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'delete'])->name('admin.events.achievements.delete');
 });
     Route::get('/admin/event/{id}/unlayer', [EventsController::class, 'unlayer'])->name('admin.events.unlayer');
 

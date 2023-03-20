@@ -232,4 +232,10 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$termConditions) ));
                 return $this->sendAPIResponse();
             }
+
+            public function getEventSocial(Request $request) {
+                $termConditions = $this->eventRepository->getSocialData($request->all());
+                $this->setResponseData(array('data' => array('success' => true, 'data' => $termConditions)));
+                return $this->sendAPIResponse();
+            }
     }

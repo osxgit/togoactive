@@ -59,7 +59,7 @@ interface EventRepositoryInterface
     public function editEventRewards($request,$eventId);
 
     public function storeMultiQuantityDiscount($request,$eventId);
-    
+
     public function editMultiQuantityDiscount($request,$eventId);
 
     public function getMultiQuantityDiscount($eventId);
@@ -119,7 +119,7 @@ interface EventRepositoryInterface
     public function getActiveRewards($eventId);
 
     public function getActiveCoreRewards($eventId);
-    
+
     public function getActiveAddonRewards($eventId);
 
     public function getCheckoutRewards($data);
@@ -139,5 +139,7 @@ interface EventRepositoryInterface
     public function checkEventUser($data);
 
     public function getTermConditions($data);
+
+    public function getSocialData($data);
 
 };
