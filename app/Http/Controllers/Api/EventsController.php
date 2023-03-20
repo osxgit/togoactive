@@ -178,7 +178,7 @@ class EventsController extends Controller
                 $eventPayment = $response->payment->id;
 
                 $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
-                //event(new EventRegistration($eventData,$request));
+                event(new EventRegistration($eventData,$request));
 
                 return $this->sendAPIResponse();
             }
@@ -199,7 +199,7 @@ class EventsController extends Controller
                 $eventPayment = $response->paymentId;
 
                 $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
-                //event(new EventRegistration($eventData,$request));
+                event(new EventRegistration($eventData,$request));
                 return $this->sendAPIResponse();
             }
 
