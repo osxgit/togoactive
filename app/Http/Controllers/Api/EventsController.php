@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Redis;
 
-use App\Models\User; 
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\Api\SendResponse;
 use App\Models\Events\Events;
 use Carbon\Carbon;
+use App\Events\EventRegistration;
 
 class EventsController extends Controller
 {
@@ -109,7 +110,7 @@ class EventsController extends Controller
                 if($addonRewards){
                     $addonInstruction = $this->eventRepository->getEventMeta($eventId, 'addon_instructions');
                 }
-                
+
                 $this->setResponseData(array( 'data' => array('success' => true, 'registrationData'=>$registrationData,'coreRewards'=>$coreRewards,'addonRewards'=>$addonRewards,'multiQtyDisc'=>$multiQtyDisc,'rewardInstruction'=>$rewardInstruction??null,'addonInstruction'=>$addonInstruction ?? null) ));
                 return $this->sendAPIResponse();
             }
@@ -125,7 +126,7 @@ class EventsController extends Controller
                 $couponResponse = $this->eventRepository->validateCouponCode($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$couponResponse) ));
                 return $this->sendAPIResponse();
-          
+
 
             }
 
@@ -170,10 +171,19 @@ class EventsController extends Controller
             public function processFreeRegistration(Request $request){
                 $response = $this->eventRepository->processFreeRegistration($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+
+                // this is called when event free registration
+                $eventUser = $response->event_user->id;
+                $eventId = $response->event_user->event_id;
+                $eventPayment = $response->payment->id;
+
+                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
+                //event(new EventRegistration($eventData,$request));
+
                 return $this->sendAPIResponse();
             }
 
-            public function processPaidRegistration(Request $request){ 
+            public function processPaidRegistration(Request $request){
                 $response = $this->eventRepository->processPaidRegistration($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
                 return $this->sendAPIResponse();
@@ -182,6 +192,14 @@ class EventsController extends Controller
             public function updatePayment(Request $request){
                 $response = $this->eventRepository->updatePayment($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+
+                // this is called when event payment registration
+                $eventUser = $request->userId;
+                $eventId = $response->eventId;
+                $eventPayment = $response->paymentId;
+
+                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
+                //event(new EventRegistration($eventData,$request));
                 return $this->sendAPIResponse();
             }
 

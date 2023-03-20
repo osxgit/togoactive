@@ -15,6 +15,7 @@ use Mail;
 use App\Mail\SendEmail;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use App\Events\EventRegistration;
 
 class EventSuccessPageController extends Controller
 {
@@ -26,6 +27,8 @@ class EventSuccessPageController extends Controller
     }
 
     public function renderSuccessPage($eventId){
+
+
 
         $eventSuccessPage = $this->eventRepository->getEventSuccessSetup($eventId);
         $email = Auth::user()->email;
@@ -68,6 +71,13 @@ class EventSuccessPageController extends Controller
         } else{
             $eventSuccessPage = $this->eventRepository->createEventSuccessPage($data,$eventId);
         }
+
+        // added this code for generate emails via event
+
+        $eventData = ['paymentId'=>1,'userId'=>1,'eventId'=>$eventId];
+        $login_log_data = event(new EventRegistration($eventData,$request));
+
+
 
         return redirect()->route('admin.events.success',$eventId )->with('message','Changes saved successfully!');
 
