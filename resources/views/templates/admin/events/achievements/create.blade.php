@@ -1,11 +1,13 @@
 <x-app-layout>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.css"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
     <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     <style>
         #div_faq{
             border:none !important;
@@ -353,6 +355,28 @@
         #sponsor_detail{
             border:none !important;
         }
+
+        .bootstrap-select:not([class*="col-"]):not([class*="form-control"]):not(.input-group-btn) {
+            width: 100%;
+            position: relative;
+            bottom: 3px;
+        }
+
+        .bootstrap-select.show-tick .dropdown-menu .selected span.check-mark {
+            color: #7E1FF6D9;
+        }
+
+        #notification_a_content {
+            width: 500px;
+        }
+
+        #notification_a_preview {
+            background-color: #e6e6fa;
+        }
+
+        #notification_a_time {
+            text-align: right;
+        }
     </style>
     @include('layouts.admin.events.subheader')
     <div class="w-full flex flex-col sm:flex-row flex-grow overflow-hidden bg-light-gray-bg">
@@ -400,6 +424,7 @@
                 <form method="POST" id="create-events-achievement" name="create-event-achievement" action="{{route('admin.events.achievements.store', array($id))}}" class="w-full float-left" autocomplete="false" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="challengeId" id="challengeId" value="{{$id}}">
+                    <input type="hidden" name="event_id" id="event_id" value="{{$id}}">
 
                     <x-forms.section class="mt-8 rounded-xl">
                         <x-slot name="section_heading">
@@ -410,23 +435,24 @@
                         <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
                             <div class="float-left w-full ">
-                                <div id="icon-label" class="float-left pr-2 mt-4">
-                                    <label for="icon" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
+                                <div id="achievement_icon-label" class="float-left pr-2 mt-4">
+                                    <label for="achievement_icon" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
                                         Icon*
                                         <span class="font-poppins">(1:1 ratio)</span>
                                     </label>
                                     <x-forms.image_uploader>
                                         <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                         <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 150x150px)</x-slot>
-                                        <x-slot name="field_id">icon_uploader</x-slot>
+                                        <x-slot name="field_id">achievement_icon</x-slot>
                                         <x-slot name="uploaded_img"></x-slot>
                                     </x-forms.image_uploader>
 
-                                    <x-forms.file_input name="icon">
+                                    <x-forms.file_input name="icon_file">
                                         <x-slot name="width">150</x-slot>
                                         <x-slot name="height">150</x-slot>
-                                        <x-slot name="field_id">icon</x-slot>
+                                        <x-slot name="field_id">achievement_icon</x-slot>
                                     </x-forms.file_input>
+                                    <input type="hidden" name="icon" id="icon" />
                                 </div>
                                 <div id="title-label" class="w-full">
                                     <x-forms.textfield name="title">
@@ -455,18 +481,17 @@
                         <x-slot name="section_heading_description_status"></x-slot>
                         <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
-                            <div class="float-left w-full ">
-                                <x-forms.select id="achievement_type" name="type[]" multiple>
+                            <div class="float-left w-1/2 ">
+                                <x-forms.select id="achievement_type" name="type[]" class="selectpicker" multiple>
                                     <x-slot name="field_id">achievement_type</x-slot>
                                     <x-slot name="label_text">Achievement type*</x-slot>
                                     <x-slot name="label_description_status"></x-slot>
                                     <x-slot name="label_description"></x-slot>
                                     <x-slot name="options">
-                                        <option value="" >--Select Type--</option>
                                         <option value="Individual">
                                             Individual
                                         </option>
-                                        <option value="Team'">
+                                        <option value="Team">
                                             Team
                                         </option>
                                         <option value="Indoor">
@@ -520,26 +545,27 @@
                                     </x-forms.toggle>
                                 </div>
                                 <div id="more-info-content" class="float-left mt-4 hidden w-full">
-                                    <div class="w-1/2">
+                                    <div id="achcievement_more_info_image-label" class="w-1/2">
                                         <h1 class="float-left w-full font-poppins-bold text-2xl">
                                             <span>“More Info” Modal Pop-up</span>
                                         </h1>
-                                        <label for="more_info_image_uploader" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
+                                        <label for="achcievement_more_info_image" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
                                             Image*
                                             <span class="font-poppins">(1280 x 640 px)</span>
                                         </label>
                                         <x-forms.image_uploader>
                                             <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                             <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x640px)</x-slot>
-                                            <x-slot name="field_id">more_info_image_uploader</x-slot>
+                                            <x-slot name="field_id">achcievement_more_info_image</x-slot>
                                             <x-slot name="uploaded_img"></x-slot>
                                         </x-forms.image_uploader>
 
                                         <x-forms.file_input name="more_info_image">
                                             <x-slot name="width">1280</x-slot>
                                             <x-slot name="height">640</x-slot>
-                                            <x-slot name="field_id">more_info_image</x-slot>
+                                            <x-slot name="field_id">achcievement_more_info_image</x-slot>
                                         </x-forms.file_input>
+                                        <input type="hidden" name="more_info_image" id="more_info_image" />
                                     </div>
                                     <div id="more-info-description-label" class="w-full">
                                         <x-forms.textarea name="more_info_description">
@@ -596,7 +622,7 @@
                             Communication - Notification*
                         </x-slot>
                         <x-slot name="section_button">
-                            <button onclick="showNotificationPreview()"
+                            <button
                                 type="button" id="notification_preview_button"
                                 style="color: #7E1FF6 !important;border: 1px solid #7E1FF6;
                                 padding: 0px 5px; border-radius: 5px;
@@ -651,7 +677,7 @@
                                     </div>
                                 </div>
                                 <div id="notification-type-b-label" class="float-left hidden w-full mt-4">
-                                    <div class="w-1/2">
+                                    <div id="hero_image-label" class="w-1/2">
                                         <h1 class="float-left w-full font-poppins-bold text-2xl">
                                             <span>Type B notifications*</span>
                                         </h1>
@@ -663,15 +689,16 @@
                                         <x-forms.image_uploader>
                                             <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                             <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x600px)</x-slot>
-                                            <x-slot name="field_id">notification_type_b_image_uploader</x-slot>
+                                            <x-slot name="field_id">hero_image</x-slot>
                                             <x-slot name="uploaded_img"></x-slot>
                                         </x-forms.image_uploader>
 
-                                        <x-forms.file_input name="notification_hero_image">
+                                        <x-forms.file_input name="notification_hero_image_file">
                                             <x-slot name="width">1280</x-slot>
                                             <x-slot name="height">600</x-slot>
-                                            <x-slot name="field_id">notification_hero_image</x-slot>
+                                            <x-slot name="field_id">hero_image_file</x-slot>
                                         </x-forms.file_input>
+                                        <input type="hidden" name="notification_hero_image" id="notification_hero_image" />
                                     </div>
                                     <div id="enable-primary-cta-button-label" class="float-left mt-4 w-full">
                                         <x-forms.toggle id="primary_cta_toggle" name="is_primary_cta_enabled"  value="0" >
@@ -702,8 +729,9 @@
                                                 <i class="fa-plus"></i>
                                                 <span>secondary CTA button</span>
                                             </a>
+                                            <input type="hidden" name="is_secondary_cta_enabled" id="enable_secondary_cta" />
                                         </div>
-                                        <div class="float-left w-full hidden">
+                                        <div id="secondary_cta_button-label" class="float-left w-full hidden">
                                             <div id="secondary-cta-button-text-label" class="float-left w-full">
                                                 <div id="secondary_cta_button_text" class="w-full">
                                                     <x-forms.textfield name="secondary_cta_button_text">
@@ -734,8 +762,8 @@
                                         </x-forms.toggle>
                                     </div>
                                     <div id="share-option-link-label" class="float-left ml-5 pl-1 w-1/2 hidden">
-                                        <div id="secondary-cta-link-label" class="float-left w-full">
-                                            <div id="secondary_cta_link" class="w-full">
+                                        <div id="share-option-link-label" class="float-left w-full">
+                                            <div id="share_option_link" class="w-full">
                                                 <x-forms.textfield name="enable_share_option_link">
                                                     <x-slot name="field_id">enable_share_option_link</x-slot>
                                                     <x-slot name="label_text">Link*</x-slot>
@@ -774,15 +802,16 @@
                                         <x-forms.image_uploader>
                                             <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                             <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 300x150px)</x-slot>
-                                            <x-slot name="field_id">sponsored_content_image_uploader</x-slot>
+                                            <x-slot name="field_id">sponsor-content-image</x-slot>
                                             <x-slot name="uploaded_img"></x-slot>
                                         </x-forms.image_uploader>
 
-                                        <x-forms.file_input name="sponsor_content_image">
+                                        <x-forms.file_input name="sponsor_content_image_file">
                                             <x-slot name="width">300</x-slot>
                                             <x-slot name="height">150</x-slot>
-                                            <x-slot name="field_id">sponsor_content_image</x-slot>
+                                            <x-slot name="field_id">sponsor-content-image</x-slot>
                                         </x-forms.file_input>
+                                        <input type="hidden" name="sponsor_content_image" id="sponsor_content_image" />
                                     </div>
                                     <div id="sponsor-content-text-label" class="float-left w-full">
                                         <x-forms.textarea name="sponsor_content_text">
@@ -809,24 +838,28 @@
     </form>
 
     <div class="modal fade" id="notification_type_a_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div id="notification_a_time">
-                    Just now
-                </div>
-                <div id="notification_a_body" class="flex">
-                    <div class="w-40">
-                        <img id="icon_image_modal" src="/images/dummy.png" />
-                    </div>
-                    <div id="notification_a_content">
-                        <div id="notification_a_header">
-                            Nice header here
+        <div class="modal-dialog modal-md" role="document">
+            <div id="notification_a_content" class="modal-content pt-4 pr-4 pb-4 pl-4">
+                <a href="#" id="notification_a_destination_url" target="_blank">
+                    <div id="notification_a_preview" class="w-full rounded font-poppins">
+                        <div id="notification_a_time" class="text-sm pr-2 pt-2 text-gray">
+
                         </div>
-                        <div id="notification_a_text">
-                            Hey! Congrats! You ahieved a lot! Keep up and get more achievements!
+                        <div id="notification_a_body" class="flex mt-1">
+                            <div class="w-40 mb-3 pl-2">
+                                <img id="icon_image_modal" src="/images/dummy.png" class="rounded-full" />
+                            </div>
+                            <div id="notification_a_content" class="pl-3">
+                                <div id="notification_a_header" class="font-poppins-bold">
+
+                                </div>
+                                <div id="notification_a_text" class="font-poppins">
+
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -842,12 +875,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="img-container">
-                        <input type="hidden" id="imgtype" value=''>
-                        <input type="hidden" id="height" value=''>
-                        <input type="hidden" id="width" value=''>
                         <div class="row">
                             <div class="col-md-8">
-                                <img id="image" src="https://avatars0.githubusercontent.com/u/3456749">
+                                <img id="" src="https://avatars0.githubusercontent.com/u/3456749">
                             </div>
                             <div class="col-md-4">
                                 <div class="preview"></div>
@@ -857,7 +887,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="crop">Crop</button>
+                    <button type="button" class="btn btn-primary">Crop</button>
                 </div>
             </div>
         </div>
@@ -913,7 +943,7 @@
             imgwidth='';
             imgheight='';
 
-            $modal.one('shown.bs.modal', function () {
+            $modal.on('shown.bs.modal', function () {
 
                 if(imgwidth < width  ||  imgheight < height){
                     $modal.modal("hide");
@@ -925,7 +955,7 @@
                     preview: '.preview',
                     minCropBoxWidth: jQuery('#width').val(),
                     minCropBoxHeight: jQuery('#height').val(),
-
+                    modal: true,
                     data: {
                         width: jQuery('#width').val(),
                         height: jQuery('#height').val(),
@@ -934,10 +964,10 @@
 
             }).on('hidden.bs.modal', function () {
                 cropper.destroy();
-                cropper = null;
+                $('#image').data('cropper', null);
             });
 
-            jQuery('#icon-label').on('drop', function(ev) {
+            jQuery('#achievement_icon-label, #achcievement_more_info_image-label, #hero_image-label').on('drop', function(ev) {
                 formchanged=1;
                 ev.preventDefault();
                 console.log(target.id, ev.target.id);
@@ -960,20 +990,50 @@
                 }
             });
 
-            jQuery('#icon-label').on('dragover', function(ev) {
+            jQuery('#achievement_icon-label, #achcievement_more_info_image-label, #here_image-label').on('dragover', function(ev) {
                 ev.preventDefault();
             });
 
-            function showNotificationPreview() {
-                console.log(jQuery('input[name=notification_type]').val());
-                if (!jQuery('input[name=notification_type]:first').prop('checked') && !jQuery('input[name=notification_type]:last').prop('checked')) {
+            jQuery('#notification_preview_button').on('click', function() {
+                if (!jQuery('input[name=notification_type]:first').prop('checked')
+                        && !jQuery('input[name=notification_type]:last').prop('checked')) {
                     alert('Please select notification type.');
                     return;
                 }
 
-                $modalNotification = jQuery('input[name=notification_type]:first').prop('checked') === true
-                    ? $modalNotificationA.modal('show') : $modalNotificationB.modal('show');
-            };
+                if (!jQuery('input[name=notification_title]').val()
+                        || !jQuery('textarea[name=notification_description]').val()) {
+                    return Swal.fire({
+                        title: '',
+                        icon: 'error',
+                        html: 'Notification title and text are required.',
+                        showCloseButton: true
+                    }).then((result) => {
+                        return false;
+                    });
+                }
+
+                if (jQuery('input[name=notification_type]:first').prop('checked')) {
+                    jQuery('#notification_a_header').text(jQuery('input[name=notification_title]').val());
+                    jQuery('#notification_a_text').text(jQuery('textarea[name=notification_description]').val());
+                    let bgImg = jQuery('#label-achievement_icon').
+                        css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+
+                    if (bgImg !== 'none') {
+                        jQuery('#icon_image_modal').prop('src', bgImg);
+                    }
+
+                    if (jQuery('input[name=notification_destination_url]')) {
+                        jQuery('#notification_a_destination_url').prop(
+                            'href', jQuery('input[name=notification_destination_url]').val()
+                        );
+                    }
+
+                    $modalNotification = $modalNotificationA.modal('show');
+                } else {
+                    $modalNotification = $modalNotificationB.modal('show');
+                }
+            });
 
             function handleFiles(files, elementid) {
                 console.log('in handle files');
@@ -1081,7 +1141,7 @@
                 jQuery('#width').val(width);
 
                 var done = function (url) {
-                    jQuery(image).prop('src', url);
+                    jQuery('#image').prop('src', url);
 
                     console.log(image);
 
@@ -1107,14 +1167,15 @@
 
             });
 
-            jQuery("#crop").click(function(){
-                var width=jQuery('#width').val();
-                var height=jQuery('#height').val();
-
+            jQuery('#crop').on('click', function() {
+                var width = jQuery('#width').val();
+                var height = jQuery('#height').val();
+                console.log('hrer');
                 canvas = cropper.getCroppedCanvas({
                     width: width,
                     height: height,
                 });
+
                 canvas.toBlob(function(blob) {
                     url = URL.createObjectURL(blob);
                     var reader = new FileReader();
@@ -1126,7 +1187,7 @@
                             type: "POST",
                             dataType: "json",
                             url: "{{route('ajax.upload-file')}}",
-                            data: {'_token':  jQuery('input[name="_token"]').val(), 'image': base64data,'eventId':jQuery('#challengeId').val(),'idd':jQuery('#imgtype').val()},
+                            data: {'_token':  jQuery('input[name="_token"]').val(), 'image': base64data,'eventId':{{ $id }},'idd':jQuery('#imgtype').val()},
                             success: function(data){
                                 console.log(data);
                                 $modal.modal('hide');
@@ -1139,6 +1200,15 @@
             });
 
             function uploadFileResponse(response,idd){
+
+                let iddToField = {
+                    'achievement_icon': 'icon',
+                    'achcievement_more_info_image': 'more_info_image',
+                    'hero_image': 'notification_hero_image',
+                    'sponsor-content-image': 'sponsor_content_image'
+                };
+
+                jQuery('#' + iddToField[idd]).val(response.data.fullpath);
 
                 jQuery("#label-"+idd).removeClass('opacity-30');
                 if(response.err == 1){
@@ -1211,9 +1281,9 @@
 
             jQuery("#more_info_toggle").on('click', function() {
                 if (jQuery("#more_info_toggle").is(':checked')) {
-                    jQuery("#more-info-content").removeClass('hidden');
                     jQuery("#more_info_toggle").prop('checked', true);
                     jQuery("#more_info_toggle").prop('value', 1);
+                    jQuery("#more-info-content").removeClass('hidden');
                 } else {
                     jQuery("#more-info-content").addClass('hidden');
                     jQuery("#more_info_toggle").prop('checked', false);
@@ -1223,9 +1293,6 @@
 
             jQuery('input[name=notification_type]').on('click', function() {
                 jQuery(this).prop('checked', true);
-                console.log(jQuery(this).val());
-                console.log(jQuery('input[name=notification_type]:first').val());
-                console.log(jQuery('input[name=notification_type]:last').val());
 
                 if (jQuery(this).val() === 'Type A') {
                     if (!jQuery('#notification-type-b-label').hasClass('hidden')) {
@@ -1241,10 +1308,58 @@
                     jQuery('#notification-type-b-label').removeClass('hidden');
                 }
             });
+
+            jQuery('#primary_cta_toggle').on('click', function() {
+                if (jQuery("#primary_cta_toggle").is(':checked')) {
+                    jQuery("#primary_cta_toggle").prop('checked', true);
+                    jQuery("#primary_cta_toggle").prop('value', 1);
+                } else {
+                    jQuery("#primary_cta_toggle").prop('checked', false);
+                    jQuery("#primary_cta_toggle").prop('value', 0);
+                }
+            });
+
+            jQuery('#enable_secondary_cta_button').on('click', function(e) {
+                e.preventDefault();
+                jQuery("#secondary_cta_button-label").removeClass('hidden');
+                jQuery('#enable_secondary_cta').val('1');
+            });
+
+            jQuery('#share_option_toggle').on('click', function() {
+                if (jQuery("#share_option_toggle").is(':checked')) {
+                    jQuery("#share_option_toggle").prop('checked', true);
+                    jQuery("#share_option_toggle").prop('value', 1);
+                    jQuery("#share-option-link-label").removeClass('hidden');
+                } else {
+                    jQuery("#share_option_toggle").prop('checked', false);
+                    jQuery("#share_option_toggle").prop('value', 0);
+                    jQuery("#share-option-link-label").addClass('hidden');
+                }
+            });
+
+            jQuery('#sponsor_content_toggle').on('click', function() {
+                if (jQuery("#sponsor_content_toggle").is(':checked')) {
+                    jQuery("#sponsor_content_toggle").prop('checked', true);
+                    jQuery("#sponsor_content_toggle").prop('value', 1);
+                    jQuery("#sponsor-content-label").removeClass('hidden');
+                } else {
+                    jQuery("#sponsor_content_toggle").prop('checked', false);
+                    jQuery("#sponsor_content_toggle").prop('value', 0);
+                    jQuery("#sponsor-content-label").addClass('hidden');
+                }
+            });
+
+            jQuery('.selectpicker').selectpicker({title: '--Select Type--'});
+
+            jQuery('.selectpicker').on('change', function() {
+                console.log($(this).val());
+            });
         });
 
-        jQuery('#event_achievement_save').click(function(){
-            jQuery('#create-event-achievement').submit();
+        jQuery('#event_achievement_save').click(function(e) {
+            e.preventDefault();
+
+            jQuery('#create-events-achievement').submit();
         });
     </script>
 </x-app-layout>

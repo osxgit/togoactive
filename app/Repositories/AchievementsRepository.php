@@ -5,6 +5,7 @@ use App\Models\Events\Achievements;
 use App\Repositories\Interfaces\CrudRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class AchievementsRepository implements CrudRepositoryInterface
 {
@@ -14,11 +15,13 @@ class AchievementsRepository implements CrudRepositoryInterface
     {
         $this->setData($data, true);
 
-        $achievement = new Achievements($this->data);
+        $max = Achievements::where('event_id', $data['event_id'])->max('list_order');
 
-        $achievement->save();
+        $this->data['list_order'] = $max === null ? 1000 : (int) $max + 1000;
 
-        return $achievement;
+        $achievementId = DB::table('achievements')->insertGetId($this->data);
+
+        return Achievements::find($achievementId);
     }
 
     public function list(int $eventId): Collection
@@ -50,9 +53,9 @@ class AchievementsRepository implements CrudRepositoryInterface
             'title' => $data['title'],
             'description' => $data['description'],
             'icon' => $data['icon'],
-            'type' => $data['type'],
+            'type' => implode(',', $data['type']),
             'level' => $data['level'],
-            'is_more_info_enabled' => $data['is_more_info_enabled'],
+            'is_more_info_enabled' => isset($data['is_more_info_enabled']) ? $data['is_more_info_enabled'] : 0,
             'more_info_image' => $data['more_info_image'] ?? null,
             'more_info_description' => $data['more_info_description'] ?? null,
             'email_subject' => $data['email_subject'],
@@ -62,22 +65,18 @@ class AchievementsRepository implements CrudRepositoryInterface
             'notification_type' => $data['notification_type'],
             'notification_destination_url' => $data['notification_destination_url'] ?? null,
             'notification_hero_image' => $data['notification_hero_image'] ?? null,
-            'is_primary_cta_enabled' => $data['is_primary_cta_enabled'],
+            'is_primary_cta_enabled' => isset($data['is_primary_cta_enabled']) ? $data['is_primary_cta_enabled'] : 0,
             'primary_cta_button_text' => $data['primary_cta_button_text'] ?? null,
             'primary_cta_link' => $data['primary_cta_link'] ?? null,
-            'is_secondary_cta_enabled' => $data['is_secondary_cta_enabled'],
+            'is_secondary_cta_enabled' => isset($data['is_secondary_cta_enabled']) ? $data['is_secondary_cta_enabled'] : 0,
             'secondary_cta_button_text' => $data['secondary_cta_button_text'] ?? null,
             'secondary_cta_link' => $data['secondary_cta_link'] ?? null,
-            'is_share_option_enabled' => $data['is_share_option_enabled'],
+            'is_share_option_enabled' => isset($data['is_share_option_enabled']) ? $data['is_share_option_enabled'] : 0,
             'enable_share_option_link' => $data['enable_share_option_link'] ?? null,
-            'is_sponsor_content_enabled' => $data['is_sponsor_content_enabled'],
+            'is_sponsor_content_enabled' => isset($data['is_sponsor_content_enabled']) ? $data['is_sponsor_content_enabled'] : 0,
             'sponsor_content_image' => $data['sponsor_content_image'] ?? null,
             'sponsor_content_text' => $data['sponsor_content_text'] ?? null
         ];
-
-        if ($isCreate === true) {
-                $this->data['list_order'] = PHP_INT_MAX;
-        }
     }
 
     public function reorder()
