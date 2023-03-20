@@ -145,7 +145,7 @@
                                         <x-slot name="label_description_status"></x-slot>
                                         <x-slot name="label_description">This section will be shown to participants who
                                             does not buy any rewards.</x-slot>
-                                        {{ $eventsuccess->no_purchase_made ?? '' }}
+                                           {{ old('no_purchase_made',$eventsuccess->no_purchase_made ?? '' ) }}
                                     </x-forms.textarea>
                                     <div>
                                         <x-forms.validationerror>
@@ -169,7 +169,8 @@
                                         <x-slot name="label_description_status"></x-slot>
                                         <x-slot name="label_description">This section will be shown to participants who
                                             buy certain rewards. </x-slot>
-                                        {{ $eventsuccess->partial_purchase_made ?? '' }}
+                                        {{ old('partial_purchase_made',$eventsuccess->partial_purchase_made ?? '' ) }}
+                                    
                                     </x-forms.textarea>
                                     <div>
                                         <x-forms.validationerror>
@@ -193,7 +194,7 @@
                                         <x-slot name="label_description_status"></x-slot>
                                         <x-slot name="label_description">This section will be shown to participants who
                                             buy all the rewards. </x-slot>
-                                        {{ $eventsuccess->all_purchase_made ?? '' }}
+                                             {{ old('all_purchase_made',$eventsuccess->all_purchase_made ?? '' ) }}
                                     </x-forms.textarea>
                                     <div>
                                         <x-forms.validationerror>
@@ -243,7 +244,7 @@
                                         <x-slot name="label_text">Enable custom message section *</x-slot>
                                         <x-slot name="label_description_status"></x-slot>
                                         <x-slot name="label_description">This will allow you to show customized message for participants.</x-slot>
-                                        {{ $eventsuccess->custom_message ?? '' }}
+                                        {{ old('custom_message',$eventsuccess->custom_message ?? '' ) }}
                                     </x-forms.textarea>
                                     <div>
                                         <x-forms.validationerror>
@@ -265,7 +266,7 @@
                                         <x-slot name="label_description_status"></x-slot>
                                         <x-slot name="label_description">This section will be shown to participants for
                                             sharing their referral.</x-slot>
-                                        {{ $eventsuccess->invite_friend ?? '' }}
+                                        {{ old('invite_friend',$eventsuccess->invite_friend ?? '' ) }}
                                     </x-forms.textarea>
                                     <div>
                                         <x-forms.validationerror>
@@ -293,7 +294,7 @@
                         <x-slot name="section_content">
                             <div class="float-left w-full">
                                 <div class="float-left w-1/2">
-                                    <x-forms.textfield id="email_subject" name="email_subject" placeholder="Thank you for registering for #goMAD22" value="{{$eventsuccess->email_subject ?? ''}}" maxlength="255">
+                                    <x-forms.textfield id="email_subject" name="email_subject" placeholder="Thank you for registering for #goMAD22" value=" {{ old('email_subject',$eventsuccess->email_subject ?? '' ) }}" maxlength="255">
                                         <x-slot name="field_id">email_subject</x-slot>
                                         <x-slot name="label_text">Subject*</x-slot>
                                         <x-slot name="label_description_status"></x-slot>
@@ -318,7 +319,7 @@
                                         <x-slot name="label_description_status"></x-slot>
                                         <x-slot name="label_description">The body message will be appearing above the order summary in your emails
                                         </x-slot>
-                                        {{ $eventsuccess->email_body ?? '' }}
+                                        {{ old('email_body',$eventsuccess->email_body ?? '' ) }}
                                     </x-forms.textarea>
 
                                     <div class="sort_tags_for_email">
