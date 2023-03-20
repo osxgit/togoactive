@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Redis;
 
 use App\Models\User;
+use App\Models\Events\EventUser;
+use App\Models\Events\Payment;
 use App\Models\Users\StravaAccounts;
 use App\Models\Users\UserMedia;
 use Illuminate\Auth\Events\Registered;
@@ -83,15 +85,15 @@ class UserController extends Controller
             $this->setResponseData(array( 'data' => array('success' => false) ));
             return $this->sendAPIResponse();
         }
-      
+
     }
 
     public function storeUserData(Request $request){
-        
+
         try{
             DB::beginTransaction();
             $userExists= User::where('email',$request->email)->first();
-          
+
             if($userExists){
                 $user=$userExists;
                 $user->tgp_userid=$request->userid ?? 0;
@@ -124,7 +126,7 @@ class UserController extends Controller
                     $stravaDetailExist->strava_id=$request->strava_id??0;
                     $stravaDetailExist->save();
                 } else{
-                    $stravaArr= [  
+                    $stravaArr= [
                         'strava_access_token'=>$request->strava_access_token??'',
                         'strava_refresh_token'=>$request->strava_refresh_token??'',
                         'strava_token_expiry'=>$request->strava_token_expiry??'',
@@ -135,7 +137,7 @@ class UserController extends Controller
                     $staravDetail = StravaAccounts::create($stravaArr);
                 }
 
-       
+
              $userProfileExist= UserMedia::where('user_id',$user->id)->where('image_type','profile_image')->first();
              if($userProfileExist){
                 $userProfileExist->path=$request->profile_pic??'';
@@ -149,7 +151,7 @@ class UserController extends Controller
                 ];
                 $profileImgDetail = UserMedia::create($profile_imageArr);
              }
-                
+
              $userCoverExist= UserMedia::where('user_id',$user->id)->where('image_type','cover_image')->first();
              if($userCoverExist){
                 $userCoverExist->path=$request->cover_pic??'';
@@ -163,7 +165,7 @@ class UserController extends Controller
                 ];
                 $coverImgDetail = UserMedia::create($cover_imageArr);
              }
-                
+
             } else{
                 $userArr = array(
                     'tgp_userid' => $request->userid ?? 0,
@@ -193,7 +195,7 @@ class UserController extends Controller
 
                 $user = User::create($userArr);
 
-                $stravaArr= [  
+                $stravaArr= [
                     'strava_access_token'=>$request->strava_access_token??'',
                     'strava_refresh_token'=>$request->strava_refresh_token??'',
                     'strava_token_expiry'=>$request->strava_token_expiry??'',
@@ -222,7 +224,7 @@ class UserController extends Controller
 
 //                 event(new Registered($user));
             }
-            
+
 
             DB::commit();
             $this->setResponseData(array( 'data' => array('success' => true, 'user'=>$user) ));
@@ -231,7 +233,29 @@ class UserController extends Controller
             DB::rollBack();
             $this->setResponseData(array( 'data' => array('success' => false) ));
             return $this->sendAPIResponse();
-       
+
         }
+    }
+
+    public function getUserPaymentHistory(Request $request) {
+        $user = User::where('tgp_userid',$request->userid)->first();
+        $events = EventUser::where('user_id', $user->id)
+            // ->where('event_id', $request->eventid)
+            ->where('is_paid_user', 1)
+            ->get()->toArray();
+        $paymentData = [];
+        foreach( $events as $event ) {
+
+            $paymentData[] = Payment::where('user_id', $user->id)
+            ->where('event_id', $event['event_id'])
+            ->get()->toArray();
+        }
+        $response = array(
+            'userData' => $user,
+            'event' => $events,
+            'payment' => $paymentData
+        );
+        $this->setResponseData(array( 'data' => array('success' => false, 'data' => $response), ));
+        return $this->sendAPIResponse();
     }
 }
