@@ -248,6 +248,36 @@ class FilesController extends Controller
                 $height=800;
                 $path   = $imageHelper->uploadImage($request->image,'uploads/events/',$width,$height,'png',75,$module,$request->eventId ?? 0);
             break;
+
+            ## Achievement Icon
+            case "achievement_icon":
+                $module = 'Events';
+                $imageHelper = new ImageHelper();
+                $width = 150;
+                $height = 150;
+                $path   = $imageHelper->uploadImage($request->image,'uploads/events/',$width,$height,'png',75,$module,$request->eventId ?? 0);
+            break;
+            case "achcievement_more_info_image":
+                $module = 'Events';
+                $imageHelper = new ImageHelper();
+                $width = 1280;
+                $height = 640;
+                $path   = $imageHelper->uploadImage($request->image,'uploads/events/',$width,$height,'png',75,$module,$request->eventId ?? 0);
+            break;
+            case "hero_image":
+                $module = 'Events';
+                $imageHelper = new ImageHelper();
+                $width = 1280;
+                $height = 600;
+                $path   = $imageHelper->uploadImage($request->image,'uploads/events/',$width,$height,'png',75,$module,$request->eventId ?? 0);
+            break;
+            case "sponsor-content-image":
+                $module = 'Events';
+                $imageHelper = new ImageHelper();
+                $width = 300;
+                $height = 150;
+                $path   = $imageHelper->uploadImage($request->image,'uploads/events/',$width,$height,'png',75,$module,$request->eventId ?? 0);
+            break;
         }
         // $eventImages = $this->eventRepository->getEventImages($request->eventId);
          if($module == 'Rewards' && $request->idd !== 'sizing_image'){

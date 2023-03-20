@@ -62,8 +62,8 @@ class EventsFaqController extends Controller
         $event->faq ? $this->repository->update($event->faq->id, $data) : $this->repository->create($data);
 
         return redirect(
-            route('admin.events.faq.create', ['id' => $eventId]))->with('message', 'Changes are saved successfully.'
-        );
+            route('admin.events.faq.create', ['id' => $eventId])
+        )->with('message', 'Changes are saved successfully.');
     }
 
     public function storeTnc(Request $request, $eventId)
