@@ -220,4 +220,10 @@ class EventsController extends Controller
                 $this->setResponseData(array('data' => array('success' => true, 'data' => $termConditions)));
                 return $this->sendAPIResponse();
             }
+
+            public function updateUserTeam(Request $request){
+                $updateUserTeam = $this->eventRepository->updateUserTeam($request->all());
+                $this->setResponseData(array('data' => array('success' => true, 'data' => $updateUserTeam)));
+                return $this->sendAPIResponse();
+            }
     }

@@ -1028,4 +1028,54 @@ return $data;
             {
                 return SocialSeo::where('event_id', $data['eventId'])->first();
             }
+            
+            public function updateUserTeam($data){
+                $user= User::where('tgp_userid',$data['userId'])->first();
+
+                if($data['newTeam'] ==1){
+                    $teamExist=  Team::where('event_id',$data['eventId'])->where('team_name','LIKE','%'.$data['team_name'].'%')->first();
+                    if($teamExist){
+                        return (['success' =>false,'data'=>"Team name already taken, please enter another one!"]);
+                    } else{
+                        $team =  Team::create([
+                            'event_id' =>$data['eventId'],
+                            'team_name' => $data['team_name'],
+                        ]);
+                        
+                        $userTeams=TeamUser::where('user_id',$user->id)->with('team')->get();
+                        foreach($userTeams as $teams){
+                            if($teams->team->event_id == $data['eventId']){
+                                TeamUser::where('team_id',$teams->id)->where('user_id',$user->id)->delete();
+                                break;
+                            }
+                        }
+
+                     
+                        $teamUser =  TeamUser::create([
+                            'user_id' =>$user->id,
+                            'team_id' => $team->id,
+                            'is_owner'=> 1
+                        ]);
+                    }
+            
+                } else{
+                    $userTeams=TeamUser::where('user_id',$user->id)->with('team')->get();
+                        foreach($userTeams as $teams){
+                            if($teams->team->event_id == $data['eventId']){
+                                TeamUser::where('team_id',$teams->id)->delete();
+                                break;
+                            }
+                        }
+
+                     
+                        $teamUser =  TeamUser::create([
+                            'user_id' =>$user->id,
+                            'team_id' => $data['team_id'],
+                            'is_owner'=> 0
+                        ]);
+                }
+
+                return (['success' =>true,'data'=>"Team updated successfully"]);
+
+            }
 }
