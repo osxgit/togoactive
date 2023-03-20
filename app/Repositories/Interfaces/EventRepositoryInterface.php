@@ -5,6 +5,7 @@ namespace App\Repositories\Interfaces;
 use App\Models\Events\Events;
 use App\Models\Events\EventsMeta;
 use App\Models\Events\EventImage;
+use App\Models\Events\EventSuccessPage;
 interface EventRepositoryInterface
 {
     public function createEventEssential($request);
@@ -58,6 +59,7 @@ interface EventRepositoryInterface
     public function editEventRewards($request,$eventId);
 
     public function storeMultiQuantityDiscount($request,$eventId);
+
     public function editMultiQuantityDiscount($request,$eventId);
 
     public function getMultiQuantityDiscount($eventId);
@@ -93,10 +95,12 @@ interface EventRepositoryInterface
     public function storeLandingPage($eventId, $data);
 
     public function getEventDataThroughSlug($slug);
-      
+
     public function getEventIdThroughSlug($slug);
 
     public function getAllTeams($eventId);
+
+    public function validateTeam($data);
 
     public function createNewTeam( $data);
 
@@ -104,5 +108,38 @@ interface EventRepositoryInterface
 
     public function validateReferralCode( $data);
 
+    public function createEventSuccessPage($request,$rewardId);
 
-}
+    public function getEventSuccessSetup($eventId);
+
+    public function updateEventSuccessSetup($request,$rewardId);
+
+    public function calculatePrice($data);
+
+    public function getActiveRewards($eventId);
+
+    public function getActiveCoreRewards($eventId);
+
+    public function getActiveAddonRewards($eventId);
+
+    public function getCheckoutRewards($data);
+
+    public function processFreeRegistration($data);
+
+    public function processPaidRegistration($data);
+
+    public function updatePayment($data);
+
+    public function getEventUserData($data);
+
+    public function getEventSuccessPage($data);
+
+    public function getEventData($data);
+
+    public function checkEventUser($data);
+
+    public function getTermConditions($data);
+
+    public function getSocialData($data);
+
+};

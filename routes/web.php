@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Events\{
     SocialSeoController,
     RewardsController,
     EventsFaqController,
+    EventSuccessPageController,
     AchievementsController
 };
 use App\Http\Controllers\Public\RegistrationController;
@@ -101,10 +102,12 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/admin/event/{id}/landingPage/view', [EventsController::class, 'renderLandingPage'])->name('admin.events.landingPage.view');
 
-
-
     Route::get('/admin/event/{id}/info/activities', [EventsController::class, 'renderActivitiesSection'])->name('admin.events.info.activities');
 
+    Route::get('/admin/event/{id}/info/success_page', [EventSuccessPageController::class, 'renderSuccessPage'])->name('admin.events.success');
+    Route::post('/admin/event/{id}/info/success_page', [EventSuccessPageController::class, 'submitSuccessPageDetails'])->name('admin.events.success.store');
+    Route::post('/admin/event/set_event_success_email', [EventSuccessPageController::class, 'sendSuccessEmail'])->name('admin.events.success.setSuccessEmail');
+    
     Route::get('/admin/event/{id}/achievements', [AchievementsController::class, 'index'])->name('admin.events.achievements.list');
     Route::post('/admin/event/{id}/achievements', [AchievementsController::class, 'store'])->name('admin.events.achievements.store');
     Route::get('/admin/event/{id}/achievements/edit/{achievementId}', [AchievementsController::class, 'get'])->name('admin.events.achievements.edit');

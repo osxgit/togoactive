@@ -22,4 +22,9 @@ class TeamUser extends Model
         return $this->belongsTo(\App\Models\User::class);
     }
 
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
+
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 use Illuminate\Support\Facades\Redis;
 
-use App\Models\User; 
+use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,7 +36,8 @@ class EventsController extends Controller
                         return $this->sendAPIResponse();
                     }else {
                         $event = Events::findOrFail($eventId);
-                        $eventRewards = $this->eventRepository->getRewards($eventId);
+                        // $eventRewards = $this->eventRepository->getRewards($eventId);
+                        $eventRewards = $this->eventRepository->getActiveRewards($eventId);
                          $landingPage = $this->eventRepository->getLandingPage($eventId);
                          $eventImages = $this->eventRepository->getEventImages($eventId);
                          $eventDates = $this->eventRepository->getEventDates($eventId);
@@ -97,8 +98,10 @@ class EventsController extends Controller
                 $eventId= $request->eventId;
                 $registrationData = $this->eventRepository->getRegistrationSetup($eventId);
                 // $rewards= $this->eventRepository->getRewards($eventId);
-                $coreRewards = $this->eventRepository->getCoreRewards($eventId);
-                $addonRewards = $this->eventRepository->getAddonRewards($eventId);
+                // $coreRewards = $this->eventRepository->getCoreRewards($eventId);
+                // $addonRewards = $this->eventRepository->getAddonRewards($eventId);
+                $coreRewards = $this->eventRepository->getActiveCoreRewards($eventId);
+                $addonRewards = $this->eventRepository->getActiveAddonRewards($eventId);
                 $multiQtyDisc= $this->eventRepository->getMultiQuantityDiscount($eventId);
                 if($coreRewards){
                     $rewardInstruction = $this->eventRepository->getEventMeta($eventId, 'reward_instructions');
@@ -106,7 +109,7 @@ class EventsController extends Controller
                 if($addonRewards){
                     $addonInstruction = $this->eventRepository->getEventMeta($eventId, 'addon_instructions');
                 }
-                
+
                 $this->setResponseData(array( 'data' => array('success' => true, 'registrationData'=>$registrationData,'coreRewards'=>$coreRewards,'addonRewards'=>$addonRewards,'multiQtyDisc'=>$multiQtyDisc,'rewardInstruction'=>$rewardInstruction??null,'addonInstruction'=>$addonInstruction ?? null) ));
                 return $this->sendAPIResponse();
             }
@@ -122,7 +125,7 @@ class EventsController extends Controller
                 $couponResponse = $this->eventRepository->validateCouponCode($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$couponResponse) ));
                 return $this->sendAPIResponse();
-          
+
 
             }
 
@@ -131,6 +134,12 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$teams) ));
                 return $this->sendAPIResponse();
 
+            }
+
+            public function validateTeam(Request $request){
+                $team = $this->eventRepository->validateTeam($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$team) ));
+                return $this->sendAPIResponse();
             }
 
             public function createNewTeam(Request $request){
@@ -142,6 +151,73 @@ class EventsController extends Controller
             public function validateReferralCode(Request $request){
                 $referralCode = $this->eventRepository->validateReferralCode($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$referralCode) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function calculatePrice(Request $request){
+                $totalPrice = $this->eventRepository->calculatePrice($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$totalPrice) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getCheckoutRewards(Request $request){
+                $rewards = $this->eventRepository->getCheckoutRewards($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$rewards) ));
+                return $this->sendAPIResponse();
+
+            }
+
+            public function processFreeRegistration(Request $request){
+                $response = $this->eventRepository->processFreeRegistration($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function processPaidRegistration(Request $request){
+                $response = $this->eventRepository->processPaidRegistration($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function updatePayment(Request $request){
+                $response = $this->eventRepository->updatePayment($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getEventUserData(Request $request){
+                $eventUser = $this->eventRepository->getEventUserData($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$eventUser) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getEventSuccessPage(Request $request){
+                $eventSuccess = $this->eventRepository->getEventSuccessPage($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$eventSuccess) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getEventData(Request $request){
+                $eventData = $this->eventRepository->getEventData($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$eventData) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function checkEventUser(Request $request){
+                $eventUser = $this->eventRepository->checkEventUser($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$eventUser) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getTermConditions(Request $request){
+                $termConditions = $this->eventRepository->getTermConditions($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$termConditions) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getEventSocial(Request $request) {
+                $termConditions = $this->eventRepository->getSocialData($request->all());
+                $this->setResponseData(array('data' => array('success' => true, 'data' => $termConditions)));
                 return $this->sendAPIResponse();
             }
     }

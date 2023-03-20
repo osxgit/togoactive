@@ -32,8 +32,10 @@
 
             color:red;
         }
+        
         .tagify {
-            border:none !important;;
+            border:none !important;
+            height: 130px;
         }
         .bg-primary {
             --tw-bg-opacity: 1;
@@ -280,7 +282,7 @@
                             </x-forms.toggle>
                                 <div class="float-left w-full md:w-7/12 ml-4 " id="grouping_div">
 
-                                    <x-forms.textfield id="grouping_header" name="grouping_header" placeholder="Type your reason" :value="old('grouping_header',$registrationSetup->grouping_header ?? '' )" >
+                                    <x-forms.textfield id="grouping_header" name="grouping_header" placeholder="Grouping Header " :value="old('grouping_header',$registrationSetup->grouping_header ?? '' )" >
                                         <x-slot name="field_id">grouping_header</x-slot>
                                         <x-slot name="label_text">Grouping header name</x-slot>
                                         <x-slot name="label_description_status">hidden</x-slot>
@@ -291,7 +293,7 @@
                                         <x-slot name="error_text">grouping_header_error</x-slot>
                                     </x-forms.validationerror>
                                     <div class="float-left w-auto py-2">
-                                        <x-forms.textfield id="field_value" name="field_value" placeholder="Event name or something similar" :value="old('field_value',$registrationSetup->field_value ?? '' )">
+                                        <x-forms.textfield  class="h-32 field_value " id="field_value" name="field_value" :value="old('field_value',$registrationSetup->field_value ?? '' )">
                                             <x-slot name="field_id">field_value</x-slot>
                                             <x-slot name="label_text">Field value</x-slot>
                                             <x-slot name="label_description_status"></x-slot>
@@ -354,6 +356,10 @@
 
     </form>
     <script>
+   var input = document.querySelector('input[name=field_value]');
+
+// initialize Tagify on the above input node reference
+var tagify = new Tagify(input)
 
         $('#custom_reason ').keyup(function() {
             $('#desccount').html(this.value.length+'/');

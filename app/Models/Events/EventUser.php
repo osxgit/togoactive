@@ -23,9 +23,11 @@ class EventUser extends Model
         'address',
         'city',
         'state',
+        'blk',
         'subdistrict',
         'postal_code',
         'country',
+        'group',
         'bib',
         'token',
         'remarks',
@@ -33,9 +35,17 @@ class EventUser extends Model
         'has_upgraded',
         'is_finisher',
         'is_elite_finisher',
-        'is_autoPorted',
+        'is_autoPorted', 
     ];
 
-   
+    public function team_user()
+    {
+        return $this->belongsTo(TeamUser::class,'user_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 
 }

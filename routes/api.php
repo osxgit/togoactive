@@ -45,5 +45,22 @@ Route::post('validateReferralCode', [EventsController::class, 'validateReferralC
 Route::post('getEventIdFromSlug', [EventsController::class, 'getEventIdFromSlug'])->name('getEventIdFromSlug');
 Route::post('getAllTeams', [EventsController::class, 'getAllTeams'])->name('getAllTeams');
 Route::post('createNewTeam', [EventsController::class, 'createNewTeam'])->name('createNewTeam');
+Route::post('validateTeam', [EventsController::class, 'validateTeam'])->name('validateTeam');
+Route::post('calculatePrice', [EventsController::class, 'calculatePrice'])->name('calculatePrice');
+Route::post('getExistingUserData', [UserController::class, 'getExistingUserData'])->name('getExistingUserData');
+Route::post('storeUserData', [UserController::class, 'storeUserData'])->name('storeUserData');
+Route::post('getCheckoutRewards', [EventsController::class, 'getCheckoutRewards'])->name('getCheckoutRewards');
+Route::post('processFreeRegistration', [EventsController::class, 'processFreeRegistration'])->name('processFreeRegistration');
+Route::post('processPaidRegistration', [EventsController::class, 'processPaidRegistration'])->name('processPaidRegistration');
+Route::post('updatePayment', [EventsController::class, 'updatePayment'])->name('updatePayment');
+Route::post('getEventData', [EventsController::class, 'getEventData'])->name('getEventData');
+Route::post('checkEventUser', [EventsController::class, 'checkEventUser'])->name('checkEventUser');
+Route::post('getTermConditions', [EventsController::class, 'getTermConditions'])->name('getTermConditions');
+
+Route::post('getEventUserData', [EventsController::class, 'getEventUserData'])->name('getEventUserData');
+
+Route::post('getEventSuccessPage', [EventsController::class, 'getEventSuccessPage'])->name('getEventSuccessPage');
+
+Route::post('getEventSocialData', [EventsController::class, 'getEventSocial'])->name('getEventSocial');
 
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
