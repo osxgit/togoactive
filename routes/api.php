@@ -63,4 +63,6 @@ Route::post('getEventSuccessPage', [EventsController::class, 'getEventSuccessPag
 
 Route::post('getEventSocialData', [EventsController::class, 'getEventSocial'])->name('getEventSocial');
 
+Route::post('getUserPaymentHistoryData', [UserController::class, 'getUserPaymentHistory'])->name('getUserPaymentHistory');
+
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
