@@ -246,13 +246,14 @@ class UserController extends Controller
                 // ->where('event_id', $request->eventid)
                 ->where('is_paid_user', 1)
                 ->get()->toArray();
-        }
-        $paymentData = [];
-        foreach( $events as $event ) {
-            if( $user != null ) {
-                $paymentData[] = Payment::where('user_id', $user->id)
-                ->where('event_id', $event['event_id'])
-                ->get()->toArray();
+            $paymentData = [];
+
+            foreach( $events as $event ) {
+                if( $user != null ) {
+                    $paymentData[] = Payment::where('user_id', $user->id)
+                    ->where('event_id', $event['event_id'])
+                    ->get()->toArray();
+                }
             }
         }
         $response = array(
