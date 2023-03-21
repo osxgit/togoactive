@@ -1,8 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE htmlPUBLIC “-//W3C//DTD XHTML 1.0 Transitional//EN” “http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd”>
+<html xmlns=“http://www.w3.org/1999/xhtml” lang=“en”>
 <head>
     <title> {{$mailData['data']['eventName']}} Registration</title>
+    <meta http-equiv=“Content-Type” content=“text/html; charset=utf-8">
+    <meta http-equiv=“X-UA-Compatible” content=“IE=edge”>
+    <meta name=“viewport” content=“width=device-width, initial-scale=1.0">
+    <meta name=“color-scheme” content=“light dark”>
+    <meta name=“supported-color-schemes” content=“light dark”>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #F6F9FC;
+        }
+        .main {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+            border-spacing: 0;
+            font-family: sans-serif;
+            color: #4A4A4A;
+        }
         .text-primary {
             color: #7E1FF6 !important;
         }
@@ -55,8 +73,9 @@
             margin-bottom: 20px;
 
             color: #000000;
-            width: 1026px;
-            height: 54px;
+            width: 100%;
+            max-width: 600px;
+
         }
 
         .navbar {
@@ -101,7 +120,7 @@
         }
 
         .image-logo .left {
-            background: #D9D9D9;
+
             width: 970px;
         }
 
@@ -121,10 +140,14 @@
 
         .social_header_image{display: flex;
         justify-content: end}
+
+        .mt-pd {
+            margin: 10 0 10 0;
+        }
     </style>
 </head>
 <body class="font-sans antialiased">
-    <div class="min-h-screen " style="width: 70%; margin:0 auto;">
+    <div class="min-h-screen main">
 
         <main>
             <div class=" smt:mx-4  mdt:mx-48">
@@ -133,8 +156,9 @@
                 </div>
                 <div class="image-logo">
                     <div class="left">
-                        <h2>Event logo image here
-                            (from images admin panel</h2>
+                        @if(isset($mailData['data']['eventImages']['icon']) && $mailData['data']['eventImages']['icon'] !='')
+                            <img src="{{url('https://static.togoactive.com/'.$mailData['data']['eventImages']['icon'])}}" width="210"/>
+                        @endif
                     </div>
                     <div class="right">
                         <img id="nvBrLgo" class="nvIcnWrp" data-href="https://www.togoparts.com" style="cursor: pointer;" src="{{ asset('images/logo.png') }}" alt="togoparts Logo"/>
@@ -143,13 +167,13 @@
 
                 <div class=" smt:mx-4  mdt:mx-48">
                     <div class="float-left w-full">
-                        <h2 class=" text-center float-left w-full ffarial fweightbold fsize22 mrgbtm10 title" style="justify-content: center;">
+                        <h2 class=" text-center float-left w-full ffarial fweightbold fsize22 mrgbtm10 title" style="text-align: center; justify-content: center;">
                             {{$mailData['data']['eventName']}} Registration
                         </h2>
 
-                        <div class="title-content" style="text-align: center; margin-bottom:20px;">{!! $mailData['data']['successPage']['email_body'] !!}</div>
+                    <div class="title-content" style="text-align: center; margin-bottom:20px;">{!! $mailData['data']['successPage']['email_body'] !!}</div>
 
-                    <div class="fln mcenter w-full" style="max-width:600px ; margin:0 auto;">
+                    <div class="fln mcenter w-full mt-pd" style="max-width:600px ; margin:0 auto;">
 
                         <div  style="max-width: 450px;margin: 0 auto;padding: 10px;">
                             <table style="width:100%; border:1px solid darkgray;box-shadow: 0px 0px 8px 2px #ccc;">
@@ -227,34 +251,24 @@
                                             <div class=" mt-4 flex flex-col" style="width: 98%;max-width:600px" id="social">
 
                                                 <div class="float-left w-full text-center fpoppins mb-2" >
-                                                    <a target="_blank" href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo env("APP_URL").''.$mailData['data']['eventName'] ?>" data-href=<?php echo env("APP_URL").'/'.$mailData['data']['eventName'] ?> data-action="share/whatsapp/share" class="float-left w-full block rounded text-white tdnone flex justify-center items-center fr-share-btn" data-share="whatsapp" style="    padding: 10px 0;line-height:24px;background-color:#21B865;color:#fff !important; display: flex;     justify-content: center;
-                                                        margin-bottom: 8px;
-                                                        border-radius: 6px;">
+                                                    <a target="_blank" href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-href=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> data-action="share/whatsapp/share" class="float-left w-full block rounded text-white tdnone flex justify-center items-center fr-share-btn" data-share="whatsapp" style="    padding: 10px 0;line-height:24px;background-color:#21B865;color:#fff !important; display: flex; justify-content: center;    margin-bottom: 8px; border-radius: 6px;">
                                                         <img src="{{ asset('images/whatsapp.png') }}"/>
                                                        </a>
                                                 </div>
                                                 <div class="float-left w-full text-center fpoppins mb-2">
-                                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo env("APP_URL").''.$mailData['data']['eventName'] ?> " target="_blank" class="float-left w-full  block rounded text-white tdnone  flex justify-center items-center" style="    padding: 10px 0;line-height:24px;background:#0D87E2;color:#fff !important; display: flex;     justify-content: center;
-                                                        margin-bottom: 8px;
-                                                        border-radius: 6px;""> <img src="{{ asset('images/fb.png') }}"/>
+                                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank" class="float-left w-full  block rounded text-white tdnone  flex justify-center items-center" style="    padding: 10px 0;line-height:24px;background:#0D87E2;color:#fff !important; display: flex; justify-content: center;  margin-bottom: 8px; border-radius: 6px;""> <img src="{{ asset('images/fb.png') }}"/>
                                                       </a>
                                                 </div>
                                                 <div class="float-left w-full text-center fpoppins mb-2">
-                                                    <a href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo env("APP_URL").''.$mailData['data']['eventName'] ?>" data-href=<?php echo env("APP_URL").''.$mailData['data']['eventName'] ?>  target="_blank" class="float-left w-full  block rounded text-white tdnone fr-share-btn  flex justify-center items-center" data-share="twitter" style="    padding: 10px 0;line-height:24px;background-color:#03A9F4;color:#fff !important; display: flex;     justify-content: center;
-                                                        margin-bottom: 8px;
-                                                        border-radius: 6px;""> <img src="{{ asset('images/twitter.png') }}"/>
+                                                    <a href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-href=<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>  target="_blank" class="float-left w-full  block rounded text-white tdnone fr-share-btn  flex justify-center items-center" data-share="twitter" style="  padding: 10px 0;line-height:24px;background-color:#03A9F4;color:#fff !important; display: flex; justify-content: center;  margin-bottom: 8px;  border-radius: 6px;""> <img src="{{ asset('images/twitter.png') }}"/>
                                                         </a>
                                                 </div>
                                                 <div class="float-left w-full text-center fpoppins mb-2">
-                                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo env("APP_URL").''.$mailData['data']['eventName'] ?> " target="_blank" class="float-left w-full  block rounded text-white tdnone  flex justify-center items-center" style="    padding: 10px 0;line-height:24px;background-color:#0077B5;color:#fff !important;display: flex;     justify-content: center;
-                                                        margin-bottom: 8px;
-                                                        border-radius: 6px;""><img src="{{ asset('images/linked-in.png') }}"/>
+                                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank" class="float-left w-full  block rounded text-white tdnone  flex justify-center items-center" style="    padding: 10px 0;line-height:24px;background-color:#0077B5;color:#fff !important;display: flex;  justify-content: center; margin-bottom: 8px;  border-radius: 6px;""><img src="{{ asset('images/linked-in.png') }}"/>
                                                        </a>
                                                 </div>
                                                 <div class="float-left w-full text-center fpoppins mb-2">
-                                                    <a href="https://telegram.me/share/url?url=<?php echo env("APP_URL").''.$mailData['data']['eventName'] ?>&text=<?php '' ?>" data-href=<?php echo env("APP_URL").''.$mailData['data']['eventName'] ?>  data-share="telegram" class="float-left fr-share-btn w-full  block rounded text-white tdnone  flex justify-center items-center" style="    padding: 10px 0;line-height:24px;background-color:#0088CC;color:#fff !important; display: flex;
-                                                        border-radius: 6px;     justify-content: center;
-    margin-bottom: 8px;"><img src="{{ asset('images/telegram.png') }}"/>
+                                                    <a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>&text=<?php '' ?>" data-href=<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>  data-share="telegram" class="float-left fr-share-btn w-full  block rounded text-white tdnone  flex justify-center items-center" style="    padding: 10px 0;line-height:24px;background-color:#0088CC;color:#fff !important; display: flex;    border-radius: 6px;     justify-content: center; margin-bottom: 8px;"><img src="{{ asset('images/telegram.png') }}"/>
                                                        </a>
                                                 </div>
 

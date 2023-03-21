@@ -144,4 +144,8 @@ interface EventRepositoryInterface
 
     public function updateUserTeam($data);
 
+    public function getEventUsersList($eventId);
+    
+    public function removeEventUser($eventId, $userId);
+
 };
