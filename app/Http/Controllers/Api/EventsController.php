@@ -178,6 +178,16 @@ class EventsController extends Controller
                 $eventPayment = $response['payment']['id'];
 
                 $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
+
+                $log_array = array(
+                    'message' => "event controller processFreeRegistration",
+                    'date' => Carbon::now()->toDateTimeString(),
+                    'response' => $response,
+                    'request' => $request,
+                    'eventData' => $eventData
+                );
+                Log::channel('event_registration_logs')->info($log_array);
+
                 event(new EventRegistration($eventData,$request));
 
                 return $this->sendAPIResponse();
@@ -199,6 +209,16 @@ class EventsController extends Controller
                 $eventPayment = $response['paymentId'];
 
                 $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
+
+                $log_array = array(
+                    'message' => "event controller updatePayment",
+                    'date' => Carbon::now()->toDateTimeString(),
+                    'response' => $response,
+                    'request' => $request,
+                    'eventData' => $eventData
+                );
+                Log::channel('event_registration_logs')->info($log_array);
+
                 event(new EventRegistration($eventData,$request));
                 return $this->sendAPIResponse();
             }
