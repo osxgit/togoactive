@@ -148,4 +148,7 @@ interface EventRepositoryInterface
     
     public function removeEventUser($eventId, $userId);
 
+    public function eventUsersCount($eventId);
+    
+
 };
