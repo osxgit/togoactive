@@ -16,6 +16,7 @@ use App\Traits\Api\SendResponse;
 use App\Models\Events\Events;
 use Carbon\Carbon;
 use App\Events\EventRegistration;
+use Log;
 
 class EventsController extends Controller
 {
@@ -186,7 +187,7 @@ class EventsController extends Controller
                     'request' => $request,
                     'eventData' => $eventData
                 );
-                Log::channel('event_registration_logs')->info($log_array);
+                Log::channel('larabug')->info($log_array);
 
                 event(new EventRegistration($eventData,$request));
 
@@ -217,7 +218,7 @@ class EventsController extends Controller
                     'request' => $request,
                     'eventData' => $eventData
                 );
-                Log::channel('event_registration_logs')->info($log_array);
+                Log::channel('larabug')->info($log_array);
 
                 event(new EventRegistration($eventData,$request));
                 return $this->sendAPIResponse();
