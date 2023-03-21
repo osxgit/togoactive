@@ -518,7 +518,7 @@ return $data;
     }
 
     public function getEventDataThroughSlug($slug){
-        return Events::where('slug','LIKE','%'.$slug.'%')->with('images','dates','landingPage','rewards','eventMeta')->first();
+        return Events::where('slug','LIKE','%'.$slug.'%')->with('images','dates','landingPage','rewards','eventMeta')->where('event_status',1)->first();
     }
 
     public function getEventIdThroughSlug($slug){
@@ -1028,7 +1028,7 @@ return $data;
             {
                 return SocialSeo::where('event_id', $data['eventId'])->first();
             }
-            
+
             public function updateUserTeam($data){
                 $user= User::where('tgp_userid',$data['userId'])->first();
 
@@ -1041,7 +1041,7 @@ return $data;
                             'event_id' =>$data['eventId'],
                             'team_name' => $data['team_name'],
                         ]);
-                        
+
                         $userTeams=TeamUser::where('user_id',$user->id)->with('team')->get();
                         foreach($userTeams as $teams){
                             if($teams->team->event_id == $data['eventId']){
@@ -1050,14 +1050,14 @@ return $data;
                             }
                         }
 
-                     
+
                         $teamUser =  TeamUser::create([
                             'user_id' =>$user->id,
                             'team_id' => $team->id,
                             'is_owner'=> 1
                         ]);
                     }
-            
+
                 } else{
                     $userTeams=TeamUser::where('user_id',$user->id)->with('team')->get();
                         foreach($userTeams as $teams){
@@ -1067,7 +1067,7 @@ return $data;
                             }
                         }
 
-                     
+
                         $teamUser =  TeamUser::create([
                             'user_id' =>$user->id,
                             'team_id' => $data['team_id'],
