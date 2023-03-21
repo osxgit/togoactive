@@ -111,11 +111,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/event/{id}/achievements', [AchievementsController::class, 'index'])->name('admin.events.achievements.list');
     Route::post('/admin/event/{id}/achievements', [AchievementsController::class, 'store'])->name('admin.events.achievements.store');
     Route::get('/admin/event/{id}/achievements/edit/{achievementId}', [AchievementsController::class, 'get'])->name('admin.events.achievements.edit');
+    Route::delete('/admin/event/{id}/achievements/delete/{achievementId}', [AchievementsController::class, 'delete'])->name('admin.events.achievements.delete');
     Route::get('/admin/event/{id}/achievements/create', [AchievementsController::class, 'get'])->name('admin.events.achievements.create');
     Route::post('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'update'])->name('admin.events.achievements.update');
-    Route::any('/admin/event/{id}/participants_manager', [EventsController::class, 'participants_manager'])->name('admin.events.participantsManager');
 
-    Route::delete('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'delete'])->name('admin.events.achievements.delete');
+    Route::any('/admin/event/{id}/participants_manager', [EventsController::class, 'participants_manager'])->name('admin.events.participantsManager');
 
     Route::get('/admin/event/email-template-preview', [EventSuccessPageController::class, 'previewEmailTemplate'])->name('admin.events.event-template');
 });

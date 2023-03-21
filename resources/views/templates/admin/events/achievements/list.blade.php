@@ -1,7 +1,8 @@
 <x-app-layout>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js" defer></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
     <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
@@ -435,7 +436,27 @@
                                 <td>{{ $achievement->description }}</td>
                                 <td>{{ $achievement->type }}</td>
                                 <td>{{ $achievement->level }}</td>
-                                <td><i class="fa fa-ellipsis-v"></td>
+                                <td>
+                                    <span class="toggleReward">
+                                        <i class="fa fa-ellipse-v" aria-hidden="true" rel="tooltip" title="Hide this reward" data-placement="top" ></i>
+                                    </span>
+                                    <div id="mobile-dropdown" class="nav2 w" data-spy="affix" data-offset-top="350">
+                                        <div class="container">
+
+                                            <div class="pull-left">
+                                                <div class="btn-group mob-fl">
+                                                    <span class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                                                    </span>
+                                                    <ul class="dropdown-menu pl-2" role="menu">
+                                                        <li><a href="{{ route('admin.events.achievements.edit', [$id, $achievement->id])}}" style="color:black !important;">Edit</a></li>
+                                                        <li><a href="{{ route('admin.events.achievements.delete', [$id, $achievement->id]) }}" class="delete" style="color:black !important;">Delete</a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                             @endforeach
                             </tr>
                         </tbody>
@@ -448,6 +469,38 @@
 
         jQuery(document).ready(function() {
             jQuery('#achievements').DataTable();
+
+
+            jQuery("a.delete").on('click', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: 'Do you want to delete achievement?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Delete',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $.ajax({
+                                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                                headers: {'X-CSRF-TOKEN':'{{ csrf_token() }}' },
+                                data: {
+                                    '_token': '{{ csrf_token() }}',
+                                    'confirmed': 'confirmed'
+                                },
+                                dataType: 'json',
+                                success: function(response){
+                                    console.log(response);
+                                    window.location.reload();
+                                },
+                                error: function(){
+                                    console.log("Browser not supported");
+                                },
+                                type: 'DELETE',
+                                url: this.href
+                            });
+                        }
+                    });
+            });
         });
     </script>
 </x-app-layout>
