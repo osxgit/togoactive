@@ -205,7 +205,7 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
 
                 // this is called when event payment registration
-                $eventUser = $request->userId;
+                $eventUser = $response['user_id'];
                 $eventId = $request->eventId;
                 $eventPayment = $request->paymentId;
 
