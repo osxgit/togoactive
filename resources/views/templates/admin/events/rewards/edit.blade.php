@@ -169,6 +169,10 @@
                                                     <x-slot name="field_id">images_2</x-slot>
                                                     <x-slot name="uploaded_img">{{$rewardImages->medium[1] ?? ''}}</x-slot>
                                                 </x-forms.image_uploader_small_edit>
+                                                
+                                                
+                                                <button type="button" onclick="confirmDelete('{{$id}}',1,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                           
                                             @else
                                                 <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -195,6 +199,13 @@
                                                 <x-slot name="field_id">images_3</x-slot>
                                                 <x-slot name="uploaded_img">{{$rewardImages->medium[2] ?? ''}}</x-slot>
                                                 </x-forms.image_uploader_small_edit>
+                                                
+                                                <form method="post" id="deleteImageForm_2"  action="{{route('admin.events.rewardImage.delete', array($id,$rewards->id))}}">
+                                                <input hidden name="imgindex" value="2">
+                                                @method('delete')
+                                                @csrf
+                                                <button type="button" onclick="confirmDelete(2)" style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                            </form>
                                             @else
                                                 <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -1068,5 +1079,33 @@
                 });
             }
         });
+
+        function confirmDelete(eventid,imgindex, rewardId){
+
+var answer =Swal.fire({
+    title: 'Delete Image',
+    icon: '',
+    html:'Are you sure you want to delete this image',
+    showCloseButton: true,
+    showCancelButton: true,
+    focusConfirm: false,
+    confirmButtonText:
+        'Yes, Delete',
+    confirmButtonAriaLabel: 'Yes, Delete',
+    cancelButtonText:
+        'No, cancel',
+    cancelButtonAriaLabel: 'No, cancel'
+}).then((result) => {
+    console.log(result);
+    if (result.isConfirmed == true) {
+        window.location.href = "/admin/event/"+eventid+"/rewardimage/"+rewardId+"/delete/"+imgindex;
+       return true;
+
+    } else{
+return false;
+    }
+});
+
+};
     </script>
 </x-app-layout>
