@@ -194,7 +194,7 @@ class EventsController extends Controller
                         } else{
                             $team='';
                         }
-                       
+
                         return $team;
                     })
                     ->addColumn('strava', function($row){
@@ -609,9 +609,9 @@ class EventsController extends Controller
         }
         if(isset($request->field_value)){
             $fieldValue=[];
-    
+
                                     foreach(json_decode($request->field_value) as $field_value){
-    
+
                                         array_push($fieldValue,$field_value->value);
                                     }
                                 $data['field_value']=json_encode($fieldValue);
@@ -708,7 +708,7 @@ class EventsController extends Controller
     }
 
     public function submitLandingPageDetails(Request $request,$eventId){
-        
+
 //         Validator::make($request->all(), [
 //                   'event_detail' =>  'required',
 //                     'Short_faq' =>  'required',
@@ -789,7 +789,7 @@ class EventsController extends Controller
                     $challengeEnded = false;
                 }
 
-                
+
                 $order   = array("\r\n\r\n", "\n", "\r","<p>","</p>");
                 $replace = ' ';
                 $newstr = str_replace($order, $replace,json_decode($landingPage->Short_faq));
@@ -855,7 +855,7 @@ class EventsController extends Controller
 
                 $returnHTML = view('templates.admin.events.info.landingPageView',['FaqData'=>$FaqData,'nowtimestamp'=>$nowtimestamp,'challengeEnded'=>$challengeEnded,'timerHeading'=>$timerHeading,'countDownDate'=>$countDownDate,'eventslidersubtitle'=> $eventslidersubtitle,'rootAssetPath'=>$rootAssetPath ,'eventDates'=> $eventDates,'eventImages'=> $eventImages,'eventRewards'=> $eventRewards,'landingPage' => $landingPage,'id' => $eventId, 'route_name' => request()->route()->getName(), 'active_page' => 'Landing Page', 'event'=> $event ?? null])->render();
          return response()->json( array('success' => true, 'html'=>$returnHTML) );
- 
+
     }
 
     public function unlayer($eventId){
@@ -871,5 +871,19 @@ class EventsController extends Controller
     public function removeEventUser(Request $request){
         $event = $this->eventRepository->removeEventUser($request->eventId,$request->userId);
         return response()->json(['err'=>0]);
+    }
+
+    public function publishEventManually(Request $request){
+
+        if($request->event_id){
+            $event_id = $request->event_id;
+            $event = $this->eventRepository->publishEventManually($request,$event_id);
+            return response()->json( array('success' => true, 'html'=>$event) );
+        }else{
+
+            return response()->json( array('success' => false, 'error'=>"Please enter event_id as param ") );
+        }
+
+
     }
 }
