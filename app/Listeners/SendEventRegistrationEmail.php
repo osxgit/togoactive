@@ -45,7 +45,12 @@ class SendEventRegistrationEmail
             $eventId    = $event_data['eventId'];
             $request    = $event->request;
 
-            //$eventId    = $request->eventId;
+            $log_array = array(
+                'message' => "Printing from event listener ",
+                'date' => Carbon::now()->toDateTimeString(),
+                'data' => $event_data,
+            );
+            Log::channel('single')->info($log_array);
 
             // get event details
             $event_object = Events::findOrFail($eventId);
@@ -102,7 +107,7 @@ class SendEventRegistrationEmail
                 'date' => Carbon::now()->toDateTimeString(),
                 'data' => $data,
             );
-            Log::channel('event_registration_logs')->info($log_array);
+            Log::channel('single')->info($log_array);
 
 
             // end email code

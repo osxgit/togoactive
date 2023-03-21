@@ -145,10 +145,10 @@ interface EventRepositoryInterface
     public function updateUserTeam($data);
 
     public function getEventUsersList($eventId);
-    
+
     public function removeEventUser($eventId, $userId);
 
     public function eventUsersCount($eventId);
-    
 
+    public function publishEventManually($request, $eventId);
 };

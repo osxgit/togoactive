@@ -16,6 +16,8 @@ use App\Mail\SendEmail;
 use Illuminate\Support\Facades\Auth;
 use Session;
 use App\Events\EventRegistration;
+use Carbon\Carbon;
+use Log;
 
 class EventSuccessPageController extends Controller
 {
@@ -78,6 +80,14 @@ class EventSuccessPageController extends Controller
 
         //$eventData = ['paymentId'=>1,'userId'=>1,'eventId'=>$eventId];
         //$login_log_data = event(new EventRegistration($eventData,$request));
+
+        $log_array = array(
+            'message' => "this is for test log from event successpage update ",
+            'date' => Carbon::now()->toDateTimeString(),
+            'request' => $request,
+            'eventSuccessPage' => $eventSuccessPage
+        );
+        Log::channel('single')->info($log_array);
 
         return redirect()->route('admin.events.success',$eventId )->with('message','Changes saved successfully!');
 
