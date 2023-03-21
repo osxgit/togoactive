@@ -350,28 +350,28 @@
 
 
                             <div id="event_name-label" class="float-left w-full mt-4" ondrop="drop(event, this)" ondragover="allowDrop(event)">
-                                <div class="w-1/2">
-                                    <label class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">Event name image* ( saved as 700x300px)</label>
+                            <div class="w-1/2">
+                                    <label class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">Event name image* ( saved as 597x54px)</label>
                                     <p class="float-left w-full text-gray text-sm mt-2 ">Please upload in PNG with transparency.</p>
                                     <span class="error w-full float-left" style="color:#F53F14; display:none;" id="imgerror-event_name" >! Image could not be uploaded since it is not as per the mentioned dimensions.</span>
 
                                     @if($images == null || !isset($images->event_name) ||  $images->event_name == null)
                                         <x-forms.image_uploader>
                                             <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
-                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN. 700x300px)</x-slot>
+                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN. 597x54px)</x-slot>
                                             <x-slot name="field_id">event_name</x-slot>
                                         </x-forms.image_uploader>
                                     @else
                                         <x-forms.image_uploader_edit>
                                             <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
-                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN. 700x300px)</x-slot>
+                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN. 597x54px)</x-slot>
                                             <x-slot name="field_id">event_name</x-slot>
                                             <x-slot name="uploaded_img">{{$images->event_name}}</x-slot>
                                         </x-forms.image_uploader_edit>
                                     @endif
                                     <x-forms.file_input>
-                                        <x-slot name="width">700</x-slot>
-                                        <x-slot name="height">300</x-slot>
+                                        <x-slot name="width">597</x-slot>
+                                        <x-slot name="height">54</x-slot>
                                         <x-slot name="field_id">event_name</x-slot>
                                     </x-forms.file_input>
                                     <x-forms.validationerror>
@@ -701,7 +701,7 @@
             }
             cropper = new Cropper(image, {
                 aspectRatio: $('#width').val()/$('#height').val(),
-                viewMode: 3,
+                viewMode: 0,
                 preview: '.preview',
                 minCropBoxWidth: $('#width').val(),
                 minCropBoxHeight: $('#height').val(),
