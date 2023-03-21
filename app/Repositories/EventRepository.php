@@ -1106,7 +1106,11 @@ return $data;
             public function eventUsersCount($eventId){
                 $data=[]; 
                 $data['userCount']=  EventUser::where('event_id',$eventId)->select('user_id')->distinct()->count();
-                $data['userProfile']= EventUser::inRandomOrder()->where('event_id',$eventId)->with('user')->limit(5)->get();
+                $data['userProfile']= EventUser::inRandomOrder()->where('event_id',$eventId)->join('user_media', function ($join) {
+                    $join->on('event_users.user_id', '=', 'user_media.user_id')
+                         ->where('user_media.image_type', '=', 'profile_image');
+                })->limit(5)->get();
+                    
 
                 return $data;
             }
