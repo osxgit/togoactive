@@ -40,9 +40,9 @@ class SendEventRegistrationEmail
 
             $event_data = $event->event_data;
 
-            $paymentId  = $event_data['paymentId'];
-            $userId     = $event_data['userId'];
-            $eventId    = $event_data['eventId'];
+            $paymentId  = (int) $event_data['paymentId'];
+            $userId     = (int) $event_data['userId'];
+            $eventId    = (int) $event_data['eventId'];
             $request    = $event->request;
 
             $log_array = array(
@@ -56,8 +56,6 @@ class SendEventRegistrationEmail
             $event_object = Events::findOrFail($eventId);
             $eventName = $event_object->name;
             $event_slug = $event_object->slug;
-
-
 
             $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $userId,'payment'=>$paymentId ));
             $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
