@@ -912,29 +912,30 @@
     </div>
 
     <div class="modal fade" id="notification_type_b_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="img-container">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <img id="" src="https://avatars0.githubusercontent.com/u/3456749">
+        <div class="modal-dialog modal-md" role="document">
+            <div id="notification_b_content" class="modal-content pt-4 pr-4 pb-4 pl-4">
+                <div id="notification_b_preview" class="w-full rounded font-poppins">
+                    <div id="notification_b_image" class="w-full">
+                        <div id="challenge_data" class="flex">
+                            <div id="challenge-period" class="rounded w-24">
+                                08 Jan 2022 - 07 Mar 2022
                             </div>
-                            <div class="col-md-4">
-                                <div class="preview"></div>
+                            <div id="challenge-registration-period" class="rounded w-24">
+                                08 Jan 2022 - 07 Mar 2022
+                            </div>
+                            <div id="share-button">
+
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Crop</button>
+                    <div id="notification_b_body" class="w-full">
+                        <div id="notification_b_title" class="w-40 mb-3 pl-2">
+                            Awesome title goes here
+                        </div>
+                        <div id="notification_b_text" class="pl-3">
+                            Text goes here
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -998,10 +999,22 @@
 
                 cropper = new Cropper(image, {
                     aspectRatio: jQuery('#width').val() / jQuery('#height').val(),
-                    viewMode: 3,
+                    viewMode: 1,
                     preview: '.preview',
+                    modal: true,
+                    cropBoxResizable: false,
+                    minContainerWidth: jQuery('#width').val(),
+                    minContainerHeight: jQuery('#height').val(),
+                    maxContainerWidth: jQuery('#width').val(),
+                    maxContainerHeight: jQuery('#height').val(),
+                    minCanvasWidth: jQuery('#width').val(),
+                    minCanvasHeight: jQuery('#height').val(),
+                    maxCanvasWidth: jQuery('#width').val(),
+                    maxCanvasHeight: jQuery('#height').val(),
                     minCropBoxWidth: jQuery('#width').val(),
                     minCropBoxHeight: jQuery('#height').val(),
+                    maxCropBoxWidth: jQuery('#width').val(),
+                    maxCropBoxHeight: jQuery('#height').val(),
                     modal: true,
                     data: {
                         width: jQuery('#width').val(),
