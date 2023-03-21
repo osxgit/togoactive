@@ -50,6 +50,9 @@ class SendEventRegistrationEmail
             // get event details
             $event_object = Events::findOrFail($eventId);
             $eventName = $event_object->name;
+            $event_slug = $event_object->slug;
+
+
 
             $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $userId,'payment'=>$paymentId ));
             $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
@@ -62,6 +65,8 @@ class SendEventRegistrationEmail
 
             $addonRewards_data  = $this->eventRepository->getActiveAddonRewards(array('eventId' => $eventId ));
             $addonRewards       = ($addonRewards_data->count() > 0) ? $addonRewards_data->addonRewards : [];
+
+            $eventImages        = $this->eventRepository->getEventImages($eventId);
 
 
             if($registrationData['event_user']['is_paid_user'] == 1){
@@ -79,9 +84,18 @@ class SendEventRegistrationEmail
                 $canUpgrade=1;
             }
 
-
+            $event_base_url = "https://events.togoparts.com/"; // this url is used for event share on social platform
             // here we need to get event data and send mail to login user
-            $data = ['canUpgrade'=>$canUpgrade,'groupingHeader'=> $groupingHeader,'registrationData'=> $registrationData,'successPage'=>$successPage,'eventName'=>$eventName];
+            $data = [
+                        'canUpgrade'=>$canUpgrade,
+                        'groupingHeader'=> $groupingHeader,
+                        'registrationData'=> $registrationData,
+                        'successPage'=>$successPage,
+                        'eventName'=>$eventName,
+                        'event_slug'=>$event_slug,
+                        'event_base_url' =>$event_base_url,
+                        'eventImages' => $eventImages
+                    ];
 
             $log_array = array(
                 'message' => "Started cron",

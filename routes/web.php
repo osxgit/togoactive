@@ -114,6 +114,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/admin/event/{id}/achievements/delete/{achievementId}', [AchievementsController::class, 'delete'])->name('admin.events.achievements.delete');
     Route::get('/admin/event/{id}/achievements/create', [AchievementsController::class, 'get'])->name('admin.events.achievements.create');
     Route::post('/admin/event/{id}/achievements/{achievementId}', [AchievementsController::class, 'update'])->name('admin.events.achievements.update');
+
+    Route::any('/admin/event/{id}/participants_manager', [EventsController::class, 'participants_manager'])->name('admin.events.participantsManager');
+
+    Route::get('/admin/event/email-template-preview', [EventSuccessPageController::class, 'previewEmailTemplate'])->name('admin.events.event-template');
 });
     Route::get('/admin/event/{id}/unlayer', [EventsController::class, 'unlayer'])->name('admin.events.unlayer');
 

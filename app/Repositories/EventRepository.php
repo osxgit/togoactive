@@ -1078,4 +1078,28 @@ return $data;
                 return (['success' =>true,'data'=>"Team updated successfully"]);
 
             }
+
+            public function getEventUsersList($eventId){
+
+                $data= EventUser::where('event_users.event_id',$eventId) ->join('payments', function ($join) {
+                    $join->on('event_users.event_id', '=', 'payments.event_id')
+                         ->on('payments.user_id', '=', 'event_users.user_id');
+                })->with('user','team_user','team_user.team')->select('event_users.*', 'payments.status','payments.coupon_code','payments.total_paid')->get();
+               return $data;
+            }
+
+            public function removeEventUser($eventId, $userId){
+               
+                $teams = TeamUser::where('user_id',$userId)->with('team')->get();
+                foreach($teams as $team){
+                    if($team->team->event_id == $eventId){
+                        $teams = TeamUser::where('user_id',$userId)->where('id',$team->id)->delete();
+                    }
+                }
+                UserReward::where('user_id',$userId)->where('event_id',$eventId)->delete();
+                Payment::where('user_id',$userId)->where('event_id',$eventId)->delete();
+                EventUser::where('user_id',$userId)->where('event_id',$eventId)->delete();
+                return true;
+
+            }
 }
