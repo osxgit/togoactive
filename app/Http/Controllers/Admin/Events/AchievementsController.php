@@ -108,15 +108,12 @@ class AchievementsController extends Controller
 
     public function delete(Request $request, $eventId, $achievementId)
     {
-        Validator::make(['confirmed' => 'required'], $this->rules)->validate();
+        Validator::make($request->all(), ['confirmed' => 'required'])->validate();
 
         $this->repository->delete($achievementId);
 
-        return redirect(
-            route(
-                'admin.events.achievements.list',
-                ['id' => $eventId]
-            )
-        )->with('message', 'Achievement deleted successfully.');
+        return response()->json([
+            'message' => 'Achievement removed successfully'
+        ]);
     }
 }
