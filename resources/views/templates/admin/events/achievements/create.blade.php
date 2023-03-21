@@ -420,8 +420,12 @@
                         </ul>
                     </div>
                 @endif
-
-                <form method="POST" id="create-events-achievement" name="create-event-achievement" action="{{route('admin.events.achievements.store', array($id))}}" class="w-full float-left" autocomplete="false" enctype="multipart/form-data">
+                @php
+                    $route = isset($achievement)
+                        ? route('admin.events.achievements.update', [$id, $achievement->id])
+                        : route('admin.events.achievements.store', [$id])
+                @endphp
+                <form method="POST" id="create-events-achievement" name="create-event-achievement" action="{{ $route }}" class="w-full float-left" autocomplete="false" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="challengeId" id="challengeId" value="{{$id}}">
                     <input type="hidden" name="event_id" id="event_id" value="{{$id}}">
@@ -453,7 +457,7 @@
                                             <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                             <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 150x150px)</x-slot>
                                             <x-slot name="field_id">achievement_icon</x-slot>
-                                            <x-slot name="uploaded_img">{{ $achievement->icon }}</x-slot>
+                                            <x-slot name="uploaded_img">{{ str_replace('https://static.togoactive.com/', '', $achievement->icon) }}</x-slot>
                                         </x-forms.image_uploader>
                                     @endif
 
@@ -462,7 +466,7 @@
                                         <x-slot name="height">150</x-slot>
                                         <x-slot name="field_id">achievement_icon</x-slot>
                                     </x-forms.file_input>
-                                    <input type="hidden" name="icon" id="icon" />
+                                    <input type="hidden" name="icon" id="icon" value="{{ isset($achievement) ? $achievement->icon : '' }}" />
                                 </div>
                                 <div id="title-label" class="w-full">
                                     <x-forms.textfield name="title" value="{{ isset($achievement) ? $achievement->title : '' }}">
@@ -493,7 +497,7 @@
                         <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
                             <div class="float-left w-1/2 ">
-                                @php $types = isset($achievement) ? explode(',', $achievement->type) : [] @endphp
+                                @php $types = isset($achievement) ? explode(',', $achievement->type) : []; @endphp
                                 <x-forms.select id="achievement_type" name="type[]" class="selectpicker" multiple>
                                     <x-slot name="field_id">achievement_type</x-slot>
                                     <x-slot name="label_text">Achievement type*</x-slot>
@@ -506,7 +510,7 @@
                                         <option value="Team" {{ in_array('Team', $types) ? 'selected' : '' }}>
                                             Team
                                         </option>
-                                        <option value="Indoor" {{ in_array('Inddoor', $types) ? 'selected' : '' }}>
+                                        <option value="Indoor" {{ in_array('Indoor', $types) ? 'selected' : '' }}>
                                             Indoor
                                         </option>
                                         <option value="Outdoor" {{ in_array('Outdoor', $types) ? 'selected' : '' }}>
@@ -565,19 +569,19 @@
                                             Image*
                                             <span class="font-poppins">(1280 x 640 px)</span>
                                         </label>
-                                        @if (!isset($achievment) || (isset($achievement) && $achievement->is_more_info_enabled === 0))
-                                            <x-forms.image_uploader>
+                                        @if (!isset($achievement) || (isset($achievement) && $achievement->is_more_info_enabled === 0))
+                                            <x-forms.image_uploader class="image-empty">
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x640px)</x-slot>
                                                 <x-slot name="field_id">achcievement_more_info_image</x-slot>
                                                 <x-slot name="uploaded_img"></x-slot>
                                             </x-forms.image_uploader>
                                         @else
-                                            <x-forms.image_uploader_edit>
+                                            <x-forms.image_uploader_edit class="more-info-image">
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x640px)</x-slot>
                                                 <x-slot name="field_id">achcievement_more_info_image</x-slot>
-                                                <x-slot name="uploaded_img">{{ $achievement->more_info_image }}</x-slot>
+                                                <x-slot name="uploaded_img">{{ str_replace('https://static.togoactive.com/', '', $achievement->more_info_image) }}</x-slot>
                                             </x-forms.image_uploader_edit>
                                         @endif
 
@@ -586,7 +590,7 @@
                                             <x-slot name="height">640</x-slot>
                                             <x-slot name="field_id">achcievement_more_info_image</x-slot>
                                         </x-forms.file_input>
-                                        <input type="hidden" name="more_info_image" id="more_info_image" />
+                                        <input type="hidden" name="more_info_image" id="more_info_image" value="{{ isset($achievment) || (isset($achievement) && $achievement->is_more_info_enabled === 1) ? $achievement->more_info_image : ''}}" />
                                     </div>
                                     <div id="more-info-description-label" class="w-full">
                                         <x-forms.textarea name="more_info_description">
@@ -659,7 +663,7 @@
                         <x-slot name="section_content">
                             <div class="float-left w-full">
                                 <div id="notification-title-label" class="w-full">
-                                    <x-forms.textfield name="notification_title">
+                                    <x-forms.textfield name="notification_title" value="{{ isset($achievement) ? $achievement->notification_title : '' }}">
                                         <x-slot name="field_id">notification_title</x-slot>
                                         <x-slot name="label_text">Notification Title</x-slot>
                                         <x-slot name="label_description"></x-slot>
@@ -710,7 +714,7 @@
                                             <span class="font-poppins">(1280 x 600 px)</span>
                                             <p class="font-poppins">This image will be shown on all notifications</p>
                                         </label>
-                                        @if (!isset($achievement) || (isset($achievement) && $achievement->type === 'Type A'))
+                                        @if (!isset($achievement) || (isset($achievement) && $achievement->notification_type === 'Type A'))
                                             <x-forms.image_uploader>
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x600px)</x-slot>
@@ -722,7 +726,7 @@
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x600px)</x-slot>
                                                 <x-slot name="field_id">hero_image</x-slot>
-                                                <x-slot name="uploaded_img">{{ $achievement->notification_hero_image }}</x-slot>
+                                                <x-slot name="uploaded_img">{{ str_replace('https://static.togoactive.com/', '', $achievement->notification_hero_image) }}</x-slot>
                                             </x-forms.image_uploader_edit>
                                         @endif
 
@@ -731,7 +735,7 @@
                                             <x-slot name="height">600</x-slot>
                                             <x-slot name="field_id">hero_image</x-slot>
                                         </x-forms.file_input>
-                                        <input type="hidden" name="notification_hero_image" id="notification_hero_image" />
+                                        <input type="hidden" name="notification_hero_image" id="notification_hero_image" value="{{ isset($achievement) && $achievement->notification_type === 'Type B' ? $achievement->notification_hero_image : '' }}" />
                                     </div>
                                     <div id="enable-primary-cta-button-label" class="float-left mt-4 w-full">
                                         <x-forms.toggle id="primary_cta_toggle" name="is_primary_cta_enabled"  value="{{ isset($achievement) ? $achievement->is_primary_cta_enabled : 0 }}">
@@ -742,7 +746,7 @@
                                     </div>
                                     <div id="primary-cta-button-label" class="float-left ml-5 pl-1 w-1/2" value="{{ isset($achievement) ? $achievement->primary_cta_button_text : '' }}">
                                         <div id="primary_cta_button_text" class="w-full">
-                                            <x-forms.textfield name="primary_cta_button_text">
+                                            <x-forms.textfield name="primary_cta_button_text" value="{{ isset($achievement) ? $achievement->primary_cta_button_text : '' }}">
                                                 <x-slot name="field_id">primary-cta-button-text</x-slot>
                                                 <x-slot name="label_text">CTA button text*</x-slot>
                                                 <x-slot name="label_description"></x-slot>
@@ -767,7 +771,7 @@
                                         <div id="secondary_cta_button-label" class="float-left w-full hidden">
                                             <div id="secondary-cta-button-text-label" class="float-left w-full">
                                                 <div id="secondary_cta_button_text" class="w-full">
-                                                    <x-forms.textfield name="secondary_cta_button_text" value="{{ isset($achievement) ? $achievement->secondary_button_text : '' }}">
+                                                    <x-forms.textfield name="secondary_cta_button_text" value="{{ isset($achievement) ? $achievement->secondary_cta_button_text : '' }}">
                                                         <x-slot name="field_id">secondary-cta-button-text</x-slot>
                                                         <x-slot name="label_text">CTA button text*</x-slot>
                                                         <x-slot name="label_description"></x-slot>
@@ -797,7 +801,7 @@
                                     <div id="share-option-link-label" class="float-left ml-5 pl-1 w-1/2 hidden">
                                         <div id="share-option-link-label" class="float-left w-full">
                                             <div id="share_option_link" class="w-full">
-                                                <x-forms.textfield name="enable_share_option_link">
+                                                <x-forms.textfield name="enable_share_option_link" value="{{ isset($achievement) ? $achievement->enable_share_option_link : '' }}">
                                                     <x-slot name="field_id">enable_share_option_link</x-slot>
                                                     <x-slot name="label_text">Link*</x-slot>
                                                     <x-slot name="label_description"></x-slot>
@@ -844,7 +848,7 @@
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 300x150px)</x-slot>
                                                 <x-slot name="field_id">sponsor-content-image</x-slot>
-                                                <x-slot name="uploaded_img">{{ $achievement->sponsor_content_image }}</x-slot>
+                                                <x-slot name="uploaded_img">{{ str_replace('https://static.togoactive.com/', '', $achievement->sponsor_content_image) }}</x-slot>
                                             </x-forms.image_uploader_edit>
                                         @endif
 
@@ -853,7 +857,7 @@
                                             <x-slot name="height">150</x-slot>
                                             <x-slot name="field_id">sponsor-content-image</x-slot>
                                         </x-forms.file_input>
-                                        <input type="hidden" name="sponsor_content_image" id="sponsor_content_image" />
+                                        <input type="hidden" name="sponsor_content_image" id="sponsor_content_image" value="{{ isset($achievement) && $achievement->is_sponsor_content_enabled === 1 ? $achievement->sponsor_content_image : '' }}" />
                                     </div>
                                     <div id="sponsor-content-text-label" class="float-left w-full">
                                         <x-forms.textarea name="sponsor_content_text">
@@ -908,29 +912,30 @@
     </div>
 
     <div class="modal fade" id="notification_type_b_modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="img-container">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <img id="" src="https://avatars0.githubusercontent.com/u/3456749">
+        <div class="modal-dialog modal-md" role="document">
+            <div id="notification_b_content" class="modal-content pt-4 pr-4 pb-4 pl-4">
+                <div id="notification_b_preview" class="w-full rounded font-poppins">
+                    <div id="notification_b_image" class="w-full">
+                        <div id="challenge_data" class="flex">
+                            <div id="challenge-period" class="rounded w-24">
+                                08 Jan 2022 - 07 Mar 2022
                             </div>
-                            <div class="col-md-4">
-                                <div class="preview"></div>
+                            <div id="challenge-registration-period" class="rounded w-24">
+                                08 Jan 2022 - 07 Mar 2022
+                            </div>
+                            <div id="share-button">
+
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary">Crop</button>
+                    <div id="notification_b_body" class="w-full">
+                        <div id="notification_b_title" class="w-40 mb-3 pl-2">
+                            Awesome title goes here
+                        </div>
+                        <div id="notification_b_text" class="pl-3">
+                            Text goes here
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -994,11 +999,19 @@
 
                 cropper = new Cropper(image, {
                     aspectRatio: jQuery('#width').val() / jQuery('#height').val(),
-                    viewMode: 3,
+                    viewMode: 1,
                     preview: '.preview',
+                    cropBoxResizable: false,
+                    maxContainerWidth: jQuery('#width').val(),
+                    maxContainerHeight: jQuery('#height').val(),
+                    minCanvasWidth: jQuery('#width').val(),
+                    minCanvasHeight: jQuery('#height').val(),
+                    maxCanvasWidth: jQuery('#width').val(),
+                    maxCanvasHeight: jQuery('#height').val(),
                     minCropBoxWidth: jQuery('#width').val(),
                     minCropBoxHeight: jQuery('#height').val(),
-                    modal: true,
+                    maxCropBoxWidth: jQuery('#width').val(),
+                    maxCropBoxHeight: jQuery('#height').val(),
                     data: {
                         width: jQuery('#width').val(),
                         height: jQuery('#height').val(),
@@ -1334,6 +1347,10 @@
                 }
             });
 
+            if (jQuery("#more_info_toggle").val() == 1) {
+                jQuery("#more_info_toggle").trigger('click');
+            }
+
             jQuery('input[name=notification_type]').on('click', function() {
                 jQuery(this).prop('checked', true);
 
@@ -1352,6 +1369,14 @@
                 }
             });
 
+            if (jQuery("input[name=notification_type]:first").prop('checked') == true) {
+                jQuery("input[name=notification_type]:first").trigger('click');
+            }
+
+            if (jQuery("input[name=notification_type]:last").prop('checked') == true) {
+                jQuery("input[name=notification_type]:last").trigger('click');
+            }
+
             jQuery('#primary_cta_toggle').on('click', function() {
                 if (jQuery("#primary_cta_toggle").is(':checked')) {
                     jQuery("#primary_cta_toggle").prop('checked', true);
@@ -1362,11 +1387,19 @@
                 }
             });
 
+            if (jQuery('#primary_cta_toggle').val() == 1) {
+                jQuery('#primary_cta_toggle').trigger('click');
+            }
+
             jQuery('#enable_secondary_cta_button').on('click', function(e) {
                 e.preventDefault();
                 jQuery("#secondary_cta_button-label").removeClass('hidden');
                 jQuery('#enable_secondary_cta').val('1');
             });
+
+            if (jQuery('#enable_secondary_cta').val() == 1) {
+                jQuery('#enable_secondary_cta_button').trigger('click');
+            }
 
             jQuery('#share_option_toggle').on('click', function() {
                 if (jQuery("#share_option_toggle").is(':checked')) {
@@ -1380,6 +1413,10 @@
                 }
             });
 
+            if (jQuery('#share_option_toggle').val() == 1) {
+                jQuery('#share_option_toggle').trigger('click');
+            }
+
             jQuery('#sponsor_content_toggle').on('click', function() {
                 if (jQuery("#sponsor_content_toggle").is(':checked')) {
                     jQuery("#sponsor_content_toggle").prop('checked', true);
@@ -1391,6 +1428,10 @@
                     jQuery("#sponsor-content-label").addClass('hidden');
                 }
             });
+
+            if (jQuery('#sponsor_content_toggle').val() == 1) {
+                jQuery('#sponsor_content_toggle').trigger('click');
+            }
 
             jQuery('.selectpicker').selectpicker({title: '--Select Type--'});
 
