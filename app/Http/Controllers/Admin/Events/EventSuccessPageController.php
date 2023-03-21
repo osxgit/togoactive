@@ -15,6 +15,7 @@ use Mail;
 use App\Mail\SendEmail;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use App\Events\EventRegistration;
 
 class EventSuccessPageController extends Controller
 {
@@ -26,6 +27,52 @@ class EventSuccessPageController extends Controller
     }
 
     public function renderSuccessPage($eventId){
+
+
+
+        $event_data = ['paymentId'=>1,'userId'=>1,'eventId'=>1];
+
+        $paymentId  = $event_data['paymentId'];
+        $userId     = $event_data['userId'];
+        $eventId    = $event_data['eventId'];
+
+        // get event details
+        $event_object = Events::findOrFail($eventId);
+        $eventName = $event_object->name;
+
+        $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $userId,'payment'=>$paymentId ));
+        $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
+
+        $reg                = $this->eventRepository->getRegistrationSetup(array('eventId' => $eventId ));
+        $groupingHeader     = ($reg->count() > 0) ? $reg->grouping_header : [];
+
+        $coreReward_data    = $this->eventRepository->getActiveCoreRewards(array('eventId' => $eventId ));
+        $coreRewards        = ($coreReward_data->count() > 0) ? $coreReward_data->coreRewards: [];
+
+        $addonRewards_data  = $this->eventRepository->getActiveAddonRewards(array('eventId' => $eventId ));
+        $addonRewards       = ($addonRewards_data->count() > 0) ? $addonRewards_data->addonRewards : [];
+
+
+        if($registrationData['event_user']['is_paid_user'] == 1){
+            if($registrationData['payment']['user_reward']){
+                if(count($registrationData['payment']['user_reward']) == count($coreRewards)+ count($addonRewards)){
+                    $canUpgrade=0;
+                } else{
+                    $canUpgrade=1;
+                }
+            } else{
+                $canUpgrade=1;
+            }
+
+        } else{
+            $canUpgrade=1;
+        }
+
+
+        // here we need to get event data and send mail to login user
+       // $data = ['data'=>['canUpgrade'=>$canUpgrade,'groupingHeader'=> $groupingHeader,'registrationData'=> $registrationData,'successPage'=>$successPage,'eventName'=>$eventName]];
+
+       // return view('templates.emails.eventRegistrationSuccessEmail',['mailData'=>$data]);
 
         $eventSuccessPage = $this->eventRepository->getEventSuccessSetup($eventId);
         $email = Auth::user()->email;
@@ -68,6 +115,13 @@ class EventSuccessPageController extends Controller
         } else{
             $eventSuccessPage = $this->eventRepository->createEventSuccessPage($data,$eventId);
         }
+
+        // added this code for generate emails via event
+
+        //$eventData = ['paymentId'=>1,'userId'=>1,'eventId'=>$eventId];
+        //$login_log_data = event(new EventRegistration($eventData,$request));
+
+
 
         return redirect()->route('admin.events.success',$eventId )->with('message','Changes saved successfully!');
 

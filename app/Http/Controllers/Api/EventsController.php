@@ -15,6 +15,7 @@ use App\Http\Controllers\Controller;
 use App\Traits\Api\SendResponse;
 use App\Models\Events\Events;
 use Carbon\Carbon;
+use App\Events\EventRegistration;
 
 class EventsController extends Controller
 {
@@ -170,6 +171,15 @@ class EventsController extends Controller
             public function processFreeRegistration(Request $request){
                 $response = $this->eventRepository->processFreeRegistration($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+
+                // this is called when event free registration
+                $eventUser = $response->event_user->id;
+                $eventId = $response->event_user->event_id;
+                $eventPayment = $response->payment->id;
+
+                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
+                event(new EventRegistration($eventData,$request));
+
                 return $this->sendAPIResponse();
             }
 
@@ -182,6 +192,14 @@ class EventsController extends Controller
             public function updatePayment(Request $request){
                 $response = $this->eventRepository->updatePayment($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+
+                // this is called when event payment registration
+                $eventUser = $request->userId;
+                $eventId = $response->eventId;
+                $eventPayment = $response->paymentId;
+
+                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
+                event(new EventRegistration($eventData,$request));
                 return $this->sendAPIResponse();
             }
 
@@ -218,6 +236,12 @@ class EventsController extends Controller
             public function getEventSocial(Request $request) {
                 $termConditions = $this->eventRepository->getSocialData($request->all());
                 $this->setResponseData(array('data' => array('success' => true, 'data' => $termConditions)));
+                return $this->sendAPIResponse();
+            }
+
+            public function updateUserTeam(Request $request){
+                $updateUserTeam = $this->eventRepository->updateUserTeam($request->all());
+                $this->setResponseData(array('data' => array('success' => true, 'data' => $updateUserTeam)));
                 return $this->sendAPIResponse();
             }
     }
