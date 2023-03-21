@@ -76,10 +76,8 @@ class EventSuccessPageController extends Controller
 
         // added this code for generate emails via event
 
-       // $eventData = ['paymentId'=>1,'userId'=>1,'eventId'=>$eventId];
-       // $login_log_data = event(new EventRegistration($eventData,$request));
-
-
+        //$eventData = ['paymentId'=>1,'userId'=>1,'eventId'=>$eventId];
+        //$login_log_data = event(new EventRegistration($eventData,$request));
 
         return redirect()->route('admin.events.success',$eventId )->with('message','Changes saved successfully!');
 
@@ -143,8 +141,10 @@ class EventSuccessPageController extends Controller
 
         // get event details
         $event_object = Events::findOrFail($eventId);
-        $eventName = $event_object->name;
-        $event_slug = $event_object->slug;
+        $eventName    = $event_object->name;
+        $event_slug   = $event_object->slug;
+
+        $eventImages = $this->eventRepository->getEventImages($eventId);
 
         $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $userId,'payment'=>$paymentId ));
         $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
@@ -176,7 +176,7 @@ class EventSuccessPageController extends Controller
 
         // here we need to get event data and send mail to login user
         $event_base_url = "https://events.togoparts.com/";
-        $data = ['data'=>['canUpgrade'=>$canUpgrade,'groupingHeader'=> $groupingHeader,'registrationData'=> $registrationData,'successPage'=>$successPage,'eventName'=>$eventName,'event_slug'=>$event_slug,'event_base_url' => $event_base_url]];
+        $data = ['data'=>['canUpgrade'=>$canUpgrade,'groupingHeader'=> $groupingHeader,'registrationData'=> $registrationData,'successPage'=>$successPage,'eventName'=>$eventName,'event_slug'=>$event_slug,'event_base_url' => $event_base_url,'eventImages'=>$eventImages]];
 
         return view('templates.emails.eventRegistrationSuccessEmail',['mailData'=>$data]);
     }

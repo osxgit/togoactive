@@ -120,7 +120,7 @@
         }
 
         .image-logo .left {
-            background: #D9D9D9;
+
             width: 970px;
         }
 
@@ -156,8 +156,9 @@
                 </div>
                 <div class="image-logo">
                     <div class="left">
-                        <h2>Event logo image here
-                            (from images admin panel</h2>
+                        @if(isset($mailData['data']['eventImages']['icon']) && $mailData['data']['eventImages']['icon'] !='')
+                            <img src="{{url('https://static.togoactive.com/'.$mailData['data']['eventImages']['icon'])}}" width="210"/>
+                        @endif
                     </div>
                     <div class="right">
                         <img id="nvBrLgo" class="nvIcnWrp" data-href="https://www.togoparts.com" style="cursor: pointer;" src="{{ asset('images/logo.png') }}" alt="togoparts Logo"/>
