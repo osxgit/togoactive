@@ -40,9 +40,9 @@ class SendEventRegistrationEmail
 
             $event_data = $event->event_data;
 
-            $paymentId  = (int) $event_data['paymentId'];
-            $userId     = (int) $event_data['userId'];
-            $eventId    = (int) $event_data['eventId'];
+            $paymentId  = $event_data['paymentId'];
+            $userId     = $event_data['userId'];
+            $eventId    = $event_data['eventId'];
             $request    = $event->request;
 
             $log_array = array(
@@ -57,6 +57,8 @@ class SendEventRegistrationEmail
             $eventName = $event_object->name;
             $event_slug = $event_object->slug;
 
+
+
             $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $userId,'payment'=>$paymentId ));
             $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
 
@@ -64,17 +66,17 @@ class SendEventRegistrationEmail
             $groupingHeader     = ($reg->count() > 0) ? $reg->grouping_header : [];
 
             $coreReward_data    = $this->eventRepository->getActiveCoreRewards(array('eventId' => $eventId ));
-            $coreRewards        = ($coreReward_data->count() > 0) ? $coreReward_data->coreRewards: [];
+            $coreRewards        = $coreReward_data->count();
 
             $addonRewards_data  = $this->eventRepository->getActiveAddonRewards(array('eventId' => $eventId ));
-            $addonRewards       = ($addonRewards_data->count() > 0) ? $addonRewards_data->addonRewards : [];
+            $addonRewards       = $addonRewards_data->count();
 
             $eventImages        = $this->eventRepository->getEventImages($eventId);
 
 
             if($registrationData['event_user']['is_paid_user'] == 1){
                 if($registrationData['payment']['user_reward']){
-                    if(count($registrationData['payment']['user_reward']) == count($coreRewards)+ count($addonRewards)){
+                    if(count($registrationData['payment']['user_reward']) == $coreRewards + $addonRewards){
                         $canUpgrade=0;
                     } else{
                         $canUpgrade=1;
