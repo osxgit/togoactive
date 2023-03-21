@@ -118,8 +118,8 @@ class EventSuccessPageController extends Controller
 
         // added this code for generate emails via event
 
-        $eventData = ['paymentId'=>1,'userId'=>1,'eventId'=>$eventId];
-        $login_log_data = event(new EventRegistration($eventData,$request));
+        //$eventData = ['paymentId'=>1,'userId'=>1,'eventId'=>$eventId];
+        //$login_log_data = event(new EventRegistration($eventData,$request));
 
 
 
