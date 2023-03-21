@@ -87,7 +87,7 @@ class EventSuccessPageController extends Controller
             'request' => $request,
             'eventSuccessPage' => $eventSuccessPage
         );
-        Log::channel('larabug')->info($log_array);
+        Log::channel('single')->info($log_array);
 
         return redirect()->route('admin.events.success',$eventId )->with('message','Changes saved successfully!');
 

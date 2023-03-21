@@ -187,7 +187,7 @@ class EventsController extends Controller
                     'request' => $request,
                     'eventData' => $eventData
                 );
-                Log::channel('larabug')->info($log_array);
+                Log::channel('single')->info($log_array);
 
                 event(new EventRegistration($eventData,$request));
 
@@ -218,7 +218,7 @@ class EventsController extends Controller
                     'request' => $request,
                     'eventData' => $eventData
                 );
-                Log::channel('larabug')->info($log_array);
+                Log::channel('single')->info($log_array);
 
                 event(new EventRegistration($eventData,$request));
                 return $this->sendAPIResponse();
