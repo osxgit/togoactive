@@ -205,10 +205,10 @@
                                                                 </span>
                                 <ul class="dropdown-menu pl-2" role="menu">
                                     <li><a href="#" style="color:black !important;" onclick="previewModalEdit({{$disc->id}},'{{$disc->condition}}',{{$disc->discount}},{{$disc->quantity}})">Edit</a></li>
-                                    <li><form method="post" id="discountDeleteForm" action="{{route('admin.events.multiQuantityDiscount.delete', array($id, $disc->id))}}">
+                                    <li><form method="post" id="discountDeleteForm_{{$disc->id}}" action="{{route('admin.events.multiQuantityDiscount.delete', array($id, $disc->id))}}">
                                             @method('delete')
                                             @csrf
-                                            <button type="button" onclick="confirmDelete()" style="color:black !important;" >Delete</button>
+                                            <button type="button" onclick="confirmDelete('{{$disc->id}}')" style="color:black !important;" >Delete</button>
                                         </form></li>
                                 </ul>
                             </div>
@@ -336,7 +336,7 @@
     }
 
 
-    function confirmDelete(){
+    function confirmDelete(id){
 
         var answer =Swal.fire({
             title: 'Delete Multi-item discount',
@@ -354,7 +354,7 @@
         }).then((result) => {
             console.log(result);
             if (result.isConfirmed == true) {
-                $('#discountDeleteForm').submit();
+                $('#discountDeleteForm_'+id).submit();
                 return true;
 
             } else{

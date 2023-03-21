@@ -680,6 +680,7 @@ class EventsController extends Controller
     }
 
     public function deleteCoupon(Request $request,$eventId, $couponId){
+       
         $coupons = $this->eventRepository->deleteCoupon($eventId,$couponId );
         return redirect()->route('admin.events.coupons',$eventId )->with('message','Changes saved successfully!');
     }
