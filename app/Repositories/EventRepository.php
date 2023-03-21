@@ -1089,7 +1089,7 @@ return $data;
             }
 
             public function removeEventUser($eventId, $userId){
-               
+
                 $teams = TeamUser::where('user_id',$userId)->with('team')->get();
                 foreach($teams as $team){
                     if($team->team->event_id == $eventId){
@@ -1104,14 +1104,23 @@ return $data;
             }
 
             public function eventUsersCount($eventId){
-                $data=[]; 
+                $data=[];
                 $data['userCount']=  EventUser::where('event_id',$eventId)->select('user_id')->distinct()->count();
                 $data['userProfile']= EventUser::inRandomOrder()->where('event_id',$eventId)->join('user_media', function ($join) {
                     $join->on('event_users.user_id', '=', 'user_media.user_id')
                          ->where('user_media.image_type', '=', 'profile_image');
                 })->limit(5)->get();
-                    
+
 
                 return $data;
+            }
+
+            public function  publishEventManually($request, $eventId){
+                if($eventId!='' && $eventId!=8){
+                    $response = Events::where('id',$eventId)->update(['event_status'=>1]);
+                    return $response;
+
+                }
+
             }
 }
