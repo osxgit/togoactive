@@ -377,6 +377,13 @@
         #notification_a_time {
             text-align: right;
         }
+
+        .challenge-dates {
+            background-color: #158B76;
+            color: #ffffff;
+            padding: 8px;
+            font-size: 0.95rem;
+        }
     </style>
 
     <div class="w-full flex flex-col sm:flex-row flex-grow overflow-hidden bg-light-gray-bg">
@@ -915,25 +922,76 @@
         <div class="modal-dialog modal-md" role="document">
             <div id="notification_b_content" class="modal-content pt-4 pr-4 pb-4 pl-4">
                 <div id="notification_b_preview" class="w-full rounded font-poppins">
-                    <div id="notification_b_image" class="w-full">
-                        <div id="challenge_data" class="flex">
-                            <div id="challenge-period" class="rounded w-24">
-                                08 Jan 2022 - 07 Mar 2022
+                    <div id="notification_b_image" class="w-full float-left">
+                        <div class="w-full float-left" style="height: 100px">&nbsp;</div>
+                        <div id="challenge_data">
+                            <div id="challenge-period" class="rounded w-full float-left font-poppins">
+                                <div class="w-full float-left">
+                                    <p class="w-1/2 font-poppins-bold float-right text-center">Challenge Period</p>
+                                </div>
+                                <div class="w-full">
+                                    <p class="w-1/2 text-center float-right challenge-dates rounded-md">
+                                        {{ date('d M Y', strtotime($event->dates->leaderboard_start_date)) }} - {{ date('d M Y', strtotime($event->dates->leaderboard_end_date)) }}
+                                    </p>
+                                </div>
                             </div>
                             <div id="challenge-registration-period" class="rounded w-24">
-                                08 Jan 2022 - 07 Mar 2022
+                                <div class="w-full float-left">
+                                    <p class="w-1/2 font-poppins-bold float-right text-center">Registration Period</p>
+                                </div>
+                                <div class="w-full">
+                                    <p class="w-1/2 text-center float-right challenge-dates rounded-md">
+                                        {{ date('d M Y', strtotime($event->dates->registration_start_date)) }} - {{ date('d M Y', strtotime($event->dates->registration_end_date)) }}
+                                    </p>
+                                </div>
                             </div>
-                            <div id="share-button">
-
+                            <div class="w-full float-left" style="height: 50px">&nbsp;</div>
+                            <div id="share-button" class="rounded w-24">
+                                <div class="w-full float-left">
+                                    <p class="w-1/2 float-right text-center">
+                                        <div class="fb-share-button"
+                                        data-href="https://www.togoactive.com"
+                                        data-layout="button_count">
+                                        </div>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div id="notification_b_body" class="w-full">
-                        <div id="notification_b_title" class="w-40 mb-3 pl-2">
+                        <div id="notification_b_title" class="w-full mb-3 mt-3 pl-2 font-poppins-bold text-lg text-center float-left">
                             Awesome title goes here
                         </div>
-                        <div id="notification_b_text" class="pl-3">
-                            Text goes here
+                        <div id="notification_b_text" class="pl-3 mb-3 w-full float-left">
+                            Text goes here fsafdsafdas fsafsafsa fdsafdsafdsa
+                            dsfdsafdsafdsafdsa fdsafdsa fdsafdsafdsa
+                            fdsafdasfdsafdsa
+                            afdsadfdasfdasfdsa fdsadfdasfdsa fdsafdasfdsafdsa
+                            fsafasdfdsa
+                            fdsafdasfdsafdsafdsafdsa
+                            fdsafdsafdsafdasfs
+                        </div>
+                    </div>
+                    <div id="notification-b-buttons" class="w-full flex float-left">
+                        <div id="notification-b-secondary-button-preview" class="w-1/2 float-left">
+                            <a href="#" class="font-poppins-bold bg-white items-center
+                                px-4 py-2 border border-transparent rounded-md text-sm text-primary
+                                cursor-pointer border-primary border-2 hover:bg-primary
+                              hover:text-primary focus:bg-white focus:text-white
+                              active:bg-primary active:text-white
+                              focus:outline-none transition ease-in-out duration-500">
+                                View achievement
+                            </a>
+                        </div>
+                        <div id="notification-b-primary-button-preview" class="w-1/2 float-left text-center">
+                            <a href="#" class="font-poppins-bold bg-primary items-center px-4 py-2
+                                border border-transparent rounded-md text-sm
+                                text-white cursor-pointer border-primary border-2
+                                hover:bg-white hover:text-primary focus:bg-white
+                                focus:text-primary active:bg-white
+                                focus:outline-none transition ease-in-out duration-500">
+                                View achievement
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -1087,6 +1145,42 @@
 
                     $modalNotification = $modalNotificationA.modal('show');
                 } else {
+                    let bgImg = jQuery('#label-hero_image').
+                        css('background-image').replace(/^url\(['"](.+)['"]\)/, '$1');
+
+                    jQuery('#notification_b_image').css('background-image', 'url(' + bgImg + ')');
+
+                    jQuery('#notification_b_title').text(jQuery('input[name=notification_title]').val());
+                    jQuery('#notification_b_text').text(jQuery('textarea[name=notification_description]').val());
+
+                    if (jQuery('#primary_cta_toggle').val() == 0) {
+                        jQuery('#notification-b-primary-button-preview').addClass('hidden');
+                        jQuery('#notification-b-secondary-button-preview').addClass('hidden');
+                    }
+
+                    if (jQuery('#enable_secondary_cta').val() == 0 && jQuery('#primary_cta_toggle').val() == 1) {
+                        jQuery('#notification-b-primary-button-preview')
+                            .removeClass('hidden')
+                            .removeClass('w-1/2')
+                            .addClass('w-full');
+
+                        jQuery('#notification-b-secondary-button-preview').addClass('hidden');
+                    }
+
+                    if (jQuery('#enable_secondary_cta').val() == 0 && jQuery('#primary_cta_toggle').val() == 1) {
+                        jQuery('#notification-b-primary-button-preview')
+                            .removeClass('hidden')
+                            .removeClass('w-full')
+                            .addClass('w-1/2');
+
+                        jQuery('#notification-b-secondary-button-preview').removeClass('hidden');
+                    }
+
+                    jQuery('#notification-b-primary-button-preview a').text(jQuery('input[name=primary_cta_button_text]').val());
+                    jQuery('#notification-b-primary-button-preview a').prop('href', jQuery('input[name=primary_cta_link]').val());
+                    jQuery('#notification-b-secondary-button-preview a').text(jQuery('input[name=secondary_cta_button_text]').val());
+                    jQuery('#notification-b-secondary-button-preview a').prop(jQuery('input[name=secondary_cta_link]').val());
+
                     $modalNotification = $modalNotificationB.modal('show');
                 }
             });
