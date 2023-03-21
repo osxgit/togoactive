@@ -165,6 +165,68 @@ class EventsController extends Controller
 
     }
 
+    public function participants_manager(Request $request, $eventId){
+        // $data = $this->eventRepository->getEventUsersList($eventId);
+        // dd($data[0]);
+        if ($request->ajax()) {
+            $data = $this->eventRepository->getEventUsersList($eventId);
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('username', function($row){
+                        $username = $row->user->username;
+                        return $username;
+                    })
+                    ->addColumn('fullname', function($row){
+                        $fullname = $row->user->fullname;
+                        return $fullname;
+                    })
+                    ->addColumn('email', function($row){
+                        $email = $row->user->email;
+                        return $email;
+                    })
+                    ->addColumn('address', function($row){
+                        $address = $row->country;
+                        return $address;
+                    })
+                    ->addColumn('team', function($row){
+                        if($row->team_user){
+                            $team = '<p>'.$row->team_user->team->team_name.'<p>'.$row->team_user->is_owner ==0 ?'Team Member':'Team Leader';
+                        } else{
+                            $team='';
+                        }
+                       
+                        return $team;
+                    })
+                    ->addColumn('strava', function($row){
+                        $strava = $row->user->strava_id;
+                        return $strava;
+                    })
+                    ->addColumn('referral_code', function($row){
+                        $referral_code = $row->referral_code;
+                        return $referral_code;
+                    })
+                    ->addColumn('coupon_code', function($row){
+                        $coupon_code = $row->coupon_code;
+                        return $coupon_code;
+                    })
+                    ->addColumn('remarks', function($row){
+                        $remarks = $row->remarks;
+                        return $remarks;
+                    })
+                    ->addColumn('action', function($row){
+                        $action = ' <a class="dropdown-item"  href="#" onclick="removeUser('. $row->user_id.',\'' .$row->event_id .'\')" >
+
+                       Remove User
+                    </a>';
+                        return $action;
+                    })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('templates.admin.events.participants',['route_name' => request()->route()->getName(), 'active_page' => 'Participants Manager', 'id'=>$eventId]);
+
+    }
+
     public function publishEvent(Request $request){
             $event = $this->eventRepository->publishEvent($request->eventId);
               return response()->json(['err'=>0]);
@@ -804,5 +866,10 @@ class EventsController extends Controller
 
     public function renderActivitiesSection(){
 
+    }
+
+    public function removeEventUser(Request $request){
+        $event = $this->eventRepository->removeEventUser($request->eventId,$request->userId);
+        return response()->json(['err'=>0]);
     }
 }

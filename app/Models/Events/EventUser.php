@@ -43,6 +43,7 @@ class EventUser extends Model
         return $this->belongsTo(TeamUser::class,'user_id');
     }
 
+   
     public function user()
     {
         return $this->belongsTo(\App\Models\User::class);

@@ -22,6 +22,8 @@ Route::post('/event/publish',[EventsController::class,'publishEvent'])->name('ev
 
 Route::post('/event/hide',[EventsController::class,'hideEvent'])->name('events.hide');
 
+Route::post('/event/removeUser',[EventsController::class,'removeEventUser'])->name('eventUser.remove'); 
+
 Route::post('event/{id}/coupon/add_edit/{coupon_id}',[EventsController::class,'renderCouponAdd'])->name('coupon.add_edit');
 
 Route::middleware('auth')->group(function () {
