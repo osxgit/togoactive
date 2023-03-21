@@ -57,8 +57,6 @@ class SendEventRegistrationEmail
             $eventName = $event_object->name;
             $event_slug = $event_object->slug;
 
-
-
             $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $userId,'payment'=>$paymentId ));
             $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
 
@@ -73,9 +71,19 @@ class SendEventRegistrationEmail
 
             $eventImages        = $this->eventRepository->getEventImages($eventId);
 
+            $log_array = array(
+                'message' => "Started cron",
+                'date' => Carbon::now()->toDateTimeString(),
+                'registrationData' => $registrationData,
+                'groupingHeader' => $groupingHeader,
+                'coreReward_data' => $coreReward_data,
+                'addonRewards' => $addonRewards,
+                'eventImages' => $eventImages,
+            );
+            Log::channel('single')->info($log_array);
 
-            if($registrationData['event_user']['is_paid_user'] == 1){
-                if($registrationData['payment']['user_reward']){
+            if(isset($registrationData['event_user']) && $registrationData['event_user'] != null && $registrationData['event_user']['is_paid_user'] == 1){
+                if(isset($registrationData['payment']['user_reward']) && $registrationData['payment']['user_reward']){
                     if(count($registrationData['payment']['user_reward']) == $coreRewards + $addonRewards){
                         $canUpgrade=0;
                     } else{
@@ -101,14 +109,6 @@ class SendEventRegistrationEmail
                         'event_base_url' =>$event_base_url,
                         'eventImages' => $eventImages
                     ];
-
-            $log_array = array(
-                'message' => "Started cron",
-                'date' => Carbon::now()->toDateTimeString(),
-                'data' => $data,
-            );
-            Log::channel('single')->info($log_array);
-
 
             // end email code
             $subject = $successPage->email_subject;
