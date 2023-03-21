@@ -67,4 +67,6 @@ Route::post('getUserPaymentHistoryData', [UserController::class, 'getUserPayment
 
 Route::post('updateUserTeam', [EventsController::class, 'updateUserTeam'])->name('updateUserTeam');
 
+Route::post('getEventUserCount', [EventsController::class, 'eventUsersCount'])->name('eventUsersCount');
+
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
