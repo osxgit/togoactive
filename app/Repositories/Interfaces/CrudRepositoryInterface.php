@@ -10,6 +10,6 @@ interface CrudRepositoryInterface
     public function create(array $data): Model;
     public function list(int $parentId): Collection;
     public function get(int $id): Model;
-    public function update(int $id, array $data): bool;
+    public function update(int $id, array $data): bool | Model;
     public function delete(int $id): bool;
 }
