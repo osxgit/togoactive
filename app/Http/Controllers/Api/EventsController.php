@@ -174,8 +174,8 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
 
                 // this is called when event free registration
-                $eventUser = $request->userId;
                 $eventId = $request->eventId;
+                $eventUser = $response['payment']['user_id'];
                 $eventPayment = $response['payment']['id'];
 
                 $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
