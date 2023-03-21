@@ -79,10 +79,13 @@ class AchievementsController extends Controller
         $achievement = $this->repository->create($request->all());
 
         return redirect(
-            route(
-                'admin.events.achievements.create',
-                ['id' => $eventId, 'achievementId' => $achievement->id]
-            )
+            route('admin.events.achievements.list', [
+                    'route_name' => request()->route()->getName(),
+                    'active_page' => 'Achievement Manager',
+                    'id' => $eventId,
+                    'achievementId' => $achievement->id,
+                    'achievement' => $achievement
+            ])
         )->with('message', 'Changes are saved successfully.');
     }
 
@@ -90,13 +93,16 @@ class AchievementsController extends Controller
     {
         Validator::make($request->all(), $this->rules)->validate();
 
-        $this->repository->update($achievementId, $request->all());
+        $achievement = $this->repository->update($achievementId, $request->all());
 
         return redirect(
-            route(
-                'admin.events.achievements.create',
-                ['id' => $eventId, 'achievementId' => $achievementId]
-            )
+            route('admin.events.achievements.list',[
+                'route_name' => request()->route()->getName(),
+                'active_page' => 'Achievement Manager',
+                'id' => $eventId,
+                'achievementId' => $achievementId,
+                'achievement' => $achievement
+            ])
         )->with('message', 'Changes are saved successfully.');
     }
 

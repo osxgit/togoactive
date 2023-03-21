@@ -94,8 +94,8 @@
                 </a>
             </li>
             <li class="lg:py-4 flex py-4  pl-8 font-arial text-lg {{($id != '-' ? 'hover:bg-active-nav' : '')}}  {{ in_array(request()->route()->getName(), ['admin.events.achievements.list', 'admin.events.achievements.edit', 'admin.events.achievements.create']) ? 'bg-active-nav' : ''}}">
-                <a class="truncate float-left w-full {{($id == '-' ? 'cursor-not-allowed' : 'hover:text-primary')}}  {{request()->route()->getName() == 'events.achievement.list' ? 'text-primary' : 'text-gray'}}" href="" {{($id == '-' ? 'disabled' : '')}}>
-                    <span class="inline"  {{request()->route()->getName() == 'events.achievement.list' ? 'text-primary' : 'text-gray'}}">
+                <a class="truncate float-left w-full {{($id == '-' ? 'cursor-not-allowed' : 'hover:text-primary')}}  {{ in_array(request()->route()->getName(), ['admin.events.achievements.list', 'admin.events.achievements.edit', 'admin.events.achievements.create']) ? 'text-primary' : 'text-gray'}}" href="{{ route('admin.events.achievements.list', [$id]) }}" {{($id == '-' ? 'disabled' : '')}}>
+                    <span class="inline  {{ in_array(request()->route()->getName(), ['admin.events.achievements.list', 'admin.events.achievements.edit', 'admin.events.achievements.create']) ? 'text-primary' : 'text-gray'}}">
                     <i class="fa fa-medal fa-solid text-center w-5 mr-1 text-gray"></i>
                     Achievements Setup
                     </span>

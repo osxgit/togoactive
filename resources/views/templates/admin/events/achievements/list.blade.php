@@ -405,34 +405,41 @@
                     </div>
                 @endif
 
-                <table id="achievements" class="table table-striped table-bordered" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Reorder</th>
-                            <th>ID</th>
-                            <th>Icon</th>
-                            <th>Titile</th>
-                            <th>Description</th>
-                            <th>Type</th>
-                            <th>Level</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($achievements as $achievement)
-                        <tr>
-                            <td><i class="fa fa-bars"></td>
-                            <td>{{ $achievement->id }}</td>
-                            <td><i class="fa fa-file"></td>
-                            <td>{{ $achievement->title }}</td>
-                            <td>{{ $achievement->description }}</td>
-                            <td>{{ $achievement->type }}</td>
-                            <td>{{ $achievement->level }}</td>
-                            <td><i class="fa fa-ellipsis-v"></td>
-                        @endforeach
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="w-full">
+                    <div>
+                        <a href="{{ route('admin.events.achievements.create', [$id]) }}" style="text-decoration: none;color: #ffffff !important;background-color:#7E1FF6; border: 1px solid #7E1FF6; padding: 5px 10px; border-radius: 5px; font-weight: bold; font-size: 14px; float: right; position: relative; width: max-content;">New achievement</a>
+                    </div>
+                </div>
+
+                <div class="w-full">
+                    <table id="achievements" class="table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Reorder</th>
+                                <th>ID</th>
+                                <th>Icon</th>
+                                <th>Titile</th>
+                                <th>Description</th>
+                                <th>Type</th>
+                                <th>Level</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($achievements as $achievement)
+                            <tr>
+                                <td><i class="fa fa-bars"></td>
+                                <td>{{ $achievement->id }}</td>
+                                <td><i class="fa fa-file"></td>
+                                <td>{{ $achievement->title }}</td>
+                                <td>{{ $achievement->description }}</td>
+                                <td>{{ $achievement->type }}</td>
+                                <td>{{ $achievement->level }}</td>
+                                <td><i class="fa fa-ellipsis-v"></td>
+                            @endforeach
+                            </tr>
+                        </tbody>
+                    </table>
             </div>
         </main>
     </div>

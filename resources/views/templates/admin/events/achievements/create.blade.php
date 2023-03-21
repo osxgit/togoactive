@@ -378,7 +378,7 @@
             text-align: right;
         }
     </style>
-    @include('layouts.admin.events.subheader')
+
     <div class="w-full flex flex-col sm:flex-row flex-grow overflow-hidden bg-light-gray-bg">
         @include('layouts.admin.events.sidebar')
         <main role="main" class="w-full h-full flex-grow p-3 overflow-auto">
@@ -440,12 +440,22 @@
                                         Icon*
                                         <span class="font-poppins">(1:1 ratio)</span>
                                     </label>
-                                    <x-forms.image_uploader>
-                                        <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
-                                        <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 150x150px)</x-slot>
-                                        <x-slot name="field_id">achievement_icon</x-slot>
-                                        <x-slot name="uploaded_img"></x-slot>
-                                    </x-forms.image_uploader>
+
+                                    @if (!isset($achievement))
+                                        <x-forms.image_uploader>
+                                            <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 150x150px)</x-slot>
+                                            <x-slot name="field_id">achievement_icon</x-slot>
+                                            <x-slot name="uploaded_img"></x-slot>
+                                        </x-forms.image_uploader_edit>
+                                    @else
+                                        <x-forms.image_uploader_edit>
+                                            <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 150x150px)</x-slot>
+                                            <x-slot name="field_id">achievement_icon</x-slot>
+                                            <x-slot name="uploaded_img">{{ $achievement->icon }}</x-slot>
+                                        </x-forms.image_uploader>
+                                    @endif
 
                                     <x-forms.file_input name="icon_file">
                                         <x-slot name="width">150</x-slot>
@@ -455,12 +465,12 @@
                                     <input type="hidden" name="icon" id="icon" />
                                 </div>
                                 <div id="title-label" class="w-full">
-                                    <x-forms.textfield name="title">
+                                    <x-forms.textfield name="title" value="{{ isset($achievement) ? $achievement->title : '' }}">
                                         <x-slot name="field_id">title</x-slot>
                                         <x-slot name="label_text">Title*</x-slot>
                                         <x-slot name="label_description"></x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                    </x-text-input>
+                                    </x-forms.textfield>
                                 </div>
                                 <div id="achievement-description-label" class="w-full">
                                     <x-forms.textarea name="description">
@@ -468,7 +478,8 @@
                                         <x-slot name="label_text">Description*</x-slot>
                                         <x-slot name="label_description"></x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                    </x-text-input>
+                                        {{ isset($achievement) ? $achievement->description : '' }}
+                                    </x-forms.textarea>
                                 </div>
                             </div>
                         </x-slot>
@@ -482,22 +493,23 @@
                         <x-slot name="section_heading_description_text"></x-slot>
                         <x-slot name="section_content">
                             <div class="float-left w-1/2 ">
+                                @php $types = isset($achievement) ? explode(',', $achievement->type) : [] @endphp
                                 <x-forms.select id="achievement_type" name="type[]" class="selectpicker" multiple>
                                     <x-slot name="field_id">achievement_type</x-slot>
                                     <x-slot name="label_text">Achievement type*</x-slot>
                                     <x-slot name="label_description_status"></x-slot>
                                     <x-slot name="label_description"></x-slot>
                                     <x-slot name="options">
-                                        <option value="Individual">
+                                        <option value="Individual" {{ in_array('Individual', $types) ? 'selected' : '' }}>
                                             Individual
                                         </option>
-                                        <option value="Team">
+                                        <option value="Team" {{ in_array('Team', $types) ? 'selected' : '' }}>
                                             Team
                                         </option>
-                                        <option value="Indoor">
+                                        <option value="Indoor" {{ in_array('Inddoor', $types) ? 'selected' : '' }}>
                                             Indoor
                                         </option>
-                                        <option value="Outdoor">
+                                        <option value="Outdoor" {{ in_array('Outdoor', $types) ? 'selected' : '' }}>
                                             Outdoor
                                         </option>
                                     </x-slot>
@@ -509,16 +521,16 @@
                                     <x-slot name="label_description"></x-slot>
                                     <x-slot name="options">
                                         <option value="" >--Select Level--</option>
-                                        <option value="Easy">
+                                        <option value="Easy" {{ isset($achievement) && $achievement->level === 'Easy' ? 'selected' : '' }}>
                                             Easy
                                         </option>
-                                        <option value="Intermediate'">
+                                        <option value="Intermediate" {{ isset($achievement) && $achievement->level === 'Intermediate' ? 'selected' : '' }}>
                                             Intermediate
                                         </option>
-                                        <option value="Difficult">
+                                        <option value="Difficult" {{ isset($achievement) && $achievement->level === 'Difficult' ? 'selected' : '' }}>
                                             Difficult
                                         </option>
-                                        <option value="Insane">
+                                        <option value="Insane" {{ isset($achievement) && $achievement->level === 'Insane' ? 'selected' : '' }}>
                                             Insane
                                         </option>
                                     </x-slot>
@@ -536,7 +548,7 @@
                         <x-slot name="section_content">
                             <div class="float-left w-full">
                                 <div class="float-left mt-4">
-                                    <x-forms.toggle id="more_info_toggle" name="is_more_info_enabled"  value="0" >
+                                    <x-forms.toggle id="more_info_toggle" name="is_more_info_enabled"  value="{{ isset($achievement) && $achievement->is_more_info_enabled === 1 ? $achievement->is_more_info_enabled : 0 }}">
                                         <x-slot name="field_id">more_info_toggle</x-slot>
                                         <x-slot name="label_text">Enable More Info” Modal Pop-up  </x-slot>
                                         <x-slot name="label_description">
@@ -553,12 +565,21 @@
                                             Image*
                                             <span class="font-poppins">(1280 x 640 px)</span>
                                         </label>
-                                        <x-forms.image_uploader>
-                                            <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
-                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x640px)</x-slot>
-                                            <x-slot name="field_id">achcievement_more_info_image</x-slot>
-                                            <x-slot name="uploaded_img"></x-slot>
-                                        </x-forms.image_uploader>
+                                        @if (!isset($achievment) || (isset($achievement) && $achievement->is_more_info_enabled === 0))
+                                            <x-forms.image_uploader>
+                                                <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                                <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x640px)</x-slot>
+                                                <x-slot name="field_id">achcievement_more_info_image</x-slot>
+                                                <x-slot name="uploaded_img"></x-slot>
+                                            </x-forms.image_uploader>
+                                        @else
+                                            <x-forms.image_uploader_edit>
+                                                <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                                <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x640px)</x-slot>
+                                                <x-slot name="field_id">achcievement_more_info_image</x-slot>
+                                                <x-slot name="uploaded_img">{{ $achievement->more_info_image }}</x-slot>
+                                            </x-forms.image_uploader_edit>
+                                        @endif
 
                                         <x-forms.file_input name="more_info_image">
                                             <x-slot name="width">1280</x-slot>
@@ -573,7 +594,8 @@
                                             <x-slot name="label_text">Description*</x-slot>
                                             <x-slot name="label_description"></x-slot>
                                             <x-slot name="label_description_status"></x-slot>
-                                        </x-text-input>
+                                            {{ isset($achievement) ? $achievement->more_info_description : '' }}
+                                        </x-forms.textarea>
                                     </div>
                                 </div>
                             </div>
@@ -599,12 +621,12 @@
                         <x-slot name="section_content">
                             <div class="float-left w-full">
                                 <div id="email-subject-label" class="w-full">
-                                    <x-forms.textfield name="email_subject">
+                                    <x-forms.textfield name="email_subject" value="{{ isset($achievement) ? $achievement->email_subject : '' }}">
                                         <x-slot name="field_id">email_subject</x-slot>
                                         <x-slot name="label_text">Email Subject</x-slot>
                                         <x-slot name="label_description"></x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                    </x-text-input>
+                                    </x-forms.textfield>
                                 </div>
                                 <div id="email-text-label" class="w-full">
                                     <x-forms.textarea name="email_text">
@@ -612,7 +634,8 @@
                                         <x-slot name="label_text">Body</x-slot>
                                         <x-slot name="label_description"></x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                    </x-text-input>
+                                        {{ isset($achievement) ? $achievement->email_text : '' }}
+                                    </x-forms.textarea>
                                 </div>
                             </div>
                         </x-slot>
@@ -641,7 +664,7 @@
                                         <x-slot name="label_text">Notification Title</x-slot>
                                         <x-slot name="label_description"></x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                    </x-text-input>
+                                    </x-forms.textfield>
                                 </div>
                                 <div id="notification-description-label" class="w-full">
                                     <x-forms.textarea name="notification_description">
@@ -649,18 +672,19 @@
                                         <x-slot name="label_text">Text</x-slot>
                                         <x-slot name="label_description"></x-slot>
                                         <x-slot name="label_description_status"></x-slot>
-                                    </x-text-input>
+                                        {{ isset($achievement) ? $achievement->notification_description : '' }}
+                                    </x-forms.textarea>
                                 </div>
                                 <div id="notification-type-label" class="w-full">
                                     <label for="notification-type-options" class="float-left w-full mt-4 text-lg text-placeholder font-poppins-bold">
                                         Select the type of notification*
                                     </label>
                                     <div id="notification-type-options">
-                                        <input type="radio" name="notification_type" id="notification_type_a" value="Type A" class="w-4 h-4 text-purple-700	 bg-gray-100 border-gray-300 focus:ring-0 focus:ring-offset-0 dark:bg-gray-700 dark:border-gray-600" />
+                                        <input type="radio" name="notification_type" id="notification_type_a" value="Type A" class="w-4 h-4 text-purple-700	 bg-gray-100 border-gray-300 focus:ring-0 focus:ring-offset-0 dark:bg-gray-700 dark:border-gray-600" {{ isset($achievement) && $achievement->notification_type === 'Type A' ? 'checked' : '' }} />
                                         <label for="notification_type_a" class="mt-4 text-placeholder font-poppins">
                                             Type A
                                         </label>
-                                        <input type="radio" name="notification_type" id="notification_type_b" value="Type B" class="w-4 h-4 ml-4 text-purple-700	 bg-gray-100 border-gray-300 focus:ring-0 focus:ring-offset-0 dark:bg-gray-700 dark:border-gray-600" />
+                                        <input type="radio" name="notification_type" id="notification_type_b" value="Type B" class="w-4 h-4 ml-4 text-purple-700	 bg-gray-100 border-gray-300 focus:ring-0 focus:ring-offset-0 dark:bg-gray-700 dark:border-gray-600" {{ isset($achievement) && $achievement->notification_type === 'Type B' ? 'checked' : '' }} />
                                         <label for="notification_type_b" class="mt-4 text-placeholder font-poppins">
                                             Type B
                                         </label>
@@ -668,12 +692,12 @@
                                 </div>
                                 <div id="notification-type-a-label" class="float-left hidden w-full">
                                     <div id="destination-url-label" class="w-full">
-                                        <x-forms.textfield name="notification_destination_url">
+                                        <x-forms.textfield name="notification_destination_url" value="{{ isset($achievement) ? $achievement->notification_destination_url : '' }}">
                                             <x-slot name="field_id">notification_destination_url</x-slot>
                                             <x-slot name="label_text">Destination URL*</x-slot>
                                             <x-slot name="label_description"></x-slot>
                                             <x-slot name="label_description_status"></x-slot>
-                                        </x-text-input>
+                                        </x-forms.textfield>
                                     </div>
                                 </div>
                                 <div id="notification-type-b-label" class="float-left hidden w-full mt-4">
@@ -686,76 +710,85 @@
                                             <span class="font-poppins">(1280 x 600 px)</span>
                                             <p class="font-poppins">This image will be shown on all notifications</p>
                                         </label>
-                                        <x-forms.image_uploader>
-                                            <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
-                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x600px)</x-slot>
-                                            <x-slot name="field_id">hero_image</x-slot>
-                                            <x-slot name="uploaded_img"></x-slot>
-                                        </x-forms.image_uploader>
+                                        @if (!isset($achievement) || (isset($achievement) && $achievement->type === 'Type A'))
+                                            <x-forms.image_uploader>
+                                                <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                                <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x600px)</x-slot>
+                                                <x-slot name="field_id">hero_image</x-slot>
+                                                <x-slot name="uploaded_img"></x-slot>
+                                            </x-forms.image_uploader>
+                                        @else
+                                            <x-forms.image_uploader_edit>
+                                                <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                                <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 1280x600px)</x-slot>
+                                                <x-slot name="field_id">hero_image</x-slot>
+                                                <x-slot name="uploaded_img">{{ $achievement->notification_hero_image }}</x-slot>
+                                            </x-forms.image_uploader_edit>
+                                        @endif
 
                                         <x-forms.file_input name="notification_hero_image_file">
                                             <x-slot name="width">1280</x-slot>
                                             <x-slot name="height">600</x-slot>
-                                            <x-slot name="field_id">hero_image_file</x-slot>
+                                            <x-slot name="field_id">hero_image</x-slot>
                                         </x-forms.file_input>
                                         <input type="hidden" name="notification_hero_image" id="notification_hero_image" />
                                     </div>
                                     <div id="enable-primary-cta-button-label" class="float-left mt-4 w-full">
-                                        <x-forms.toggle id="primary_cta_toggle" name="is_primary_cta_enabled"  value="0" >
+                                        <x-forms.toggle id="primary_cta_toggle" name="is_primary_cta_enabled"  value="{{ isset($achievement) ? $achievement->is_primary_cta_enabled : 0 }}">
                                             <x-slot name="field_id">primary_cta_toggle</x-slot>
                                             <x-slot name="label_text">Enable primary CTA button</x-slot>
                                             <x-slot name="label_description"></x-slot>
                                         </x-forms.toggle>
                                     </div>
-                                    <div id="primary-cta-button-label" class="float-left ml-5 pl-1 w-1/2">
+                                    <div id="primary-cta-button-label" class="float-left ml-5 pl-1 w-1/2" value="{{ isset($achievement) ? $achievement->primary_cta_button_text : '' }}">
                                         <div id="primary_cta_button_text" class="w-full">
                                             <x-forms.textfield name="primary_cta_button_text">
                                                 <x-slot name="field_id">primary-cta-button-text</x-slot>
                                                 <x-slot name="label_text">CTA button text*</x-slot>
                                                 <x-slot name="label_description"></x-slot>
                                                 <x-slot name="label_description_status"></x-slot>
-                                            </x-text-input>
+                                            </x-forms.textfield>
                                         </div>
                                         <div id="primary_cta_link" class="w-full">
-                                            <x-forms.textfield name="primary_cta_link">
+                                            <x-forms.textfield name="primary_cta_link" value="{{ isset($achievement) ? $achievement->primary_cta_link : '' }}">
                                                 <x-slot name="field_id">primary_cta_link</x-slot>
                                                 <x-slot name="label_text">Link*</x-slot>
                                                 <x-slot name="label_description"></x-slot>
                                                 <x-slot name="label_description_status"></x-slot>
-                                            </x-text-input>
+                                            </x-forms.textfield>
                                         </div>
                                         <div id="secondary_cta_button_enable" class="float-left w-full mt-4">
                                             <a href="#" id="enable_secondary_cta_button" class="text-primary font-poppins-semibold text-sm mt-4">
                                                 <i class="fa-plus"></i>
                                                 <span>secondary CTA button</span>
                                             </a>
-                                            <input type="hidden" name="is_secondary_cta_enabled" id="enable_secondary_cta" />
+                                            <input type="hidden" name="is_secondary_cta_enabled" id="enable_secondary_cta" value="{{ isset($achievement) ? $achievement->is_secondary_cta_enabled : '' }}" />
                                         </div>
                                         <div id="secondary_cta_button-label" class="float-left w-full hidden">
                                             <div id="secondary-cta-button-text-label" class="float-left w-full">
                                                 <div id="secondary_cta_button_text" class="w-full">
-                                                    <x-forms.textfield name="secondary_cta_button_text">
+                                                    <x-forms.textfield name="secondary_cta_button_text" value="{{ isset($achievement) ? $achievement->secondary_button_text : '' }}">
                                                         <x-slot name="field_id">secondary-cta-button-text</x-slot>
                                                         <x-slot name="label_text">CTA button text*</x-slot>
                                                         <x-slot name="label_description"></x-slot>
                                                         <x-slot name="label_description_status"></x-slot>
-                                                    </x-text-input>
+                                                    </x-forms.textfield>
                                                 </div>
                                             </div>
                                             <div id="secondary-cta-link-label" class="float-left w-full">
                                                 <div id="secondary_cta_link" class="w-full">
-                                                    <x-forms.textfield name="secondary_cta_link">
+                                                    <x-forms.textfield name="secondary_cta_link" value="{{ isset($achievement) ? $achievement->secondary_cta_button_text : '' }}">
                                                         <x-slot name="field_id">secondary_cta_link</x-slot>
                                                         <x-slot name="label_text">Link*</x-slot>
                                                         <x-slot name="label_description"></x-slot>
                                                         <x-slot name="label_description_status"></x-slot>
-                                                    </x-text-input>
+                                                    </x-forms.textfield>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div id="enable-share-option-label" class="float-left mt-4 w-full">
-                                        <x-forms.toggle id="share_option_toggle" name="is_share_option_enabled"  value="0" >
+                                        <x-forms.toggle id="share_option_toggle" name="is_share_option_enabled"  value="{{ isset($achievement) && $achievement->is_share_option_enabled === 1 ? $achievement->is_share_option_enabled : 0 }}" >
                                             <x-slot name="field_id">share_option_toggle</x-slot>
                                             <x-slot name="label_text">Enable share option</x-slot>
                                             <x-slot name="label_description">This will allow you to create an share option for the notification </x-slot>
@@ -769,7 +802,7 @@
                                                     <x-slot name="label_text">Link*</x-slot>
                                                     <x-slot name="label_description"></x-slot>
                                                     <x-slot name="label_description_status"></x-slot>
-                                                </x-text-input>
+                                                </x-forms.textfield>
                                             </div>
                                         </div>
                                     </div>
@@ -787,7 +820,7 @@
                         <x-slot name="section_content">
                             <div class="float-left w-full">
                                 <div id="enable-sponsor-content-label" class="float-left mt-4 w-full">
-                                    <x-forms.toggle id="sponsor_content_toggle" name="is_sponsor_content_enabled"  value="0" >
+                                    <x-forms.toggle id="sponsor_content_toggle" name="is_sponsor_content_enabled"  value="{{ isset($achievement) ? $achievement->is_sponsor_content_enabled : 0 }}">
                                         <x-slot name="field_id">sponsor_content_toggle</x-slot>
                                         <x-slot name="label_text">Enable sponsor content</x-slot>
                                         <x-slot name="label_description">By enabling this, you'll be able to display information about sponsor content</x-slot>
@@ -799,12 +832,21 @@
                                             Image*
                                             <span class="font-poppins">(300 x 150 px)</span>
                                         </label>
-                                        <x-forms.image_uploader>
-                                            <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
-                                            <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 300x150px)</x-slot>
-                                            <x-slot name="field_id">sponsor-content-image</x-slot>
-                                            <x-slot name="uploaded_img"></x-slot>
-                                        </x-forms.image_uploader>
+                                        @if (!isset($achievement) || (isset($achievement) && $achievement->is_sponsor_content_enabled === 0))
+                                            <x-forms.image_uploader>
+                                                <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                                <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 300x150px)</x-slot>
+                                                <x-slot name="field_id">sponsor-content-image</x-slot>
+                                                <x-slot name="uploaded_img"></x-slot>
+                                            </x-forms.image_uploader>
+                                        @else
+                                            <x-forms.image_uploader_edit>
+                                                <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
+                                                <x-slot name="uploder_description">  SVG, PNG, JPG (MIN: 300x150px)</x-slot>
+                                                <x-slot name="field_id">sponsor-content-image</x-slot>
+                                                <x-slot name="uploaded_img">{{ $achievement->sponsor_content_image }}</x-slot>
+                                            </x-forms.image_uploader_edit>
+                                        @endif
 
                                         <x-forms.file_input name="sponsor_content_image_file">
                                             <x-slot name="width">300</x-slot>
@@ -819,7 +861,8 @@
                                             <x-slot name="label_text">Text*</x-slot>
                                             <x-slot name="label_description"></x-slot>
                                             <x-slot name="label_description_status"></x-slot>
-                                        </x-text-input>
+                                            {{ isset($achievement) ? $achievement->sponsor_content_text : '' }}
+                                        </x-forms.textarea>
                                     </div>
                                 </div>
                             </div>

@@ -13,7 +13,7 @@ class AchievementsRepository implements CrudRepositoryInterface
 
     public function create(array $data): Model
     {
-        $this->setData($data, true);
+        $this->setData($data);
 
         $max = Achievements::where('event_id', $data['event_id'])->max('list_order');
 
@@ -34,11 +34,15 @@ class AchievementsRepository implements CrudRepositoryInterface
         return Achievements::findOrFail($id);
     }
 
-    public function update(int $id, array $data): bool
+    public function update(int $id, array $data): Model
     {
         $this->setData($data);
 
-        return Achievements::find($id)->update($this->data);
+        $achievement = Achievements::find($id);
+
+        $achievement->update($this->data);
+
+        return $achievement;
     }
 
     public function delete(int $id): bool
@@ -46,7 +50,7 @@ class AchievementsRepository implements CrudRepositoryInterface
         return Achievements::find($id)->delete();
     }
 
-    private function setData(array $data, bool $isCreate = false): void
+    private function setData(array $data): void
     {
         $this->data = [
             'event_id' => $data['event_id'],
