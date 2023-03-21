@@ -244,4 +244,11 @@ class EventsController extends Controller
                 $this->setResponseData(array('data' => array('success' => true, 'data' => $updateUserTeam)));
                 return $this->sendAPIResponse();
             }
+
+            public function eventUsersCount(Request $request){
+                $eventUsersCount = $this->eventRepository->eventUsersCount($request->eventId);
+                $this->setResponseData(array('data' => array('success' => true, 'data' => $eventUsersCount)));
+                return $this->sendAPIResponse();
+
+            }
     }

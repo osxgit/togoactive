@@ -1102,4 +1102,12 @@ return $data;
                 return true;
 
             }
+
+            public function eventUsersCount($eventId){
+                $data=[];
+                $data['userCount']=  EventUser::where('event_id',$eventId)->select('user_id')->distinct()->count();
+                $data['userProfile']= EventUser::inRandomOrder()->with('user')->limit(5)->get();
+
+                return $data;
+            }
 }
