@@ -1012,7 +1012,6 @@
                     minCropBoxHeight: jQuery('#height').val(),
                     maxCropBoxWidth: jQuery('#width').val(),
                     maxCropBoxHeight: jQuery('#height').val(),
-                    modal: true,
                     data: {
                         width: jQuery('#width').val(),
                         height: jQuery('#height').val(),
