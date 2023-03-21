@@ -142,4 +142,6 @@ interface EventRepositoryInterface
 
     public function getSocialData($data);
 
+    public function updateUserTeam($data);
+
 };
