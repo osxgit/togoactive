@@ -733,10 +733,10 @@ return $data;
         }
         $responseData['AmountAfterDiscount'] = round($amountAfterDiscount,2);
         $responseData['TotalAmount'] = round($totalPrice,2);
-        $responseData['discountpercentage'] = round($discountpercentage,2);
+        $responseData['discountpercentage'] = $discountpercentage;
         $responseData['discountAmount'] = round($discountAmount,2);
-        $responseData['checkoutCurrency'] = round($checkoutCurrency,2);
-        $responseData['validRewards'] = round($validRewards,2);
+        $responseData['checkoutCurrency'] = $checkoutCurrency;
+        $responseData['validRewards'] = $validRewards;
 
         return  $responseData;
     }
