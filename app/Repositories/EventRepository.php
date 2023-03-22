@@ -1126,7 +1126,7 @@ return $data;
 
             public function eventRegistrationPaymentId($eventId, $userId){
                 $user= User::where('tgp_userid', $userId)->first();
-                $payment =Payment::where('user_id', $userId)->where('event_id',$eventId)->where('payment_type','registration')->select('id')->first();
+                $payment =Payment::where('user_id', $user->id)->where('event_id',$eventId)->where('payment_type','registration')->select('id')->first();
                 return $payment;  
             }
 }
