@@ -100,6 +100,15 @@ class SendEventRegistrationEmail
 
             $event_base_url = "https://events.togoparts.com/"; // this url is used for event share on social platform
             // here we need to get event data and send mail to login user
+
+
+            if(!empty($successPage->email_body)){
+                $email_body = $successPage->email_body;
+                $replace_body = str_replace(['{user_name}','{full_name}'],[$user_name,$fullname],$email_body);
+
+                $successPage->email_body = $replace_body;
+            }
+
             $data = [
                         'canUpgrade'=>$canUpgrade,
                         'groupingHeader'=> $groupingHeader,
