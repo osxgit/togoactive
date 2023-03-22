@@ -151,4 +151,7 @@ interface EventRepositoryInterface
     public function eventUsersCount($eventId);
 
     public function publishEventManually($request, $eventId);
+
+    public function eventRegistrationPaymentId($eventId, $userId);
+
 };
