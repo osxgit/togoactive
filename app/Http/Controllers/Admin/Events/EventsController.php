@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Events;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Events\Events;
+use App\Models\Events\Reward;
 use App\Models\Events\EventsMeta;
 use Illuminate\Support\Facades\DB;
 use App\Repositories\Interfaces\EventRepositoryInterface;
@@ -680,8 +681,30 @@ class EventsController extends Controller
     }
 
     public function deleteCoupon(Request $request,$eventId, $couponId){
+       
         $coupons = $this->eventRepository->deleteCoupon($eventId,$couponId );
         return redirect()->route('admin.events.coupons',$eventId )->with('message','Changes saved successfully!');
+    }
+
+    public function deleteRewardImage($eventId,$rewardId, $imageIndex){
+        $rewards= Reward::Where('id',$rewardId)->first();
+        $rewardImages = $rewards->rewards_images;
+      
+        $rewardImages=json_decode($rewardImages);
+        $imgLarge=$rewardImages->large[$imageIndex];
+        $imgMedium= $rewardImages->medium[$imageIndex];
+       
+        $imageHelper = new ImageHelper();
+        $imageHelper->deleteImage($imgLarge);
+        $imageHelper->deleteImage($imgMedium);
+        unset($rewardImages->large[$imageIndex]);
+        unset($rewardImages->medium[$imageIndex]);
+
+        $rewards->rewards_images= json_encode($rewardImages);
+        $rewards->save();
+        return redirect()->route('admin.events.rewards.edit',[$eventId ,$rewardId])->with('message','Changes saved successfully!');
+
+
     }
 
     public function renderLandingPageSection($eventId){

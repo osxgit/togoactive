@@ -272,4 +272,10 @@ class EventsController extends Controller
                 return $this->sendAPIResponse();
 
             }
+
+            public function getUserRegistrationPayment(Request $request){
+                $eventUsersRegistrationPaymentId = $this->eventRepository->eventRegistrationPaymentId($request->eventId,$request->userId);
+                $this->setResponseData(array('data' => array('success' => true, 'data' => $eventUsersRegistrationPaymentId)));
+                return $this->sendAPIResponse();
+            }
     }

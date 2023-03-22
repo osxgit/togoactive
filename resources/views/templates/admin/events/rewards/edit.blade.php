@@ -169,6 +169,10 @@
                                                     <x-slot name="field_id">images_2</x-slot>
                                                     <x-slot name="uploaded_img">{{$rewardImages->medium[1] ?? ''}}</x-slot>
                                                 </x-forms.image_uploader_small_edit>
+                                                
+                                                
+                                                <button type="button" onclick="confirmDelete('{{$id}}',1,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                           
                                             @else
                                                 <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -195,6 +199,9 @@
                                                 <x-slot name="field_id">images_3</x-slot>
                                                 <x-slot name="uploaded_img">{{$rewardImages->medium[2] ?? ''}}</x-slot>
                                                 </x-forms.image_uploader_small_edit>
+                                                
+                                                <button type="button" onclick="confirmDelete('{{$id}}',2,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
+
                                             @else
                                                 <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -219,6 +226,7 @@
                                                 <x-slot name="uploaded_img">{{$rewardImages->medium[3] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
+                                            <button type="button" onclick="confirmDelete('{{$id}}',3,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             @else
                                                 <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -243,6 +251,7 @@
                                                 <x-slot name="uploaded_img">{{$rewardImages->medium[4] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
+                                            <button type="button" onclick="confirmDelete('{{$id}}',4,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             @else
                                                 <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -270,6 +279,7 @@
                                                 <x-slot name="uploaded_img">{{$rewardImages->medium[5] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
+                                            <button type="button" onclick="confirmDelete('{{$id}}',5,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             @else
                                                 <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -295,6 +305,7 @@
                                                 <x-slot name="uploaded_img">{{$rewardImages->medium[6] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
+                                            <button type="button" onclick="confirmDelete('{{$id}}',6,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             @else
                                                 <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -321,6 +332,7 @@
                                                 <x-slot name="uploaded_img">{{$rewardImages->medium[7] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
+                                            <button type="button" onclick="confirmDelete('{{$id}}',7,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             @else
                                                 <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
@@ -345,6 +357,7 @@
                                                 <x-slot name="uploaded_img">{{$rewardImages->medium[8] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
+                                            <button type="button" onclick="confirmDelete('{{$id}}',8,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             @else
                                                 <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"  class="text-base"><b>Click to upload</b> or drag and drop </x-slot>
@@ -352,6 +365,7 @@
                                                     <x-slot name="field_id">images_9</x-slot>
 
                                                 </x-forms.image_uploader_small>
+                                                
                                             @endif
 
                                             <x-forms.file_input>
@@ -1068,5 +1082,33 @@
                 });
             }
         });
+
+        function confirmDelete(eventid,imgindex, rewardId){
+
+var answer =Swal.fire({
+    title: 'Delete Image',
+    icon: '',
+    html:'Are you sure you want to delete this image',
+    showCloseButton: true,
+    showCancelButton: true,
+    focusConfirm: false,
+    confirmButtonText:
+        'Yes, Delete',
+    confirmButtonAriaLabel: 'Yes, Delete',
+    cancelButtonText:
+        'No, cancel',
+    cancelButtonAriaLabel: 'No, cancel'
+}).then((result) => {
+    console.log(result);
+    if (result.isConfirmed == true) {
+        window.location.href = "/admin/event/"+eventid+"/rewardimage/"+rewardId+"/delete/"+imgindex;
+       return true;
+
+    } else{
+return false;
+    }
+});
+
+};
     </script>
 </x-app-layout>

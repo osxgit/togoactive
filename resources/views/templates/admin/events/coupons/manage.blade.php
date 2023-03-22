@@ -179,7 +179,8 @@
                                         <td class="px-2 text-center" style="width:20%"> {{$coupon->expiry_date}}</td>
                                         <td class="px-2 flex" style="width:20%">
                                             <a href="#" style="color:black !important;" onclick="getAddEditView({{$id}}, {{ $coupon->id}})"><i class="fa fa-pencil mr-2" aria-hidden="true"></i></a>
-                                            <form method="post" id="deleteCouponForm" data-coupon="{{$coupon->name}}" action="{{route('admin.events.coupon.delete', array($id, $coupon->id))}}">
+                                            <form method="post" id="deleteCouponForm_{{$coupon->name}}" data-coupon="{{$coupon->name}}" action="{{route('admin.events.coupon.delete', array($id, $coupon->id))}}">
+                                                <input hidden name="coupinId" value="{{$coupon->id}}">
                                                 @method('delete')
                                                 @csrf
                                                 <button type="button" onclick="confirmDelete('{{$coupon->name}}')" style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -259,7 +260,7 @@
             }).then((result) => {
                 console.log(result);
                 if (result.isConfirmed == true) {
-$('#deleteCouponForm').submit();
+$('#deleteCouponForm_'+coupon).submit();
                    return true;
 
                 } else{
