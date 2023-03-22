@@ -986,23 +986,12 @@ return $data;
             }
 
             public function getEventUserData($data){
-                \DB::connection()->enableQueryLog();
-                $eventUserId=$data['eventUser'];
-                $paymentId=$eventId=$data['payment'];
+
+                $eventUserId = $data['eventUser'];
+                $paymentId = $eventId=$data['payment'];
                 $eventUser = EventUser::where('id',$eventUserId)->with('user','team_user','team_user.team')->first();
                 $payment = Payment::where('id',$paymentId)->with('user_reward','user_reward.rewards')->first();
-                $queries = \DB::getQueryLog();
 
-                $log_array = array(
-                    'message' => "Event user data from event repository",
-                    'date' => Carbon::now()->toDateTimeString(),
-                    'eventUser' => $eventUser,
-                    'payment' => $payment,
-                    'queries' => $queries
-                );
-                Log::channel('single')->info($log_array);
-
-                
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
 
@@ -1142,6 +1131,6 @@ return $data;
             public function eventRegistrationPaymentId($eventId, $userId){
                 $user= User::where('tgp_userid', $userId)->first();
                 $payment =Payment::where('user_id', $user->id)->where('event_id',$eventId)->where('payment_type','registration')->select('id')->first();
-                return $payment;  
+                return $payment;
             }
 }

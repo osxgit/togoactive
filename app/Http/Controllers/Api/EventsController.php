@@ -174,11 +174,12 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
 
                 // this is called when event free registration
-                $eventId = $request->eventId;
+                $eventId = $request['eventId'];
                 $eventUser = $response['payment']['user_id'];
                 $eventPayment = $response['payment']['id'];
+                $eventUserId = $response['event_user']['id'];
 
-                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
+                $eventData = ['paymentId'=>$eventPayment, 'userId'=>$eventUser, 'eventId'=>$eventId, 'eventUserId'=>$eventUserId];
 
                 $log_array = array(
                     'message' => "event controller processFreeRegistration",
@@ -206,21 +207,13 @@ class EventsController extends Controller
 
                 // this is called when event payment registration
                 $eventUser = $response['user_id'];
-                $eventId = $request->eventId;
-                $eventPayment = $request->paymentId;
+                $eventId = $request['eventId'];
+                $eventPayment = $request['paymentId'];
+                $eventUserId = $request['eventUserId'];
 
-                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId];
-
-                $log_array = array(
-                    'message' => "event controller updatePayment",
-                    'date' => Carbon::now()->toDateTimeString(),
-                    'response' => $response,
-                    'request' => $request,
-                    'eventData' => $eventData
-                );
-                Log::channel('single')->info($log_array);
-
+                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
                 event(new EventRegistration($eventData,$request));
+
                 return $this->sendAPIResponse();
             }
 
