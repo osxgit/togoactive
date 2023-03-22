@@ -520,7 +520,7 @@ return $data;
     }
 
     public function getEventDataThroughSlug($slug){
-        return Events::where('slug','LIKE','%'.$slug.'%')->with('images','dates','landingPage','rewards','eventMeta')->where('event_status',1)->first();
+        return Events::where('slug','LIKE','%'.$slug.'%')->with('images','dates','landingPage','rewards','eventMeta', 'achievements')->where('event_status',1)->first();
     }
 
     public function getEventIdThroughSlug($slug){
