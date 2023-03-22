@@ -42,8 +42,9 @@ class SendEventRegistrationEmail
 
             $paymentId  = $event_data['paymentId'];
             $userId     = $event_data['userId'];
+            $eventUserId = $event_data['eventUserId'];
             $eventId    = $event_data['eventId'];
-            $request    = $event->request;
+
 
             $log_array = array(
                 'message' => "Printing from event listener ",
@@ -57,7 +58,7 @@ class SendEventRegistrationEmail
             $eventName = $event_object->name;
             $event_slug = $event_object->slug;
 
-            $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $userId,'payment'=>$paymentId ));
+            $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $eventUserId,'payment'=>$paymentId ));
             $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
 
             $reg                = $this->eventRepository->getRegistrationSetup(array('eventId' => $eventId ));
@@ -72,7 +73,7 @@ class SendEventRegistrationEmail
             $eventImages        = $this->eventRepository->getEventImages($eventId);
 
             $log_array = array(
-                'message' => "Started cron",
+                'message' => "SendEventRegistrationEmail get this data ",
                 'date' => Carbon::now()->toDateTimeString(),
                 'registrationData' => $registrationData,
                 'groupingHeader' => $groupingHeader,
