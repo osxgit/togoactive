@@ -72,6 +72,6 @@ Route::post('getEventUserCount', [EventsController::class, 'eventUsersCount'])->
 
 Route::post('getUserRegistrationPayment', [EventsController::class, 'getUserRegistrationPayment'])->name('getUserRegistrationPayment');
 
-Route::get('getEventAchievementsData', [EventAchievementsController::class, 'index'])->name('getEventAchievementsData');
+Route::post('getEventAchievementsData', [EventAchievementsController::class, 'index'])->name('getEventAchievementsData');
 
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
