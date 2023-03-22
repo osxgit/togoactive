@@ -104,6 +104,8 @@ class SendEventRegistrationEmail
 
             if(!empty($successPage->email_body)){
                 $email_body = $successPage->email_body;
+                $user_name = $registrationData['event_user']['user']['user_name'];
+                $fullname = $registrationData['event_user']['user']['fullname'];
                 $replace_body = str_replace(['{user_name}','{full_name}'],[$user_name,$fullname],$email_body);
 
                 $successPage->email_body = $replace_body;
