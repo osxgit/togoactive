@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Client\ClientController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\EventsController;
 use App\Http\Controllers\Api\EventsFaqTncController;
+use App\Http\Controllers\Api\EventAchievementsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,5 +71,7 @@ Route::post('updateUserTeam', [EventsController::class, 'updateUserTeam'])->name
 Route::post('getEventUserCount', [EventsController::class, 'eventUsersCount'])->name('eventUsersCount');
 
 Route::post('getUserRegistrationPayment', [EventsController::class, 'getUserRegistrationPayment'])->name('getUserRegistrationPayment');
+
+Route::get('getEventAchievementsData', [EventAchievementsController::class, 'index'])->name('getEventAchievementsData');
 
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
