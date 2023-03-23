@@ -6,6 +6,8 @@
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
     <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.3.3/js/dataTables.rowReorder.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.3.3/css/rowReorder.dataTables.min.css">
 
     <style>
         #div_faq{
@@ -364,6 +366,9 @@
         .bootstrap-select.show-tick .dropdown-menu .selected span.check-mark {
             color: #7E1FF6D9;
         }
+        /* #achievements tbody tr td:first-child{
+            cursor: pointer;
+        } */
     </style>
 
     @include('layouts.admin.events.subheader')
@@ -468,7 +473,10 @@
         jQuery.noConflict();
 
         jQuery(document).ready(function() {
-            jQuery('#achievements').DataTable();
+            jQuery('#achievements').DataTable({
+                rowReorder: true
+
+            } );
 
 
             jQuery("a.delete").on('click', function(e) {
