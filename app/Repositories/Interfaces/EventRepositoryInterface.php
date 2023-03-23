@@ -154,4 +154,13 @@ interface EventRepositoryInterface
 
     public function eventRegistrationPaymentId($eventId, $userId);
 
+    public function eventUpgradePaymentId($eventId, $userId);
+
+    public function processUpgradeEvent($data);
+
+    public function updateUpgradeEventPayment($data);
+
+    public function getEventRewardQuantity($data);
+
+
 };
