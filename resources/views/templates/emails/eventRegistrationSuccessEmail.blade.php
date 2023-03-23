@@ -228,16 +228,23 @@
 
                             </div>
                             @elseif($mailData['data']['canUpgrade'] ==1)
-                        {!! $mailData['data']['successPage']['partial_purchase_made'] !!}
+                            {!! $mailData['data']['successPage']['partial_purchase_made'] !!}
                             <div class="float-left w-full mt-5 mb-5" style="height:1px;background:#e0e0e0">
 
                             </div>
                             @elseif($mailData['data']['canUpgrade'] ==0)
-                        {!! $mailData['data']['successPage']['all_purchase_made'] !!}
+                            {!! $mailData['data']['successPage']['all_purchase_made'] !!}
                             <div class="float-left w-full mt-5 mb-5" style="height:1px;background:#e0e0e0">
 
                             </div>
-                                @endif
+                        @endif
+
+                        @if ($mailData['data']['successPage']['active_custom_message']==1)
+                            <div class="mt-4">
+                                {!! $mailData['data']['successPage']['custom_message'] !!}
+                            </div>
+                        @endif
+
                         <div class="mt-4">
                         {!! $mailData['data']['successPage']['invite_friend'] !!}
                         </div>
