@@ -366,9 +366,8 @@ Validator::make($request->all(), [
 
              if($rewardId){
                 $eventRewards = $this->eventRepository->getEventRewards($eventId, $rewardId);
-                $rewardImages = json_decode($eventRewards->rewards_images);
-                $rewardCount= count($rewardImages->large);
-// dd( $rewardImages);
+                $rewardImages = json_decode($eventRewards->rewards_images, true);
+                $rewardCount= count($rewardImages['large']);
              } else {
                 return redirect()->route('admin.events.rewards.add','-')->with('warining','Please add the reward first');;
              }
