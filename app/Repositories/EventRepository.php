@@ -520,7 +520,7 @@ return $data;
     }
 
     public function getEventDataThroughSlug($slug){
-        return Events::where('slug','LIKE','%'.$slug.'%')->with('images','dates','landingPage','rewards','eventMeta')->where('event_status',1)->first();
+        return Events::where('slug','LIKE','%'.$slug.'%')->with('images','dates','landingPage','rewards','eventMeta', 'achievements')->where('event_status',1)->first();
     }
 
     public function getEventIdThroughSlug($slug){
@@ -700,37 +700,41 @@ return $data;
             }
 
             if( $coupon){
-//                 $discountAmount = ($coupon->discount/100)*$totalPrice;
-                $discountpercentage=$coupon->discount;
-            } else if(count($discount)){
-                $membershipCount= count($membership);
-
-                $discountpercentage=0;
-                foreach($discount as $disc){
-
-                    if($disc->condition == 'Equal to'){
-                        if($disc->quantity == $membershipCount){
-                            $discountpercentage=$disc->discount;
+                //                 $discountAmount = ($coupon->discount/100)*$totalPrice;
+                                $discountpercentage=$coupon->discount;
+                            } else if(count($discount)){
+                                $membershipCount= count($membership);
+                
+                                $discountpercentage=0;
+                                foreach($discount as $disc){
+                
+                                   if($disc->condition == 'Equal to'){
+                                       if($disc->quantity == $membershipCount){
+                                           $discountpercentage=$disc->discount;
+                                       }
+                                   }else if($disc->condition == 'More than'){
+                
+                                       if($membershipCount> $disc->quantity ){
+                                           $discountpercentage=$disc->discount;
+                                       }
+                                   }
+                                }
+                                if($discountpercentage ){
+                                $discountAmount = ($discountpercentage/100)*$totalPrice;
+                                }
+                
+                            }
                         }
-                    }
-                    if($disc->condition == 'More than'){
-
-                        if($membershipCount> $disc->quantity ){
-                            $discountpercentage=$disc->discount;
+                
+                
+                        if($discountAmount >0){
+                            $discountAmount = round($discountAmount,2);
+                            $amountAfterDiscount = $totalPrice-$discountAmount;
+                
+                
+                        } else{
+                        $amountAfterDiscount =$totalPrice;
                         }
-                    }
-                }
-                $discountAmount = ($discountpercentage/100)*$totalPrice;
-            }
-        }
-
-
-        if($discountAmount >0){
-            $discountAmount = round($discountAmount,2);
-            $amountAfterDiscount = $totalPrice-$discountAmount;
-
-
-        }
         $responseData['AmountAfterDiscount'] = round($amountAfterDiscount,2);
         $responseData['TotalAmount'] = round($totalPrice,2);
         $responseData['discountpercentage'] = $discountpercentage;

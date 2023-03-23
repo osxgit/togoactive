@@ -42,7 +42,7 @@ class Events extends Model
 
     public function rewards()
     {
-        return $this->hasMany(Reward::class,'event_id');
+        return $this->hasMany(Reward::class,'event_id')->orderBy('is_core_item','desc')->orderBy('sort_id');
     }
     public function eventMeta()
     {
