@@ -27,6 +27,7 @@ use Carbon\Carbon;
 use App\Repositories\Interfaces\EventRepositoryInterface;
 
 use Log;
+use DB;
 
 class EventRepository implements EventRepositoryInterface
 {
@@ -708,13 +709,13 @@ return $data;
                 
                                 $discountpercentage=0;
                                 foreach($discount as $disc){
-                
+
                                    if($disc->condition == 'Equal to'){
                                        if($disc->quantity == $membershipCount){
                                            $discountpercentage=$disc->discount;
                                        }
                                    }else if($disc->condition == 'More than'){
-                
+
                                        if($membershipCount> $disc->quantity ){
                                            $discountpercentage=$disc->discount;
                                        }
@@ -723,16 +724,16 @@ return $data;
                                 if($discountpercentage ){
                                 $discountAmount = ($discountpercentage/100)*$totalPrice;
                                 }
-                
+
                             }
                         }
-                
-                
+
+
                         if($discountAmount >0){
                             $discountAmount = round($discountAmount,2);
                             $amountAfterDiscount = $totalPrice-$discountAmount;
-                
-                
+
+
                         } else{
                         $amountAfterDiscount =$totalPrice;
                         }
@@ -1014,10 +1015,21 @@ return $data;
             public function updatePayment($data){
 
                 $payment = Payment::Where('id',$data['paymentId'])->first();
+
                 if ($payment) {
+
+                    $event = Events::where('id',$payment->event_id)->first();
+                    $payment->transaction_id = $event->slug.''.$data['payment_intent'];
+
+                    $event_user = EventUser::where('event_id',$payment->event_id)->where('user_id', $payment->user_id)->first();
+
                     $payment->payment_intent =$data['payment_intent'];
                     $payment->status  =  $data['status'];
                     $payment->full_response = $data['fullresponse'];
+
+                    $payment->payment_id = $data['payment_intent'];
+                    $payment->address_id = $event_user->address_id;
+
                     $payment->save();
                     return $payment;
                 }
@@ -1141,5 +1153,88 @@ return $data;
                 $user= User::where('tgp_userid', $userId)->first();
                 $payment =Payment::where('user_id', $user->id)->where('event_id',$eventId)->where('payment_type','registration')->select('id')->first();
                 return $payment;
+            }
+
+            public function eventUpgradePaymentId($eventId, $userId){
+                $user= User::where('tgp_userid', $userId)->first();
+                $payment =Payment::where('user_id', $user->id)->where('event_id',$eventId)->where('payment_type','upgrade')->select('id')->first();
+                return $payment;
+            }
+
+            public function processUpgradeEvent($data){
+                $user = User::where('tgp_userid',$data['userId'])->first();
+
+                // get event user details
+                $eventUser = EventUser::where('event_id',$data['eventId'])->where('user_id', $user->id)->first();
+
+                $payment =  Payment::create([
+                    'event_id' =>$data['eventId'],
+                    'user_id' => $user->id,
+                    'payment_type'=>'upgrade',
+                    'payment_method'=>'Stripe',
+                    'payment_intent'=>'Free_'.$eventUser->id,
+                    'total_amount'=>$data['totalPrice'],
+                    'discount'=>$data['discountAmount'],
+                    'total_paid'=>$data['priceToPay'],
+                    'currency'=>$data['currency'],
+                    'coupon_code'=>$data['coupon_code']??'',
+                    'status'=>'processing',
+                ]);
+
+                foreach($data['memb'] as $membership){
+                    $reward =  UserReward::create([
+                        'event_id' =>$data['eventId'],
+                        'user_id' => $user->id,
+                        'reward_id'=>$membership['reward'],
+                        'size'=>$membership['size']??null,
+                        'payment_id'=>$payment->id,
+                        'quantity'=>$membership['quantity'],
+                        'amount'=>$membership['rewardPrice']*$membership['quantity'],
+                        'discount'=>$membership['discountedPrice']??0,
+                        'currency'=>$data['currency']
+                    ]);
+                }
+
+                return (['event_user'=>$eventUser , 'payment'=>$payment]);
+
+            }
+
+            public function updateUpgradeEventPayment($data){
+
+                $payment = Payment::Where('id',$data['paymentId'])->first();
+
+                if ($payment) {
+
+                    $event = Events::where('id',$payment->event_id)->first();
+                    $payment->transaction_id = $event->slug.''.$data['payment_intent'];
+
+                    $event_user = EventUser::where('event_id',$payment->event_id)->where('user_id', $payment->user_id)->first();
+
+                    $payment->payment_intent = $data['payment_intent'];
+                    $payment->status  =  $data['status'];
+                    $payment->full_response = $data['fullresponse'];
+                    $payment->payment_id = $data['payment_intent'];
+
+                    $payment->address_id = $event_user->address_id;
+                    $payment->save();
+
+                    return $payment;
+                }
+            }
+
+            public function getEventRewardQuantity($data){
+
+                $user = User::where('tgp_userid',$data['userId'])->first();
+
+                if($user){
+                    $response = UserReward::select(['reward_id',DB::raw('SUM(quantity) as total_quantity')])->where('event_id',$data['eventId'])->where('user_id',$user->id)->groupBy('reward_id')->get();
+
+                    $plucked = $response->pluck('total_quantity','reward_id');
+
+                    return $plucked;
+                }else{
+                    return null;
+                }
+
             }
 }

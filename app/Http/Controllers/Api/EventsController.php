@@ -271,4 +271,45 @@ class EventsController extends Controller
                 $this->setResponseData(array('data' => array('success' => true, 'data' => $eventUsersRegistrationPaymentId)));
                 return $this->sendAPIResponse();
             }
+
+            public function getUserUpgradePayment(Request $request){
+                $eventUsersRegistrationPaymentId = $this->eventRepository->eventUpgradePaymentId($request->eventId,$request->userId);
+                $this->setResponseData(array('data' => array('success' => true, 'data' => $eventUsersRegistrationPaymentId)));
+                return $this->sendAPIResponse();
+            }
+
+            public function processUpgradeEventPayment(Request $request){
+                $response = $this->eventRepository->processUpgradeEvent($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function updateUpgradeEventPayment(Request $request){
+                $response = $this->eventRepository->updateUpgradeEventPayment($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+
+                // this is called when event payment registration
+                $eventUser = $response['user_id'];
+                $eventId = $request['eventId'];
+                $eventPayment = $request['paymentId'];
+                $eventUserId = $request['eventUserId'];
+
+                //$eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
+                //event(new EventRegistration($eventData,$request));
+
+                return $this->sendAPIResponse();
+            }
+
+            /*this function will return reward id as key and total quantity as value
+            *  [
+                    34 => "3"
+                    36 => "1"
+                    43 => "2"
+                ]
+            */
+            public  function getEventRewardQuantity(Request $request){
+                $response = $this->eventRepository->getEventRewardQuantity($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
     }

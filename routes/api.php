@@ -75,3 +75,8 @@ Route::post('getUserRegistrationPayment', [EventsController::class, 'getUserRegi
 Route::post('getEventAchievementsData', [EventAchievementsController::class, 'index'])->name('getEventAchievementsData');
 
 // Route::post('landingPageViewApi', [EventsController::class, 'renderLandingPageApi'])->name('landingPageApi');
+
+Route::post('getUserUpgradePayment', [EventsController::class, 'getUserUpgradePayment'])->name('getUserUpgradePayment');
+Route::post('processUpgradeEventPayment', [EventsController::class, 'processUpgradeEventPayment'])->name('processUpgradeEventPayment');
+Route::post('updateUpgradeEventPayment', [EventsController::class, 'updateUpgradeEventPayment'])->name('updateUpgradeEventPayment');
+Route::post('getEventRewardQuantity', [EventsController::class, 'getEventRewardQuantity'])->name('getEventRewardQuantity');
