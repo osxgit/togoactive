@@ -231,7 +231,7 @@
                                 <div class="float-left w-1/2">
                                     <x-forms.textfield id="fb_pixel_id" name="fb_pixel_id" placeholder="This is default facebook pixel ID" :value="old('fb_pixel_id',$eventsocials->fb_pixel_id ?? '' )">
                                         <x-slot name="field_id">fb_pixel_id</x-slot>
-                                        <x-slot name="label_text">Facebook Pixel ID*</x-slot>
+                                        <x-slot name="label_text">Facebook Pixel ID</x-slot>
                                         <x-slot name="label_description_status">hidden</x-slot>
                                         <x-slot name="label_description"></x-slot>
                                     </x-forms.textfield>
@@ -605,7 +605,7 @@
                     maxlength: 158
                 },
                 fb_pixel_id: {
-                    required:true,
+                   
                     minlength: 15,
                     maxlength: 15
                 }
