@@ -8,6 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js?apiKey=4rcnfqnlzfiuwfia3kjfez410ye1smutxh8kj2i126izgth4/tinymce"></script>
+
     <style>
         #div_faq{
             border:none !important;
@@ -600,7 +602,7 @@
                                         <input type="hidden" name="more_info_image" id="more_info_image" value="{{ isset($achievment) || (isset($achievement) && $achievement->is_more_info_enabled === 1) ? $achievement->more_info_image : ''}}" />
                                     </div>
                                     <div id="more-info-description-label" class="w-full">
-                                        <x-forms.textarea name="more_info_description">
+                                        <x-forms.textarea class="tinymceEditer" name="more_info_description">
                                             <x-slot name="field_id">more_info_description</x-slot>
                                             <x-slot name="label_text">Description*</x-slot>
                                             <x-slot name="label_description"></x-slot>
@@ -1538,6 +1540,196 @@
             e.preventDefault();
 
             jQuery('#create-events-achievement').submit();
+        });
+        tinymce.init({
+            selector: 'textarea.tinymceEditer',
+
+            plugins: 'lists code emoticons table codesample image imagetools link textcolor',
+            table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
+
+            toolbar: 'undo redo | styleselect | bold italic |  fontsize |' +
+                'alignleft aligncenter alignright alignjustify | ' +
+                'outdent indent | numlist bullist | emoticons  | link image | custom_button | forecolor backcolor',
+            menubar: 'table insert',
+            table_sizing_mode: 'responsive' ,
+            automatic_uploads: true,
+            file_picker_types: 'image',
+            table_use_colgroups: true,
+            table_default_attributes: {
+                border: '0'
+            },
+            table_row_class_list: [
+                {title: 'None', value: ''},
+                {title: 'No Border', value: 'table_row_no_border'},
+                {title: 'Red border', value: 'table_row_red_border'},
+                {title: 'Blue border', value: 'table_row_blue_border'},
+                {title: 'Green border', value: 'table_row_green_border'}
+            ],
+            table_advtab: true,
+            table_cell_advtab: true,
+            table_row_advtab: true,
+            emoticons_append: {
+                custom_mind_explode: {
+                    keywords: ['brain', 'mind', 'explode', 'blown'],
+                    char: '🤯'
+                }
+            },
+            file_picker_callback: function (cb, value, meta) {
+                var input = document.createElement('input');
+                input.setAttribute('type', 'file');
+                input.setAttribute('accept', 'image/*');
+
+                /*
+                  Note: In modern browsers input[type="file"] is functional without
+                  even adding it to the DOM, but that might not be the case in some older
+                  or quirky browsers like IE, so you might want to add it to the DOM
+                  just in case, and visually hide it. And do not forget do remove it
+                  once you do not need it anymore.
+                */
+
+                input.onchange = function () {
+                    var file = this.files[0];
+
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        /*
+                          Note: Now we need to register the blob in TinyMCEs image blob
+                          registry. In the next release this part hopefully won't be
+                          necessary, as we are looking to handle it internally.
+                        */
+                        var id = 'blobid' + (new Date()).getTime();
+                        var blobCache =  tinymce.activeEditor.editorUpload.blobCache;
+                        var base64 = reader.result.split(',')[1];
+                        var blobInfo = blobCache.create(id, file, base64);
+                        blobCache.add(blobInfo);
+
+                        /* call the callback and populate the Title field with the file name */
+                        cb(blobInfo.blobUri(), { title: file.name });
+                    };
+                    reader.readAsDataURL(file);
+                };
+
+                input.click();
+            },
+            // plugins: [
+            //     "advlist autolink lists link image charmap print preview anchor",
+            //     "searchreplace visualblocks code fullscreen",
+            //     "insertdatetime media table paste codesample emoticons"
+            // ],
+            // toolbar: 'undo redo | styleselect | bold italic | ' +
+            //     'alignleft aligncenter alignright alignjustify | ' +
+            //     'outdent indent | numlist bullist | emoticons | custom_button',
+            // emoticons_append: {
+            //     custom_mind_explode: {
+            //         keywords: ['brain', 'mind', 'explode', 'blown'],
+            //         char: '🤯'
+            //     }
+            // },
+            content_css: ["/css/custom_css_tinymce.css"],
+            font_formats:"Segoe UI=Segoe UI;",
+            fontsize_formats: "8px 9px 10px 11px 12px 14px 16px 18px 20px 22px 24px 26px 28px 30px 32px 34px 36px 38px 40px 42px 44px 46px 48px 50px 52px 54px 56px 58px 60px 62px 64px 66px 68px 70px 72px 74px 76px 78px 80px 82px 84px 86px 88px 90px 92px 94px 94px 96px",
+            codesample_languages: [
+                {text: 'HTML/XML', value: 'markup'},
+                {text: 'JavaScript', value: 'javascript'},
+                {text: 'CSS', value: 'css'},
+                {text: 'PHP', value: 'php'},
+                {text: 'Ruby', value: 'ruby'},
+                {text: 'Python', value: 'python'},
+                {text: 'Java', value: 'java'},
+                {text: 'C', value: 'c'},
+                {text: 'C#', value: 'csharp'},
+                {text: 'C++', value: 'cpp'}
+            ],
+            height: 600,
+            setup: function (editor) {
+                editor.on('Paste Change input Undo Redo', function () {
+                    formchanged=1;
+                    console.log(formchanged);
+                });
+                editor.ui.registry.addButton('custom_button', {
+                    text: 'Add Button',
+                    onAction: function() {
+                        // Open a Dialog
+                        editor.windowManager.open({
+                            title: 'Add custom button',
+                            body: {
+                                type: 'panel',
+                                items: [{
+                                    type: 'input',
+                                    name: 'button_label',
+                                    label: 'Button label',
+                                    flex: true
+                                },{
+                                    type: 'input',
+                                    name: 'button_href',
+                                    label: 'Button href',
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_target',
+                                    label: 'Target',
+                                    items: [
+                                        {text: 'None', value: ''},
+                                        {text: 'New window', value: '_blank'},
+                                        {text: 'Self', value: '_self'},
+                                        {text: 'Parent', value: '_parent'}
+                                    ],
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_rel',
+                                    label: 'Rel',
+                                    items: [
+                                        {text: 'No value', value: ''},
+                                        {text: 'Alternate', value: 'alternate'},
+                                        {text: 'Help', value: 'help'},
+                                        {text: 'Manifest', value: 'manifest'},
+                                        {text: 'No follow', value: 'nofollow'},
+                                        {text: 'No opener', value: 'noopener'},
+                                        {text: 'No referrer', value: 'noreferrer'},
+                                        {text: 'Opener', value: 'opener'}
+                                    ],
+                                    flex: true
+                                },{
+                                    type: 'selectbox',
+                                    name: 'button_style',
+                                    label: 'Style',
+                                    items: [
+                                        {text: 'Success', value: 'success'},
+                                        {text: 'Info', value: 'info'},
+                                        {text: 'Warning', value: 'warning'},
+                                        {text: 'Error', value: 'error'}
+                                    ],
+                                    flex: true
+                                }]
+                            },
+                            onSubmit: function (api) {
+
+                                var html = '<a href="'+api.getData().button_href+'" class="btn btn-'+api.getData().button_style+'" rel="'+api.getData().button_rel+'" target="'+api.getData().button_target+'">'+api.getData().button_label+'</a>';
+
+                                // insert markup
+                                editor.insertContent(html);
+
+                                // close the dialog
+                                api.close();
+                            },
+                            buttons: [
+                                {
+                                    text: 'Close',
+                                    type: 'cancel',
+                                    onclick: 'close'
+                                },
+                                {
+                                    text: 'Insert',
+                                    type: 'submit',
+                                    primary: true,
+                                    enabled: true
+                                }
+                            ]
+                        });
+                    }
+                });
+            }
         });
     </script>
 </x-app-layout>
