@@ -706,7 +706,7 @@ return $data;
                                 $discountpercentage=$coupon->discount;
                             } else if(count($discount)){
                                 $membershipCount=  $totalQuantity;
-                
+
                                 $discountpercentage=0;
                                 foreach($discount as $disc){
 
@@ -1019,7 +1019,7 @@ return $data;
                 if ($payment) {
 
                     $event = Events::where('id',$payment->event_id)->first();
-                    $payment->transaction_id = $event->slug.''.$data['payment_intent'];
+                    $payment->transaction_id = $event->slug.''.$payment->id;
 
                     $event_user = EventUser::where('event_id',$payment->event_id)->where('user_id', $payment->user_id)->first();
 
@@ -1164,6 +1164,7 @@ return $data;
             public function processUpgradeEvent($data){
                 $user = User::where('tgp_userid',$data['userId'])->first();
 
+
                 // get event user details
                 $eventUser = EventUser::where('event_id',$data['eventId'])->where('user_id', $user->id)->first();
 
@@ -1182,17 +1183,20 @@ return $data;
                 ]);
 
                 foreach($data['memb'] as $membership){
-                    $reward =  UserReward::create([
-                        'event_id' =>$data['eventId'],
-                        'user_id' => $user->id,
-                        'reward_id'=>$membership['reward'],
-                        'size'=>$membership['size']??null,
-                        'payment_id'=>$payment->id,
-                        'quantity'=>$membership['quantity'],
-                        'amount'=>$membership['rewardPrice']*$membership['quantity'],
-                        'discount'=>$membership['discountedPrice']??0,
-                        'currency'=>$data['currency']
-                    ]);
+                    if(isset($membership['reward']) && $membership['reward'] > 0){
+                        $reward =  UserReward::create([
+                            'event_id' =>$data['eventId'],
+                            'user_id' => $user->id,
+                            'reward_id'=>$membership['reward'],
+                            'size'=>$membership['size']??null,
+                            'payment_id'=>$payment->id,
+                            'quantity'=>$membership['quantity'],
+                            'amount'=>$membership['rewardPrice']*$membership['quantity'],
+                            'discount'=>$membership['discountedPrice']??0,
+                            'currency'=>$data['currency']
+                        ]);
+                    }
+
                 }
 
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
@@ -1206,7 +1210,7 @@ return $data;
                 if ($payment) {
 
                     $event = Events::where('id',$payment->event_id)->first();
-                    $payment->transaction_id = $event->slug.''.$data['payment_intent'];
+                    $payment->transaction_id = $event->slug.''.$payment->id;
 
                     $event_user = EventUser::where('event_id',$payment->event_id)->where('user_id', $payment->user_id)->first();
 
