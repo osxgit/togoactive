@@ -149,7 +149,7 @@
                                         <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                         <x-slot name="uploder_description">  SVG, PNG, JPG (1:1 ratio)</x-slot>
                                         <x-slot name="field_id">images_1</x-slot>
-                                        <x-slot name="uploaded_img">{{$rewardImages->medium[0]}}</x-slot>
+                                        <x-slot name="uploaded_img">{{$rewardImages['medium'][0]}}</x-slot>
                                     </x-forms.image_uploader_edit>
 
                                     <x-forms.file_input>
@@ -167,7 +167,7 @@
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                     <x-slot name="uploder_description">SVG, PNG, JPG (1:1 ratio)</x-slot>
                                                     <x-slot name="field_id">images_2</x-slot>
-                                                    <x-slot name="uploaded_img">{{$rewardImages->medium[1] ?? ''}}</x-slot>
+                                                    <x-slot name="uploaded_img">{{$rewardImages['medium'][1] ?? ''}}</x-slot>
                                                 </x-forms.image_uploader_small_edit>
                                                 
                                                 
@@ -197,7 +197,7 @@
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">SVG, PNG, JPG (1:1 ratio)</x-slot>
                                                 <x-slot name="field_id">images_3</x-slot>
-                                                <x-slot name="uploaded_img">{{$rewardImages->medium[2] ?? ''}}</x-slot>
+                                                <x-slot name="uploaded_img">{{$rewardImages['medium'][2] ?? ''}}</x-slot>
                                                 </x-forms.image_uploader_small_edit>
                                                 
                                                 <button type="button" onclick="confirmDelete('{{$id}}',2,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -223,7 +223,7 @@
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">SVG, PNG, JPG (1:1 ratio)</x-slot>
                                                 <x-slot name="field_id">images_4</x-slot>
-                                                <x-slot name="uploaded_img">{{$rewardImages->medium[3] ?? ''}}</x-slot>
+                                                <x-slot name="uploaded_img">{{$rewardImages['medium'][3] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
                                             <button type="button" onclick="confirmDelete('{{$id}}',3,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -248,7 +248,7 @@
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">SVG, PNG, JPG (1:1 ratio)</x-slot>
                                                 <x-slot name="field_id">images_5</x-slot>
-                                                <x-slot name="uploaded_img">{{$rewardImages->medium[4] ?? ''}}</x-slot>
+                                                <x-slot name="uploaded_img">{{$rewardImages['medium'][4] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
                                             <button type="button" onclick="confirmDelete('{{$id}}',4,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -276,7 +276,7 @@
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">SVG, PNG, JPG (1:1 ratio)</x-slot>
                                                 <x-slot name="field_id">images_6</x-slot>
-                                                <x-slot name="uploaded_img">{{$rewardImages->medium[5] ?? ''}}</x-slot>
+                                                <x-slot name="uploaded_img">{{$rewardImages['medium'][5] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
                                             <button type="button" onclick="confirmDelete('{{$id}}',5,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -302,17 +302,16 @@
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">SVG, PNG, JPG (1:1 ratio)</x-slot>
                                                 <x-slot name="field_id">images_7</x-slot>
-                                                <x-slot name="uploaded_img">{{$rewardImages->medium[6] ?? ''}}</x-slot>
+                                                <x-slot name="uploaded_img">{{$rewardImages['medium'][6] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
                                             <button type="button" onclick="confirmDelete('{{$id}}',6,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
                                             @else
-                                                <x-forms.image_uploader_small_edit style="height: 135px;width:135px;border-color: lightgray;">
+                                            <x-forms.image_uploader_small style="height: 135px;width:135px;border-color: lightgray;">
                                                     <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                     <x-slot name="uploder_description">SVG, PNG, JPG (1:1 ratio)</x-slot>
                                                     <x-slot name="field_id">images_7</x-slot>
-                                                    <x-slot name="uploaded_img">{{$rewardImages->medium[6] ?? ''}}</x-slot>
-                                                </x-forms.image_uploader_small_edit>
+                                                </x-forms.image_uploader_small>
                                              @endif
 
                                             <x-forms.file_input>
@@ -329,7 +328,7 @@
                                                 <x-slot name="uploder_title"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description">SVG, PNG, JPG (1:1 ratio)</x-slot>
                                                 <x-slot name="field_id">images_8</x-slot>
-                                                <x-slot name="uploaded_img">{{$rewardImages->medium[7] ?? ''}}</x-slot>
+                                                <x-slot name="uploaded_img">{{$rewardImages['medium'][7] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
                                             <button type="button" onclick="confirmDelete('{{$id}}',7,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>
@@ -354,7 +353,7 @@
                                                 <x-slot name="uploder_title"  class="text-base"><b>Click to upload</b> or drag and drop </x-slot>
                                                 <x-slot name="uploder_description" class="text-base">SVG, PNG, JPG (1:1 ratio)</x-slot>
                                                 <x-slot name="field_id">images_9</x-slot>
-                                                <x-slot name="uploaded_img">{{$rewardImages->medium[8] ?? ''}}</x-slot>
+                                                <x-slot name="uploaded_img">{{$rewardImages['medium'][8] ?? ''}}</x-slot>
 
                                             </x-forms.image_uploader_small_edit>
                                             <button type="button" onclick="confirmDelete('{{$id}}',8,'{{$rewards->id}}')"  style="color:black !important;" ><i class="fa fa-trash" aria-hidden="true"></i></button>

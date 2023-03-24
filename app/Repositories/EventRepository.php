@@ -644,6 +644,7 @@ return $data;
 
             }
         }
+        $totalQuantity=0;
         $CouponDiscApplyAmount=0;
         $totalPrice=0;
         $userCurrency='';
@@ -655,7 +656,7 @@ return $data;
         if(count($membership) > 0){
 
             foreach($membership as $rewardId){
-
+                $totalQuantity += $rewardId[1];
                 $reward= Reward::Where('event_id',$data['eventId'])->where('id',$rewardId[0])->first();
 
                 $rewardPrice= $reward->price != '' ?json_decode($reward->price) :null;
@@ -704,8 +705,8 @@ return $data;
                 //                 $discountAmount = ($coupon->discount/100)*$totalPrice;
                                 $discountpercentage=$coupon->discount;
                             } else if(count($discount)){
-                                $membershipCount= count($membership);
-
+                                $membershipCount=  $totalQuantity;
+                
                                 $discountpercentage=0;
                                 foreach($discount as $disc){
 
