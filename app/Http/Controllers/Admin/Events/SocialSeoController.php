@@ -38,6 +38,7 @@ class SocialSeoController extends Controller
     }
 
     public function submitSocialSeoDetails(Request $request,$eventId){
+    
         $eventSeo = $this->eventRepository->getEventSocialSeo($eventId);
         if( $eventSeo){
             Validator::make($request->all(), [
@@ -45,7 +46,7 @@ class SocialSeoController extends Controller
                 'share_image' => 'image',
                 'share_title' => 'required',
                 'share_description' => 'required|min:120|max:158',
-                'fb_pixel_id' => 'required|digits_between:15,15|numeric',
+                'fb_pixel_id' => 'sometimes|nullable|digits_between:15,15|numeric',
             ])->validate();
         }else{
             Validator::make($request->all(), [
@@ -53,11 +54,11 @@ class SocialSeoController extends Controller
                 'share_image' => 'required|image',
                 'share_title' => 'required',
                 'share_description' => 'required|min:120|max:158',
-                'fb_pixel_id' => 'required|digits_between:15,15|numeric',
+                'fb_pixel_id' => 'sometimes|nullable|digits_between:15,15|numeric',
             ])->validate();
         }
 
-
+ 
 
         if($eventId == '-'){
               return  back()->with('message','Please add an event!');

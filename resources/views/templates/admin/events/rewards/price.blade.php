@@ -342,7 +342,7 @@
                                         </div>
 
 
-                                            <div class="globalprice flex justify-evenly mt-2 {{$rewards->restrict_to_country == 0?'hidden':''}}">
+                                            <div class="globalprice flex justify-evenly mt-2 {{$rewards->restrict_to_country == 1?'hidden':''}}">
                                                 <div class="w-1/2 flex justify-center items-center">
                                                     <input type="text" id="global" class="rounded rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value="Global/All other countries">
 
@@ -364,7 +364,7 @@
 
                                             </div>
 
-                                            <span class="globalprice {{$rewards->restrict_to_country == 0?'hidden':''}}">The price for Global / All other countries will be applied to countries not specified below.</span>
+                                            <span class="globalprice {{$rewards->restrict_to_country == 1?'hidden':''}}">The price for Global / All other countries will be applied to countries not specified below.</span>
 
 
 
