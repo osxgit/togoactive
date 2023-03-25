@@ -83,8 +83,17 @@ class AchievementsRepository implements CrudRepositoryInterface
         ];
     }
 
-    public function reorder()
+    public function reorder($data)
     {
-        // TODO implement efficient algorithm to reorder records
+        if( isset($data['data']) && !empty($data['data']) && is_array($data['data']) ) {
+            foreach( $data['data'] as $rowData ) {
+                if( isset($rowData['id']) && $rowData['position'] ) {
+                    $achievements = Achievements::find($rowData['id']);
+                    $achievements->list_order = $rowData['position'];
+                    $achievements->save();
+                }
+            }
+        }
+        return true;
     }
 }

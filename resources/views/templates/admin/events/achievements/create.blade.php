@@ -1,12 +1,13 @@
 <x-app-layout>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.min.css"/>
+    <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
-    <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js?apiKey=4rcnfqnlzfiuwfia3kjfez410ye1smutxh8kj2i126izgth4/tinymce"></script>
 
@@ -744,6 +745,7 @@
                                             <x-slot name="height">600</x-slot>
                                             <x-slot name="field_id">hero_image</x-slot>
                                         </x-forms.file_input>
+
                                         <input type="hidden" name="notification_hero_image" id="notification_hero_image" value="{{ isset($achievement) && $achievement->notification_type === 'Type B' ? $achievement->notification_hero_image : '' }}" />
                                     </div>
                                     <div id="enable-primary-cta-button-label" class="float-left mt-4 w-full">
@@ -1031,8 +1033,12 @@
             </div>
         </div>
     </div>
-
     <script>
+        const uploadFileRoute = "{{route('ajax.upload-file')}}";
+    </script>
+    <script src="/js/events/cropper.js" > </script>
+    <script>
+
         jQuery.noConflict();
 
         jQuery(document).ready(function() {
@@ -1051,37 +1057,6 @@
             imgwidth='';
             imgheight='';
 
-            $modal.on('shown.bs.modal', function () {
-
-                if(imgwidth < width  ||  imgheight < height){
-                    $modal.modal("hide");
-                }
-
-                cropper = new Cropper(image, {
-                    aspectRatio: jQuery('#width').val() / jQuery('#height').val(),
-                    viewMode: 1,
-                    preview: '.preview',
-                    cropBoxResizable: false,
-                    maxContainerWidth: jQuery('#width').val(),
-                    maxContainerHeight: jQuery('#height').val(),
-                    minCanvasWidth: jQuery('#width').val(),
-                    minCanvasHeight: jQuery('#height').val(),
-                    maxCanvasWidth: jQuery('#width').val(),
-                    maxCanvasHeight: jQuery('#height').val(),
-                    minCropBoxWidth: jQuery('#width').val(),
-                    minCropBoxHeight: jQuery('#height').val(),
-                    maxCropBoxWidth: jQuery('#width').val(),
-                    maxCropBoxHeight: jQuery('#height').val(),
-                    data: {
-                        width: jQuery('#width').val(),
-                        height: jQuery('#height').val(),
-                    }
-                });
-
-            }).on('hidden.bs.modal', function () {
-                cropper.destroy();
-                $('#image').data('cropper', null);
-            });
 
             jQuery('#achievement_icon-label, #achcievement_more_info_image-label, #hero_image-label').on('drop', function(ev) {
                 formchanged=1;
@@ -1187,249 +1162,6 @@
                 }
             });
 
-            function handleFiles(files, elementid) {
-                console.log('in handle files');
-                var imgtype= elementid;
-                var _URL = window.URL || window.webkitURL;
-                var file, img;
-                if ((file = files[0])) {
-                    img = new Image();
-                    var objectUrl = _URL.createObjectURL(file);
-                    img.onload = function () {
-                        jQuery('#imgtype').val(imgtype);
-                        var height =  jQuery('#'+imgtype).data("height");
-                        var width =  jQuery('#'+imgtype).data("width");
-                        imgwidth=this.width;
-                        imgheight=this.height;
-                        console.log(imgwidth);
-                        if(this.width < width  ||  this.height < height){
-                            jQuery("#imgerror-"+imgtype).css('display','block')
-                            if(jQuery('#modal').is(':visible')){
-                                jQuery("#modal").modal('hide');
-                            }
-                        }  else{
-                            jQuery("#imgerror-"+imgtype).css('display','none');
-
-                        }
-                        _URL.revokeObjectURL(objectUrl);
-                    };
-                    img.src = objectUrl;
-                }
-
-                // var files = e.target.files;
-                var imgtype= elementid;
-
-                jQuery('#imgtype').val(imgtype);
-                height =  jQuery('#'+imgtype).data("height");
-                width =  jQuery('#'+imgtype).data("width");
-                jQuery('#height').val(height);
-                jQuery('#width').val(width);
-
-                var done = function (url) {
-                    image.src = url;
-
-                    $modal.modal('show');
-
-
-
-                };
-                var reader;
-                var file;
-                var url;
-                if (files && files.length > 0) {
-                    file = files[0];
-                    if (URL) {
-                        done(URL.createObjectURL(file));
-                    } else if (FileReader) {
-                        reader = new FileReader();
-                        reader.onload = function (e) {
-                            done(reader.result);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-
-                }
-            }
-
-            jQuery("body").on("change", ".image", function(e){
-                formchanged=1;
-
-                var imgtype = jQuery(this).attr('id');
-                var _URL = window.URL || window.webkitURL;
-                var file, img;
-                if ((file = this.files[0])) {
-                    console.log(this.files);
-                    img = new Image();
-                    var objectUrl = _URL.createObjectURL(file);
-                    console.log(img);
-                    img.onload = function () {
-                        jQuery('#imgtype').val(imgtype);
-                        var height =  jQuery('#'+imgtype).data("height");
-                        var width =  jQuery('#'+imgtype).data("width");
-                        imgwidth = this.width;
-                        imgheight = this.height;
-                        console.log('image width:' + imgwidth);
-                        if(this.width < width  ||  this.height < height){
-                            jQuery("#imgerror-"+imgtype).css('display','block')
-                            if(jQuery('#modal').is(':visible')){
-                                jQuery("#modal").modal('hide');
-                            }
-                        }  else{
-                            jQuery("#imgerror-"+imgtype).css('display','none');
-
-                        }
-                        _URL.revokeObjectURL(objectUrl);
-                    };
-                    img.src = objectUrl;
-                }
-
-                var files = e.target.files;
-                var imgtype = jQuery(this).attr('id');
-
-                jQuery('#imgtype').val(imgtype);
-                height =  jQuery('#'+imgtype).data("height");
-                width =  jQuery('#'+imgtype).data("width");
-                jQuery('#height').val(height);
-                jQuery('#width').val(width);
-
-                var done = function (url) {
-                    jQuery('#image').prop('src', url);
-
-                    console.log(image);
-
-                    $modal.modal('show');
-                };
-
-                var reader;
-                var file;
-                var url;
-                if (files && files.length > 0) {
-                    file = files[0];
-                    if (URL) {
-                        done(URL.createObjectURL(file));
-                    } else if (FileReader) {
-                        reader = new FileReader();
-                        reader.onload = function (e) {
-                            done(reader.result);
-                        };
-                        reader.readAsDataURL(file);
-                    }
-
-                }
-
-            });
-
-            jQuery('#crop').on('click', function() {
-                var width = jQuery('#width').val();
-                var height = jQuery('#height').val();
-                console.log('hrer');
-                canvas = cropper.getCroppedCanvas({
-                    width: width,
-                    height: height,
-                });
-
-                canvas.toBlob(function(blob) {
-                    url = URL.createObjectURL(blob);
-                    var reader = new FileReader();
-                    reader.readAsDataURL(blob);
-                    reader.onloadend = function() {
-                        var base64data = reader.result;
-
-                        $.ajax({
-                            type: "POST",
-                            dataType: "json",
-                            url: "{{route('ajax.upload-file')}}",
-                            data: {'_token':  jQuery('input[name="_token"]').val(), 'image': base64data,'eventId':{{ $id }},'idd':jQuery('#imgtype').val()},
-                            success: function(data){
-                                console.log(data);
-                                $modal.modal('hide');
-                                uploadFileResponse(data,jQuery('#imgtype').val())
-                                //alert("Crop image successfully uploaded");
-                            }
-                        });
-                    }
-                });
-            });
-
-            function uploadFileResponse(response,idd){
-
-                let iddToField = {
-                    'achievement_icon': 'icon',
-                    'achcievement_more_info_image': 'more_info_image',
-                    'hero_image': 'notification_hero_image',
-                    'sponsor-content-image': 'sponsor_content_image'
-                };
-
-                jQuery('#' + iddToField[idd]).val(response.data.fullpath);
-
-                jQuery("#label-"+idd).removeClass('opacity-30');
-                if(response.err == 1){
-                    showErrorModal("Upload was failed. Please try again!");
-                    return false;
-                }
-                jQuery("#path-"+response.data.idd).val(response.data.path);
-
-                const arr = ['cover','icon','profile_icon','ebib','certificate','notification'];
-                if(idd){
-                    jQuery("#label-"+response.data.idd).css('background-image','url('+response.data.fullpath+')');
-                    jQuery("#label-"+response.data.idd).css('border','none');
-
-                    jQuery("#span-"+response.data.idd+"-add").css('visibility','hidden');
-                    jQuery("#span-"+response.data.idd+"-edit").css('visibility','visible');
-                }else if(idd == 'list_upload' || idd == 'geojson_upload'){
-                    jQuery("#label-"+idd+" input[type='text']").val(response.data.path);
-                }
-
-            }
-
-            function previewModal(imgname, title, description){
-                console.log(imgname);
-                console.log(title);
-                console.log(description);
-                jQuery('.preview-modal-title').html(title);
-                jQuery('.preview-modal-desc').html(description);
-                var img_url = "/images/"+imgname+".png";
-                jQuery('.preview-img').prop('src', img_url);
-                $previewModal.modal('show');
-            }
-
-            var $form = jQuery('form'),
-            origForm = $form.serialize();
-
-            jQuery('form :input').on('change input', function() {
-                if($form.serialize() !== origForm){
-                    formchanged=1;
-                    console.log(formchanged);
-                }
-            });
-
-            jQuery('div#admin-sidebar a').click(function(){
-                var response=false;
-                if(formchanged){
-                    var answer =Swal.fire({
-                        title: '',
-                        icon: 'warning',
-                        html: 'Are you sure you want to leave this page  without saving?',
-                        showCloseButton: true,
-                        showCancelButton: true,
-                        focusConfirm: false,
-                        confirmButtonText:
-                            'Yes, Leave',
-                        confirmButtonAriaLabel: 'Yes, Leave',
-                        cancelButtonText:
-                            'No, cancel',
-                        cancelButtonAriaLabel: 'No, cancel'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-
-                            window.location.href = this.href;
-
-                        }
-                    });
-                    return response;
-                }
-
-            });
 
             jQuery("#more_info_toggle").on('click', function() {
                 if (jQuery("#more_info_toggle").is(':checked')) {

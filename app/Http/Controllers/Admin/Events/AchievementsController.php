@@ -116,4 +116,8 @@ class AchievementsController extends Controller
             'message' => 'Achievement removed successfully'
         ]);
     }
+
+    public function reorderDataList(Request $request) {
+        return $this->repository->reorder($request->all());
+    }
 }
