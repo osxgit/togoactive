@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\Validator;
 
 class RegisteredUserController extends Controller
 {
@@ -33,14 +34,19 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'max:255','unique:'.User::class],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', Rules\Password::defaults()],
-        ]);
-
+        Validator::make($request->all(), [
+            'name' => 'required|max:255',
+            'username' => 'required|max:255|unique:users',
+            'email' => 'required|max:255|email|regex:/(.*)@togoparts\.com/i|unique:users',
+            'password' => 'required|min:8',
+        ])->validate();
+        // $request->validate([
+        //     'name' => ['required', 'string', 'max:255'],
+        //     'username' => ['required', 'string', 'max:255','unique:'.User::class],
+        //     'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+        //     'password' => ['required', Rules\Password::defaults()],
+        // ]);
+        // |regex:/(.*)@myemail\.com/i|unique:users
 
 
         $user = User::create([
