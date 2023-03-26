@@ -638,7 +638,7 @@ return $data;
         }
         $coupon=null;
         if( $couponCode !=''){
-            $coupon = Coupon::where('event_id',$data['eventId'])->where('name','LIKE','%'.$couponCode.'%')->first();
+            $coupon = Coupon::where('event_id',$data['eventId'])->where('name',$couponCode)->first();
             if($coupon){
                 $couponRewards = json_decode($coupon->rewards, true);
 
