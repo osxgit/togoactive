@@ -567,7 +567,7 @@ return $data;
     }
 
     public function validateCouponCode($data){
-        $coupon = Coupon::where('event_id',$data['eventId'])->where('name','LIKE','%'.$data['couponCode'].'%')->first();
+        $coupon = Coupon::where('event_id',$data['eventId'])->where('name',$data['couponCode'])->first();
         if($coupon){
             $couponExpiryDate= $coupon->expiry_date;
             $couponExpiryDate = Carbon::Parse($couponExpiryDate)->toDateTimeString();
@@ -575,7 +575,7 @@ return $data;
             if($couponExpiryDate >= $now){
 
                 if($coupon->max_use != -1){
-                    $couponUsed = Payment::where('event_id',$data['eventId'])->where('coupon_code','LIKE','%'.$data['couponCode'].'%')->where('status',1)->count();
+                    $couponUsed = Payment::where('event_id',$data['eventId'])->where('coupon_code',$data['couponCode'])->where('status',1)->count();
                     if($couponUsed >= $coupon->max_use){
                         return (['success'=>false,'error'=>'Coupon Limit Reached']);
                     }
@@ -638,7 +638,7 @@ return $data;
         }
         $coupon=null;
         if( $couponCode !=''){
-            $coupon = Coupon::where('event_id',$data['eventId'])->where('name','LIKE','%'.$couponCode.'%')->first();
+            $coupon = Coupon::where('event_id',$data['eventId'])->where('name',$couponCode)->first();
             if($coupon){
                 $couponRewards = json_decode($coupon->rewards, true);
 
