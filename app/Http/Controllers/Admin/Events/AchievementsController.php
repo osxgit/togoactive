@@ -32,7 +32,7 @@ class AchievementsController extends Controller
             'notification_type' => 'required',
             'notification_destination_url' => 'required_if:notification_type,Typa A',
             'notification_hero_image' => 'required_if:notification_type,Type B',
-            'is_primary_cta_enabled' => 'required_if:notification_type,Type B',
+            // 'is_primary_cta_enabled' => 'required_if:notification_type,Type B',
             'primary_cta_button_text' => 'required_if:is_primary_cta_enabled,1',
             'primary_cta_link' => 'required_if:is_primary_cta_enabled,1',
             'is_secondary_cta_enabled' => 'required_if:notification_type,Type B',
@@ -115,5 +115,9 @@ class AchievementsController extends Controller
         return response()->json([
             'message' => 'Achievement removed successfully'
         ]);
+    }
+
+    public function reorderDataList(Request $request) {
+        return $this->repository->reorder($request->all());
     }
 }

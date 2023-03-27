@@ -26,7 +26,7 @@ class AchievementsRepository implements CrudRepositoryInterface
 
     public function list(int $eventId): Collection
     {
-        return Achievements::where('event_id', $eventId)->get();
+        return Achievements::where('event_id', $eventId)->orderBy('list_order', 'ASC')->get();
     }
 
     public function get(int $id): Model
@@ -83,8 +83,18 @@ class AchievementsRepository implements CrudRepositoryInterface
         ];
     }
 
-    public function reorder()
-    {
-        // TODO implement efficient algorithm to reorder records
+    public function reorder($data)
+    {   $isReorder = false;
+        if( isset($data['data']) && !empty($data['data']) && is_array($data['data']) ) {
+            foreach( $data['data'] as $rowData ) {
+                if( isset($rowData['id']) && $rowData['position'] ) {
+                    $achievements = Achievements::find($rowData['id']);
+                    $achievements->list_order = $rowData['position'];
+                    $achievements->save();
+                    $isReorder = true;
+                }
+            }
+        }
+        return $isReorder;
     }
 }

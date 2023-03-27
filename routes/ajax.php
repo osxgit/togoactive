@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Events\EventsController;
 use App\Http\Controllers\Cdn\FilesController;
 use App\Http\Controllers\Admin\Events\RewardsController;
+use App\Http\Controllers\Admin\Events\AchievementsController;
 
 ## Validate Events Slug on Event Info
 Route::post('/ajax/upload-file',[FilesController::class,'uploadFile'])->name('ajax.upload-file');
@@ -22,7 +23,7 @@ Route::post('/event/publish',[EventsController::class,'publishEvent'])->name('ev
 
 Route::post('/event/hide',[EventsController::class,'hideEvent'])->name('events.hide');
 
-Route::post('/event/removeUser',[EventsController::class,'removeEventUser'])->name('eventUser.remove'); 
+Route::post('/event/removeUser',[EventsController::class,'removeEventUser'])->name('eventUser.remove');
 
 Route::post('event/{id}/coupon/add_edit/{coupon_id}',[EventsController::class,'renderCouponAdd'])->name('coupon.add_edit');
 
@@ -31,5 +32,4 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
-
+Route::post('achievement/reorderData',[AchievementsController::class,'reorderDataList'])->name('event.achievement.reorderDataList');
