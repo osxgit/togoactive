@@ -242,7 +242,7 @@ class FilesController extends Controller
                 break;
             case "sizing_image":
 
-                $module = 'Rewards';
+                $module = 'Rewards_sizing';
                 $imageHelper = new ImageHelper();
                  $width=580;
                 $height=800;
