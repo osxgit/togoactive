@@ -18,6 +18,7 @@ use Session;
 use App\Events\EventRegistration;
 use Carbon\Carbon;
 use Log;
+use App\Mail\sendEventRegistrationSuccessMail;
 
 class EventSuccessPageController extends Controller
 {
@@ -143,35 +144,50 @@ class EventSuccessPageController extends Controller
     * This function is created to just preview of event regitstration email template
     */
     public function previewEmailTemplate(){
-        $event_data = ['paymentId'=>174,'userId'=>21,'eventId'=>8];
+
+
+        $event_data = ['paymentId'=>80,'userId'=>21,'eventId'=>8, 'eventUserId'=>8];
 
         $paymentId  = $event_data['paymentId'];
         $userId     = $event_data['userId'];
         $eventId    = $event_data['eventId'];
+        $eventUserId = $event_data['eventUserId'];
 
         // get event details
         $event_object = Events::findOrFail($eventId);
-        $eventName    = $event_object->name;
+
+        $eventName    = $event_object->slug;
         $event_slug   = $event_object->slug;
+
 
         $eventImages = $this->eventRepository->getEventImages($eventId);
 
-        $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $userId,'payment'=>$paymentId ));
+        $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $eventUserId,'payment'=>$paymentId ));
         $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
 
         $reg                = $this->eventRepository->getRegistrationSetup(array('eventId' => $eventId ));
         $groupingHeader     = ($reg->count() > 0) ? $reg->grouping_header : [];
 
         $coreReward_data    = $this->eventRepository->getActiveCoreRewards(array('eventId' => $eventId ));
-        $coreRewards        = ($coreReward_data->count() > 0) ? $coreReward_data->coreRewards: [];
+        $coreRewards        = $coreReward_data->count();
 
         $addonRewards_data  = $this->eventRepository->getActiveAddonRewards(array('eventId' => $eventId ));
-        $addonRewards       = ($addonRewards_data->count() > 0) ? $addonRewards_data->addonRewards : [];
+        $addonRewards       = $addonRewards_data->count();
+
+
+        if(!empty($successPage->email_body)){
+            $email_body = $successPage->email_body;
+            $user_name = $registrationData['event_user']['user']['user_name'];
+            $fullname = $registrationData['event_user']['user']['fullname'];
+            $replace_body = str_replace(['{user_name}','{full_name}'],[$user_name,$fullname],$email_body);
+
+            $successPage->email_body = $replace_body;
+        }
 
 
         if($registrationData['event_user']['is_paid_user'] == 1){
             if($registrationData['payment']['user_reward']){
-                if(count($registrationData['payment']['user_reward']) == count($coreRewards)+ count($addonRewards)){
+                if(count($registrationData['payment']['user_reward']) == $coreRewards + $addonRewards){
                     $canUpgrade=0;
                 } else{
                     $canUpgrade=1;
@@ -187,6 +203,30 @@ class EventSuccessPageController extends Controller
         // here we need to get event data and send mail to login user
         $event_base_url = "https://events.togoparts.com/";
         $data = ['data'=>['canUpgrade'=>$canUpgrade,'groupingHeader'=> $groupingHeader,'registrationData'=> $registrationData,'successPage'=>$successPage,'eventName'=>$eventName,'event_slug'=>$event_slug,'event_base_url' => $event_base_url,'eventImages'=>$eventImages]];
+
+       /*  $data = [
+            'canUpgrade'=>$canUpgrade,
+            'groupingHeader'=> $groupingHeader,
+            'registrationData'=> $registrationData,
+            'successPage'=>$successPage,
+            'eventName'=>$eventName,
+            'event_slug'=>$event_slug,
+            'event_base_url' =>$event_base_url,
+            'eventImages' => $eventImages
+        ];
+
+        $subject = $successPage->email_subject;
+
+        $mailData = [
+            'title'   => $subject,
+            'subject' => $subject,
+            'data'    => $data,
+            'body'    =>''
+        ];
+
+        $email = $registrationData['event_user']['user']['email']; */
+
+       // $response = Mail::to($email)->send(new sendEventRegistrationSuccessMail($mailData));
 
         return view('templates.emails.eventRegistrationSuccessEmail',['mailData'=>$data]);
     }

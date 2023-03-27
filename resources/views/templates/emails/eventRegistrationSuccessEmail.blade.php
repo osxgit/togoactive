@@ -104,8 +104,6 @@
         }
 
         .registration-summary .upgrade .invite-friend .invite_star_social {
-            display: flex;
-            flex-direction: column;
             width: 84%;
             margin: auto;
             padding: 20px 0;
@@ -380,9 +378,13 @@
 
                 <div class="heading">
                     <h3>Registration Summary</h3>
-                    <p style="margin: 0;">13 Mar 2023, Monday 11:59 PM (GMT +8)
-                        Txn ID: #shortname>_payments-table-id>
-                        Payment ID : {{$mailData['data']['registrationData']['payment']['payment_intent']}}
+                    <p style="margin: 0;"> {{$mailData['data']['registrationData']['payment']['created_at']}}
+                        @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
+                            Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
+                            Payment ID : {{$mailData['data']['registrationData']['payment']['payment_id']}}
+                        @else
+                            Txn ID: {{$mailData['data']['registrationData']['payment']['payment_intent']}}
+                        @endif
                     </p>
                 </div>
 
@@ -417,34 +419,36 @@
                             <th>Free</th>
                         </tr>
                         @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
-                        @foreach($mailData['data']['registrationData']['payment']['user_reward'] as $rewards)
-                        <tr>
-                            <th>{{$rewards['rewards']['name']}} <br><span style="font-family: 'Poppins';
-                                        font-style: normal;
-                                        font-weight: 400;
-                                        font-size: 10px;
-                                        color: #6B7280;">Size M | Quanity : 1</span></th>
-                            <th>SGD 100</th>
-                        </tr>
-                        @endforeach
+                            @foreach($mailData['data']['registrationData']['payment']['user_reward'] as $rewards)
+                                <tr>
+                                    <th>{{$rewards['rewards']['name']}} <br><span style="font-family: 'Poppins';
+                                                font-style: normal;
+                                                font-weight: 400;
+                                                font-size: 10px;
+                                                color: #6B7280;"> {!! isset($rewards['rewards']['size']) ? 'Size: ' . $rewards['rewards']['size'] . ' | ' : '' !!}  {!! isset($rewards['rewards']['quantity']) ? ' Quantity: ' . $rewards['rewards']['quantity'] : '' !!}</span></th>
+                                    <th>{{$rewards['rewards']['currency']. ' '. $rewards['rewards']['amount']}}</th>
+                                </tr>
+                            @endforeach
                         @endif
                         <tr class="border-bottom">
                             <th colspan="2" style="padding: 0;"></th>
                         </tr>
                         <tr>
                             <th>Coupon Used</th>
-                            <th>FRIEND10</th>
+                            <th>
+                                {{($mailData['data']['registrationData']['payment']['coupon_code']!='') ? $mailData['data']['registrationData']['payment']['coupon_code'] : 'NA'}}
+                            </th>
                         </tr>
                         <tr>
                             <th>Discount</th>
-                            <th>10% (SGD 10)</th>
+                            <th>{{($mailData['data']['registrationData']['payment']['discount'] > 0) ? $mailData['data']['registrationData']['payment']['discount'] : 'NA'}}</th>
                         </tr>
                         <tr class="border-bottom">
                             <th colspan="2" style="padding: 0;"></th>
                         </tr>
                         <tr>
                             <th>Total</th>
-                            <th>SGD 100</th>
+                            <th> {{($mailData['data']['registrationData']['payment']['total_amount'] > 0) ? $mailData['data']['registrationData']['payment']['total_amount'] : 'NA'}} </th>
                         </tr>
                         <tr class="border-bottom">
                             <th colspan="2" style="padding: 0;"></th>
@@ -484,11 +488,26 @@
                         <h3>Invite your friends to join the event <br> and earn achievement and discounts!</h3>
                         <img src="{{ asset('images/invite_star_icon.png') }}" alt="icon" class="invite_star">
                         <div class="invite_star_social">
-                            <button style="background: #58B56D; width:150px;"><a target="_blank" href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-action="share/whatsapp/share"><img src="{{ asset('images/whatsapp_icon.png')}}" alt="icon">Invite via Whatsapp</a></button><br/>
-                            <button style="background:#3E84DB; width:150px;"><a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank"><img src="{{ asset('images/facebook_icon.png')}}" alt="icon"> Invite via Facebook</a></button><br/>
-                            <button style="background: #4BA6EE; width:150px;"><a href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"><img src="{{ asset('images/twitter_icon.png')}}" alt="icon"> Invite via Twitter</a></button><br/>
-                            <button style="background: #0077B5; width:150px;"><a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank" ><img src="{{ asset('images/linkdin_icon.png')}}" alt="icon"> Invite via LinkedIn</a></button><br/>
-                            <button style="background: #0088CC; width:150px;"><a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>&text=<?php '' ?>" target="_blank" data-href="<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>"  data-share="telegram"><img src="{{ asset('images/telegram_icon.png')}}" alt="icon"> Invite via Telegram</a></button><br/>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background: #58B56D; width:100%; display: flex; justify-content: center;"><a target="_blank" href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-action="share/whatsapp/share" style="color: #fff;"><img src="{{ asset('images/whatsapp_icon.png')}}" alt="icon">Invite via Whatsapp</a>
+                                </button>
+                            </div>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background:#3E84DB; width:100%; display: flex; justify-content: center;"><a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank" style="color: #fff;"><img src="{{ asset('images/facebook_icon.png')}}" alt="icon"> Invite via Facebook</a>
+                                </button>
+                            </div>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background: #4BA6EE; width:100%; display: flex; justify-content: center;"><a target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" style="color: #fff;"><img src="{{ asset('images/twitter_icon.png')}}" alt="icon"> Invite via Twitter</a>
+                                </button>
+                            </div>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background: #0077B5; width:100%; display: flex; justify-content: center;"><a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank" style="color: #fff;"><img src="{{ asset('images/linkdin_icon.png')}}" alt="icon"> Invite via LinkedIn</a>
+                                </button>
+                            </div>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background: #0088CC; width:100%; display: flex; justify-content: center;"><a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>&text=<?php '' ?>" target="_blank" data-href="<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>"  data-share="telegram" style="color: #fff;"><img src="{{ asset('images/telegram_icon.png')}}" alt="icon"> Invite via Telegram</a>
+                                </button>
+                            </div>
                         </div>
                         <p style="margin-bottom: 6px;">Alternatively, you can also share the referral code with your
                             friends.</p>
@@ -523,8 +542,8 @@
                 @if($mailData['data']['registrationData']['event_user']['user']['strava_id'] ==0 || $mailData['data']['registrationData']['event_user']['user']['strava_id'] =="")
 
                 <h3 style="padding-top: 20px;">Connect to STRAVA</h3>
-                <p>If you have not authorised togoparts to connect to yur strava account or 
-                    if you are unsure if you have done so already, 
+                <p>If you have not authorised togoparts to connect to yur strava account or
+                    if you are unsure if you have done so already,
                     <span style="color: #0D88CE; font-weight: 600;">CONNECT WITH STRAVA</span>now
                 </p>
 
@@ -533,13 +552,13 @@
                     Otherwise, double-check to ensure that your <span style="color: #34353C; font-weight: 600;">privacy settings</span> are set to <span style="color: #34353C; font-weight: 600;">Everyone</span> for
                     your
                     activities to be recorded.</p>
-                @endif       
+                @endif
                 <div class="next-step-img">
                     <div class="left">
                         <h4>iOS:</h4>
                         <img src="{{ asset('images/next_img_1.png') }}" alt="display_image" width="100%">
                         <img src="{{ asset('images/next_img_2.png') }}" alt="display_image" width="100%">
-                    
+
                     </div>
                     <div class="right">
                         <h4>Android:</h4>
