@@ -96,7 +96,7 @@ class UserController extends Controller
 
             if($userExists){
                 $user=$userExists;
-                $user->tgp_userid=$request->userid ?? 0;
+                $user->tgp_userid=$request->tgp_userid ?? 0;
                 $user->username=$request->username ;
                 $user->fullname=$request->fullname ;
                 $user->dob=$request->dob ;
@@ -168,7 +168,7 @@ class UserController extends Controller
 
             } else{
                 $userArr = array(
-                    'tgp_userid' => $request->userid ?? 0,
+                    'tgp_userid' => $request->tgp_userid ?? 0,
                     'fullname' => $request->fullname ?? '',
                     'username' => $request->username,
                     'email' => $request->email,
