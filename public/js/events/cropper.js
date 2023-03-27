@@ -161,7 +161,6 @@ $modal.on('shown.bs.modal', function () {
     cropper = null;
 });
 $(document).on('click', '#crop', function(){
-    alert(uploadFileRoute);
     var width = $('#width').val();
     var height = $('#height').val();
 
@@ -193,6 +192,14 @@ $(document).on('click', '#crop', function(){
 })
 
 function uploadFileResponse(response, idd) {
+
+    let iddToField = {
+        'achievement_icon': 'icon',
+        'achcievement_more_info_image': 'more_info_image',
+        'hero_image': 'notification_hero_image',
+        'sponsor-content-image': 'sponsor_content_image'
+    };
+    jQuery('#' + iddToField[idd]).val(response.data.fullpath);
 
     $("#label-" + idd).removeClass('opacity-30');
     if (response.err == 1) {

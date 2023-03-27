@@ -472,8 +472,8 @@
                                     @endif
 
                                     <x-forms.file_input name="icon_file">
-                                        <x-slot name="width">1280</x-slot>
-                                        <x-slot name="height">640</x-slot>
+                                        <x-slot name="width">500</x-slot>
+                                        <x-slot name="height">500</x-slot>
                                         <x-slot name="field_id">achievement_icon</x-slot>
                                     </x-forms.file_input>
                                     <input type="hidden" name="icon" id="icon" value="{{ isset($achievement) ? $achievement->icon : '' }}" />

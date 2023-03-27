@@ -574,7 +574,7 @@
                                 <th>Description</th>
                                 <th>Type</th>
                                 <th>Level</th>
-                                <th>Lisr Order</th>
+                                {{-- <th>List Order</th> --}}
                                 <th>Action</th>
 
                             </tr>
@@ -585,13 +585,12 @@
 
                             <tr>
                                 <td data-id="{{$achievement->id}}">{{$i++}}</td>
-                                <!-- <td>{{ $achievement->id }}</td> -->
                                 <td><i class="fa fa-file"></td>
                                 <td>{{ $achievement->title }}</td>
                                 <td>{{ $achievement->description }}</td>
                                 <td>{{ $achievement->type }}</td>
                                 <td>{{ $achievement->level }}</td>
-                                <td class=>{{$achievement->list_order}}</td>
+                                {{-- <td class="reorderData">{{$achievement->list_order}}</td> --}}
 
                                 <td>
                                     <span class="toggleReward">
@@ -625,7 +624,10 @@
         jQuery(document).ready(function() {
 
             var table = jQuery('#achievements').DataTable({
-                rowReorder: true
+                rowReorder: true,
+                "aaSorting": [[ 0, "asc" ]],
+                paging: false,
+                iDisplayLength: -1
             });
             table.on('row-reorder', function(e, diff, edit) {
                 var rowdata = 'Reorder started on row: ' + edit.triggerRow.data()[2] + '<br>';
@@ -635,7 +637,6 @@
 
                 for (var i = 0, ien = diff.length; i < ien; i++) {
                     if(diff[i].newData != '') {
-                        console.log(diff[i].newData);
                         dataID = jQuery(diff[i].node).find('td:first').attr('data-id');
                         achievementRowData.push({
                             'id' : dataID,
@@ -655,8 +656,12 @@
                     },
                     dataType: 'json',
                     success: function(response) {
-                        if (response.status) {
-                            alert('Data updated')
+                        if (response == 1) {
+                            achievementRowData.forEach(function(item, index){
+                                // console.log(jQuery('td[data-id="'+item.id+'"]').parents('tr').find('.reorderData').);
+                                jQuery('td[data-id="'+item.id+'"]').parents('tr').find('.reorderData').html(item.position);
+                            });
+                            alert('Data updated');
                         }
                     },
                     error: function() {
