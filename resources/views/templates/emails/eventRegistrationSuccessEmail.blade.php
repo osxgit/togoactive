@@ -380,9 +380,13 @@
 
                 <div class="heading">
                     <h3>Registration Summary</h3>
-                    <p style="margin: 0;">13 Mar 2023, Monday 11:59 PM (GMT +8)
-                        Txn ID: #shortname>_payments-table-id>
-                        Payment ID : {{$mailData['data']['registrationData']['payment']['payment_intent']}}
+                    <p style="margin: 0;"> {{$mailData['data']['registrationData']['payment']['created_at']}}
+                        @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
+                            Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
+                            Payment ID : {{$mailData['data']['registrationData']['payment']['payment_id']}}
+                        @else
+                            Txn ID: {{$mailData['data']['registrationData']['payment']['payment_intent']}}
+                        @endif
                     </p>
                 </div>
 
@@ -417,34 +421,36 @@
                             <th>Free</th>
                         </tr>
                         @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
-                        @foreach($mailData['data']['registrationData']['payment']['user_reward'] as $rewards)
-                        <tr>
-                            <th>{{$rewards['rewards']['name']}} <br><span style="font-family: 'Poppins';
-                                        font-style: normal;
-                                        font-weight: 400;
-                                        font-size: 10px;
-                                        color: #6B7280;">Size M | Quanity : 1</span></th>
-                            <th>SGD 100</th>
-                        </tr>
-                        @endforeach
+                            @foreach($mailData['data']['registrationData']['payment']['user_reward'] as $rewards)
+                                <tr>
+                                    <th>{{$rewards['rewards']['name']}} <br><span style="font-family: 'Poppins';
+                                                font-style: normal;
+                                                font-weight: 400;
+                                                font-size: 10px;
+                                                color: #6B7280;"> {!! isset($rewards['rewards']['size']) ? 'Size: ' . $rewards['rewards']['size'] . ' | ' : '' !!}  {!! isset($rewards['rewards']['quantity']) ? ' Quantity: ' . $rewards['rewards']['quantity'] : '' !!}</span></th>
+                                    <th>{{$rewards['rewards']['currency']. ' '. $rewards['rewards']['amount']}}</th>
+                                </tr>
+                            @endforeach
                         @endif
                         <tr class="border-bottom">
                             <th colspan="2" style="padding: 0;"></th>
                         </tr>
                         <tr>
                             <th>Coupon Used</th>
-                            <th>FRIEND10</th>
+                            <th>
+                                {{($mailData['data']['registrationData']['payment']['coupon_code']!='') ? $mailData['data']['registrationData']['payment']['coupon_code'] : 'NA'}}
+                            </th>
                         </tr>
                         <tr>
                             <th>Discount</th>
-                            <th>10% (SGD 10)</th>
+                            <th>{{($mailData['data']['registrationData']['payment']['discount'] > 0) ? $mailData['data']['registrationData']['payment']['discount'] : 'NA'}}</th>
                         </tr>
                         <tr class="border-bottom">
                             <th colspan="2" style="padding: 0;"></th>
                         </tr>
                         <tr>
                             <th>Total</th>
-                            <th>SGD 100</th>
+                            <th> {{($mailData['data']['registrationData']['payment']['total_amount'] > 0) ? $mailData['data']['registrationData']['payment']['total_amount'] : 'NA'}} </th>
                         </tr>
                         <tr class="border-bottom">
                             <th colspan="2" style="padding: 0;"></th>
@@ -523,8 +529,8 @@
                 @if($mailData['data']['registrationData']['event_user']['user']['strava_id'] ==0 || $mailData['data']['registrationData']['event_user']['user']['strava_id'] =="")
 
                 <h3 style="padding-top: 20px;">Connect to STRAVA</h3>
-                <p>If you have not authorised togoparts to connect to yur strava account or 
-                    if you are unsure if you have done so already, 
+                <p>If you have not authorised togoparts to connect to yur strava account or
+                    if you are unsure if you have done so already,
                     <span style="color: #0D88CE; font-weight: 600;">CONNECT WITH STRAVA</span>now
                 </p>
 
@@ -533,13 +539,13 @@
                     Otherwise, double-check to ensure that your <span style="color: #34353C; font-weight: 600;">privacy settings</span> are set to <span style="color: #34353C; font-weight: 600;">Everyone</span> for
                     your
                     activities to be recorded.</p>
-                @endif       
+                @endif
                 <div class="next-step-img">
                     <div class="left">
                         <h4>iOS:</h4>
                         <img src="{{ asset('images/next_img_1.png') }}" alt="display_image" width="100%">
                         <img src="{{ asset('images/next_img_2.png') }}" alt="display_image" width="100%">
-                    
+
                     </div>
                     <div class="right">
                         <h4>Android:</h4>
