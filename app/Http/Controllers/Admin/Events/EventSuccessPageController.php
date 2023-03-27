@@ -143,7 +143,7 @@ class EventSuccessPageController extends Controller
     * This function is created to just preview of event regitstration email template
     */
     public function previewEmailTemplate(){
-        $event_data = ['paymentId'=>1,'userId'=>1,'eventId'=>1];
+        $event_data = ['paymentId'=>174,'userId'=>21,'eventId'=>8];
 
         $paymentId  = $event_data['paymentId'];
         $userId     = $event_data['userId'];
