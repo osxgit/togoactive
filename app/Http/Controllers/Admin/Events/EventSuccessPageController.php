@@ -18,6 +18,7 @@ use Session;
 use App\Events\EventRegistration;
 use Carbon\Carbon;
 use Log;
+use App\Mail\sendEventRegistrationSuccessMail;
 
 class EventSuccessPageController extends Controller
 {
@@ -154,8 +155,10 @@ class EventSuccessPageController extends Controller
 
         // get event details
         $event_object = Events::findOrFail($eventId);
-        $eventName    = $event_object->name;
+
+        $eventName    = $event_object->slug;
         $event_slug   = $event_object->slug;
+
 
         $eventImages = $this->eventRepository->getEventImages($eventId);
 
@@ -170,6 +173,16 @@ class EventSuccessPageController extends Controller
 
         $addonRewards_data  = $this->eventRepository->getActiveAddonRewards(array('eventId' => $eventId ));
         $addonRewards       = $addonRewards_data->count();
+
+
+        if(!empty($successPage->email_body)){
+            $email_body = $successPage->email_body;
+            $user_name = $registrationData['event_user']['user']['user_name'];
+            $fullname = $registrationData['event_user']['user']['fullname'];
+            $replace_body = str_replace(['{user_name}','{full_name}'],[$user_name,$fullname],$email_body);
+
+            $successPage->email_body = $replace_body;
+        }
 
 
         if($registrationData['event_user']['is_paid_user'] == 1){
@@ -190,6 +203,30 @@ class EventSuccessPageController extends Controller
         // here we need to get event data and send mail to login user
         $event_base_url = "https://events.togoparts.com/";
         $data = ['data'=>['canUpgrade'=>$canUpgrade,'groupingHeader'=> $groupingHeader,'registrationData'=> $registrationData,'successPage'=>$successPage,'eventName'=>$eventName,'event_slug'=>$event_slug,'event_base_url' => $event_base_url,'eventImages'=>$eventImages]];
+
+       /*  $data = [
+            'canUpgrade'=>$canUpgrade,
+            'groupingHeader'=> $groupingHeader,
+            'registrationData'=> $registrationData,
+            'successPage'=>$successPage,
+            'eventName'=>$eventName,
+            'event_slug'=>$event_slug,
+            'event_base_url' =>$event_base_url,
+            'eventImages' => $eventImages
+        ];
+
+        $subject = $successPage->email_subject;
+
+        $mailData = [
+            'title'   => $subject,
+            'subject' => $subject,
+            'data'    => $data,
+            'body'    =>''
+        ];
+
+        $email = $registrationData['event_user']['user']['email']; */
+
+       // $response = Mail::to($email)->send(new sendEventRegistrationSuccessMail($mailData));
 
         return view('templates.emails.eventRegistrationSuccessEmail',['mailData'=>$data]);
     }

@@ -104,8 +104,6 @@
         }
 
         .registration-summary .upgrade .invite-friend .invite_star_social {
-            display: flex;
-            flex-direction: column;
             width: 84%;
             margin: auto;
             padding: 20px 0;
@@ -490,11 +488,26 @@
                         <h3>Invite your friends to join the event <br> and earn achievement and discounts!</h3>
                         <img src="{{ asset('images/invite_star_icon.png') }}" alt="icon" class="invite_star">
                         <div class="invite_star_social">
-                            <button style="background: #58B56D; width:150px;"><a target="_blank" href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-action="share/whatsapp/share"><img src="{{ asset('images/whatsapp_icon.png')}}" alt="icon">Invite via Whatsapp</a></button><br/>
-                            <button style="background:#3E84DB; width:150px;"><a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank"><img src="{{ asset('images/facebook_icon.png')}}" alt="icon"> Invite via Facebook</a></button><br/>
-                            <button style="background: #4BA6EE; width:150px;"><a href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"><img src="{{ asset('images/twitter_icon.png')}}" alt="icon"> Invite via Twitter</a></button><br/>
-                            <button style="background: #0077B5; width:150px;"><a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank" ><img src="{{ asset('images/linkdin_icon.png')}}" alt="icon"> Invite via LinkedIn</a></button><br/>
-                            <button style="background: #0088CC; width:150px;"><a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>&text=<?php '' ?>" target="_blank" data-href="<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>"  data-share="telegram"><img src="{{ asset('images/telegram_icon.png')}}" alt="icon"> Invite via Telegram</a></button><br/>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background: #58B56D; width:100%; display: flex; justify-content: center;"><a target="_blank" href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" data-action="share/whatsapp/share" style="color: #fff;"><img src="{{ asset('images/whatsapp_icon.png')}}" alt="icon">Invite via Whatsapp</a>
+                                </button>
+                            </div>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background:#3E84DB; width:100%; display: flex; justify-content: center;"><a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank" style="color: #fff;"><img src="{{ asset('images/facebook_icon.png')}}" alt="icon"> Invite via Facebook</a>
+                                </button>
+                            </div>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background: #4BA6EE; width:100%; display: flex; justify-content: center;"><a target="_blank" href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>" style="color: #fff;"><img src="{{ asset('images/twitter_icon.png')}}" alt="icon"> Invite via Twitter</a>
+                                </button>
+                            </div>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background: #0077B5; width:100%; display: flex; justify-content: center;"><a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> " target="_blank" style="color: #fff;"><img src="{{ asset('images/linkdin_icon.png')}}" alt="icon"> Invite via LinkedIn</a>
+                                </button>
+                            </div>
+                            <div class="" style="display: block; width:100%">
+                                <button style="background: #0088CC; width:100%; display: flex; justify-content: center;"><a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>&text=<?php '' ?>" target="_blank" data-href="<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>"  data-share="telegram" style="color: #fff;"><img src="{{ asset('images/telegram_icon.png')}}" alt="icon"> Invite via Telegram</a>
+                                </button>
+                            </div>
                         </div>
                         <p style="margin-bottom: 6px;">Alternatively, you can also share the referral code with your
                             friends.</p>
