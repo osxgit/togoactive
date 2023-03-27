@@ -1106,9 +1106,10 @@ return $data;
 
             public function getEventUsersList($eventId){
 
-                $data= EventUser::where('event_users.event_id',$eventId) ->join('payments', function ($join) {
+                $data= EventUser::where('event_users.event_id',$eventId)->join('payments', function ($join) {
                     $join->on('event_users.event_id', '=', 'payments.event_id')
-                         ->on('payments.user_id', '=', 'event_users.user_id');
+                         ->on('payments.user_id', '=', 'event_users.user_id')
+                         ->where('payments.payment_type', '=', 'registration');
                 })->with('user','team_user','team_user.team')->select('event_users.*', 'payments.status','payments.coupon_code','payments.total_paid')->get();
                return $data;
             }
