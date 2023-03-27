@@ -414,7 +414,7 @@ Validator::make($request->all(), [
             }
 
             if(isset($data['sizing_images'])){
-                $sizingimage= FilesUploadsLogs::where('eventid',$eventId)->where('module','Rewards')->where('image_type','sizing_image')->where('active',0)->first();
+                $sizingimage= FilesUploadsLogs::where('eventid',$eventId)->where('module','sizing_image')->where('image_type','sizing_image')->where('active',0)->first();
                 $data['sizing_images']=$sizingimage->path;
                 if($sizingimage){
                     $sizingimage->active = 1;
