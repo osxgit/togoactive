@@ -266,17 +266,18 @@
         }
 
         .Registration .social-top ul li a img {
-            width: 25px;
+            height:25px;
         }
 
         .Registration .social-top ul {
             display: flex;
-            justify-content: end;
+            justify-content: flex-end;
         }
 
         .Registration .social-top ul li {
             border-left: 2px dashed #BBBBBB;
             padding: 0 8px;
+            height: 30px;
         }
 
         .Registration {
@@ -342,7 +343,7 @@
 
 <body>
 
-    <div class="Registration">
+    <div class="Registration" style="font-family: 'Arial';">
 
         <div class="social-top">
             <ul>
@@ -369,7 +370,7 @@
         <div class="container">
 
             <div class="heading" style="text-align: center; margin-bottom: 30px;">
-                <h2> {{$mailData['data']['eventName']}} Registration</h2>
+                <h2 style="text-transform: capitalize;"> {{$mailData['data']['eventName']}} Registration</h2>
                 <p>{!! $mailData['data']['successPage']['email_body'] !!}</p>
             </div>
 
@@ -380,10 +381,10 @@
                     <h3>Registration Summary</h3>
                     <p style="margin: 0;"> {{$mailData['data']['registrationData']['payment']['created_at']}}
                         @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
-                            Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
-                            Payment ID : {{$mailData['data']['registrationData']['payment']['payment_id']}}
+                            Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}<br/>
+                            Payment ID : {{$mailData['data']['registrationData']['payment']['payment_id']}}<br/>
                         @else
-                            Txn ID: {{$mailData['data']['registrationData']['payment']['payment_intent']}}
+                            Txn ID: {{$mailData['data']['registrationData']['payment']['payment_intent']}}<br/>
                         @endif
                     </p>
                 </div>
@@ -566,7 +567,7 @@
                         <img src="{{ asset('images/next_img_4.png') }}" alt="display_image" width="100%">
                     </div>
                 </div>
-                <button><a href="https://www.togoparts.com/app">Download togoparts app</a></button>
+                <button><a href="https://www.togoparts.com/app" style="color:#fff;">Download togoparts app</a></button>
             </div>
         </div>
     </div>
