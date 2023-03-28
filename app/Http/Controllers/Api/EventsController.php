@@ -312,4 +312,10 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
                 return $this->sendAPIResponse();
             }
+
+            public function getReferralData(Request $request){
+                $response = $this->eventRepository->getEventReferralData($request->eventId);
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
     }

@@ -162,5 +162,7 @@ interface EventRepositoryInterface
 
     public function getEventRewardQuantity($data);
 
+    public function getEventReferralData($eventId);
+
 
 };
