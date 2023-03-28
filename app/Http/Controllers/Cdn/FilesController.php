@@ -329,6 +329,23 @@ class FilesController extends Controller
                          ]);
                      }
                  }
+         } else if($module == 'sizing_image'){
+            $fileupload= FilesUploadsLogs::where('eventid',$request->rewardId)->where('module',$module)->where('image_type',$request->idd)->first();
+            if($fileupload){
+                $imageHelper->deleteImage($fileupload->path);
+                $fileupload->path = $path;
+                $fileupload->active = 0;
+                $fileupload->save();
+             } else{
+                FilesUploadsLogs::create([
+                   'eventid'    => $request->rewardId,
+                   'file_type' => $request->idd,
+                   'module'    => $module,
+                   'image_type' => $request->idd,
+                   'path'      => $path
+                ]);
+            }
+
          } else{
             $fileupload= FilesUploadsLogs::where('eventid',$request->eventId)->where('module',$module)->where('image_type',$request->idd)->first();
                 if($fileupload){
