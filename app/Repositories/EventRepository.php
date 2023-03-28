@@ -1251,4 +1251,11 @@ return $data;
                 }
 
             }
+            
+            public function getEventReferralData($eventId){
+                $data['refer_data'] = EventSuccessPage::Where('event_id',$eventId)->select('invite_friend')->first();
+                $data['socialShare']= SocialSeo::where('event_id', $eventId)->select('share_title','share_description')->first();
+                return $data;
+
+            }
 }

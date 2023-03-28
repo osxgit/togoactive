@@ -57,6 +57,7 @@ Route::post('updatePayment', [EventsController::class, 'updatePayment'])->name('
 Route::post('getEventData', [EventsController::class, 'getEventData'])->name('getEventData');
 Route::post('checkEventUser', [EventsController::class, 'checkEventUser'])->name('checkEventUser');
 Route::post('getTermConditions', [EventsController::class, 'getTermConditions'])->name('getTermConditions');
+Route::post('getEventReferralData', [EventsController::class, 'getReferralData'])->name('getReferralData');
 
 Route::post('getEventUserData', [EventsController::class, 'getEventUserData'])->name('getEventUserData');
 
