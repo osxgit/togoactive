@@ -737,6 +737,8 @@ return $data;
                         } else{
                         $amountAfterDiscount =$totalPrice;
                         }
+        $responseData['AmountAfterDiscountDisplay'] = formatPrice($checkoutCurrency ,$amountAfterDiscount);
+        $responseData['TotalAmountDisplay'] = formatPrice($checkoutCurrency ,$totalPrice);
         $responseData['AmountAfterDiscount'] = round($amountAfterDiscount,2);
         $responseData['TotalAmount'] = round($totalPrice,2);
         $responseData['discountpercentage'] = $discountpercentage;
