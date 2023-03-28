@@ -739,10 +739,10 @@ return $data;
                         }
         $responseData['AmountAfterDiscountDisplay'] = formatPrice($checkoutCurrency ,$amountAfterDiscount);
         $responseData['TotalAmountDisplay'] = formatPrice($checkoutCurrency ,$totalPrice);
-        $responseData['AmountAfterDiscount'] = round($amountAfterDiscount,2);
-        $responseData['TotalAmount'] = round($totalPrice,2);
+        $responseData['AmountAfterDiscount'] = $amountAfterDiscount;
+        $responseData['TotalAmount'] = $totalPrice;
         $responseData['discountpercentage'] = $discountpercentage;
-        $responseData['discountAmount'] = round($discountAmount,2);
+        $responseData['discountAmount'] = $discountAmount;
         $responseData['checkoutCurrency'] = $checkoutCurrency;
         $responseData['validRewards'] = $validRewards;
 
