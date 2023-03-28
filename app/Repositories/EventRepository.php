@@ -986,7 +986,7 @@ return $data;
                         'size'=>$membership['size']??null,
                         'payment_id'=>$payment->id,
                         'quantity'=>$membership['quantity'],
-                        'amount'=>$membership['rewardPrice']*$membership['quantity'],
+                        'amount'=>(str_replace(',','',$membership['rewardPrice']))*$membership['quantity'],  
                         'discount'=>$membership['discountedPrice']??0,
                         'currency'=>$data['currency']
                     ]);
