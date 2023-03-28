@@ -117,7 +117,7 @@ class RewardsController extends Controller
             }
         }
         if(isset($alldata['sizing_images'])){
-             $sizingimage= FilesUploadsLogs::where('eventid',$eventId)->where('module','Rewards')->where('image_type','sizing_image')->where('active',0)->first();
+             $sizingimage= FilesUploadsLogs::where('eventid',0)->where('module','sizing_image')->where('image_type','sizing_image')->where('active',0)->first();
              $data['sizing_images']=$sizingimage->path;
              if($sizingimage){
                  $sizingimage->active = 1;
@@ -154,7 +154,13 @@ class RewardsController extends Controller
 
                     }
                 }
-
+                $rewardimages= FilesUploadsLogs::where('eventid',0)->where('module','sizing_image')->where('image_type','sizing_image')->where('active',1)->get();
+                foreach($rewardimages as $rewardimage){
+                    if($rewardimage){
+                       $rewardimage->eventid = $eventRewards->id;
+                        $rewardimage->save();
+                    }
+                }
         return redirect()->route('admin.events.rewardsPrice.add',array($eventId, $eventRewards->id))->with('message','Changes saved successfully!');
 
     }
@@ -391,6 +397,7 @@ Validator::make($request->all(), [
                 $eventRewards = $this->eventRepository->getEventRewards($eventId, $rewardId);
                 $rewardImages = json_decode($eventRewards->rewards_images);
                 $data= $request->all();
+                // dd($data);
                 foreach($rewardImages as $key=>$reward_img){
                     foreach($reward_img as $rewardImg){
                         $data['reward_image'][$key][]=$rewardImg;
@@ -414,7 +421,7 @@ Validator::make($request->all(), [
             }
 
             if(isset($data['sizing_images'])){
-                $sizingimage= FilesUploadsLogs::where('eventid',$eventId)->where('module','sizing_image')->where('image_type','sizing_image')->where('active',0)->first();
+                $sizingimage= FilesUploadsLogs::where('eventid',$rewardId)->where('module','sizing_image')->where('image_type','sizing_image')->where('active',0)->first();
                 $data['sizing_images']=$sizingimage->path;
                 if($sizingimage){
                     $sizingimage->active = 1;
