@@ -146,7 +146,7 @@ class EventSuccessPageController extends Controller
     public function previewEmailTemplate(){
 
 
-        $event_data = ['paymentId'=>80,'userId'=>21,'eventId'=>8, 'eventUserId'=>8];
+        $event_data = ['paymentId'=>167 ,'userId'=>12 ,'eventId'=>2, 'eventUserId'=>171];
 
         $paymentId  = $event_data['paymentId'];
         $userId     = $event_data['userId'];
@@ -227,7 +227,7 @@ class EventSuccessPageController extends Controller
         $email = $registrationData['event_user']['user']['email']; */
 
        // $response = Mail::to($email)->send(new sendEventRegistrationSuccessMail($mailData));
-
+        dd($data);
         return view('templates.emails.eventRegistrationSuccessEmail',['mailData'=>$data]);
     }
 }
