@@ -213,8 +213,8 @@
                 </div>
             </li>
 
-            <li class="lg:py-4 flex py-4  pl-8 font-arial text-lg {{($id != '-' ? 'hover:bg-active-nav' : '')}}">
-                <a class="truncate float-left w-full text-gray {{($id == '-' ? 'cursor-not-allowed' : 'hover:text-primary')}}" href="#" {{($id == '-' ? 'disabled' : '')}}>
+            <li class="lg:py-4 flex py-4  pl-8 font-arial text-lg {{($id != '-' ? 'hover:bg-active-nav' : '')}} {{request()->route()->getName() == 'admin.events.participantsManager' ? 'bg-active-nav' : ''}}" >
+                <a class="truncate float-left w-full text-gray  {{($id == '-' ? 'cursor-not-allowed' : 'hover:text-primary')}} {{request()->route()->getName() == 'admin.events.participantsManager' ? 'text-primary' : 'text-gray'}}" href="{{route('admin.events.participantsManager',array($id))}}" {{($id == '-' ? 'disabled' : '')}}>
                     <span class="inline"><i class="fa fa-users fa-solid text-center w-5 mr-1 text-gray"></i>Participants Manager</span>
                 </a>
             </li>
