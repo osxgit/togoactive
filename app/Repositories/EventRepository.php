@@ -1231,14 +1231,21 @@ return $data;
 
             public function getEventRewardQuantity($data){
 
-                $user = User::where('tgp_userid',$data['userId'])->first();
+                $user           = User::where('tgp_userid',$data['userId'])->first();
+                $quantity_sizes = array();
 
                 if($user){
-                    $response = UserReward::select(['reward_id',DB::raw('SUM(quantity) as total_quantity')])->where('event_id',$data['eventId'])->where('user_id',$user->id)->groupBy('reward_id')->get();
+                    $response = UserReward::select(['reward_id', 'size',DB::raw('SUM(quantity) as total_quantity')])->where('event_id',$data['eventId'])->where('user_id',$user->id)->groupBy('reward_id')->get();
 
-                    $plucked = $response->pluck('total_quantity','reward_id');
+                   // $plucked = $response->pluck('total_quantity','reward_id');
 
-                    return $plucked;
+                    foreach($response as $res){
+
+                        $quantity_sizes[$res->reward_id]['total_quantity']  = $res['total_quantity'];
+                        $quantity_sizes[$res->reward_id]['size']            = $res['size'];
+                    }
+
+                    return $quantity_sizes;
                 }else{
                     return null;
                 }
