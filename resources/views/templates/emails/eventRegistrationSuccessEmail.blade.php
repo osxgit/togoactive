@@ -48,7 +48,7 @@
         }
 
         .registration-summary .heading p {
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -62,7 +62,7 @@
 
         .registration-summary .upgrade h3 {
             padding: 44px 0 12px;
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 700;
             font-size: 20px;
@@ -72,7 +72,7 @@
         }
 
         .registration-summary .upgrade p {
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -84,7 +84,7 @@
         .registration-summary .upgrade .upgrade-btn {
             background: #ED2939;
             border-radius: 5px;
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 700;
             font-size: 14px;
@@ -140,7 +140,7 @@
         }
 
         .registration-summary .upgrade .invite-friend p {
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -163,7 +163,7 @@
         }
 
         .next-step ul li {
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -173,7 +173,7 @@
         }
 
         .next-step p {
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -205,7 +205,7 @@
         .next-step button {
             background: #F6861F;
             border-radius: 5px;
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 700;
             font-size: 14px;
@@ -216,7 +216,7 @@
         }
 
         .heading h2 {
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 700;
             font-size: 26px;
@@ -225,7 +225,7 @@
         }
 
         .heading p {
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 400;
             font-size: 14px;
@@ -254,7 +254,7 @@
         }
 
         .img_admin_panel .left h2 {
-            font-family: 'Poppins';
+            font-family: 'Arial';
             font-style: normal;
             font-weight: 700;
             font-size: 36px;
@@ -346,7 +346,7 @@
     <div class="Registration" style="font-family: 'Arial';">
 
         <div class="social-top">
-            <ul>
+            <ul style="justify-content: flex-end">
                 <li><a href=""><img src="{{ asset('images/android_header.png')}}" alt="icon"></a></li>
                 <li><a href=""><img src="{{ asset('images/twitter_header.png')}}" alt="icon"></a></li>
                 <li style="border-left: none; padding-left: 0;">
@@ -355,7 +355,7 @@
             </ul>
         </div>
 
-        <div class="img_admin_panel">
+        <div class="img_admin_panel" style="align-items: center">
             <div class="left">
                 @if(isset($mailData['data']['eventImages']['icon']) && $mailData['data']['eventImages']['icon'] !='')
                 <img src="{{url('https://static.togoactive.com/'.$mailData['data']['eventImages']['icon'])}}"
@@ -557,14 +557,14 @@
                 <div class="next-step-img">
                     <div class="left">
                         <h4>iOS:</h4>
-                        <img src="{{ asset('images/next_img_1.png') }}" alt="display_image" width="100%">
-                        <img src="{{ asset('images/next_img_2.png') }}" alt="display_image" width="100%">
+                        <img src="{{ asset('images/next_img_1.png') }}" alt="display_image" width="100%" style="width: 150px">
+                        <img src="{{ asset('images/next_img_2.png') }}" alt="display_image" width="100%" style="width: 150px">
 
                     </div>
                     <div class="right">
                         <h4>Android:</h4>
-                        <img src="{{ asset('images/next_img_3.png') }}" alt="display_image" width="100%">
-                        <img src="{{ asset('images/next_img_4.png') }}" alt="display_image" width="100%">
+                        <img src="{{ asset('images/next_img_3.png') }}" alt="display_image" width="100%" style="width: 150px">
+                        <img src="{{ asset('images/next_img_4.png') }}" alt="display_image" width="100%" style="width: 150px">
                     </div>
                 </div>
                 <button><a href="https://www.togoparts.com/app" style="color:#fff;">Download togoparts app</a></button>
