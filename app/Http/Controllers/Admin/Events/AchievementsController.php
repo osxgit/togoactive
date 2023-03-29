@@ -120,7 +120,7 @@ class AchievementsController extends Controller
            $alldata['sponsor_content_image']='';
         }
 
-        $achievement = $this->repository->create($request->all());
+        $achievement = $this->repository->create($alldata);
 
         $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','achievement_icon')->where('active',1)->get();
         foreach($achievementIcon as $achIcon){
@@ -205,7 +205,7 @@ class AchievementsController extends Controller
             } else{
                $alldata['sponsor_content_image']='';
             }
-        $achievement = $this->repository->update($achievementId, $request->all());
+        $achievement = $this->repository->update($achievementId, $alldata);
 
         return redirect(
             route('admin.events.achievements.list',[
