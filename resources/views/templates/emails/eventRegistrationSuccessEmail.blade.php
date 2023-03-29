@@ -121,10 +121,10 @@
                                         <th colspan="2" style="padding: 10px;width: 50%;">{{$rewards['rewards']['name']}} <br>
                                             <span
                                                 style="font-family:'Poppins';font-style:normal;font-weight:400;font-size:10px;color:#6b7280">
-                                                {!! isset($rewards['rewards']['size']) ? 'Size: ' . $rewards['rewards']['size'] . ' | ' : '' !!}  {!! isset($rewards['rewards']['quantity']) ? ' Quantity: ' . $rewards['rewards']['quantity'] : '' !!}</span>
+                                                {!! isset($rewards['size']) ? 'Size: ' . $rewards['size'] . ' | ' : '' !!}  {!! isset($rewards['quantity']) ? ' Quantity: ' . $rewards['quantity'] : '' !!}</span>
                                         </th>
                                         <th>
-                                            {{$rewards['rewards']['currency']. ' '. number_format((float)$rewards['rewards']['amount'],2)}}
+                                            {{$rewards['currency']. ' '. number_format((float)$rewards['amount'],2)}}
                                         </th>
                                     </tr>
                                 @endforeach
