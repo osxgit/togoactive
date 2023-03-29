@@ -79,8 +79,7 @@ class SendEventRegistrationEmail
                 'groupingHeader' => $groupingHeader,
                 'coreReward_data' => $coreReward_data,
                 'addonRewards' => $addonRewards,
-                'eventImages' => $eventImages,
-                'event_object' => $event_object
+                'eventImages' => $eventImages
             );
             Log::channel('single')->info($log_array);
 
@@ -120,7 +119,8 @@ class SendEventRegistrationEmail
                         'eventName'=>$eventName,
                         'event_slug'=>$event_slug,
                         'event_base_url' =>$event_base_url,
-                        'eventImages' => $eventImages
+                        'eventImages' => $eventImages,
+                        'event_object' => $event_object
                     ];
 
             // end email code
