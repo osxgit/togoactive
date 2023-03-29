@@ -61,7 +61,7 @@
             <tr>
                 <td colspan="2">
                     <table
-                        style="width: 100%;max-width: 450px;margin: 10px auto;font-family: arial;text-align: left;font-size: 14px;">
+                        style="width: 100%;max-width: 350px;margin: 10px auto;font-family: arial;text-align: left;font-size: 14px;">
                         <tr>
                             <td>
                                 <h2 style="font-family: arial;margin: 0 0 10px;">Registration Summary</h2>
@@ -86,7 +86,7 @@
             <tr>
                 <td colspan="2">
                     <table
-                        style="width: 100%;border: 3px solid #e5e7eb;max-width: 450px;margin: 10px auto;font-family: arial;text-align: left;font-size: 14px;">
+                        style="width: 100%;border: 3px solid #e5e7eb;max-width: 350px;margin: 10px auto;font-family: arial;text-align: left;font-size: 14px;">
                         <tbody>
                             <tr>
                                 <th style="padding: 10px;width: 50%;">Name</th>
@@ -190,9 +190,9 @@
                     <div>
                         <div style="display: block; width: 100%;">
                             <button
-                                style="background: #58b56d;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 270px;">
+                                style="background: #58b56d;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
                                 <a href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;" target="_blank"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
                                     data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"
                                     data-action="share/whatsapp/share">
                                     <img style="margin-right: 5px;" src="{{ asset('images/whatsapp_icon.png')}}"
@@ -203,9 +203,9 @@
                         </div>
                         <div style="display: block; width: 100%;">
                             <button
-                                style="background: #3e84db;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 270px;">
+                                style="background: #3e84db;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
                                 <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> "
-                                    style="color: #fff;display: block;text-align: center;width: 100%;" target="_blank"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
                                     data-saferedirecturl="https://www.google.com/url?q=https://www.facebook.com/sharer/sharer.php?u%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306199000&amp;usg=AOvVaw0CjWD3k1AinGmIO0vSkfZF">
                                     <img style="margin-right: 5px;" src="{{ asset('images/facebook_icon.png')}}"
                                         alt="icon" class="CToWUd" data-bit="iit" />
@@ -215,9 +215,9 @@
                         </div>
                         <div style="display: block; width: 100%;">
                             <button
-                                style="background: #4ba6ee;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 270px;">
+                                style="background: #4ba6ee;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
                                 <a href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;" target="_blank"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
                                     data-saferedirecturl="https://www.google.com/url?q=https://twitter.com/intent/tweet?text%3D%26url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw1pIDIfuLsX44rwWCCmKk2U">
                                     <img style="margin-right: 5px;" src="{{ asset('images/twitter_icon.png')}}"
                                         alt="icon" class="CToWUd" data-bit="iit" />
@@ -227,9 +227,9 @@
                         </div>
                         <div style="display: block; width: 100%;">
                             <button
-                                style="background: #0077b5;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 270px;">
+                                style="background: #0077b5;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
                                 <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;" target="_blank"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
                                     data-saferedirecturl="https://www.google.com/url?q=https://www.linkedin.com/sharing/share-offsite/?url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw2ppQeb_eOBVZjgJ0XDDzek">
                                     <img style="margin-right: 5px;" src="{{ asset('images/linkdin_icon.png')}}"
                                         alt="icon" class="CToWUd" data-bit="iit" />
@@ -239,9 +239,9 @@
                         </div>
                         <div style="display: block; width: 100%;">
                             <button
-                                style="background: #0088cc;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 270px;">
+                                style="background: #0088cc;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
                                 <a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>&text=<?php '' ?>"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;" target="_blank"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
                                     data-href="<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>"
                                     data-share="telegram">
                                     <img style="margin-right: 5px;" src="{{ asset('images/telegram_icon.png')}}"
@@ -263,33 +263,34 @@
                     <table>
                         <tr>
                             <td>
-                                <h3 style="color:#F6861F;padding-top: 20px;">Next Steps</h3>
-                                <ul style="list-style:none;font-weight:400;line-height: 2.5;">
-                                    <li>1. First, download the <span style="font-weight:700;">TOGOPARTS</span> app on your mobile phone </li>
-                                    <li>2. Once you have downloaded the app, open it and click on the <span style="font-weight:700;">"RECORD"</span> button to
+                                <h3 style="color:#F6861F;font-size: 18pt;">Next Steps</h3>
+                                <ul style="list-style:none;font-weight:400;font-size: 14pt;
+                                padding: 0;">
+                                    <li style="margin:10px 0 !important">1. First, download the <span style="font-weight:700;">TOGOPARTS</span> app on your mobile phone </li>
+                                    <li style="margin:10px 0 !important">2. Once you have downloaded the app, open it and click on the <span style="font-weight:700;">"RECORD"</span> button to
                                         start
                                         recording your live activities. </li>
-                                    <li>3. The app will then take you to the Strava app, which is used to record your rides. Please
+                                    <li style="margin:10px 0 !important">3. The app will then take you to the Strava app, which is used to record your rides. Please
                                         ensure
                                         that
                                         your privacy settings on Strava are set to <span style="font-weight:700;">"EVERYONE"</span> so that your rides can be
                                         recorded.
                                     </li>
-                                    <li>4. Once you have verified and adjusted your Strava privacy settings as needed, you can begin
+                                    <li style="margin:10px 0 !important">4. Once you have verified and adjusted your Strava privacy settings as needed, you can begin
                                         your
                                         ride.
                                     </li>
-                                    <li>5. Make sure to start your ride during <span> (from <STARTDATE><STARTIME>hrs to <ENDDATE><ENDTIME>hrs). </span></li>
+                                    <li style="margin:10px 0 !important">5. Make sure to start your ride during <span> (from <STARTDATE><STARTIME>hrs to <ENDDATE><ENDTIME>hrs). </span></li>
                                 </ul>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <h3 style="padding-top: 20px;color:#F6861F">Connect to STRAVA</h3>
+                                <h3 style="color:#F6861F;font-size: 18pt;">Connect to STRAVA</h3>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-weight:400">
+                            <td style="font-weight:400;font-size: 14pt;">
                                 If you have not authorised togoparts to connect to yur strava account or
                         if you are unsure if you have done so already,
                         <span style="color: #0D88CE; font-weight: 600;">CONNECT WITH STRAVA</span style="font-weight:700;">now
@@ -297,12 +298,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <h3 style="padding-top: 20px;color:#F6861F">Set STRAVA permissions</h3>
+                                <h3 style="color:#F6861F;font-size: 18pt;">Set STRAVA permissions</h3>
                             </td>
                         </tr>
                         <tr>
                             <td>
-                                <p style="font-weight:400">If you have connected with strava after registration with all the boxes ticked, you are good to go.
+                                <p style="font-weight:400;font-size: 14pt;">If you have connected with strava after registration with all the boxes ticked, you are good to go.
                                     Otherwise, double-check to ensure that your <span style="color: #34353C; font-weight: 700;">privacy settings</span> are set to <span style="color: #34353C; font-weight: 700;">Everyone</span> for
                                     your
                                     activities to be recorded.</p>

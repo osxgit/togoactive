@@ -80,6 +80,7 @@ class SendEventRegistrationEmail
                 'coreReward_data' => $coreReward_data,
                 'addonRewards' => $addonRewards,
                 'eventImages' => $eventImages,
+                'event_object' => $event_object
             );
             Log::channel('single')->info($log_array);
 
