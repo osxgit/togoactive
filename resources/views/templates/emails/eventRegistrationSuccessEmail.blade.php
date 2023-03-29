@@ -191,9 +191,10 @@
                         <div style="display: block; width: 100%;">
                             <button
                                 style="background: #58b56d;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                <a href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
-                                    data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"
+                                <a href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;font-weight: 900;
+                                    text-decoration: none;" target="_blank"
+                                    data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/"
                                     data-action="share/whatsapp/share">
                                     <img style="margin-right: 5px;" src="{{ asset('images/whatsapp_icon.png')}}"
                                         alt="icon" class="CToWUd" data-bit="iit" />
@@ -205,7 +206,8 @@
                             <button
                                 style="background: #3e84db;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
                                 <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?> "
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;font-weight: 900;
+                                    text-decoration: none;" target="_blank"
                                     data-saferedirecturl="https://www.google.com/url?q=https://www.facebook.com/sharer/sharer.php?u%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306199000&amp;usg=AOvVaw0CjWD3k1AinGmIO0vSkfZF">
                                     <img style="margin-right: 5px;" src="{{ asset('images/facebook_icon.png')}}"
                                         alt="icon" class="CToWUd" data-bit="iit" />
@@ -217,7 +219,8 @@
                             <button
                                 style="background: #4ba6ee;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
                                 <a href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
+                                    text-decoration: none;" target="_blank"
                                     data-saferedirecturl="https://www.google.com/url?q=https://twitter.com/intent/tweet?text%3D%26url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw1pIDIfuLsX44rwWCCmKk2U">
                                     <img style="margin-right: 5px;" src="{{ asset('images/twitter_icon.png')}}"
                                         alt="icon" class="CToWUd" data-bit="iit" />
@@ -229,7 +232,8 @@
                             <button
                                 style="background: #0077b5;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
                                 <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
+                                    text-decoration: none;" target="_blank"
                                     data-saferedirecturl="https://www.google.com/url?q=https://www.linkedin.com/sharing/share-offsite/?url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw2ppQeb_eOBVZjgJ0XDDzek">
                                     <img style="margin-right: 5px;" src="{{ asset('images/linkdin_icon.png')}}"
                                         alt="icon" class="CToWUd" data-bit="iit" />
@@ -241,7 +245,8 @@
                             <button
                                 style="background: #0088cc;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
                                 <a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>&text=<?php '' ?>"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;" target="_blank"
+                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
+                                    text-decoration: none;" target="_blank"
                                     data-href="<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>"
                                     data-share="telegram">
                                     <img style="margin-right: 5px;" src="{{ asset('images/telegram_icon.png')}}"
