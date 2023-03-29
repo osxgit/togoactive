@@ -16,7 +16,7 @@ class Payment extends Model
         'user_id',
         'payment_type',
         'payment_method',
-        'payment_intent', 
+        'payment_intent',
         'total_amount',
         'discount',
         'total_paid',
@@ -28,7 +28,11 @@ class Payment extends Model
 
     public function user_reward()
     {
-        return $this->hasMany(UserReward::class,'payment_id');
+        return $this->hasMany(UserReward::class,'payment_id')->whereExists(function ($query) {
+            $query->from('payments')
+                  ->whereColumn('payments.id', 'user_rewards.payment_id')
+                  ->where("status","successful");
+        });
     }
 
 }

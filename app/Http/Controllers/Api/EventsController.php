@@ -211,8 +211,10 @@ class EventsController extends Controller
                 $eventPayment = $request['paymentId'];
                 $eventUserId = $request['eventUserId'];
 
-                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
-                event(new EventRegistration($eventData,$request));
+                if($request->status=='successful'){
+                    $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
+                    event(new EventRegistration($eventData,$request));
+                }
 
                 return $this->sendAPIResponse();
             }
@@ -280,6 +282,7 @@ class EventsController extends Controller
 
             public function processUpgradeEventPayment(Request $request){
                 $response = $this->eventRepository->processUpgradeEvent($request->all());
+
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
                 return $this->sendAPIResponse();
             }
