@@ -986,7 +986,7 @@ return $data;
                         'size'=>$membership['size']??null,
                         'payment_id'=>$payment->id,
                         'quantity'=>$membership['quantity'],
-                        'amount'=>(str_replace(',','',$membership['rewardPrice']))*$membership['quantity'],  
+                        'amount'=>(str_replace(',','',$membership['rewardPrice']))*$membership['quantity'],
                         'discount'=>$membership['discountedPrice']??0,
                         'currency'=>$data['currency']
                     ]);
@@ -1003,6 +1003,7 @@ return $data;
                 $paymentId = $eventId=$data['payment'];
                 $eventUser = EventUser::where('id',$eventUserId)->with('user','team_user','team_user.team')->first();
                 $payment = Payment::where('id',$paymentId)->with('user_reward','user_reward.rewards')->first();
+
 
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
@@ -1033,6 +1034,7 @@ return $data;
                     $payment->address_id = $event_user->address_id;
 
                     $payment->save();
+
                     return $payment;
                 }
             }
@@ -1216,6 +1218,8 @@ return $data;
                     $payment->transaction_id = $event->slug.''.$payment->id;
 
                     $event_user = EventUser::where('event_id',$payment->event_id)->where('user_id', $payment->user_id)->first();
+                    $event_user->has_upgraded = 1;
+                    $event_user->save();
 
                     $payment->payment_intent = $data['payment_intent'];
                     $payment->status  =  $data['status'];
@@ -1235,7 +1239,15 @@ return $data;
                 $quantity_sizes = array();
 
                 if($user){
-                    $response = UserReward::select(['reward_id', 'size',DB::raw('SUM(quantity) as total_quantity')])->where('event_id',$data['eventId'])->where('user_id',$user->id)->groupBy('reward_id')->get();
+                    $response = UserReward::select(['reward_id', 'size',DB::raw('SUM(quantity) as total_quantity')])
+                    ->where('event_id',$data['eventId'])
+                    ->where('user_id',$user->id)
+                    ->whereExists(function ($query) {
+                        $query->from('payments')
+                              ->whereColumn('payments.id', 'user_rewards.payment_id')
+                              ->where("status","successful");
+                    })
+                    ->groupBy('reward_id')->get();
 
                    // $plucked = $response->pluck('total_quantity','reward_id');
 
@@ -1251,7 +1263,7 @@ return $data;
                 }
 
             }
-            
+
             public function getEventReferralData($eventId){
                 $data['refer_data'] = EventSuccessPage::Where('event_id',$eventId)->select('invite_friend')->first();
                 $data['socialShare']= SocialSeo::where('event_id', $eventId)->select('share_title','share_description')->first();
