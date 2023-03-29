@@ -118,7 +118,7 @@
                             @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
                                 @foreach($mailData['data']['registrationData']['payment']['user_reward'] as $rewards)
                                     <tr>
-                                        <th colspan="2" style="padding: 10px;width: 50%;">{{$rewards['rewards']['name']}} <br>
+                                        <th style="padding: 10px;width: 50%;">{{$rewards['rewards']['name']}} <br>
                                             <span
                                                 style="font-family:'Poppins';font-style:normal;font-weight:400;font-size:10px;color:#6b7280">
                                                 {!! isset($rewards['size']) ? 'Size: ' . $rewards['size'] . ' | ' : '' !!}  {!! isset($rewards['quantity']) ? ' Quantity: ' . $rewards['quantity'] : '' !!}</span>
@@ -140,14 +140,14 @@
                             </tr>
                             <tr>
                                 <th style="padding: 10px;width: 50%;">Discount</th>
-                                <th style="padding: 10px;width: 50%;">{{($mailData['data']['registrationData']['payment']['discount'] > 0) ? number_format((float)$mailData['data']['registrationData']['payment']['discount'],2) : 'NA'}}</th>
+                                <th style="padding: 10px;width: 50%;">{{($mailData['data']['registrationData']['payment']['discount'] > 0) ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['discount'],2) : 'NA'}}</th>
                             </tr>
                             <tr>
                                 <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
                             </tr>
                             <tr>
                                 <th style="padding: 10px;width: 50%;">Total</th>
-                                <th style="padding: 10px;width: 50%;">{{($mailData['data']['registrationData']['payment']['total_amount'] > 0) ? number_format((float)$mailData['data']['registrationData']['payment']['total_amount'],2) : 'NA'}} </th>
+                                <th style="padding: 10px;width: 50%;">{{($mailData['data']['registrationData']['payment']['total_amount'] > 0) ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['total_amount'],2) : 'NA'}} </th>
                             </tr>
                             <tr>
                                 <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
