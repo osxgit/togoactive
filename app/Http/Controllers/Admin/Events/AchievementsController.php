@@ -7,6 +7,7 @@ use App\Models\Events\Events;
 use App\Repositories\AchievementsRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\FilesUploadsLogs;
 
 class AchievementsController extends Controller
 {
@@ -74,10 +75,82 @@ class AchievementsController extends Controller
 
     public function store(Request $request, $eventId)
     {
+     
         Validator::make($request->all(), $this->rules)->validate();
+        $alldata=$request->all();
 
-        $achievement = $this->repository->create($request->all());
+        if(isset($alldata['icon'])){
+            $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','achievement_icon')->where('active',0)->first();
+           
+            if($achievementIcon){
+                $achievementIcon->active = 1;
+                $achievementIcon->save();
+            }
+        } else{
+           $alldata['icon']='';
+        }
+        if(isset($alldata['more_info_image'])){
+            $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','achcievement_more_info_image')->where('active',0)->first();
+           
+            if($achievementIcon){
+                $achievementIcon->active = 1;
+                $achievementIcon->save();
+            }
+        } else{
+           $alldata['more_info_image']='';
+        }
+        if(isset($alldata['notification_hero_image'])){
+            $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','hero_image')->where('active',0)->first();
+           
+            if($achievementIcon){
+                $achievementIcon->active = 1;
+                $achievementIcon->save();
+            }
+        } else{
+           $alldata['notification_hero_image']='';
+        }
+        if(isset($alldata['sponsor_content_image'])){
+            $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','sponsor-content-image')->where('active',0)->first();
+           
+            if($achievementIcon){
+                $achievementIcon->active = 1;
+                $achievementIcon->save();
+            }
+        } else{
+           $alldata['sponsor_content_image']='';
+        }
 
+        $achievement = $this->repository->create($alldata);
+
+        $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','achievement_icon')->where('active',1)->get();
+        foreach($achievementIcon as $achIcon){
+            if($achIcon){
+               $achIcon->eventid = $achievement->id;
+                $achIcon->save();
+            }
+        }
+
+        $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','achcievement_more_info_image')->where('active',1)->get();
+        foreach($achievementIcon as $achIcon){
+            if($achIcon){
+               $achIcon->eventid = $achievement->id;
+                $achIcon->save();
+            }
+        }
+        $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','sponsor-content-image')->where('active',1)->get();
+        foreach($achievementIcon as $achIcon){
+            if($achIcon){
+               $achIcon->eventid = $achievement->id;
+                $achIcon->save();
+            }
+        }
+        $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','hero_image')->where('active',1)->get();
+        foreach($achievementIcon as $achIcon){
+            if($achIcon){
+               $achIcon->eventid = $achievement->id;
+                $achIcon->save();
+            }
+        }
         return redirect(
             route('admin.events.achievements.list', [
                     'route_name' => request()->route()->getName(),
@@ -91,9 +164,48 @@ class AchievementsController extends Controller
 
     public function update(Request $request, $eventId, $achievementId)
     {
+       
         Validator::make($request->all(), $this->rules)->validate();
+        
+            $achievementIcon= FilesUploadsLogs::where('eventid',$achievementId)->where('module','Achievements')->where('image_type','achievement_icon')->where('active',0)->first();
+            $alldata=$request->all();
+            if($achievementIcon){
+                $achievementIcon->active = 1;
+                $achievementIcon->save();
+            }
+         
+            if(isset($alldata['more_info_image'])){
+                $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','achcievement_more_info_image')->where('active',0)->first();
+               
+                if($achievementIcon){
+                    $achievementIcon->active = 1;
+                    $achievementIcon->save();
+                }
+            } else{
+                $alldata['more_info_image']='';
+             }
 
-        $achievement = $this->repository->update($achievementId, $request->all());
+            if(isset($alldata['notification_hero_image'])){
+                $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','hero_image')->where('active',0)->first();
+               
+                if($achievementIcon){
+                    $achievementIcon->active = 1;
+                    $achievementIcon->save();
+                }
+            } else{
+               $alldata['notification_hero_image']='';
+            }
+            if(isset($alldata['sponsor_content_image'])){
+                $achievementIcon= FilesUploadsLogs::where('eventid',0)->where('module','Achievements')->where('image_type','sponsor-content-image')->where('active',0)->first();
+               
+                if($achievementIcon){
+                    $achievementIcon->active = 1;
+                    $achievementIcon->save();
+                }
+            } else{
+               $alldata['sponsor_content_image']='';
+            }
+        $achievement = $this->repository->update($achievementId, $alldata);
 
         return redirect(
             route('admin.events.achievements.list',[

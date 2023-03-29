@@ -1013,6 +1013,12 @@
                 </div>
                 <div class="modal-body">
                     <div class="img-container">
+                        @if ($achievement === null)
+                            <input type='hidden' id='achievementId' value=0>
+                        @else
+                            <input type='hidden' id='achievementId' value='{{$achievement->id}}'>
+                        @endif
+                      
                         <input type="hidden" id="imgtype" value=''>
                         <input type="hidden" id="height" value=''>
                         <input type="hidden" id="width" value=''>
