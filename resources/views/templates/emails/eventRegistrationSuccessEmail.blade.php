@@ -52,7 +52,7 @@
                 <th colspan="2">
                     <h2 style="font-family: arial;">{{$mailData['data']['eventName']}} Upgrade</h2>
                     <p style="margin: 10px 0;font-family: arial;font-size: 14px;font-weight: 100;">
-                        {!! $mailData['data']['successPage']['email_body'] !!}
+                        <?php echo $mailData['data']['successPage']['email_body'] ?>
                     </p>
                 </th>
             </tr>
@@ -67,7 +67,8 @@
                                 <h2 style="font-family: arial;margin: 0 0 10px;">Registration Summary</h2>
                                 <p
                                     style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 100;color: #777777;">
-                                    {{$mailData['data']['registrationData']['payment']['created_at']}}
+                                    {{\Carbon\Carbon::Parse($mailData['data']['registrationData']['payment']['created_at'])->timezone($mailData['data']['event_object']['timezone'])->isoFormat('LLLL')}} (GMT {{$mailData['data']['event_object']['timezone']}})
+
                                 </p>
                                 @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
                                     <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 100;color: #777777;">
@@ -91,10 +92,7 @@
                                 <th style="padding: 10px;width: 50%;">Name</th>
                                 <th style="padding: 10px;width: 50%;">{{$mailData['data']['registrationData']['event_user']['user']['fullname']}}</th>
                             </tr>
-                            <tr>
-                                <th style="padding: 10px;width: 50%;">Phone Number</th>
-                                <th style="padding: 10px;width: 50%;">phone</th>
-                            </tr>
+
                             @if($mailData['data']['registrationData']['event_user']['team_user'])
                             <tr>
                                 <th>Team Name</th>
@@ -175,15 +173,15 @@
             <tr>
                 <th colspan="2">
                     @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==0)
-                    {!! $mailData['data']['successPage']['no_purchase_made'] !!}
+                    <?php echo $mailData['data']['successPage']['no_purchase_made'] ?>
                     @elseif($mailData['data']['canUpgrade'] ==1)
-                    {!! $mailData['data']['successPage']['partial_purchase_made'] !!}
+                    <?php echo $mailData['data']['successPage']['partial_purchase_made'] ?>
                     @elseif($mailData['data']['canUpgrade'] ==0)
-                    {!! $mailData['data']['successPage']['all_purchase_made'] !!}
+                    <?php echo $mailData['data']['successPage']['all_purchase_made'] ?>
                     @endif
                     <hr>
                     @if ($mailData['data']['successPage']['active_custom_message']==1)
-                    {!! $mailData['data']['successPage']['custom_message'] !!}
+                    <?php echo $mailData['data']['successPage']['custom_message'] ?>
                     <hr>
                     @endif
                     <h3>
