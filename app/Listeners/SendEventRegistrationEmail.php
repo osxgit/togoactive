@@ -44,6 +44,7 @@ class SendEventRegistrationEmail
             $userId     = $event_data['userId'];
             $eventUserId = $event_data['eventUserId'];
             $eventId    = $event_data['eventId'];
+            $upgrade    = $event_data['upgrade']??false;
 
 
             $log_array = array(
@@ -80,6 +81,7 @@ class SendEventRegistrationEmail
                 'coreReward_data' => $coreReward_data,
                 'addonRewards' => $addonRewards,
                 'eventImages' => $eventImages,
+                'upgrade' => $upgrade
             );
             Log::channel('single')->info($log_array);
 
@@ -119,7 +121,9 @@ class SendEventRegistrationEmail
                         'eventName'=>$eventName,
                         'event_slug'=>$event_slug,
                         'event_base_url' =>$event_base_url,
-                        'eventImages' => $eventImages
+                        'eventImages' => $eventImages,
+                        'event_object' => $event_object,
+                        'upgrade' => $upgrade
                     ];
 
             // end email code
