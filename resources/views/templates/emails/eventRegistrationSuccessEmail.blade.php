@@ -180,175 +180,180 @@
                     <?php echo $mailData['data']['successPage']['all_purchase_made'] ?>
                     @endif
                     <hr>
-                    @if ($mailData['data']['successPage']['active_custom_message']==1)
-                    <?php echo $mailData['data']['successPage']['custom_message'] ?>
-                    <hr>
+                    @if (!isset($mailData['data']['upgrade']) || $mailData['data']['upgrade'] == false)
+                        @if ($mailData['data']['successPage']['active_custom_message']==1)
+                        <?php echo $mailData['data']['successPage']['custom_message'] ?>
+                        <hr>
+                        @endif
+                        <h3>
+                            <?php echo $mailData['data']['successPage']['invite_friend'] ?>
+                        </h3>
+                        <div>
+                            <div style="display: block; width: 100%;">
+                                <button
+                                    style="background: #58b56d;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
+                                    <a href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                        style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;font-weight: 900;
+                                        text-decoration: none;" target="_blank"
+                                        data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/"
+                                        data-action="share/whatsapp/share">
+                                        <img style="margin-right: 5px;" src="{{ asset('images/whatsapp_icon.png')}}"
+                                            alt="icon" class="CToWUd" data-bit="iit" />
+                                        Invite via Whatsapp
+                                    </a>
+                                </button>
+                            </div>
+                            <div style="display: block; width: 100%;">
+                                <button
+                                    style="background: #3e84db;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                        style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;font-weight: 900;
+                                        text-decoration: none;" target="_blank"
+                                        data-saferedirecturl="https://www.google.com/url?q=https://www.facebook.com/sharer/sharer.php?u%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306199000&amp;usg=AOvVaw0CjWD3k1AinGmIO0vSkfZF">
+                                        <img style="margin-right: 5px;" src="{{ asset('images/facebook_icon.png')}}"
+                                            alt="icon" class="CToWUd" data-bit="iit" />
+                                        Invite via Facebook
+                                    </a>
+                                </button>
+                            </div>
+                            <div style="display: block; width: 100%;">
+                                <button
+                                    style="background: #4ba6ee;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
+                                    <a href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                        style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
+                                        text-decoration: none;" target="_blank"
+                                        data-saferedirecturl="https://www.google.com/url?q=https://twitter.com/intent/tweet?text%3D%26url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw1pIDIfuLsX44rwWCCmKk2U">
+                                        <img style="margin-right: 5px;" src="{{ asset('images/twitter_icon.png')}}"
+                                            alt="icon" class="CToWUd" data-bit="iit" />
+                                        Invite via Twitter
+                                    </a>
+                                </button>
+                            </div>
+                            <div style="display: block; width: 100%;">
+                                <button
+                                    style="background: #0077b5;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
+                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                        style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
+                                        text-decoration: none;" target="_blank"
+                                        data-saferedirecturl="https://www.google.com/url?q=https://www.linkedin.com/sharing/share-offsite/?url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw2ppQeb_eOBVZjgJ0XDDzek">
+                                        <img style="margin-right: 5px;" src="{{ asset('images/linkdin_icon.png')}}"
+                                            alt="icon" class="CToWUd" data-bit="iit" />
+                                        Invite via LinkedIn
+                                    </a>
+                                </button>
+                            </div>
+                            <div style="display: block; width: 100%;">
+                                <button
+                                    style="background: #0088cc;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
+                                    <a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}&text=<?php '' ?>"
+                                        style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
+                                        text-decoration: none;" target="_blank"
+                                        data-href="<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>"
+                                        data-share="telegram">
+                                        <img style="margin-right: 5px;" src="{{ asset('images/telegram_icon.png')}}"
+                                            alt="icon" class="CToWUd" data-bit="iit" />
+                                        Invite via Telegram
+                                    </a>
+                                </button>
+                            </div>
+                            <p style="margin-bottom: 6px;">Alternatively, you can also share the referral code with your
+                                friends.</p>
+                            <h3 style="color: #6E6E6E; font-weight: 400; padding: 0;">Referral Code: <span
+                                    style="font-weight: 600; color: #0D88CE;">{{$mailData['data']['registrationData']['event_user']['user']['username']}}</span></h3>
+                        </div>
                     @endif
-                    <h3>
-                        <?php echo $mailData['data']['successPage']['invite_friend'] ?>
-                    </h3>
-                    <div>
-                        <div style="display: block; width: 100%;">
-                            <button
-                                style="background: #58b56d;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                <a href="//api.whatsapp.com/send?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;font-weight: 900;
-                                    text-decoration: none;" target="_blank"
-                                    data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/"
-                                    data-action="share/whatsapp/share">
-                                    <img style="margin-right: 5px;" src="{{ asset('images/whatsapp_icon.png')}}"
-                                        alt="icon" class="CToWUd" data-bit="iit" />
-                                    Invite via Whatsapp
-                                </a>
-                            </button>
-                        </div>
-                        <div style="display: block; width: 100%;">
-                            <button
-                                style="background: #3e84db;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;font-weight: 900;
-                                    text-decoration: none;" target="_blank"
-                                    data-saferedirecturl="https://www.google.com/url?q=https://www.facebook.com/sharer/sharer.php?u%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306199000&amp;usg=AOvVaw0CjWD3k1AinGmIO0vSkfZF">
-                                    <img style="margin-right: 5px;" src="{{ asset('images/facebook_icon.png')}}"
-                                        alt="icon" class="CToWUd" data-bit="iit" />
-                                    Invite via Facebook
-                                </a>
-                            </button>
-                        </div>
-                        <div style="display: block; width: 100%;">
-                            <button
-                                style="background: #4ba6ee;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                <a href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
-                                    text-decoration: none;" target="_blank"
-                                    data-saferedirecturl="https://www.google.com/url?q=https://twitter.com/intent/tweet?text%3D%26url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw1pIDIfuLsX44rwWCCmKk2U">
-                                    <img style="margin-right: 5px;" src="{{ asset('images/twitter_icon.png')}}"
-                                        alt="icon" class="CToWUd" data-bit="iit" />
-                                    Invite via Twitter
-                                </a>
-                            </button>
-                        </div>
-                        <div style="display: block; width: 100%;">
-                            <button
-                                style="background: #0077b5;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
-                                    text-decoration: none;" target="_blank"
-                                    data-saferedirecturl="https://www.google.com/url?q=https://www.linkedin.com/sharing/share-offsite/?url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw2ppQeb_eOBVZjgJ0XDDzek">
-                                    <img style="margin-right: 5px;" src="{{ asset('images/linkdin_icon.png')}}"
-                                        alt="icon" class="CToWUd" data-bit="iit" />
-                                    Invite via LinkedIn
-                                </a>
-                            </button>
-                        </div>
-                        <div style="display: block; width: 100%;">
-                            <button
-                                style="background: #0088cc;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                <a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}&text=<?php '' ?>"
-                                    style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
-                                    text-decoration: none;" target="_blank"
-                                    data-href="<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>"
-                                    data-share="telegram">
-                                    <img style="margin-right: 5px;" src="{{ asset('images/telegram_icon.png')}}"
-                                        alt="icon" class="CToWUd" data-bit="iit" />
-                                    Invite via Telegram
-                                </a>
-                            </button>
-                        </div>
-                        <p style="margin-bottom: 6px;">Alternatively, you can also share the referral code with your
-                            friends.</p>
-                        <h3 style="color: #6E6E6E; font-weight: 400; padding: 0;">Referral Code: <span
-                                style="font-weight: 600; color: #0D88CE;">{{$mailData['data']['registrationData']['event_user']['user']['username']}}</span></h3>
-                    </div>
+
                 </th>
             </tr>
-            <tr>
-                <th colspan="2">
-                    @if($mailData['data']['registrationData']['event_user']['user']['strava_id'] ==0 || $mailData['data']['registrationData']['event_user']['user']['strava_id'] =="")
-                    <table>
-                        <tr>
-                            <td>
-                                <h3 style="color:#F6861F;font-size: 18pt;">Next Steps</h3>
-                                <ul style="list-style:none;font-weight:400;font-size: 14pt;
-                                padding: 0;">
-                                    <li style="margin:10px 0 !important">1. First, download the <span style="font-weight:700;">TOGOPARTS</span> app on your mobile phone </li>
-                                    <li style="margin:10px 0 !important">2. Once you have downloaded the app, open it and click on the <span style="font-weight:700;">"RECORD"</span> button to
-                                        start
-                                        recording your live activities. </li>
-                                    <li style="margin:10px 0 !important">3. The app will then take you to the Strava app, which is used to record your rides. Please
-                                        ensure
-                                        that
-                                        your privacy settings on Strava are set to <span style="font-weight:700;">"EVERYONE"</span> so that your rides can be
-                                        recorded.
-                                    </li>
-                                    <li style="margin:10px 0 !important">4. Once you have verified and adjusted your Strava privacy settings as needed, you can begin
+            @if (!isset($mailData['data']['upgrade']) || $mailData['data']['upgrade'] == false)
+                <tr>
+                    <th colspan="2">
+                        @if($mailData['data']['registrationData']['event_user']['user']['strava_id'] ==0 || $mailData['data']['registrationData']['event_user']['user']['strava_id'] =="")
+                        <table>
+                            <tr>
+                                <td>
+                                    <h3 style="color:#F6861F;font-size: 18pt;">Next Steps</h3>
+                                    <ul style="list-style:none;font-weight:400;font-size: 14pt;
+                                    padding: 0;">
+                                        <li style="margin:10px 0 !important">1. First, download the <span style="font-weight:700;">TOGOPARTS</span> app on your mobile phone </li>
+                                        <li style="margin:10px 0 !important">2. Once you have downloaded the app, open it and click on the <span style="font-weight:700;">"RECORD"</span> button to
+                                            start
+                                            recording your live activities. </li>
+                                        <li style="margin:10px 0 !important">3. The app will then take you to the Strava app, which is used to record your rides. Please
+                                            ensure
+                                            that
+                                            your privacy settings on Strava are set to <span style="font-weight:700;">"EVERYONE"</span> so that your rides can be
+                                            recorded.
+                                        </li>
+                                        <li style="margin:10px 0 !important">4. Once you have verified and adjusted your Strava privacy settings as needed, you can begin
+                                            your
+                                            ride.
+                                        </li>
+                                        <li style="margin:10px 0 !important">5. Make sure to start your ride during <span> (from <STARTDATE><STARTIME>hrs to <ENDDATE><ENDTIME>hrs). </span></li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h3 style="color:#F6861F;font-size: 18pt;">Connect to STRAVA</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:400;font-size: 14pt;">
+                                    If you have not authorised togoparts to connect to yur strava account or
+                            if you are unsure if you have done so already,
+                            <span style="color: #0D88CE; font-weight: 600;">CONNECT WITH STRAVA</span style="font-weight:700;">now
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <h3 style="color:#F6861F;font-size: 18pt;">Set STRAVA permissions</h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p style="font-weight:400;font-size: 14pt;">If you have connected with strava after registration with all the boxes ticked, you are good to go.
+                                        Otherwise, double-check to ensure that your <span style="color: #34353C; font-weight: 700;">privacy settings</span> are set to <span style="color: #34353C; font-weight: 700;">Everyone</span> for
                                         your
-                                        ride.
-                                    </li>
-                                    <li style="margin:10px 0 !important">5. Make sure to start your ride during <span> (from <STARTDATE><STARTIME>hrs to <ENDDATE><ENDTIME>hrs). </span></li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h3 style="color:#F6861F;font-size: 18pt;">Connect to STRAVA</h3>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight:400;font-size: 14pt;">
-                                If you have not authorised togoparts to connect to yur strava account or
-                        if you are unsure if you have done so already,
-                        <span style="color: #0D88CE; font-weight: 600;">CONNECT WITH STRAVA</span style="font-weight:700;">now
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <h3 style="color:#F6861F;font-size: 18pt;">Set STRAVA permissions</h3>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <p style="font-weight:400;font-size: 14pt;">If you have connected with strava after registration with all the boxes ticked, you are good to go.
-                                    Otherwise, double-check to ensure that your <span style="color: #34353C; font-weight: 700;">privacy settings</span> are set to <span style="color: #34353C; font-weight: 700;">Everyone</span> for
-                                    your
-                                    activities to be recorded.</p>
-                            </td>
-                        </tr>
-                    </table>
-                    @endif
-                    <table style="width: 100%;max-width: 600px;margin: 20px auto;">
-                        <thead>
-                            <tr>
-                                <th>iOS:</th>
-                                <th>Android:</th>
+                                        activities to be recorded.</p>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th><img src="{{ asset('images/next_img_1.png') }}"
-                                        alt="display_image" width="100%" style="width: 200px;" data-bit="iit"
-                                        tabindex="0"></th>
-                                <th><img src="{{ asset('images/next_img_3.png') }}"
-                                        alt="display_image" width="100%" style="width: 200px;" data-bit="iit"
-                                        tabindex="0"></th>
-                            </tr>
-                            <tr>
-                                <th><img src="{{ asset('images/next_img_2.png') }}"
-                                        alt="display_image" width="100%" style="width: 200px;" data-bit="iit"
-                                        tabindex="0"></th>
-                                <th><img src="{{ asset('images/next_img_4.png') }}"
-                                        alt="display_image" width="100%" style="width: 200px;" data-bit="iit"
-                                        tabindex="0"></th>
-                            </tr>
-                        </tbody>
-                    </table>
-                </th>
-            </tr>
-            <tr>
-                <th colspan="2">
-                   <a style="font-family: arial;background: #F6861F;color: #fff;text-decoration: none;font-weight: 500;padding: 10px 25px;border-radius: 5px;margin: 20px auto 0;display: block;width: fit-content;font-size: 12px;" href="https://www.togoparts.com/app">Download togoparts app</a>
-                </th>
-            </tr>
+                        </table>
+                        @endif
+                        <table style="width: 100%;max-width: 600px;margin: 20px auto;">
+                            <thead>
+                                <tr>
+                                    <th>iOS:</th>
+                                    <th>Android:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th><img src="{{ asset('images/next_img_1.png') }}"
+                                            alt="display_image" width="100%" style="width: 200px;" data-bit="iit"
+                                            tabindex="0"></th>
+                                    <th><img src="{{ asset('images/next_img_3.png') }}"
+                                            alt="display_image" width="100%" style="width: 200px;" data-bit="iit"
+                                            tabindex="0"></th>
+                                </tr>
+                                <tr>
+                                    <th><img src="{{ asset('images/next_img_2.png') }}"
+                                            alt="display_image" width="100%" style="width: 200px;" data-bit="iit"
+                                            tabindex="0"></th>
+                                    <th><img src="{{ asset('images/next_img_4.png') }}"
+                                            alt="display_image" width="100%" style="width: 200px;" data-bit="iit"
+                                            tabindex="0"></th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                    <a style="font-family: arial;background: #F6861F;color: #fff;text-decoration: none;font-weight: 500;padding: 10px 25px;border-radius: 5px;margin: 20px auto 0;display: block;width: fit-content;font-size: 12px;" href="https://www.togoparts.com/app">Download togoparts app</a>
+                    </th>
+                </tr>
+            @endif
         </tfoot>
     </table>
 </body>
