@@ -24,6 +24,9 @@ class ImageHelper
         }else if($module == 'sizing_image' && $parentId > 0){
             $event = Events::where('id',$parentId)->first();
             $path = $path.$event->slug.'/rewards/sizing/';
+        }else if($module == 'Achievements' && $parentId > 0){
+            $event = Events::where('id',$parentId)->first();
+            $path = $path.$event->slug.'/achievements/';
         }
         $image_parts = explode(";base64,", $img);
         $image_type_aux = explode("image/", $image_parts[0]);
