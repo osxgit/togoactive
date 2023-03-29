@@ -227,7 +227,122 @@ class EventSuccessPageController extends Controller
         $email = $registrationData['event_user']['user']['email']; */
 
        // $response = Mail::to($email)->send(new sendEventRegistrationSuccessMail($mailData));
-        dd($data);
+        // dd($data);
+
+
+
+
+
+
+
+
+
+
         return view('templates.emails.eventRegistrationSuccessEmail',['mailData'=>$data]);
+    }
+
+    public function testMail() {
+        $event_data = ['paymentId'=>226 ,'userId'=>23 ,'eventId'=>2, 'eventUserId'=>213];
+
+        $paymentId  = $event_data['paymentId'];
+        $userId     = $event_data['userId'];
+        $eventId    = $event_data['eventId'];
+        $eventUserId = $event_data['eventUserId'];
+
+            // $paymentId  = $event_data['paymentId'];
+            // $userId     = $event_data['userId'];
+            // $eventUserId = $event_data['eventUserId'];
+            // $eventId    = $event_data['eventId'];
+
+
+            $log_array = array(
+                'message' => "Printing from event listener ",
+                'date' => Carbon::now()->toDateTimeString(),
+                'data' => $event_data,
+            );
+            Log::channel('single')->info($log_array);
+
+            // get event details
+            $event_object = Events::findOrFail($eventId);
+            $eventName = $event_object->name;
+            $event_slug = $event_object->slug;
+
+            $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $eventUserId,'payment'=>$paymentId ));
+            $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
+
+            $reg                = $this->eventRepository->getRegistrationSetup(array('eventId' => $eventId ));
+            $groupingHeader     = ($reg->count() > 0) ? $reg->grouping_header : [];
+
+            $coreReward_data    = $this->eventRepository->getActiveCoreRewards(array('eventId' => $eventId ));
+            $coreRewards        = $coreReward_data->count();
+
+            $addonRewards_data  = $this->eventRepository->getActiveAddonRewards(array('eventId' => $eventId ));
+            $addonRewards       = $addonRewards_data->count();
+
+            $eventImages        = $this->eventRepository->getEventImages($eventId);
+
+            $log_array = array(
+                'message' => "SendEventRegistrationEmail get this data ",
+                'date' => Carbon::now()->toDateTimeString(),
+                'registrationData' => $registrationData,
+                'groupingHeader' => $groupingHeader,
+                'coreReward_data' => $coreReward_data,
+                'addonRewards' => $addonRewards,
+                'eventImages' => $eventImages,
+            );
+            Log::channel('single')->info($log_array);
+
+            if(isset($registrationData['event_user']) && $registrationData['event_user'] != null && $registrationData['event_user']['is_paid_user'] == 1){
+                if(isset($registrationData['payment']['user_reward']) && $registrationData['payment']['user_reward']){
+                    if(count($registrationData['payment']['user_reward']) == $coreRewards + $addonRewards){
+                        $canUpgrade=0;
+                    } else{
+                        $canUpgrade=1;
+                    }
+                } else{
+                    $canUpgrade=1;
+                }
+
+            } else{
+                $canUpgrade=1;
+            }
+
+            $event_base_url = "https://events.togoparts.com/"; // this url is used for event share on social platform
+            // here we need to get event data and send mail to login user
+
+
+            if(!empty($successPage->email_body)){
+                $email_body = $successPage->email_body;
+                $user_name = $registrationData['event_user']['user']['user_name'];
+                $fullname = $registrationData['event_user']['user']['fullname'];
+                $replace_body = str_replace(['{user_name}','{full_name}'],[$user_name,$fullname],$email_body);
+
+                $successPage->email_body = $replace_body;
+            }
+
+            $data = [
+                        'canUpgrade'=>$canUpgrade,
+                        'groupingHeader'=> $groupingHeader,
+                        'registrationData'=> $registrationData,
+                        'successPage'=>$successPage,
+                        'eventName'=>$eventName,
+                        'event_slug'=>$event_slug,
+                        'event_base_url' =>$event_base_url,
+                        'eventImages' => $eventImages
+                    ];
+
+            // end email code
+            $subject = $successPage->email_subject;
+            $mailData = [
+                'title'   => $subject,
+                'subject' => $subject,
+                'data'    => $data,
+                'body'    =>''
+            ];
+
+            $email = 'akash.singh@togoparts.com';
+
+            $response = Mail::to($email)->send(new sendEventRegistrationSuccessMail($mailData));
+            die('test');
     }
 }

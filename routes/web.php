@@ -117,9 +117,9 @@ Route::middleware('auth')->group(function () {
 
     Route::any('/admin/event/{id}/participants_manager', [EventsController::class, 'participants_manager'])->name('admin.events.participantsManager');
 
-    Route::get('/admin/event/email-template-preview', [EventSuccessPageController::class, 'previewEmailTemplate'])->name('admin.events.event-template');
+    Route::get('/admin/event/email-template-preview', [EventSuccessPageController::class, 'testMail'])->name('admin.events.event-template');
     Route::get('/admin/event/publish-event-manually', [EventsController::class, 'publishEventManually'])->name('admin.events.publishEventManually');
-   
+
     Route::get('/admin/event/{event_id_id}/rewardimage/{reward_id}/delete/{index}', [EventsController::class, 'deleteRewardImage'])->name('admin.events.rewardImage.delete');
 
 
