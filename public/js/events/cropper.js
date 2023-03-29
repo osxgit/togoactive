@@ -174,7 +174,21 @@ $(document).on('click', '#crop', function(){
         reader.readAsDataURL(blob);
         reader.onloadend = function () {
             var base64data = reader.result;
-
+           if( $('#imgtype').val() =='achievement_icon'|| $('#imgtype').val() =='achcievement_more_info_image'||$('#imgtype').val() =='hero_image'||$('#imgtype').val() =='sponsor-content-image'){
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: uploadFileRoute,
+                data: { '_token': $('input[name="_token"]').val(), 'image': base64data, 'eventId': $('#challengeId').val(), 'idd': $('#imgtype').val() ,'achievementId':$('#achievementId').val()},
+                success: function (data) {
+                    console.log(data);
+                    $modal.modal('hide');
+                    uploadFileResponse(data, $('#imgtype').val())
+                    //alert("Crop image successfully uploaded");
+                }
+            });
+        
+           } else{
             $.ajax({
                 type: "POST",
                 dataType: "json",
@@ -188,6 +202,8 @@ $(document).on('click', '#crop', function(){
                 }
             });
         }
+           }
+            
     });
 })
 

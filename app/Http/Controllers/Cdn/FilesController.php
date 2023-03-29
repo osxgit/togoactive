@@ -23,7 +23,7 @@ class FilesController extends Controller
     }
 
     public function uploadFile(Request $request){
-
+        // dd($request->all());
         $imageType = $request->idd;
         $module = $path = '';
         $width='';
@@ -251,28 +251,28 @@ class FilesController extends Controller
 
             ## Achievement Icon
             case "achievement_icon":
-                $module = 'Events';
+                $module = 'Achievements';
                 $imageHelper = new ImageHelper();
                 $width = 150;
                 $height = 150;
                 $path   = $imageHelper->uploadImage($request->image,'uploads/events/',$width,$height,'png',75,$module,$request->eventId ?? 0);
             break;
             case "achcievement_more_info_image":
-                $module = 'Events';
+                $module = 'Achievements';
                 $imageHelper = new ImageHelper();
                 $width = 1280;
                 $height = 640;
                 $path   = $imageHelper->uploadImage($request->image,'uploads/events/',$width,$height,'png',75,$module,$request->eventId ?? 0);
             break;
             case "hero_image":
-                $module = 'Events';
+                $module = 'Achievements';
                 $imageHelper = new ImageHelper();
                 $width = 1280;
                 $height = 600;
                 $path   = $imageHelper->uploadImage($request->image,'uploads/events/',$width,$height,'png',75,$module,$request->eventId ?? 0);
             break;
             case "sponsor-content-image":
-                $module = 'Events';
+                $module = 'Achievements';
                 $imageHelper = new ImageHelper();
                 $width = 300;
                 $height = 150;
@@ -346,7 +346,25 @@ class FilesController extends Controller
                 ]);
             }
 
-         } else{
+         }else if( $module='Achievements'){
+            $fileupload= FilesUploadsLogs::where('eventid',$request->achievementId)->where('module',$module)->where('image_type',$request->idd)->first();
+            if($fileupload){
+                $imageHelper->deleteImage($fileupload->path);
+                $fileupload->eventid = $request->achievementId;
+                $fileupload->path = $path;
+                $fileupload->active = 0;
+                $fileupload->save();
+             } else{
+                FilesUploadsLogs::create([
+                   'eventid'    => $request->achievementId,
+                   'file_type' => $request->idd,
+                   'module'    => $module,
+                   'image_type' => $request->idd,
+                   'path'      => $path
+                ]);
+            }
+
+         }  else{
             $fileupload= FilesUploadsLogs::where('eventid',$request->eventId)->where('module',$module)->where('image_type',$request->idd)->first();
                 if($fileupload){
                     $imageHelper->deleteImage($fileupload->path);
