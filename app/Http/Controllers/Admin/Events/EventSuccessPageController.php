@@ -204,7 +204,7 @@ class EventSuccessPageController extends Controller
         $event_base_url = "https://events.togoparts.com/";
         $data = ['data'=>['canUpgrade'=>$canUpgrade,'groupingHeader'=> $groupingHeader,'registrationData'=> $registrationData,'successPage'=>$successPage,'eventName'=>$eventName,'event_slug'=>$event_slug,'event_base_url' => $event_base_url,'eventImages'=>$eventImages]];
 
-       /*  $data = [
+        $data = [
             'canUpgrade'=>$canUpgrade,
             'groupingHeader'=> $groupingHeader,
             'registrationData'=> $registrationData,
@@ -212,7 +212,8 @@ class EventSuccessPageController extends Controller
             'eventName'=>$eventName,
             'event_slug'=>$event_slug,
             'event_base_url' =>$event_base_url,
-            'eventImages' => $eventImages
+            'eventImages' => $eventImages,
+            'event_object' => $event_object
         ];
 
         $subject = $successPage->email_subject;
@@ -224,10 +225,10 @@ class EventSuccessPageController extends Controller
             'body'    =>''
         ];
 
-        $email = $registrationData['event_user']['user']['email']; */
+        $email = $registrationData['event_user']['user']['email'];
 
-       // $response = Mail::to($email)->send(new sendEventRegistrationSuccessMail($mailData));
-        // dd($data);
+        dd($mailData);
+       $response = Mail::to($email)->send(new sendEventRegistrationSuccessMail($mailData));
 
 
 
@@ -328,7 +329,8 @@ class EventSuccessPageController extends Controller
                         'eventName'=>$eventName,
                         'event_slug'=>$event_slug,
                         'event_base_url' =>$event_base_url,
-                        'eventImages' => $eventImages
+                        'eventImages' => $eventImages,
+                        'event_object' => $event_object
                     ];
 
             // end email code
