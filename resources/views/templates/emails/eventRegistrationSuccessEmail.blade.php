@@ -19,18 +19,34 @@
                 <th style="padding: 10px;width: 50%;"></th>
                 <th style="padding: 10px;width: 50%;">
                     <ul style="list-style: none;display: flex;justify-content: flex-end;">
-                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;"><a><img
+                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;">
+                            <a href="https://play.google.com/store/apps/details?id=com.togoparts&pli=1">
+                                <img
                                     src="{{ asset('images/android_header.png')}}"
-                                    alt="icon" style="height: 28px;"></a></li>
-                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;"><a><img
+                                    alt="icon" style="height: 28px;">
+                            </a>
+                        </li>
+                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;">
+                            <a href="https://twitter.com/togoparts">
+                                <img
                                     src="{{ asset('images/twitter_header.png')}}"
-                                    alt="icon" style="height: 28px;"></a></li>
-                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;"><a><img
+                                    alt="icon" style="height: 28px;">
+                            </a>
+                        </li>
+                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;">
+                            <a href="https://apps.apple.com/gb/app/togoparts/id1553612140">
+                                <img
                                     src="{{ asset('images/apple_header.png')}}"
-                                    alt="icon" style="height: 28px;"></a></li>
-                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;"><a><img
+                                    alt="icon" style="height: 28px;">
+                            </a>
+                        </li>
+                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;">
+                            <a href="https://www.facebook.com/togoparts">
+                                <img
                                     src="{{ asset('images/facebook_header.png')}}"
-                                    alt="icon" style="height: 28px;"></a></li>
+                                    alt="icon" style="height: 28px;">
+                            </a>
+                        </li>
                     </ul>
                 </th>
             </tr>
