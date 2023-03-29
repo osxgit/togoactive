@@ -525,7 +525,7 @@ return $data;
     }
 
     public function getEventIdThroughSlug($slug){
-        return Events::select('id')->where('slug','LIKE','%'.$slug.'%')->first();
+        return Events::select('id')->where('slug',$slug)->first();
     }
 
     public function getAllTeams($eventId){
@@ -533,7 +533,7 @@ return $data;
     }
 
     public function validateTeam($data){
-        $teamExist=  Team::where('event_id',$data['eventId'])->where('team_name','LIKE','%'.$data['team_name'].'%')->first();
+        $teamExist=  Team::where('event_id',$data['eventId'])->where('team_name',$data['team_name'])->first();
         if($teamExist){
             return (['success' =>false,'data'=>"Team name already taken, please enter another one!"]);
         } else{
@@ -542,7 +542,7 @@ return $data;
     }
 
     public function createNewTeam($data){
-        $teamExist=  Team::where('event_id',$data['eventId'])->where('team_name','LIKE','%'.$data['team_name'].'%')->first();
+        $teamExist=  Team::where('event_id',$data['eventId'])->where('team_name',$data['team_name'])->first();
         if($teamExist){
             return (['success' =>false,'data'=>"Team name already taken, please enter another one!"]);
         } else{
