@@ -293,8 +293,8 @@ class EventsController extends Controller
                 $eventId = $request['eventId'];
                 $eventPayment = $request['paymentId'];
                 $eventUserId = $request['eventUserId'];
-
-                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
+                $request['upgrade'] = true;
+                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId, 'upgrade'=>$request['upgrade']];
                 event(new EventRegistration($eventData,$request));
 
                 return $this->sendAPIResponse();
