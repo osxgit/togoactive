@@ -82,7 +82,7 @@
                             <td>
                                 <h2 style="font-family: arial;margin: 0 0 10px; text-transform: capitalize;">{{$mailData['data']['registrationData']['payment']['payment_type']}} Summary</h2>
                                 <p
-                                    style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 100;color: #777777;">
+                                    style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
                                     {{\Carbon\Carbon::Parse($mailData['data']['registrationData']['payment']['created_at'])->timezone($mailData['data']['event_object']['timezone'])->isoFormat('LLLL')}} (GMT {{$mailData['data']['event_object']['timezone']}})
 
                                 </p>
