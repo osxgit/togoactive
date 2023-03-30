@@ -212,7 +212,7 @@
                             <div style="display: block; width: 100%;">
                                 <button
                                     style="background: #58b56d;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                    <a href="https://api.whatsapp.com/?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                    <a href="https://api.whatsapp.com/send/?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/registration?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
                                         style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;font-weight: 900;
                                         text-decoration: none;" target="_blank"
                                         data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/"
