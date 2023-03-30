@@ -766,7 +766,7 @@ return $data;
 
     public function getCheckoutRewards($data){
 
-        $addonRewards= Reward::whereIn('id', $data)->get();
+        $addonRewards= Reward::whereIn('id', $data['id'])->where('event_id',$data['event_id'])->get();
         return $addonRewards;
     }
 
