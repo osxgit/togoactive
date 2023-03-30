@@ -66,7 +66,7 @@
             </tr>
             <tr>
                 <th colspan="2">
-                    <h2 style="font-family: arial;">{{$mailData['data']['eventName']}} Upgrade</h2>
+                    <h2 style="font-family: arial;">{{$mailData['data']['eventName']}} <span style="text-transform: capitalize;">{{$mailData['data']['registrationData']['payment']['payment_type']}}</span></h2>
                     <p style="margin: 10px 0;font-family: arial;font-size: 14px;font-weight: 100;">
                         <?php echo $mailData['data']['successPage']['email_body'] ?>
                     </p>
@@ -305,7 +305,12 @@
                                             your
                                             ride.
                                         </li>
-                                        <li style="margin:10px 0 !important">5. Make sure to start your ride during <span> (from <STARTDATE><STARTIME>hrs to <ENDDATE><ENDTIME>hrs). </span></li>
+                                        <li style="margin:10px 0 !important">5. Make sure to start your ride during
+                                           <strong>
+                                            (from {{\Carbon\Carbon::Parse($mailData['data']['event_object']['dates']['leaderboard_start_date'] )->isoFormat('LLL')}} hrs to
+                         {{\Carbon\Carbon::Parse( $mailData['data']['event_object']['dates']['leaderboard_end_date'] )->isoFormat('LLL')}} hrs)
+                                        </strong>
+                                        </li>
                                     </ul>
                                 </td>
                             </tr>
@@ -318,7 +323,7 @@
                                 <td style="font-weight:400;font-size: 14pt;">
                                     If you have not authorised togoparts to connect to yur strava account or
                             if you are unsure if you have done so already,
-                            <span style="color: #0D88CE; font-weight: 600;">CONNECT WITH STRAVA</span style="font-weight:700;">now
+                            <a href="https://www.togoparts.com/strava-connect"><span style="color: #0D88CE; font-weight: 600;">CONNECT WITH STRAVA</span><a> now
                                 </td>
                             </tr>
                             <tr>
