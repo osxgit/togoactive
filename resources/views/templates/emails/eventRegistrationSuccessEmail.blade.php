@@ -72,7 +72,7 @@
                             <?php echo $mailData['data']['successPage']['email_body'] ?>
                         @else
                             <p>Dear {{$mailData['data']['registrationData']['event_user']['user']['fullname']}},</p>
-                            <p>Thank you for upgrading for upgrade {{$mailData['data']['event_object']['hashtag']}}.</p>
+                            <p>Thank you for upgrading for upgrade #{{$mailData['data']['event_object']['hashtag']}}.</p>
                         @endif
                     </p>
                 </th>
