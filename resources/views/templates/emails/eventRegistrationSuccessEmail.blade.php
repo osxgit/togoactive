@@ -73,7 +73,7 @@
                         @else
                             <p>Dear {{$mailData['data']['registrationData']['event_user']['user']['fullname']}},</p>
                             <p>Thank you for upgrading for upgrade {{$mailData['data']['event_object']['hashtag']}}.</p>
-                        @endifs
+                        @endif
                     </p>
                 </th>
             </tr>
@@ -113,10 +113,10 @@
                                 <th style="padding: 10px;width: 50%;">Name</th>
                                 <th style="padding: 10px;width: 50%;">{{$mailData['data']['registrationData']['event_user']['user']['fullname']}}</th>
                             </tr>
-                            @if (isset($mailData['data']['registrationData']['event_user']['team_user']) && $mailData['data']['registrationData']['event_user']['team_user'])
-                                <tr>
+                            @if (isset($mailData['data']['registrationData']['event_user']['team_user']['team']) && $mailData['data']['registrationData']['event_user']['team_user']['team'])
+                                <tr class="h-16">
                                     <th style="padding: 10px;width: 50%;">Team Name</th>
-                                    <th style="padding: 10px;width: 50%;">{{ $mailData['data']['registrationData']['event_user']['team_user']['team_name'] ?? '' }}</th>
+                                    <th style="padding: 10px;width: 50%;">{{ $mailData['data']['registrationData']['event_user']['team_user']['team']['team_name'] ?? '' }}</th>
                                 </tr>
                             @endif
 
