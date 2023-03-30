@@ -55,7 +55,7 @@ class SendEventRegistrationEmail
             Log::channel('single')->info($log_array);
 
             // get event details
-            $event_object = Events::findOrFail($eventId);
+            $event_object = Events::with('dates')->findOrFail($eventId);
             $eventName = $event_object->name;
             $event_slug = $event_object->slug;
 
