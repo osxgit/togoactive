@@ -154,7 +154,7 @@ class EventSuccessPageController extends Controller
         $eventUserId = $event_data['eventUserId'];
 
         // get event details
-        $event_object = Events::findOrFail($eventId);
+        $event_object = Events::with('dates')->findOrFail($eventId);
 
         $eventName    = $event_object->slug;
         $event_slug   = $event_object->slug;
@@ -264,7 +264,7 @@ class EventSuccessPageController extends Controller
             Log::channel('single')->info($log_array);
 
             // get event details
-            $event_object = Events::findOrFail($eventId);
+            $event_object = Events::with('dates')->findOrFail($eventId);
             $eventName = $event_object->name;
             $event_slug = $event_object->slug;
 
