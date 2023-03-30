@@ -127,7 +127,12 @@ class SendEventRegistrationEmail
                     ];
 
             // end email code
-            $subject = $successPage->email_subject;
+            if(  $upgrade == true ) {
+                $subject = 'Thank you for upgrading for upgrade #'.$event_object->hashtag;
+            }else{
+                $subject = $successPage->email_subject;
+            }
+
             $mailData = [
                 'title'   => $subject,
                 'subject' => $subject,
