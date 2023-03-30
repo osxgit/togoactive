@@ -114,19 +114,12 @@
                                 <th style="padding: 10px;width: 50%;">{{$mailData['data']['registrationData']['event_user']['user']['fullname']}}</th>
                             </tr>
                             @if (isset($mailData['data']['registrationData']['event_user']['team_user']) && $mailData['data']['registrationData']['event_user']['team_user'])
-                                <tr class="h-16">
-                                    <th>Team Name</th>
-                                    <th>{{ $mailData['data']['registrationData']['event_user']['team_user']['team->team_name'] ?? '' }}</th>
+                                <tr>
+                                    <th style="padding: 10px;width: 50%;">Team Name</th>
+                                    <th style="padding: 10px;width: 50%;">{{ $mailData['data']['registrationData']['event_user']['team_user']['team_name'] ?? '' }}</th>
                                 </tr>
                             @endif
 
-                            @if($mailData['data']['registrationData']['event_user']['team_user'])
-                            <tr>
-                                <th>Team Name</th>
-                                <th>{{$mailData['data']['registrationData']['event_user']['team_user']['team']['team_name']}}
-                                </th>
-                            </tr>
-                            @endif
                             @if($mailData['data']['registrationData']['event_user']['group'])
                             <tr>
                                 <th>{{$mailData['data']['groupingHeader']}}</th>
