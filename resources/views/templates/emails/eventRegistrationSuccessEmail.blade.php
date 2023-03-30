@@ -87,10 +87,10 @@
 
                                 </p>
                                 @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
-                                    <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 100;color: #777777;">
+                                    <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
                                         Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
                                     </p>
-                                    <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 100;color: #777777;">
+                                    <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
                                         Payment ID : {{$mailData['data']['registrationData']['payment']['payment_intent']}}
                                     </p>
                                 @endif
