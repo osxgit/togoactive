@@ -66,7 +66,7 @@
             </tr>
             <tr>
                 <th colspan="2">
-                    <h2 style="font-family: arial;">{{$mailData['data']['eventName']}} <span style="text-transform: capitalize;">{{$mailData['data']['registrationData']['payment']['payment_type']}}</span></h2>
+                    {{-- <h2 style="font-family: arial;">{{$mailData['data']['eventName']}} <span style="text-transform: capitalize;">{{$mailData['data']['registrationData']['payment']['payment_type']}}</span></h2> --}}
                     <p style="margin: 10px 0;font-family: arial;font-size: 14px;font-weight: 100;">
                         <?php echo $mailData['data']['successPage']['email_body'] ?>
                     </p>
