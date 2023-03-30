@@ -68,7 +68,12 @@
                 <th colspan="2">
                     {{-- <h2 style="font-family: arial;">{{$mailData['data']['eventName']}} <span style="text-transform: capitalize;">{{$mailData['data']['registrationData']['payment']['payment_type']}}</span></h2> --}}
                     <p style="margin: 10px 0;font-family: arial;font-size: 14px;font-weight: 100;">
-                        <?php echo $mailData['data']['successPage']['email_body'] ?>
+                        @if (!isset($mailData['data']['upgrade']) || $mailData['data']['upgrade'] == false)
+                            <?php echo $mailData['data']['successPage']['email_body'] ?>
+                        @else
+                            <p>Dear {{$mailData['data']['registrationData']['event_user']['user']['fullname']}},</p>
+                            <p>Thank you for upgrading for upgrade {{$mailData['data']['event_object']['hashtag']}}.</p>
+                        @endifs
                     </p>
                 </th>
             </tr>
@@ -108,6 +113,12 @@
                                 <th style="padding: 10px;width: 50%;">Name</th>
                                 <th style="padding: 10px;width: 50%;">{{$mailData['data']['registrationData']['event_user']['user']['fullname']}}</th>
                             </tr>
+                            @if (isset($mailData['data']['registrationData']['event_user']['team_user']) && $mailData['data']['registrationData']['event_user']['team_user'])
+                                <tr class="h-16">
+                                    <th>Team Name</th>
+                                    <th>{{ $mailData['data']['registrationData']['event_user']['team_user']['team->team_name'] ?? '' }}</th>
+                                </tr>
+                            @endif
 
                             @if($mailData['data']['registrationData']['event_user']['team_user'])
                             <tr>
@@ -134,7 +145,7 @@
                                     <tr>
                                         <th style="padding: 10px;width: 50%;">{{$rewards['rewards']['name']}} <br>
                                             <span
-                                                style="font-family:'Poppins';font-style:normal;font-weight:400;font-size:10px;color:#6b7280">
+                                                style="font-style:normal;font-weight:400;font-size:12px;color:#6b7280">
                                                 {!! isset($rewards['size']) ? 'Size: ' . $rewards['size'] . ' | ' : '' !!}  {!! isset($rewards['quantity']) ? ' Quantity: ' . $rewards['quantity'] : '' !!}</span>
                                         </th>
                                         <th>
