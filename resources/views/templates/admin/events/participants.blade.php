@@ -171,7 +171,7 @@
 
     <div class="modal fade" id="purchaseHistory" style="z-index:99999999999;" tabindex="-1" role="dialog"
         aria-labelledby="purchaseHistoryLabel" aria-hidden="true">
-        <div class="modal-dialog" style="max-width:400px !important" role="document">
+        <div class="modal-dialog" style="max-width:500px !important" role="document">
 
             <div class="modal-content bgtransparent bordernone">
                 <div class="modal-header">
@@ -183,7 +183,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body purchaseHistoryModal" style="font-family: 'poppins regular';">
+                <div class="modal-body purchaseHistoryModal" style="font-family: 'poppins regular'; overflow:scroll;">
 
                 </div>
             </div>
