@@ -112,7 +112,7 @@ class SendEventRegistrationEmail
                 $social_desc = $referralData->socialShare->share_description;
                 $social_desc=str_replace('#','',$social_desc);
             }
-            $refUrl = $event_base_url . '' . $eventName.'/?ref='.$registrationData['event_user']['user']['username'];
+            $refUrl = $event_base_url . '' . $event_slug.'/?ref='.$registrationData['event_user']['user']['username'];
 
 
             if(!empty($successPage->email_body)){
