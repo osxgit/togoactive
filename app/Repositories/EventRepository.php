@@ -850,7 +850,7 @@ return $data;
                     'user_id' => $user->id,
                     'is_paid_user'=>0,
                     'referral_code'=>$data['referral_code']??null,
-                    'address_id'=>$data['address_id']??0,
+                    'address_id'=>0,
 //                     'postal_code'=>$data['address']['postal_code']??'',
                     'country'=>$data['country']??'',
 //                     'city'=>$data['address']['city']??'',
@@ -1172,7 +1172,17 @@ return $data;
 
                 // get event user details
                 $eventUser = EventUser::where('event_id',$data['eventId'])->where('user_id', $user->id)->first();
-
+                if($eventUser->address_id == 0){
+                    $eventUser->address_id=$data['address_id']??0;
+                    $eventUser->postal_code=$data['address']['postal_code']??null;
+                    $eventUser->country=$data['country']??null;
+                    $eventUser->city=$data['address']['city']??null;
+                    $eventUser->state=$data['address']['state']??null;
+                    $eventUser->subdistrict=$data['address']['subdistrict']??null;
+                    $eventUser->address=$data['address']['address']??null;
+                    $eventUser->blk=$data['address']['blk']??null;
+                    $eventUser->save();
+                }
                 $payment =  Payment::create([
                     'event_id' =>$data['eventId'],
                     'user_id' => $user->id,
