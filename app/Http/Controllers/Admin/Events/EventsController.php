@@ -174,13 +174,17 @@ class EventsController extends Controller
             return Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('total_paid', function($row){
-                    $amount = $row->total_paid;
-                    if($amount != 0){
-                        return $amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id)'>PaymentHistory</span>";
+                    if($row->status=='successful'){
+                        $amount = $row->total_paid;
+                        if($amount != 0){
+                              return $amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id)'>PaymentHistory</span>";
+                        } else{
+                            return $amount;
+                        }
                     } else{
-                        return $amount;
+                         return $row->total_paid."<p><span  class='text-xs cursor-pointer' style='color: red;'>$row->status</span>";
+
                     }
-                   
                 })
                 ->addColumn('username', function($row){
                         $username = $row->user->username;
