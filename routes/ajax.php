@@ -27,6 +27,8 @@ Route::post('/event/removeUser',[EventsController::class,'removeEventUser'])->na
 
 Route::post('event/{id}/coupon/add_edit/{coupon_id}',[EventsController::class,'renderCouponAdd'])->name('coupon.add_edit');
 
+Route::get('event/{id}/purchase_history/{user_id}',[EventsController::class,'PurchaseHistory'])->name('users.purchase_history');
+
 Route::middleware('auth')->group(function () {
     Route::get('/admin/event/{id}/achievements/test', [MailController::class, 'test'])->name('events.achievements.test.email');
 });

@@ -173,6 +173,15 @@ class EventsController extends Controller
             $data = $this->eventRepository->getEventUsersList($eventId);
             return Datatables::of($data)
                 ->addIndexColumn()
+                ->addColumn('total_paid', function($row){
+                    $amount = $row->total_paid;
+                    if($amount != 0){
+                        return $amount."<p>PaymentHistory";
+                    } else{
+                        return $amount;
+                    }
+                   
+                })
                 ->addColumn('username', function($row){
                         $username = $row->user->username;
                         return $username;
@@ -226,6 +235,12 @@ class EventsController extends Controller
         }
         return view('templates.admin.events.participants',['route_name' => request()->route()->getName(), 'active_page' => 'Participants Manager', 'id'=>$eventId]);
 
+    }
+
+    public function PurchaseHistory($eventId, $userId){
+        $purchaseHistoryData=  $this->eventRepository->getPurchaseHistory($eventId, $userId);
+        $returnHTML = view('templates.admin.events.purchaseHistory',['purchaseHistoryData'=>$purchaseHistoryData])->render();// or method that you prefere to return data + RENDER is the key here
+        return response()->json( array('success' => true, 'html'=>$returnHTML) );
     }
 
     public function publishEvent(Request $request){

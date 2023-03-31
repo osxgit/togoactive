@@ -164,5 +164,7 @@ interface EventRepositoryInterface
 
     public function getEventReferralData($eventId);
 
+    public function getPurchaseHistory($eventId, $userId);
+
 
 };

@@ -1280,4 +1280,28 @@ return $data;
                 return $data;
 
             }
+
+            public function getPurchaseHistory($eventId, $userId){
+                $user = User::where('tgp_userid',$userId)->first();
+                if( $user != null ) {
+                    $paymentData = Payment::where('user_id', $user->id)
+                    ->where('event_id', $eventId)
+                    ->where('status', 'successful')
+                    ->with('user_reward','user_reward.rewards')
+                    ->get();
+                    if( isset($paymentData) && !empty($paymentData)) {
+                        foreach($paymentData as $payment) {
+                            $userEvent = EventUser::
+                                where('user_id', $user->id)
+                                ->where('event_id', $eventId)
+                                ->where('address_id', $payment->address_id)
+                                // ->where('is_paid_user', 1)
+                                ->first();
+                            $payment->userEvent = $userEvent;
+                        }
+                    }
+                    
+                    return $paymentData;
+                }
+            }
 }
