@@ -205,7 +205,7 @@
         <tfoot>
             <tr>
                 <th colspan="2">
-                    @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==0)
+                    @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==0 && ($mailData['data']['upgrade'] == false) )
                     <?php echo $mailData['data']['successPage']['no_purchase_made'] ?>
                     @elseif($mailData['data']['canUpgrade'] ==1)
                     <?php echo $mailData['data']['successPage']['partial_purchase_made'] ?>
