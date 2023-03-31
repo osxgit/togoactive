@@ -1282,7 +1282,9 @@ return $data;
             }
 
             public function getPurchaseHistory($eventId, $userId){
-                $user = User::where('tgp_userid',$userId)->first();
+
+                $user = User::where('id',$userId)->first();
+              
                 if( $user != null ) {
                     $paymentData = Payment::where('user_id', $user->id)
                     ->where('event_id', $eventId)

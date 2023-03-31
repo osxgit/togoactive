@@ -179,7 +179,7 @@
                         <span class="uppercase">#{{ $eventData->hashtag }}</span>
                         Purchase history
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close closePurchaseHistory" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -197,12 +197,17 @@ function openPurchaseHistory(eventId,userId){
                 url: "/event/"+eventId+"/purchase_history/"+userId,
                 success: function(data){
                     console.log(data);
+                    $('.purchaseHistoryModal').html('');
                     $('.purchaseHistoryModal').html(data.html);
-                    $('.purchaseHistory').modal('show');
+                    $('#purchaseHistory').modal('show');
                 }
             });
   
 }
+$('.closePurchaseHistory').click(function(){
+    $('#purchaseHistory').modal('hide');
+});
+
        function getdatatable(){
 
             var table = $('.data-table').DataTable({
