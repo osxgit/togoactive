@@ -105,14 +105,12 @@
                                     {{\Carbon\Carbon::Parse($mailData['data']['registrationData']['payment']['created_at'])->timezone($mailData['data']['event_object']['timezone'])->isoFormat('LLLL')}} (GMT {{$mailData['data']['event_object']['timezone']}})
 
                                 </p>
-                                @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
-                                    <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
-                                        Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
-                                    </p>
-                                    <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
-                                        Payment ID : {{$mailData['data']['registrationData']['payment']['payment_intent']}}
-                                    </p>
-                                @endif
+                                <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
+                                    Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
+                                </p>
+                                <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
+                                    Payment ID : {{$mailData['data']['registrationData']['payment']['payment_intent']}}
+                                </p>
                             </td>
                         </tr>
                     </table>
@@ -149,7 +147,7 @@
                                     <th style="padding: 10px;width: 50%;">Free</th>
                                 </tr>
                             @endif
-                            @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
+                            @if(isset($mailData['data']['registrationData']['payment']['user_reward']))
                                 @foreach($mailData['data']['registrationData']['payment']['user_reward'] as $rewards)
                                     <tr>
                                         <th style="padding: 10px;width: 50%;">{{$rewards['rewards']['name']}} <br>
@@ -187,20 +185,18 @@
                             <tr>
                                 <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
                             </tr>
-                            @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
                             <tr>
                                 <th colspan="2" style="padding: 10px;width: 50%;">
                                     <h5 style="margin: 0 0 10px;">Address :</h5>
-                                    <p style="margin: 5px 0">{{$mailData['data']['registrationData']['event_user']['address']."
-                                        ".$mailData['data']['registrationData']['event_user']['blk']."
-                                        ".$mailData['data']['registrationData']['event_user']['city']."
-                                        ".$mailData['data']['registrationData']['event_user']['state']."
-                                        ".$mailData['data']['registrationData']['event_user']['subdistrict']."
-                                        ".$mailData['data']['registrationData']['event_user']['postal_code']."
-                                        ".$mailData['data']['registrationData']['event_user']['country'] }}</p>
+                                    <p style="margin: 5px 0">{{$mailData['data']['registrationData']['event_user']['address'] ?? ''."
+                                        ".$mailData['data']['registrationData']['event_user']['blk'] ?? ''."
+                                        ".$mailData['data']['registrationData']['event_user']['city'] ?? ''."
+                                        ".$mailData['data']['registrationData']['event_user']['state'] ?? ''."
+                                        ".$mailData['data']['registrationData']['event_user']['subdistrict'] ?? ''."
+                                        ".$mailData['data']['registrationData']['event_user']['postal_code'] ?? ''."
+                                        ".$mailData['data']['registrationData']['event_user']['country'] ?? '' }}</p>
                                 </th>
                             </tr>
-                            @endif
                         </tbody>
                     </table>
                 </td>
