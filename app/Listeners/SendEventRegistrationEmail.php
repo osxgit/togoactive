@@ -59,6 +59,7 @@ class SendEventRegistrationEmail
             $eventName = $event_object->name;
             $event_slug = $event_object->slug;
 
+
             $registrationData   = $this->eventRepository->getEventUserData(array('eventUser' => $eventUserId,'payment'=>$paymentId ));
             $successPage        = $this->eventRepository->getEventSuccessPage(array('eventId' => $eventId ));
 
@@ -103,6 +104,16 @@ class SendEventRegistrationEmail
             $event_base_url = "https://events.togoparts.com/"; // this url is used for event share on social platform
             // here we need to get event data and send mail to login user
 
+            //get referral daat using event id
+            $referralData = $this->eventRepository->getEventReferralData($eventId);
+            $social_desc = '';
+            if(isset($referralData->data->data->data) && $referralData->data->data->data!=null){
+                $referralData = $referralData->data->data->data;
+                $social_desc = $referralData->socialShare->share_description;
+                $social_desc=str_replace('#','',$social_desc);
+            }
+            $refUrl = $event_base_url . '' . $eventName.'/?ref='.$registrationData['event_user']['user']['username'];
+
 
             if(!empty($successPage->email_body)){
                 $email_body = $successPage->email_body;
@@ -123,7 +134,9 @@ class SendEventRegistrationEmail
                         'event_base_url' =>$event_base_url,
                         'eventImages' => $eventImages,
                         'event_object' => $event_object,
-                        'upgrade' => $upgrade
+                        'upgrade' => $upgrade,
+                        'refUrl' => $refUrl,
+                        'social_desc' => $social_desc
                     ];
 
             // end email code
