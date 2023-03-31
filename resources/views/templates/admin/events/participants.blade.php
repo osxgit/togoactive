@@ -168,7 +168,45 @@
 </div>
         </main>
     </div>
+
+    <div class="modal fade" id="purchaseHistory" style="z-index:99999999999;" tabindex="-1" role="dialog"
+        aria-labelledby="purchaseHistoryLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width:400px !important" role="document">
+
+            <div class="modal-content bgtransparent bordernone">
+                <div class="modal-header">
+                    <h5 class="modal-title fpoppins font-bold text-center" id="exampleModalLongTitle">
+                        <span class="uppercase">#{{ $eventData->hashtag }}</span>
+                        Purchase history
+                    </h5>
+                    <button type="button" class="close closePurchaseHistory" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body purchaseHistoryModal" style="font-family: 'poppins regular';">
+
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
+function openPurchaseHistory(eventId,userId){
+    $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/event/"+eventId+"/purchase_history/"+userId,
+                success: function(data){
+                    console.log(data);
+                    $('.purchaseHistoryModal').html('');
+                    $('.purchaseHistoryModal').html(data.html);
+                    $('#purchaseHistory').modal('show');
+                }
+            });
+  
+}
+$('.closePurchaseHistory').click(function(){
+    $('#purchaseHistory').modal('hide');
+});
 
        function getdatatable(){
 
