@@ -20,6 +20,20 @@
                 <th style="padding: 10px;width: 50%;">
                     <ul style="list-style: none;display: flex;justify-content: flex-end;">
                         <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;">
+                            <a href="https://www.linkedin.com/company/togoparts-com/">
+                                <img
+                                    src="{{ asset('images/linkedin.png')}}"
+                                    alt="icon" style="height: 28px;">
+                            </a>
+                        </li>
+                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;">
+                            <a href="https://www.instagram.com/togoparts_official/">
+                                <img
+                                    src="{{ asset('images/instagram.png')}}"
+                                    alt="icon" style="height: 28px;">
+                            </a>
+                        </li>
+                        <li style="border-left: 2px dashed #bbbbbb;padding: 0 8px;height: 30px;">
                             <a href="https://play.google.com/store/apps/details?id=com.togoparts&pli=1">
                                 <img
                                     src="{{ asset('images/android_header.png')}}"
@@ -72,7 +86,7 @@
                             <?php echo $mailData['data']['successPage']['email_body'] ?>
                         @else
                             <p>Dear {{$mailData['data']['registrationData']['event_user']['user']['fullname']}},</p>
-                            <p>Thank you for upgrading for upgrade #{{$mailData['data']['event_object']['hashtag']}}.</p>
+                            <p>Thank You for Upgrading Your #{{$mailData['data']['event_object']['hashtag']}} Rewards!</p>
                         @endif
                     </p>
                 </th>
@@ -129,10 +143,12 @@
                             <tr>
                                 <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
                             </tr>
-                            <tr>
-                                <th style="padding: 10px;width: 50%;">Participation Fee</th>
-                                <th style="padding: 10px;width: 50%;">Free</th>
-                            </tr>
+                            @if (!isset($mailData['data']['upgrade']) || $mailData['data']['upgrade'] == false)
+                                <tr>
+                                    <th style="padding: 10px;width: 50%;">Participation Fee</th>
+                                    <th style="padding: 10px;width: 50%;">Free</th>
+                                </tr>
+                            @endif
                             @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==1)
                                 @foreach($mailData['data']['registrationData']['payment']['user_reward'] as $rewards)
                                     <tr>
@@ -151,6 +167,7 @@
                             <tr>
                                 <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
                             </tr>
+
                             <tr>
                                 <th style="padding: 10px;width: 50%;">Coupon Used</th>
                                 <th style="padding: 10px;width: 50%;">
@@ -375,7 +392,7 @@
                 </tr>
                 <tr>
                     <th colspan="2">
-                    <a style="font-family: arial;background: #F6861F;color: #fff;text-decoration: none;font-weight: 500;padding: 10px 25px;border-radius: 5px;margin: 20px auto 0;display: block;width: fit-content;font-size: 12px;" href="https://www.togoparts.com/app">Download togoparts app</a>
+                    <a style="font-family: arial;background: #F6861F;color: #fff;text-decoration: none;font-weight: 500;padding: 10px 25px;border-radius: 5px;margin: 20px auto 0;display: block;width: fit-content;font-size: 15px;" href="https://www.togoparts.com/app">Download Togoparts App</a>
                     </th>
                 </tr>
             @endif
