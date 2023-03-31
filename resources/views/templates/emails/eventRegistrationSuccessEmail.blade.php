@@ -229,67 +229,67 @@
                             <div style="display: block; width: 100%;">
                                 <button
                                     style="background: #58b56d;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                    <a href="https://api.whatsapp.com/send/?text=<?php echo '' ?><?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                    <a href="https://api.whatsapp.com/send/?text=<?php echo $mailData['data']['social_desc']; ?><?php echo $mailData['data']['refUrl']; ?>"
                                         style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;font-weight: 900;
                                         text-decoration: none;" target="_blank"
                                         data-href="<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/"
                                         data-action="share/whatsapp/share">
-                                        <img style="margin-right: 5px;" src="{{ asset('images/whatsapp_icon.png')}}"
+                                        <img style="margin-right: 5px;width: 22px;height: 22px;margin-bottom: -4px;" src="{{ asset('images/whatsapp_icon.png')}}"
                                             alt="icon" class="CToWUd" data-bit="iit" />
-                                        Invite via Whatsapp
+                                        <span style="bottom: 3px !important; position: relative;">Invite via Whatsapp</span>
                                     </a>
                                 </button>
                             </div>
                             <div style="display: block; width: 100%;">
                                 <button
                                     style="background: #3e84db;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                    <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $mailData['data']['refUrl']; ?>"
                                         style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px;font-weight: 900;
                                         text-decoration: none;" target="_blank"
                                         data-saferedirecturl="https://www.google.com/url?q=https://www.facebook.com/sharer/sharer.php?u%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306199000&amp;usg=AOvVaw0CjWD3k1AinGmIO0vSkfZF">
-                                        <img style="margin-right: 5px;" src="{{ asset('images/facebook_icon.png')}}"
+                                        <img style="margin-right: 5px;width: 22px;height: 22px;margin-bottom: -4px;" src="{{ asset('images/facebook_icon.png')}}"
                                             alt="icon" class="CToWUd" data-bit="iit" />
-                                        Invite via Facebook
+                                        <span style="bottom: 3px !important; position: relative;">Invite via Facebook</span>
                                     </a>
                                 </button>
                             </div>
                             <div style="display: block; width: 100%;">
                                 <button
                                     style="background: #4ba6ee;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                    <a href="https://twitter.com/intent/tweet?text=<?php echo '' ?>&url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                    <a href="https://twitter.com/intent/tweet?text=<?php echo $mailData['data']['social_desc']; ?>&url=<?php echo $mailData['data']['refUrl']; ?>"
                                         style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
                                         text-decoration: none;" target="_blank"
                                         data-saferedirecturl="https://www.google.com/url?q=https://twitter.com/intent/tweet?text%3D%26url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw1pIDIfuLsX44rwWCCmKk2U">
-                                        <img style="margin-right: 5px;" src="{{ asset('images/twitter_icon.png')}}"
+                                        <img style="margin-right: 5px;width: 22px;height: 22px;margin-bottom: -4px;" src="{{ asset('images/twitter_icon.png')}}"
                                             alt="icon" class="CToWUd" data-bit="iit" />
-                                        Invite via Twitter
+                                        <span style="bottom: 3px !important; position: relative;">Invite via Twitter</span>
                                     </a>
                                 </button>
                             </div>
                             <div style="display: block; width: 100%;">
                                 <button
                                     style="background: #0077b5;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}"
+                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=<?php echo $mailData['data']['refUrl']; ?>"
                                         style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
                                         text-decoration: none;" target="_blank"
                                         data-saferedirecturl="https://www.google.com/url?q=https://www.linkedin.com/sharing/share-offsite/?url%3Dhttps://events.togoparts.com/togoeco2023&amp;source=gmail&amp;ust=1680080306200000&amp;usg=AOvVaw2ppQeb_eOBVZjgJ0XDDzek">
-                                        <img style="margin-right: 5px;" src="{{ asset('images/linkdin_icon.png')}}"
+                                        <img style="margin-right: 5px;width: 22px;height: 22px;margin-bottom: -4px;" src="{{ asset('images/linkdin_icon.png')}}"
                                             alt="icon" class="CToWUd" data-bit="iit" />
-                                        Invite via LinkedIn
+                                        <span style="bottom: 3px !important; position: relative;">Invite via LinkedIn </span>
                                     </a>
                                 </button>
                             </div>
                             <div style="display: block; width: 100%;">
                                 <button
                                     style="background: #0088cc;display: flex;padding: 10px 0;align-items: center;border: navajowhite;justify-content: center;border-radius: 5px;margin: 10px auto;width: 350px;">
-                                    <a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['event_base_url'].$mailData['data']['event_slug'] ?>/?ref={{$mailData['data']['registrationData']['event_user']['user']['username']}}&text=<?php '' ?>"
+                                    <a href="https://telegram.me/share/url?url=<?php echo $mailData['data']['refUrl']   ; ?>&text=<?php echo $mailData['data']['social_desc']; ?>"
                                         style="color: #fff;display: block;text-align: center;width: 100%;font-size:20px; font-weight: 900;
                                         text-decoration: none;" target="_blank"
                                         data-href="<?php echo env("APP_URL").'/'.$mailData['data']['event_slug'] ?>"
                                         data-share="telegram">
-                                        <img style="margin-right: 5px;" src="{{ asset('images/telegram_icon.png')}}"
+                                        <img style="margin-right: 5px;width: 22px;height: 22px;margin-bottom: -4px;" src="{{ asset('images/telegram_icon.png')}}"
                                             alt="icon" class="CToWUd" data-bit="iit" />
-                                        Invite via Telegram
+                                        <span style="bottom: 3px !important; position: relative;">Invite via Telegram</span>
                                     </a>
                                 </button>
                             </div>
