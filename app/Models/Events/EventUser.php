@@ -49,4 +49,12 @@ class EventUser extends Model
         return $this->belongsTo(\App\Models\User::class);
     }
 
+    public function payment(){
+        return $this->hasMany(Payment::class,'event_id','event_id');
+
+        //return $this->hasOne(Payment::class,'user_id','user_id')->latestOfMany();
+
+    }
+
+
 }

@@ -1110,11 +1110,25 @@ return $data;
 
             public function getEventUsersList($eventId){
 
-                $data= EventUser::where('event_users.event_id',$eventId)->join('payments', function ($join) {
+                $data= EventUser::where('event_users.event_id',$eventId)
+              /*   ->join('payments', function ($join) {
                     $join->on('event_users.event_id', '=', 'payments.event_id')
-                         ->on('payments.user_id', '=', 'event_users.user_id')
-                         ->where('payments.payment_type', '=', 'registration');
-                })->with('user','team_user','team_user.team')->select('event_users.*', 'payments.status','payments.coupon_code','payments.total_paid')->get();
+                    ->on('payments.user_id', '=', 'event_users.user_id')
+                    //->where('payments.payment_type', '=', 'registration')
+                    ->groupBy('user_id','event_id')
+                    ->orderBy("payments.id","DESC")
+                    ->limit(1);
+
+                }) */
+                ->with('user','team_user','team_user.team','payment')
+                ->leftJoin('user_rewards', function ($join) {
+                    $join->on('event_users.event_id', '=', 'user_rewards.event_id')
+                         ->on('user_rewards.user_id', '=', 'event_users.user_id')
+                         ;
+                })
+
+               // ->select('event_users.*', 'payments.status','payments.coupon_code','payments.total_paid','payments.currency',DB::raw('count(user_rewards.id) as total_sku'))->orderBy('event_users.id','DESC')->orderBy('payments.id','DESC')->groupBy('event_users.user_id')->get();
+                ->select('event_users.*',DB::raw('count(user_rewards.id) as total_sku'))->orderBy('event_users.id','DESC')->groupBy('event_users.user_id')->get();
                return $data;
             }
 

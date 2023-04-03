@@ -89,7 +89,7 @@
     <div class="w-full flex flex-col sm:flex-row flex-grow overflow-hidden bg-light-gray-bg">
         @include('layouts.admin.events.sidebar')
         <main role="main" class="w-full h-full flex-grow p-3 overflow-auto">
-            <div class="float-left w-full max-w-screen-xl">
+            <div class="float-left w-full max-w-full">
                 <x-admin.breadcrumb>
                     <x-slot name="header">Participants</x-slot>
                     <x-slot name="breadcrumb">
@@ -122,12 +122,7 @@
                         </ul>
                     </div>
                 @endif
-                <div style="position: absolute;float: right;top: 160px;right: 20px; overflow-x:scroll">
-                    <x-buttons.button >
-                        <x-slot name="page_url">{{route('admin.events.info.essentials',array('-'))}}</x-slot>
-                        <x-slot name="button_text"><i class="fa fa-plus" aria-hidden="true"></i> New Event</x-slot>
-                    </x-buttons.button>
-                </div>
+
                 <x-forms.section class="mt-8 rounded-xl">
                     <x-slot name="section_heading">
 
@@ -139,30 +134,33 @@
                     <x-slot name="section_heading_description_status">hidden</x-slot>
                     <x-slot name="section_heading_description_text"></x-slot>
                     <x-slot name="section_content" class="w-auto" style="width:auto !important">
-                <table class="table responsive  data-table">
-                    <thead class="text-center">
-                    <tr>
-                        <th>No</th>
-                        <th>Date Joined</th>
-                        <th>Amount (SGD)</th>
-                        <th>User ID</th>
-                        <th>Username</th>
-                        <th>First & Last Name</th>
-                        <th>Date Of Birth</th>
-                        <th>Email</th>
-                        <th>Country</th>
-                        <th>Address</th>
-                        <th>Team Name</th>
-                        <th>Strava ID</th>
-                        <th>Coupon Code</th>
-                        <th>Referral Code</th>
-                        <th>Remarks</th>
-                        <th width="100px">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody class="font-poppins text-sm text-center">
-                    </tbody>
-                </table>
+                        <div class="table-responsive">
+                            <table class="table responsive  data-table text-slate-500" style="width:100%"">
+                                <thead class="text-center">
+                                <tr>
+                                    <th>No</th>
+                                    <th>Date Joined</th>
+                                    <th>Total SKUs Purchased</th>
+                                    <th>Amount</th>
+                                    <th>User ID</th>
+                                    <th>Username</th>
+                                    <th>First & Last Name</th>
+                                    <th>Date Of Birth</th>
+                                    <th>Email</th>
+                                    <th>Country</th>
+                                    <th>Address</th>
+                                    <th>Team Name</th>
+                                    <th>Strava ID</th>
+                                    <th>Coupon Code</th>
+                                    <th>Referral Code</th>
+                                  {{--   <th>Remarks</th> --}}
+                                    <th width="100px">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody class="font-poppins text-sm text-center">
+                                </tbody>
+                            </table>
+                        </div>
                     </x-slot>
                 </x-forms.section>
 </div>
@@ -202,7 +200,7 @@ function openPurchaseHistory(eventId,userId){
                     $('#purchaseHistory').modal('show');
                 }
             });
-  
+
 }
 $('.closePurchaseHistory').click(function(){
     $('#purchaseHistory').modal('hide');
@@ -222,6 +220,7 @@ $('.closePurchaseHistory').click(function(){
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: 'created_at', name: 'created_at'},
+                    {data: 'total_sku', name: 'total_sku'},
                     {data: 'total_paid', name: 'total_paid'},
                     {data: 'user_id', name: 'user_id'},
                     {data: 'username', name: 'username'},
@@ -230,12 +229,17 @@ $('.closePurchaseHistory').click(function(){
                     {data: 'email', name: 'email'},
                     {data: 'country', name: 'country'},
                     {data: 'address', name: 'address'},
-                    {data: 'team', name: 'team'},
+                    {data: 'team_name', name: 'team_name'},
                     {data: 'strava', name: 'strava'},
                     {data: 'coupon_code', name: 'coupon_code'},
-                    {data: 'referral_code', name: 'coupon_code'},
+                    {data: 'referral_code', name: 'referral_code'},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
-                ]
+                ],
+                "fnRowCallback" : function(nRow, aData, iDisplayIndex){
+                    $("td:first", nRow).html(iDisplayIndex +1);
+                    return nRow;
+                },
+                "sDom": '<"top"<"actions">lfi<"clear">><"clear">rt<"bottom" <"actions"> lip>'
             });
 
         };
@@ -281,8 +285,8 @@ $('.closePurchaseHistory').click(function(){
         })
     }
 
-        
 
-       
+
+
     </script>
 </x-app-layout>
