@@ -993,7 +993,7 @@ return $data;
 
                 }
 
-                return (['event_user'=>$eventUser , 'payment'=>$payment]);
+                return (['event_user'=>$eventUser , 'payment'=>$payment, 'user' => $user]);
 
             }
 
@@ -1284,7 +1284,7 @@ return $data;
             public function getPurchaseHistory($eventId, $userId){
 
                 $user = User::where('id',$userId)->first();
-              
+
                 if( $user != null ) {
                     $paymentData = Payment::where('user_id', $user->id)
                     ->where('event_id', $eventId)
@@ -1302,7 +1302,7 @@ return $data;
                             $payment->userEvent = $userEvent;
                         }
                     }
-                    
+
                     return $paymentData;
                 }
             }
