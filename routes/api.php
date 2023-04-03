@@ -81,3 +81,5 @@ Route::post('getUserUpgradePayment', [EventsController::class, 'getUserUpgradePa
 Route::post('processUpgradeEventPayment', [EventsController::class, 'processUpgradeEventPayment'])->name('processUpgradeEventPayment');
 Route::post('updateUpgradeEventPayment', [EventsController::class, 'updateUpgradeEventPayment'])->name('updateUpgradeEventPayment');
 Route::post('getEventRewardQuantity', [EventsController::class, 'getEventRewardQuantity'])->name('getEventRewardQuantity');
+
+Route::post('getEventDataForTGP', [EventsController::class, 'getEventDataForTGP'])->name('getEventDataForTGP');
