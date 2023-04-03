@@ -322,4 +322,10 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
                 return $this->sendAPIResponse();
             }
+
+            public function getEventDataForTGP(Request $request){
+                $response = $this->eventRepository->getEventDataForTGP($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
     }
