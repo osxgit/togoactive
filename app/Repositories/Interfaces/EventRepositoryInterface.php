@@ -166,5 +166,7 @@ interface EventRepositoryInterface
 
     public function getPurchaseHistory($eventId, $userId);
 
+    public function getEventDataForTGP($data);
+
 
 };

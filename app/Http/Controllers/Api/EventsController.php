@@ -211,10 +211,10 @@ class EventsController extends Controller
                 $eventPayment = $request['paymentId'];
                 $eventUserId = $request['eventUserId'];
 
-                if($request->status=='successful'){
-                    $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
-                    event(new EventRegistration($eventData,$request));
-                }
+                // if($request->status=='successful'){
+                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
+                event(new EventRegistration($eventData,$request));
+                // }
 
                 return $this->sendAPIResponse();
             }
@@ -319,6 +319,12 @@ class EventsController extends Controller
 
             public function getReferralData(Request $request){
                 $response = $this->eventRepository->getEventReferralData($request->eventId);
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
+
+            public function getEventDataForTGP(Request $request){
+                $response = $this->eventRepository->getEventDataForTGP($request->all());
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
                 return $this->sendAPIResponse();
             }

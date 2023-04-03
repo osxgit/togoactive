@@ -173,14 +173,18 @@
                             </tr>
                             <tr>
                                 <th style="padding: 10px;width: 50%;">Discount</th>
-                                <th style="padding: 10px;width: 50%;">{{($mailData['data']['registrationData']['payment']['discount'] > 0) ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['discount'],2) : 'NA'}}</th>
+                                <th style="padding: 10px;width: 50%;">
+                                    {{($mailData['data']['registrationData']['payment']['discount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful') ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['discount'],2) : 'NA'}}
+                                </th>
                             </tr>
                             <tr>
                                 <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
                             </tr>
                             <tr>
                                 <th style="padding: 10px;width: 50%;">Total</th>
-                                <th style="padding: 10px;width: 50%;">{{($mailData['data']['registrationData']['payment']['total_amount'] > 0) ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['total_amount'],2) : 'NA'}} </th>
+                                <th style="padding: 10px;width: 50%;">
+                                    {{($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful') ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['total_amount'],2) : 'NA'}}
+                                </th>
                             </tr>
                             <tr>
                                 <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
@@ -205,7 +209,7 @@
         <tfoot>
             <tr>
                 <th colspan="2">
-                    @if($mailData['data']['registrationData']['event_user']['is_paid_user'] ==0 && ($mailData['data']['upgrade'] == false) )
+                    @if( $mailData['data']['registrationData']['payment']['status'] != 'successful' || ( $mailData['data']['registrationData']['event_user']['is_paid_user'] == 0 && ($mailData['data']['upgrade'] == false) )  )
                     <?php echo $mailData['data']['successPage']['no_purchase_made'] ?>
                     @elseif($mailData['data']['canUpgrade'] ==1)
                     <?php echo $mailData['data']['successPage']['partial_purchase_made'] ?>
