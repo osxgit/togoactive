@@ -152,10 +152,15 @@ class SendEventRegistrationEmail
                 'data'    => $data,
                 'body'    =>''
             ];
-
+            $ccEmails = array();
+            if ($event_object->email_active == 1) {
+                $ccEmails = $event_object->email;
+            } else {
+                $ccEmails = 'alerts@togoparts.com';
+            }
             $email = $registrationData['event_user']['user']['email'];
 
-            $response = Mail::to($email)->send(new sendEventRegistrationSuccessMail($mailData));
+            $response = Mail::to($email)->cc($ccEmails)->send(new sendEventRegistrationSuccessMail($mailData));
 
         }else{
 
