@@ -1323,14 +1323,14 @@ return $data;
                 if($userId > 0){
                     $event_user = EventUser::where('event_id',$eventId)->where('user_id',  $userId)->first();
                     if($event_user){
-                        $response['usersJoinedStataus']=1;
+                        $response['usersJoinedStatus']=1;
                         $response['usersFinisherStatus']=$event_user->is_finisher;
                     } else{
-                        $response['usersJoinedStataus']=0;
+                        $response['usersJoinedStatus']=0;
                         $response['usersFinisherStatus']=0;
                     }
                 } else{
-                    $response['usersJoinedStataus']=0;
+                    $response['usersJoinedStatus']=0;
                     $response['usersFinisherStatus']=0;
                 }
                 $response['usersCount']=$event_user_count;
