@@ -142,7 +142,7 @@ class EventsController extends Controller
 
                                                    Publish event
                                                </a>
-                                                <a class="dropdown-item"  href="#">
+                                                <a class="dropdown-item"  href="'.route('admin.events.participantsManager' , $row->id).'">
 
                                                   View participants manager
                                               </a>
