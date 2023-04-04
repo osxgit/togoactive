@@ -195,7 +195,7 @@ class EventsController extends Controller
                     if($status == 'successful' || $status == 'processing'){
 
                        // if($amount != 0){
-                              return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id)'>PaymentHistory</span>";
+                              return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id); return true;'>PaymentHistory</span>";
                         /* } else{
                             return $amount;
                         } */
