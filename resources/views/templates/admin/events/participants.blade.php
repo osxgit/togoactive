@@ -215,7 +215,7 @@ $('.closePurchaseHistory').click(function(){
                 pageLength: 20,
                 lengthChange: false,
                 language: { search: '', searchPlaceholder: " Search by username,  first name, last name, user id, team name, email, coupon/referral code, strava ID" },
-
+                "order": [[ 1, "desc" ]],
                 ajax: "{{ route('admin.events.participantsManager', $id) }}",
                 columns: [
                     {data: 'id', name: 'id'},
