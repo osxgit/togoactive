@@ -190,6 +190,11 @@ class EventsController extends Controller
                         $amount = 0;
                     }
 
+                    if($amount==0){
+                        $currency = '';
+                        $amount = 0;
+                    }
+
                     $status = $payment->status ?? '';
 
                     if($status == 'successful' || $status == 'processing'){
