@@ -213,7 +213,7 @@ class EventsController extends Controller
                 })
                 ->addColumn('total_sku', function($row){
                     // getting rewards detail
-                    $total_sku = $row->rewards->where('user_id',$row->user_id)->where('event_id',$row->event_id)->count();
+                    $total_sku = $row->rewards->where('user_id',$row->user_id)->where('event_id',$row->event_id)->sum('quantity');
                     //$total_sku = $row->total_sku;
 
                     return $total_sku;
