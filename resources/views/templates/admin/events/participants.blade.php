@@ -316,13 +316,12 @@
                     },
                 ],
                 "fnRowCallback": function(nRow, aData, iDisplayIndex) {
-                    console.log(nRow,aData)
-                    $("td:first", nRow).html(iDisplayIndex + 1);
+
+                    $("td:first", nRow).html(aData.DT_RowIndex);
                     return nRow;
                 },
                 "sDom": '<"top"<"actions">lfi<"clear">><"clear">rt<"bottom" <"actions"> lip>',
             });
-
         };
         $(document).ready(function() {
             getdatatable();
