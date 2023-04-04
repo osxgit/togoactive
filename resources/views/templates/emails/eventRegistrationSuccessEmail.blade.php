@@ -105,9 +105,11 @@
                                     {{\Carbon\Carbon::Parse($mailData['data']['registrationData']['payment']['created_at'])->timezone($mailData['data']['event_object']['timezone'])->isoFormat('LLLL')}} (GMT {{$mailData['data']['event_object']['timezone']}})
 
                                 </p>
-                                <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
-                                    Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
-                                </p>
+                                @if (($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful'))
+                                    <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
+                                        Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
+                                    </p>
+                                @endif
                                 <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
                                     Payment ID : {{$mailData['data']['registrationData']['payment']['payment_intent']}}
                                 </p>
@@ -186,21 +188,26 @@
                                     {{($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful') ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['total_amount'],2) : 'NA'}}
                                 </th>
                             </tr>
-                            <tr>
-                                <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
-                            </tr>
-                            <tr>
-                                <th colspan="2" style="padding: 10px;width: 50%;">
-                                    <h5 style="margin: 0 0 10px;">Address :</h5>
-                                    <p style="margin: 5px 0">{{$mailData['data']['registrationData']['event_user']['address'] ?? ''."
-                                        ".$mailData['data']['registrationData']['event_user']['blk'] ?? ''."
-                                        ".$mailData['data']['registrationData']['event_user']['city'] ?? ''."
-                                        ".$mailData['data']['registrationData']['event_user']['state'] ?? ''."
-                                        ".$mailData['data']['registrationData']['event_user']['subdistrict'] ?? ''."
-                                        ".$mailData['data']['registrationData']['event_user']['postal_code'] ?? ''."
-                                        ".$mailData['data']['registrationData']['event_user']['country'] ?? '' }}</p>
-                                </th>
-                            </tr>
+
+
+                            @if (($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful'))
+                                <tr>
+                                    <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" style="padding: 10px;width: 50%;">
+                                        <h5 style="margin: 0 0 10px;">Address :</h5>
+                                        <p style="margin: 5px 0">{{$mailData['data']['registrationData']['event_user']['address'] ?? ''."
+                                            ".$mailData['data']['registrationData']['event_user']['blk'] ?? ''."
+                                            ".$mailData['data']['registrationData']['event_user']['city'] ?? ''."
+                                            ".$mailData['data']['registrationData']['event_user']['state'] ?? ''."
+                                            ".$mailData['data']['registrationData']['event_user']['subdistrict'] ?? ''."
+                                            ".$mailData['data']['registrationData']['event_user']['postal_code'] ?? ''."
+                                            ".$mailData['data']['registrationData']['event_user']['country'] ?? '' }}</p>
+                                    </th>
+                                </tr>
+                            @endif
+
                         </tbody>
                     </table>
                 </td>
