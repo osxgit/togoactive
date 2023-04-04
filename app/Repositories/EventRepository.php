@@ -1295,10 +1295,11 @@ return $data;
                     ->get();
                     if( isset($paymentData) && !empty($paymentData)) {
                         foreach($paymentData as $payment) {
+
                             $userEvent = EventUser::
                                 where('user_id', $user->id)
                                 ->where('event_id', $eventId)
-                                ->where('address_id', $payment->address_id)
+                                //->where('address_id', $payment->address_id)
                                 // ->where('is_paid_user', 1)
                                 ->first();
                             $payment->userEvent = $userEvent;

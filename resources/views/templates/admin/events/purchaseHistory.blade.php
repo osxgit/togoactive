@@ -8,7 +8,9 @@
         {{ \Carbon\Carbon::Parse($puchaseData->created_at)->timezone($eventData->timezone)->isoFormat('LLLL') }}
         (GMT {{ $eventData->timezone }})</p>
     <p class="text-sm">
-        @if (!empty($puchaseData->transaction_id))
+
+
+        @if (isset($puchaseData->userEvent->is_paid_user) && !empty($puchaseData->userEvent->is_paid_user) && $puchaseData->transaction_id!= null)
             Txn ID:
             {{ $puchaseData->transaction_id }} <br>
         @else
@@ -89,7 +91,7 @@
                 </td>
             </tr>
             <tr class="border-top">
-                @if (isset($puchaseData->userEvent) && !empty($puchaseData->userEvent))
+                @if (isset($puchaseData->userEvent->address) && !empty($puchaseData->userEvent->address))
                     <td colspan="2" class="w-full py-3 px-4">
                         <h6>Address :</h6>
                         <p></p>
