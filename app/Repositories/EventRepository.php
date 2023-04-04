@@ -1303,7 +1303,7 @@ return $data;
                 if( $user != null ) {
                     $paymentData = Payment::where('user_id', $user->id)
                     ->where('event_id', $eventId)
-                    ->where('status', 'successful')
+                    ->whereIn('status', ['successful','processing'])
                     ->with('user_reward','user_reward.rewards')
                     ->get();
                     if( isset($paymentData) && !empty($paymentData)) {
@@ -1330,8 +1330,8 @@ return $data;
                 }else{
                     $userId= 0;
                 }
-                
-                
+
+
                 $event_user_count = EventUser::where('event_id',$eventId)->count();
                 $event_achievement_count =Achievements::where('event_id',$eventId)->count();
                 if($userId > 0){
@@ -1349,7 +1349,7 @@ return $data;
                 }
                 $response['usersCount']=$event_user_count;
                 $response['achievementsCount']= $event_achievement_count;
-               
-                return $response; 
+
+                return $response;
             }
 }

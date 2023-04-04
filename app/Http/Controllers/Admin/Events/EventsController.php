@@ -167,18 +167,9 @@ class EventsController extends Controller
     }
 
     public function participants_manager(Request $request, $eventId){
-        DB::enableQueryLog(); // Enable query log
-        $data = $this->eventRepository->getEventUsersList($eventId);
-        //dd(DB::getQueryLog()); // Show results of log
-        //dd($data);
 
-        /* foreach($data as $res){
-            //dd($res,$res->payment->where('user_id',$res->user_id)->first());
-            echo "<pre>";
-           // print_r($res);
-            print_r();
-            echo "</pre>";
-        } */
+        $data = $this->eventRepository->getEventUsersList($eventId);
+        //dd($data);
 
         if ($request->ajax()) {
 
@@ -192,7 +183,7 @@ class EventsController extends Controller
                     //$res->payment->last()->currency;
                     $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->last();
                     $currency = $payment->currency;
-                    if($payment->status=='successful'){
+                    if($payment->status=='successful' || $payment->status=='processing'){
                         $amount = number_format($payment->total_paid);
                        // if($amount != 0){
                               return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id)'>PaymentHistory</span>";
