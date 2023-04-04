@@ -1117,7 +1117,7 @@ return $data;
                     $query->select('id', 'tgp_userid','username','fullname','email','strava_id');
                 }])
                 ->with(['payment' => function ($query) {
-                    $query->select('id', 'user_id','event_id','payment_type','payment_method','total_paid');
+                    $query->select('id', 'user_id','event_id','payment_type','payment_method','total_paid','status','currency');
                 }])
                 ->with(['rewards' => function ($query) {
                     $query->select('id', 'user_id','event_id','reward_id','payment_id','quantity');

@@ -316,6 +316,7 @@
                     },
                 ],
                 "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+                    console.log(nRow,aData)
                     $("td:first", nRow).html(iDisplayIndex + 1);
                     return nRow;
                 },
