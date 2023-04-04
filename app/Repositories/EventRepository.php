@@ -1290,7 +1290,8 @@ return $data;
                 if( $user != null ) {
                     $paymentData = Payment::where('user_id', $user->id)
                     ->where('event_id', $eventId)
-                    ->whereIn('status', ['successful','processing'])
+                    //->whereIn('status', ['successful','processing'])
+                    ->whereRaw('(case when (payment_type = "upgrade" ) THEN status IN("successful") ELSE status IN("processing","successful") END)')
                     ->with('user_reward','user_reward.rewards')
                     ->get();
                     if( isset($paymentData) && !empty($paymentData)) {
