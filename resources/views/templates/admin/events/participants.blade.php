@@ -234,12 +234,14 @@
                 responsive: true,
                 scrollX:        true,
                 scrollCollapse: true,
-
                 pageLength: 20,
                 lengthChange: false,
                 language: {
                     search: '',
-                    searchPlaceholder: " Search by username,  first name, last name, user id, team name, email, coupon/referral code, strava ID"
+                    searchPlaceholder: " Search by username,  first name, last name, user id, team name, email, coupon/referral code, strava ID",
+                    'processing': "<span class='fa-stack fa-lg'>\n\
+                            <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                       </span>&emsp;Processing ..."
                 },
                 "order": [
                     [1, "desc"]
@@ -317,7 +319,7 @@
                     $("td:first", nRow).html(iDisplayIndex + 1);
                     return nRow;
                 },
-                "sDom": '<"top"<"actions">lfi<"clear">><"clear">rt<"bottom" <"actions"> lip>'
+                "sDom": '<"top"<"actions">lfi<"clear">><"clear">rt<"bottom" <"actions"> lip>',
             });
 
         };
