@@ -160,8 +160,8 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Date Joined</th>
-                                    <th>No of items</th>
                                     <th>Amount</th>
+                                    <th>No of items</th>
                                     <th>User ID</th>
                                     <th>Username</th>
                                     <th>First & Last Name</th>
@@ -253,13 +253,14 @@
                         data: 'created_at',
                         name: 'created_at'
                     },
-                    {
-                        data: 'total_sku',
-                        name: 'total_sku'
-                    },
+
                     {
                         data: 'total_paid',
                         name: 'total_paid'
+                    },
+                    {
+                        data: 'total_sku',
+                        name: 'total_sku'
                     },
                     {
                         data: 'user_id',
