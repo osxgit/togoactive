@@ -58,8 +58,8 @@ class EventUser extends Model
             function($query)  {
                 $query->from('payments')
                 ->whereColumn("id","user_rewards.payment_id")
-                ->whereRaw('(case when (payment_type = "upgrade" ) THEN status IN("successful") ELSE status IN("processing","successful") END)');
-              //->where('status','successful');
+                //->whereRaw('(case when (payment_type = "upgrade" ) THEN status IN("successful") ELSE status IN("processing","successful") END)');
+                ->where('status','successful');
 
         });
     }

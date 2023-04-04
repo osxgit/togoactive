@@ -181,7 +181,7 @@ class EventsController extends Controller
                 ->addIndexColumn()
                 ->addColumn('total_paid', function($row){
                     //getting payment information
-                    $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->last();
+                    $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->where("status","successful")->last();
                     $currency = $payment->currency ?? '';
 
                     if(isset($payment->total_paid)){
@@ -203,7 +203,8 @@ class EventsController extends Controller
                         return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: red;'> $payment->status</span>";
                     }
                     else{
-                         return $currency." ".$amount;
+                         //return $currency." ".$amount;
+                         return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id); return true;'>PaymentHistory</span>";
 
                     }
                 })
