@@ -51,9 +51,15 @@ class EventUser extends Model
 
     public function payment(){
         return $this->hasMany(Payment::class,'event_id','event_id');
+    }
 
-        //return $this->hasOne(Payment::class,'user_id','user_id')->latestOfMany();
-
+    public function rewards(){
+        return $this->hasMany(UserReward::class,'event_id','event_id')->whereExists(
+            function($query)  {
+              $query->from('payments')
+              ->whereColumn("id","user_rewards.payment_id")
+              ->where('status','successful');
+            });
     }
 
 

@@ -180,11 +180,11 @@ class EventsController extends Controller
             $dataTable = Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('total_paid', function($row){
-                    //$res->payment->last()->currency;
+                    //getting payment information
                     $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->last();
                     $currency = $payment->currency;
                     if($payment->status=='successful' || $payment->status=='processing'){
-                        $amount = number_format($payment->total_paid);
+                        $amount = number_format($payment->total_paid,2);
                        // if($amount != 0){
                               return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id)'>PaymentHistory</span>";
                         /* } else{
@@ -200,7 +200,10 @@ class EventsController extends Controller
                     return $created_at;
                 })
                 ->addColumn('total_sku', function($row){
-                    $total_sku = $row->total_sku;
+                    // getting rewards detail
+                    $total_sku = $row->rewards->where('user_id',$row->user_id)->where('event_id',$row->event_id)->count();
+                    //$total_sku = $row->total_sku;
+
                     return $total_sku;
                 })
                 ->addColumn('username', function($row){
