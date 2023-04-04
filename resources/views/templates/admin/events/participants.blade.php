@@ -2,7 +2,8 @@
     <link href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" defer rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" defer
+        rel="stylesheet">
     <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" deferrel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.1.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
@@ -10,32 +11,41 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" defer
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
     <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js" defer></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" defer>
 
     <style>
-        a{
-            color:inherit !important;
+        a {
+            color: inherit !important;
         }
-        label.error{
 
-            color:red;
+        label.error {
+
+            color: red;
         }
+
         .tagify {
-            border:none !important;;
+            border: none !important;
+            ;
         }
+
         .bg-primary {
             --tw-bg-opacity: 1;
             background-color: rgb(126 31 246 / var(--tw-bg-opacity)) !important;
         }
+
         .border-primary {
             --tw-border-opacity: 1;
-            border-color: rgb(126 31 246 / var(--tw-border-opacity))!important;
+            border-color: rgb(126 31 246 / var(--tw-border-opacity)) !important;
         }
+
         button.bg-primary:hover:hover {
-            background-color:  rgb(255 255 255 / var(--tw-border-opacity))!important;
+            background-color: rgb(255 255 255 / var(--tw-border-opacity)) !important;
         }
+
         .swal2-styled.swal2-confirm {
             border: 0;
             border-radius: 0.25em;
@@ -53,35 +63,45 @@
             color: #000;
             font-size: 1em;
         }
+
         .swal2-icon.swal2-warning {
             border-color: #9ca3af;
             color: #9ca3af;
         }
+
         .swal2-close:focus {
             outline: 0;
             box-shadow: none;
         }
+
         div#DataTables_Table_0_paginate {
             float: right;
         }
+
         div#DataTables_Table_0_filter {
             float: right;
         }
+
         div#DataTables_Table_0_wrapper {
             float: left;
         }
+
         div#DataTables_Table_0_length {
             display: none;
         }
-        .dataTables_filter , .dataTables_filter label {
+
+        .dataTables_filter,
+        .dataTables_filter label {
             width: 100%;
         }
+
         .row {
             --bs-gutter-x: 0;
         }
+
         .dropdown-menu.show {
             transform: translate3d(760px, 95px, 0px) !important;
-            display:contents;
+            display: contents;
         }
     </style>
     @include('layouts.admin.events.subheader')
@@ -94,23 +114,23 @@
                     <x-slot name="header">Participants</x-slot>
                     <x-slot name="breadcrumb">
                         <a class="text-primary font-poppins-semibold text-sm" href="">Admin</a> >
-                        <span class="text-nav-gray font-poppins text-sm">{{$active_page}}</span>
+                        <span class="text-nav-gray font-poppins text-sm">{{ $active_page }}</span>
                     </x-slot>
                 </x-admin.breadcrumb>
 
-                @if(session()->has('message'))
+                @if (session()->has('message'))
                     <x-infoboxes.success class="mt-4">
-                        <x-slot name="heading">{{session()->get('message')}}</x-slot>
+                        <x-slot name="heading">{{ session()->get('message') }}</x-slot>
                     </x-infoboxes.success>
                 @endif
-                @if(session()->has('warining'))
+                @if (session()->has('warining'))
                     <x-infoboxes.error class="mt-4">
-                        <x-slot name="heading">{{session()->get('warining')}}</x-slot>
+                        <x-slot name="heading">{{ session()->get('warining') }}</x-slot>
                     </x-infoboxes.error>
                 @endif
-                @if(session()->has('error'))
+                @if (session()->has('error'))
                     <x-infoboxes.error class="mt-4">
-                        <x-slot name="heading">{{session()->get('error')}}</x-slot>
+                        <x-slot name="heading">{{ session()->get('error') }}</x-slot>
                     </x-infoboxes.error>
                 @endif
                 @if ($errors->any())
@@ -163,7 +183,7 @@
                         </div>
                     </x-slot>
                 </x-forms.section>
-</div>
+            </div>
         </main>
     </div>
 
@@ -188,12 +208,12 @@
         </div>
     </div>
     <script>
-function openPurchaseHistory(eventId,userId){
-    $.ajax({
+        function openPurchaseHistory(eventId, userId) {
+            $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "/event/"+eventId+"/purchase_history/"+userId,
-                success: function(data){
+                url: "/event/" + eventId + "/purchase_history/" + userId,
+                success: function(data) {
                     console.log(data);
                     $('.purchaseHistoryModal').html('');
                     $('.purchaseHistoryModal').html(data.html);
@@ -201,69 +221,130 @@ function openPurchaseHistory(eventId,userId){
                 }
             });
 
-}
-$('.closePurchaseHistory').click(function(){
-    $('#purchaseHistory').modal('hide');
-});
+        }
+        $('.closePurchaseHistory').click(function() {
+            $('#purchaseHistory').modal('hide');
+        });
 
-       function getdatatable(){
+        function getdatatable() {
 
             var table = $('.data-table').DataTable({
                 processing: true,
                 serverSide: true,
                 responsive: true,
+                scrollX:        true,
+                scrollCollapse: true,
+
                 pageLength: 20,
                 lengthChange: false,
-                language: { search: '', searchPlaceholder: " Search by username,  first name, last name, user id, team name, email, coupon/referral code, strava ID" },
-                "order": [[ 1, "desc" ]],
-                ajax: "{{ route('admin.events.participantsManager', $id) }}",
-                columns: [
-                    {data: 'id', name: 'id'},
-                    {data: 'created_at', name: 'created_at'},
-                    {data: 'total_sku', name: 'total_sku'},
-                    {data: 'total_paid', name: 'total_paid'},
-                    {data: 'user_id', name: 'user_id'},
-                    {data: 'username', name: 'username'},
-                    {data: 'fullname', name: 'fullname'},
-                    {data: 'dob', name: 'dob'},
-                    {data: 'email', name: 'email'},
-                    {data: 'country', name: 'country'},
-                    {data: 'address', name: 'address'},
-                    {data: 'team_name', name: 'team_name'},
-                    {data: 'strava', name: 'strava'},
-                    {data: 'coupon_code', name: 'coupon_code'},
-                    {data: 'referral_code', name: 'referral_code'},
-                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                language: {
+                    search: '',
+                    searchPlaceholder: " Search by username,  first name, last name, user id, team name, email, coupon/referral code, strava ID"
+                },
+                "order": [
+                    [1, "desc"]
                 ],
-                "fnRowCallback" : function(nRow, aData, iDisplayIndex){
-                    $("td:first", nRow).html(iDisplayIndex +1);
+                ajax: "{{ route('admin.events.participantsManager', $id) }}",
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'created_at',
+                        name: 'created_at'
+                    },
+                    {
+                        data: 'total_sku',
+                        name: 'total_sku'
+                    },
+                    {
+                        data: 'total_paid',
+                        name: 'total_paid'
+                    },
+                    {
+                        data: 'user_id',
+                        name: 'user_id'
+                    },
+                    {
+                        data: 'username',
+                        name: 'username'
+                    },
+                    {
+                        data: 'fullname',
+                        name: 'fullname'
+                    },
+                    {
+                        data: 'dob',
+                        name: 'dob'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'country',
+                        name: 'country'
+                    },
+                    {
+                        data: 'address',
+                        name: 'address'
+                    },
+                    {
+                        data: 'team_name',
+                        name: 'team_name'
+                    },
+                    {
+                        data: 'strava',
+                        name: 'strava'
+                    },
+                    {
+                        data: 'coupon_code',
+                        name: 'coupon_code'
+                    },
+                    {
+                        data: 'referral_code',
+                        name: 'referral_code'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ],
+                "fnRowCallback": function(nRow, aData, iDisplayIndex) {
+                    $("td:first", nRow).html(iDisplayIndex + 1);
                     return nRow;
                 },
                 "sDom": '<"top"<"actions">lfi<"clear">><"clear">rt<"bottom" <"actions"> lip>'
             });
 
         };
-        $(document).ready(function () {
+        $(document).ready(function() {
             getdatatable();
             $('.dropdown-toggle').dropdown();
             $(".dataTables_filter").parents('div').css("width", "100%");
-
+            $('.dataTables_scrollHead').css({
+                'overflow-x':'scroll'
+            }).on('scroll', function(e){
+                var scrollBody = $(this).parent().find('.dataTables_scrollBody').get(0);
+                scrollBody.scrollLeft = this.scrollLeft;
+                $(scrollBody).trigger('scroll');
+            });
         });
 
-        function removeUser(userid, eventid){
+        function removeUser(userid, eventid) {
 
-            var answer =Swal.fire({
+            var answer = Swal.fire({
                 title: 'Remove User ',
                 icon: '',
-                html:"Are you sure you want to remove this user ?",
+                html: "Are you sure you want to remove this user ?",
                 showCloseButton: true,
                 showCancelButton: true,
                 focusConfirm: false,
-                confirmButtonText:
-                    'Yes, remove',
+                confirmButtonText: 'Yes, remove',
                 confirmButtonAriaLabel: 'Yes, remove',
-                cancelButtonText:
-                    'No, cancel',
+                cancelButtonText: 'No, cancel',
                 cancelButtonAriaLabel: 'No, cancel'
             }).then((result) => {
                 if (result.isConfirmed) {
@@ -271,9 +352,13 @@ $('.closePurchaseHistory').click(function(){
                     $.ajax({
                         type: "POST",
                         dataType: "json",
-                        url: "{{route('eventUser.remove')}}",
-                        data: {'_token':  $('input[name="_token"]').val(), 'eventId': eventid,'userId':userid},
-                        success: function(data){
+                        url: "{{ route('eventUser.remove') }}",
+                        data: {
+                            '_token': $('input[name="_token"]').val(),
+                            'eventId': eventid,
+                            'userId': userid
+                        },
+                        success: function(data) {
                             console.log(data);
                             $('.data-table').dataTable().fnClearTable();
                             $('.data-table').dataTable().fnDestroy();
@@ -282,11 +367,7 @@ $('.closePurchaseHistory').click(function(){
                     });
 
                 }
-        })
-    }
-
-
-
-
+            })
+        }
     </script>
 </x-app-layout>
