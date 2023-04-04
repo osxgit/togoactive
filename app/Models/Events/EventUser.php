@@ -56,11 +56,12 @@ class EventUser extends Model
     public function rewards(){
         return $this->hasMany(UserReward::class,'event_id','event_id')->whereExists(
             function($query)  {
-              $query->from('payments')
-              ->whereColumn("id","user_rewards.payment_id")
+                $query->from('payments')
+                ->whereColumn("id","user_rewards.payment_id")
+               // ->whereRaw('(case when (payment_type = "upgrade" ) THEN status IN("successful") ELSE 1=1 END)');
               ->where('status','successful');
-            });
-    }
 
+        });
+    }
 
 }

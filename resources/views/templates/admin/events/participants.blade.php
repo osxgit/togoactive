@@ -140,7 +140,7 @@
                                 <tr>
                                     <th>No</th>
                                     <th>Date Joined</th>
-                                    <th>Total SKUs Purchased</th>
+                                    <th>No of items</th>
                                     <th>Amount</th>
                                     <th>User ID</th>
                                     <th>Username</th>

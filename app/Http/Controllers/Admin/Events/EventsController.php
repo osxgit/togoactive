@@ -181,17 +181,29 @@ class EventsController extends Controller
                 ->addIndexColumn()
                 ->addColumn('total_paid', function($row){
                     //getting payment information
-                    $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->last();
-                    $currency = $payment->currency;
-                    if($payment->status=='successful' || $payment->status=='processing'){
+                    $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->where('status','successful')->last();
+                    $currency = $payment->currency ?? '';
+
+                    if(isset($payment->total_paid)){
                         $amount = number_format($payment->total_paid,2);
+                    } else{
+                        $amount = 0;
+                    }
+
+                    $status = $payment->status ?? '';
+
+                    if($status == 'successful' || $status == 'processing'){
+
                        // if($amount != 0){
                               return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id)'>PaymentHistory</span>";
                         /* } else{
                             return $amount;
                         } */
-                    } else{
-                         return $currency." ".$payment->total_paid."<p><span  class='text-xs cursor-pointer' style='color: red;'> $payment->status</span>";
+                    }else if($status!=''){
+                        return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: red;'> $payment->status</span>";
+                    }
+                    else{
+                         return $currency." ".$amount;
 
                     }
                 })
