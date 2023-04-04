@@ -11,7 +11,11 @@
         @if (!empty($puchaseData->transaction_id))
             Txn ID:
             {{ $puchaseData->transaction_id }} <br>
+        @else
+            Txn ID:
+            {{ $puchaseData->payment_intent }} <br>
         @endif
+
         @if ($puchaseData->payment_id && !empty($puchaseData->payment_id))
             Payment ID :
             {{ $puchaseData->payment_id }}

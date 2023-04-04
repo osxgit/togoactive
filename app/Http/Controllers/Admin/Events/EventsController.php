@@ -181,7 +181,7 @@ class EventsController extends Controller
                 ->addIndexColumn()
                 ->addColumn('total_paid', function($row){
                     //getting payment information
-                    $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->where('status','successful')->last();
+                    $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->last();
                     $currency = $payment->currency ?? '';
 
                     if(isset($payment->total_paid)){
@@ -217,6 +217,10 @@ class EventsController extends Controller
                     //$total_sku = $row->total_sku;
 
                     return $total_sku;
+                })
+                ->addColumn('user_id', function($row){
+                    $tgp_userid = $row->user->tgp_userid;
+                    return $tgp_userid;
                 })
                 ->addColumn('username', function($row){
                         $username = $row->user->username;

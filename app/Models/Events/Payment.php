@@ -31,7 +31,8 @@ class Payment extends Model
         return $this->hasMany(UserReward::class,'payment_id')->whereExists(function ($query) {
             $query->from('payments')
                   ->whereColumn('payments.id', 'user_rewards.payment_id')
-                  ->where("status","successful");
+                  //->where("status","successful");
+                  ->whereRaw('(case when (payment_type = "upgrade" ) THEN status IN("successful") ELSE status IN("processing","successful") END)');
         });
     }
 
