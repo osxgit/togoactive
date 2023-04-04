@@ -8,10 +8,16 @@
         {{ \Carbon\Carbon::Parse($puchaseData->created_at)->timezone($eventData->timezone)->isoFormat('LLLL') }}
         (GMT {{ $eventData->timezone }})</p>
     <p class="text-sm">
-        @if (!empty($puchaseData->transaction_id))
+
+
+        @if (isset($puchaseData->userEvent->is_paid_user) && !empty($puchaseData->userEvent->is_paid_user) && $puchaseData->transaction_id!= null)
             Txn ID:
             {{ $puchaseData->transaction_id }} <br>
+        @else
+            Txn ID:
+            {{ $puchaseData->payment_intent }} <br>
         @endif
+
         @if ($puchaseData->payment_id && !empty($puchaseData->payment_id))
             Payment ID :
             {{ $puchaseData->payment_id }}
@@ -48,7 +54,7 @@
                 </td>
                 <td class="w-50 pt-3 px-4">
                     <span class="text-sm">
-                        {{ !empty($puchaseData->coupon_code) ? $puchaseData->coupon_code : 'NA' }}
+                        {{ (!empty($puchaseData->coupon_code) && ($puchaseData->user_reward->count() > 0)) ? $puchaseData->coupon_code : 'NA' }}
                     </span>
                 </td>
             </tr>
@@ -60,7 +66,7 @@
                     @if (isset($puchaseData->total_amount) &&
                             isset($puchaseData->discount) &&
                             !empty($puchaseData->discount) &&
-                            !empty($puchaseData->total_amount))
+                            !empty($puchaseData->total_amount) && ($puchaseData->user_reward->count() > 0))
                         <span class="text-sm">
                             {{ formatPrice($puchaseData->currency, ($puchaseData->discount / $puchaseData->total_amount) * 100) }}%
                             ({{ $puchaseData->currency }}
@@ -76,12 +82,16 @@
                     <h6 class="fpoppins">Total</h6>
                 </td>
                 <td class="w-50 py-3 px-4">
-                    <span class="text-sm">{{ $puchaseData->currency }}
-                        {{ formatPrice($puchaseData->currency, $puchaseData->total_paid) }}</span>
+                    @if ($puchaseData->user_reward->count() > 0)
+                        <span class="text-sm">{{ $puchaseData->currency }}  {{ formatPrice($puchaseData->currency, $puchaseData->total_paid) }}</span>
+                    @else
+                    <span class="text-sm"> NA </span>
+                    @endif
+
                 </td>
             </tr>
             <tr class="border-top">
-                @if (isset($puchaseData->userEvent) && !empty($puchaseData->userEvent))
+                @if (isset($puchaseData->userEvent->address) && !empty($puchaseData->userEvent->address))
                     <td colspan="2" class="w-full py-3 px-4">
                         <h6>Address :</h6>
                         <p></p>

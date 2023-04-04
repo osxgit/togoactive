@@ -1111,11 +1111,12 @@ return $data;
 
             public function getEventUsersList($eventId){
 
-                $data= EventUser::where('event_users.event_id',$eventId)->join('payments', function ($join) {
-                    $join->on('event_users.event_id', '=', 'payments.event_id')
-                         ->on('payments.user_id', '=', 'event_users.user_id')
-                         ->where('payments.payment_type', '=', 'registration');
-                })->with('user','team_user','team_user.team')->select('event_users.*', 'payments.status','payments.coupon_code','payments.total_paid')->get();
+                $data= EventUser::where('event_users.event_id',$eventId)
+                ->with('user','team_user','team_user.team','payment','rewards')
+
+               // ->select('event_users.*', 'payments.status','payments.coupon_code','payments.total_paid','payments.currency',DB::raw('count(user_rewards.id) as total_sku'))->orderBy('event_users.id','DESC')->orderBy('payments.id','DESC')->groupBy('event_users.user_id')->get();
+                ->select('event_users.*')->orderBy('event_users.id','DESC')->groupBy('event_users.user_id')
+                ->get();
                return $data;
             }
 
@@ -1289,15 +1290,17 @@ return $data;
                 if( $user != null ) {
                     $paymentData = Payment::where('user_id', $user->id)
                     ->where('event_id', $eventId)
-                    ->where('status', 'successful')
+                    //->whereIn('status', ['successful','processing'])
+                    ->whereRaw('(case when (payment_type = "upgrade" ) THEN status IN("successful") ELSE status IN("processing","successful") END)')
                     ->with('user_reward','user_reward.rewards')
                     ->get();
                     if( isset($paymentData) && !empty($paymentData)) {
                         foreach($paymentData as $payment) {
+
                             $userEvent = EventUser::
                                 where('user_id', $user->id)
                                 ->where('event_id', $eventId)
-                                ->where('address_id', $payment->address_id)
+                                //->where('address_id', $payment->address_id)
                                 // ->where('is_paid_user', 1)
                                 ->first();
                             $payment->userEvent = $userEvent;
@@ -1316,8 +1319,8 @@ return $data;
                 }else{
                     $userId= 0;
                 }
-                
-                
+
+
                 $event_user_count = EventUser::where('event_id',$eventId)->count();
                 $event_achievement_count =Achievements::where('event_id',$eventId)->count();
                 if($userId > 0){
@@ -1335,7 +1338,7 @@ return $data;
                 }
                 $response['usersCount']=$event_user_count;
                 $response['achievementsCount']= $event_achievement_count;
-               
-                return $response; 
+
+                return $response;
             }
 }

@@ -28,4 +28,8 @@ class UserReward extends Model
     {
         return $this->belongsTo(Reward::class, 'reward_id');
     }
+
+    public function rewardPayment(){
+        return $this->belongsTo(Payment::class, 'payment_id');
+    }
 }

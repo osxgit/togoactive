@@ -142,7 +142,7 @@ class EventsController extends Controller
 
                                                    Publish event
                                                </a>
-                                                <a class="dropdown-item"  href="#">
+                                                <a class="dropdown-item"  href="'.route('admin.events.participantsManager' , $row->id).'">
 
                                                   View participants manager
                                               </a>
@@ -167,24 +167,61 @@ class EventsController extends Controller
     }
 
     public function participants_manager(Request $request, $eventId){
-        // $data = $this->eventRepository->getEventUsersList($eventId);
-        // dd($data[0]);
+
+        $data = $this->eventRepository->getEventUsersList($eventId);
+        //dd($data);
+
         if ($request->ajax()) {
+
+            //DB::enableQueryLog(); // Enable query log
             $data = $this->eventRepository->getEventUsersList($eventId);
-            return Datatables::of($data)
+            //dd(DB::getQueryLog()); // Show results of log
+
+            $dataTable = Datatables::of($data)
                 ->addIndexColumn()
                 ->addColumn('total_paid', function($row){
-                    if($row->status=='successful'){
-                        $amount = $row->total_paid;
-                        if($amount != 0){
-                              return $amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id)'>PaymentHistory</span>";
-                        } else{
-                            return $amount;
-                        }
+                    //getting payment information
+                    $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->where("status","successful")->last();
+                    $currency = $payment->currency ?? '';
+
+                    if(isset($payment->total_paid)){
+                        $amount = number_format($payment->total_paid,2);
                     } else{
-                         return $row->total_paid."<p><span  class='text-xs cursor-pointer' style='color: red;'>$row->status</span>";
+                        $amount = 0;
+                    }
+
+                    $status = $payment->status ?? '';
+
+                    if($status == 'successful' || $status == 'processing'){
+
+                       // if($amount != 0){
+                              return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id); return true;'>PaymentHistory</span>";
+                        /* } else{
+                            return $amount;
+                        } */
+                    }else if($status!=''){
+                        return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: red;'> $payment->status</span>";
+                    }
+                    else{
+                         //return $currency." ".$amount;
+                         return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id); return true;'>PaymentHistory</span>";
 
                     }
+                })
+                ->addColumn('created_at', function($row){
+                    $created_at = Carbon::parse($row->created_at)->format('D M d, Y H:i:s ');
+                    return $created_at;
+                })
+                ->addColumn('total_sku', function($row){
+                    // getting rewards detail
+                    $total_sku = $row->rewards->where('user_id',$row->user_id)->where('event_id',$row->event_id)->sum('quantity');
+                    //$total_sku = $row->total_sku;
+
+                    return $total_sku;
+                })
+                ->addColumn('user_id', function($row){
+                    $tgp_userid = $row->user->tgp_userid;
+                    return $tgp_userid;
                 })
                 ->addColumn('username', function($row){
                         $username = $row->user->username;
@@ -202,14 +239,17 @@ class EventsController extends Controller
                         $address = $row->country;
                         return $address;
                     })
-                    ->addColumn('team', function($row){
+                    ->addColumn('team_name', function($row){
+
+                        //dd($row);
                         if($row->team_user){
-                            $team = '<p>'.$row->team_user->team->team_name.'<p>'.$row->team_user->is_owner ==0 ?'Team Member':'Team Leader';
+                            $team_name = $row->team_user->team->team_name ;
+                            $team_name .= $row->team_user->is_owner ==0 ?' - Team Member':' - Team Leader';
                         } else{
-                            $team='';
+                            $team_name='';
                         }
 
-                        return $team;
+                        return $team_name;
                     })
                     ->addColumn('strava', function($row){
                         $strava = $row->user->strava_id;
@@ -228,14 +268,14 @@ class EventsController extends Controller
                         return $remarks;
                     })
                     ->addColumn('action', function($row){
-                        $action = ' <a class="dropdown-item"  href="#" onclick="removeUser('. $row->user_id.',\'' .$row->event_id .'\')" >
-
-                       Remove User
-                    </a>';
+                        $action = ' <i class="fa fa-trash fa-lg text-danger" aria-hidden="true" onclick="removeUser('. $row->user_id.',\'' .$row->event_id .'\')" title="Remove User"></i>';
                         return $action;
                     })
                 ->rawColumns(['action','total_paid'])
                 ->make(true);
+            //dd( $dataTable);
+
+            return  $dataTable;
         }
         $eventData = Events::findOrFail($eventId);
 
@@ -244,7 +284,7 @@ class EventsController extends Controller
     }
 
     public function PurchaseHistory($eventId, $userId){
-     
+
         $purchaseHistoryData=  $this->eventRepository->getPurchaseHistory($eventId, $userId);
         $eventData = Events::findOrFail($eventId);
         $returnHTML = view('templates.admin.events.purchaseHistory',['purchaseHistoryData'=>$purchaseHistoryData,'eventData'=>$eventData])->render();// or method that you prefere to return data + RENDER is the key here
@@ -704,7 +744,7 @@ class EventsController extends Controller
     }
 
     public function deleteCoupon(Request $request,$eventId, $couponId){
-       
+
         $coupons = $this->eventRepository->deleteCoupon($eventId,$couponId );
         return redirect()->route('admin.events.coupons',$eventId )->with('message','Changes saved successfully!');
     }
@@ -712,11 +752,11 @@ class EventsController extends Controller
     public function deleteRewardImage($eventId,$rewardId, $imageIndex){
         $rewards= Reward::Where('id',$rewardId)->first();
         $rewardImages = $rewards->rewards_images;
-      
+
         $rewardImages=json_decode($rewardImages);
         $imgLarge=$rewardImages->large[$imageIndex];
         $imgMedium= $rewardImages->medium[$imageIndex];
-       
+
         $imageHelper = new ImageHelper();
         $imageHelper->deleteImage($imgLarge);
         $imageHelper->deleteImage($imgMedium);
