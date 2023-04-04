@@ -168,7 +168,7 @@ class EventsController extends Controller
 
     public function participants_manager(Request $request, $eventId){
 
-        $data = $this->eventRepository->getEventUsersList($eventId);
+        //$data = $this->eventRepository->getEventUsersList($eventId);
         //dd($data);
 
         if ($request->ajax()) {
@@ -183,6 +183,7 @@ class EventsController extends Controller
                     //getting payment information
                     $payment = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->where("status","successful")->last();
                     $currency = $payment->currency ?? '';
+                    $status = $payment->status ?? '';
 
                     if(isset($payment->total_paid)){
                         $amount = number_format($payment->total_paid,2);
@@ -190,20 +191,19 @@ class EventsController extends Controller
                         $amount = 0;
                     }
 
-                    $status = $payment->status ?? '';
+                    if($amount==0){
+                        $currency = '';
+                        $amount = 0;
+                    }
 
                     if($status == 'successful' || $status == 'processing'){
 
-                       // if($amount != 0){
-                              return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id); return true;'>PaymentHistory</span>";
-                        /* } else{
-                            return $amount;
-                        } */
+                        return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id); return true;'>PaymentHistory</span>";
+
                     }else if($status!=''){
                         return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: red;'> $payment->status</span>";
                     }
                     else{
-                         //return $currency." ".$amount;
                          return $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($row->event_id,$row->user_id); return true;'>PaymentHistory</span>";
 
                     }
@@ -215,7 +215,6 @@ class EventsController extends Controller
                 ->addColumn('total_sku', function($row){
                     // getting rewards detail
                     $total_sku = $row->rewards->where('user_id',$row->user_id)->where('event_id',$row->event_id)->sum('quantity');
-                    //$total_sku = $row->total_sku;
 
                     return $total_sku;
                 })

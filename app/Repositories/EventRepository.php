@@ -1112,10 +1112,17 @@ return $data;
             public function getEventUsersList($eventId){
 
                 $data= EventUser::where('event_users.event_id',$eventId)
-                ->with('user','team_user','team_user.team','payment','rewards')
-
-               // ->select('event_users.*', 'payments.status','payments.coupon_code','payments.total_paid','payments.currency',DB::raw('count(user_rewards.id) as total_sku'))->orderBy('event_users.id','DESC')->orderBy('payments.id','DESC')->groupBy('event_users.user_id')->get();
-                ->select('event_users.*')->orderBy('event_users.id','DESC')->groupBy('event_users.user_id')
+                ->with('team_user','team_user.team')
+                ->with(['user' => function ($query) {
+                    $query->select('id', 'tgp_userid','username','fullname','email','strava_id');
+                }])
+                ->with(['payment' => function ($query) {
+                    $query->select('id', 'user_id','event_id','payment_type','payment_method','total_paid');
+                }])
+                ->with(['rewards' => function ($query) {
+                    $query->select('id', 'user_id','event_id','reward_id','payment_id','quantity');
+                }])
+                ->select(['event_users.id','event_users.user_id','event_users.event_id','referral_code','remarks','country','created_at','dob'])->orderBy('event_users.id','DESC')
                 ->get();
                return $data;
             }
