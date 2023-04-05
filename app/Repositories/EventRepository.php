@@ -29,6 +29,7 @@ use App\Repositories\Interfaces\EventRepositoryInterface;
 
 use Log;
 use DB;
+use App\Events\EventRegistration;
 
 class EventRepository implements EventRepositoryInterface
 {
