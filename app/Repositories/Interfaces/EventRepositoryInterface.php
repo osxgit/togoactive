@@ -168,5 +168,7 @@ interface EventRepositoryInterface
 
     public function getEventDataForTGP($data);
 
+    public function updatePyamentResponse($data);
+
 
 };
