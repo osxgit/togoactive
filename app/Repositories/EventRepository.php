@@ -1348,4 +1348,31 @@ return $data;
 
                 return $response;
             }
+
+            public function updatePyamentResponse($data){
+
+                $payment = Payment::Where('id',$data['paymentId'])->first();
+
+                if (isset($payment->status) && $payment->status!='successful') {
+
+                    $payment->status  =  "successful";
+                    $payment->save();
+
+                    // sending email to user for registration or upgrade
+                    $eventUser      = $payment->user_id;
+                    $eventId        = $payment->event_id;
+                    $eventPayment   = $data['paymentId'];
+                    $eventUserId    = $data['eventUserId'];
+
+                    $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
+                    if($payment->payment_type=='upgrade'){
+                        $eventData['upgrade']=true;
+                    }
+
+                    event(new EventRegistration($eventData,$data));
+                }
+
+                return $payment;
+            }
+
 }

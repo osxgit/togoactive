@@ -328,4 +328,11 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
                 return $this->sendAPIResponse();
             }
+
+            public function updatePyamentResponse(Request $request){
+                $payment = $this->eventRepository->updatePyamentResponse($request);
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$payment) ));
+                return $this->sendAPIResponse();
+
+            }
     }
