@@ -1360,7 +1360,7 @@ return $data;
                     $payment->save();
 
                     // sending email to user for registration or upgrade
-                    $eventUser      = $payment->user_id;
+                    /* $eventUser      = $payment->user_id;
                     $eventId        = $payment->event_id;
                     $eventPayment   = $data['paymentId'];
                     $eventUserId    = $data['eventUserId'];
@@ -1370,7 +1370,7 @@ return $data;
                         $eventData['upgrade']=true;
                     }
 
-                    event(new EventRegistration($eventData,$data));
+                    event(new EventRegistration($eventData,$data)); */
                 }
 
                 return $payment;
