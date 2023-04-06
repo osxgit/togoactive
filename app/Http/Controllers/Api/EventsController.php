@@ -206,14 +206,14 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
 
                 // this is called when event payment registration
-                $eventUser = $response['user_id'];
+                /* $eventUser = $response['user_id'];
                 $eventId = $request['eventId'];
                 $eventPayment = $request['paymentId'];
                 $eventUserId = $request['eventUserId'];
 
                 // if($request->status=='successful'){
                 $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
-                event(new EventRegistration($eventData,$request));
+                event(new EventRegistration($eventData,$request)); */
                 // }
 
                 return $this->sendAPIResponse();
@@ -292,7 +292,7 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
 
                 // this is called when event payment registration
-                $eventUser = $response['user_id'];
+                /* $eventUser = $response['user_id'];
                 $eventId = $request['eventId'];
                 $eventPayment = $request['paymentId'];
                 $eventUserId = $request['eventUserId'];
@@ -300,7 +300,7 @@ class EventsController extends Controller
                 if($request->status=='successful'){
                     $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId, 'upgrade'=>$request['upgrade']];
                     event(new EventRegistration($eventData,$request));
-                }
+                } */
                 return $this->sendAPIResponse();
             }
 
