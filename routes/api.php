@@ -65,7 +65,7 @@ Route::post('getEventSuccessPage', [EventsController::class, 'getEventSuccessPag
 
 Route::post('getEventSocialData', [EventsController::class, 'getEventSocial'])->name('getEventSocial');
 
-Route::post('getUserPaymentHistoryData', [UserController::class, 'getUserPaymentHistory'])->name('getUserPaymentHistory');
+Route::post('getUserPaymentHistoryData', [EventsController::class, 'getUserPaymentHistory'])->name('getUserPaymentHistory');
 
 Route::post('updateUserTeam', [EventsController::class, 'updateUserTeam'])->name('updateUserTeam');
 
