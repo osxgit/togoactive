@@ -335,4 +335,11 @@ class EventsController extends Controller
                 return $this->sendAPIResponse();
 
             }
+            public function getUserPaymentHistory(Request $request) {
+                $eventId = $request->eventid;
+                $user = User::where('tgp_userid',$request->userid)->first();
+                $response = $this->eventRepository->getPurchaseHistory($eventId, $user->id);
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response, 'user_id'=> $user->id, 'event_id' => $eventId) ));
+                return $this->sendAPIResponse();
+            }
     }
