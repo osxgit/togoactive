@@ -267,7 +267,7 @@ class EventsController extends Controller
                         return $remarks;
                     })
                     ->addColumn('action', function($row){
-                        $action = ' <i class="fa fa-trash fa-lg text-danger" aria-hidden="true" onclick="removeUser('. $row->user_id.',\'' .$row->event_id .'\')" title="Remove User"></i>';
+                        $action = ' <i class="fa fa-trash fa-lg text-danger" aria-hidden="true" onclick="removeUser('. $row->user_id.',\'' .$row->event_id .'\'); return true;" title="Remove User"></i>';
                         return $action;
                     })
                 ->rawColumns(['action','total_paid'])
