@@ -144,7 +144,7 @@ interface EventRepositoryInterface
 
     public function updateUserTeam($data);
 
-    public function getEventUsersList($eventId);
+    public function getEventUsersList($eventId,  $start, $perPage,  $sortColumn, $sortOrder, $search);
 
     public function removeEventUser($eventId, $userId);
 
@@ -172,5 +172,5 @@ interface EventRepositoryInterface
 
     public function processFreeUpgradeEvent($data);
 
-
+    public function getEventUsersListCount($eventId, $search);
 };

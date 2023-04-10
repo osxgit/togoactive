@@ -1127,9 +1127,9 @@ return $data;
 
             }
 
-            public function getEventUsersList($eventId){
+            public function getEventUsersList($eventId, $start, $perPage, $sortColumn, $sortOrder, $search){
 
-                $data= EventUser::where('event_users.event_id',$eventId)
+                $query_data = EventUser::where('event_users.event_id',$eventId)
                 ->with('team_user','team_user.team')
                 ->with(['user' => function ($query) {
                     $query->select('id', 'tgp_userid','username','fullname','email','strava_id');
@@ -1140,9 +1140,129 @@ return $data;
                 ->with(['rewards' => function ($query) {
                     $query->select('id', 'user_id','event_id','reward_id','payment_id','quantity');
                 }])
-                ->select(['event_users.id','event_users.user_id','event_users.event_id','referral_code','remarks','country','created_at','dob'])->orderBy('event_users.id','DESC')
-                ->get();
-               return $data;
+                ->select(['event_users.id','event_users.user_id','event_users.event_id','event_users.referral_code','event_users.remarks','event_users.country','event_users.created_at','event_users.dob','event_users.address','event_users.blk','event_users.city','event_users.state','event_users.subdistrict','event_users.postal_code']);
+
+                $query_data->leftJoin('users', 'users.id', '=', 'event_users.user_id');
+
+                $query_data->leftJoin('payments', function ($join) {
+                    $join->on('event_users.user_id', '=', 'payments.user_id');
+                    $join->on('event_users.event_id', '=', 'payments.event_id');
+                    $join->where("payments.status","successful");
+                });
+
+                $query_data->leftJoin('user_rewards', function ($join) {
+                    $join->on('event_users.user_id', '=', 'user_rewards.user_id');
+                    $join->on('event_users.event_id', '=', 'user_rewards.event_id');
+                    $join->on('payments.id', '=', 'user_rewards.payment_id');
+                });
+                 
+                $query_data->leftJoin('team_users', 'team_users.user_id', '=', 'event_users.user_id');
+                $query_data->leftJoin('teams', 'teams.id', '=', 'team_users.team_id');
+
+                if(isset($search) && $search!=null){
+                    $query_data->where(function  ($query) use($search) {
+                        
+                        $query->Where('users.email', 'like', '%' .$search . '%')
+                                ->orWhere('users.fullname', 'like', '%' .$search . '%')
+                                ->orWhere('users.username', 'like', '%' .$search . '%')
+                                ->orWhere('users.tgp_userid', 'like', '%' .$search . '%')
+                                ->orWhere('teams.team_name', 'like', '%' .$search . '%')
+                                ->orWhere('payments.coupon_code', 'like', '%' .$search . '%')
+                                ->orWhere('event_users.referral_code', 'like', '%' .$search . '%')
+                                ->orWhere('users.strava_id', 'like', '%' .$search . '%');
+                    });
+                }
+
+                $query_data->groupBy("event_users.id");
+                
+
+                if($sortColumn=='id'){
+                    $query_data->orderBy('event_users.id',$sortOrder);
+
+                }else if($sortColumn=='created_at'){
+                    $query_data->orderBy('event_users.id',$sortOrder);
+
+                }else if($sortColumn=='total_paid'){
+                    $query_data->orderBy('payments.total_paid',$sortOrder);
+
+                }else if($sortColumn=='total_sku'){
+                    $query_data->orderByRaw("SUM(user_rewards.quantity) $sortOrder");
+                }else if($sortColumn=='user_id'){
+                    $query_data->orderBy('event_users.user_id',$sortOrder);
+
+                }else if($sortColumn=='username'){
+                    $query_data->orderBy('users.username',$sortOrder);
+
+                }else if($sortColumn=='fullname'){
+                    $query_data->orderBy('users.fullname',$sortOrder);
+
+                }else if($sortColumn=='dob'){
+                    $query_data->orderBy('event_users.dob',$sortOrder);
+
+                }else if($sortColumn=='email'){
+                    $query_data->orderBy('users.email',$sortOrder);
+
+                }else if($sortColumn=='country' || $sortColumn=='address'){
+                    $query_data->orderBy('event_users.country',$sortOrder);
+
+                }else if($sortColumn=='team_name'){
+                   
+                    $query_data->orderBy("teams.team_name", $sortOrder);
+
+                }else if($sortColumn=='strava'){
+                   
+                    $query_data->orderBy("users.strava_id", $sortOrder);
+
+                }else if($sortColumn=='coupon_code'){
+                    
+                    $query_data->orderBy("payments.coupon_code", $sortOrder);
+
+                }else if($sortColumn=='referral_code'){
+                    $query_data->orderBy('event_users.referral_code',$sortOrder);
+
+                }else{
+                    $query_data->orderBy('event_users.id','DESC');
+                } 
+               
+                $query_data->skip($start);
+                $query_data->take($perPage);
+                 
+                $response = $query_data->get();
+                return $response;
+            }
+
+            public function getEventUsersListCount($eventId, $search){
+
+                $query_data= EventUser::where('event_users.event_id',$eventId);
+
+                $query_data->leftJoin('users', 'users.id', '=', 'event_users.user_id');
+
+                $query_data->leftJoin('payments', function ($join) {
+                    $join->on('event_users.user_id', '=', 'payments.user_id');
+                    $join->on('event_users.event_id', '=', 'payments.event_id');
+                    $join->where("payments.status","successful");
+                });
+                 
+                $query_data->leftJoin('team_users', 'team_users.user_id', '=', 'event_users.user_id');
+                $query_data->leftJoin('teams', 'teams.id', '=', 'team_users.team_id');
+
+                if(isset($search) && $search!=null){
+                    $query_data->where(function  ($query) use($search) {
+                        
+                        $query->Where('users.email', 'like', '%' .$search . '%')
+                                ->orWhere('users.fullname', 'like', '%' .$search . '%')
+                                ->orWhere('users.username', 'like', '%' .$search . '%')
+                                ->orWhere('users.tgp_userid', 'like', '%' .$search . '%')
+                                ->orWhere('teams.team_name', 'like', '%' .$search . '%')
+                                ->orWhere('payments.coupon_code', 'like', '%' .$search . '%')
+                                ->orWhere('event_users.referral_code', 'like', '%' .$search . '%')
+                                ->orWhere('users.strava_id', 'like', '%' .$search . '%');
+                    });
+                }
+
+
+                $response = $query_data->count();
+                return $response;
             }
 
             public function removeEventUser($eventId, $userId){

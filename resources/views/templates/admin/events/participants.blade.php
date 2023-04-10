@@ -248,7 +248,7 @@
                 order: [[ 0, 'desc' ]],
                 ajax: "{{ route('admin.events.participantsManager', $id) }}",
                 columns: [{
-                        data: 'id',
+                        data: 'no',
                         name: 'id'
                     },
                     {
