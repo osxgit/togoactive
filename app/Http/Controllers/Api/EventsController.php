@@ -342,4 +342,22 @@ class EventsController extends Controller
                 $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response, 'user_id'=> $user->id, 'event_id' => $eventId) ));
                 return $this->sendAPIResponse();
             }
+
+            public function processFreeUpgradeEvent(Request $request){
+                $response = $this->eventRepository->processFreeUpgradeEvent($request->all());
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+
+                // this is called when event payment registration
+               
+                $eventId = $request['eventId'];
+                $eventUser = $response['payment']['user_id'];
+                $eventPayment = $response['payment']['id'];
+                $eventUserId = $response['event_user']['id'];
+                $request['upgrade'] = true;
+
+                $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId, 'upgrade'=>$request['upgrade']];
+                event(new EventRegistration($eventData,$request));
+                
+                return $this->sendAPIResponse();
+            }
     }

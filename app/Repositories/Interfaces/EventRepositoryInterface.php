@@ -170,5 +170,7 @@ interface EventRepositoryInterface
 
     public function updatePyamentResponse($data);
 
+    public function processFreeUpgradeEvent($data);
+
 
 };

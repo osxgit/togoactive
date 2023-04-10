@@ -105,9 +105,10 @@
                                     {{\Carbon\Carbon::Parse($mailData['data']['registrationData']['payment']['created_at'])->timezone($mailData['data']['event_object']['timezone'])->isoFormat('LLLL')}} (GMT {{$mailData['data']['event_object']['timezone']}})
 
                                 </p>
-                                @if (($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful'))
+                                @if (($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful' && $mailData['data']['registrationData']['payment']['transaction_id'] != null))
                                     <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
-                                        Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
+                                        
+                                    Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
                                     </p>
                                 @endif
                                 <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
@@ -185,7 +186,7 @@
                             <tr>
                                 <th style="padding: 10px;width: 50%;">Total</th>
                                 <th style="padding: 10px;width: 50%;">
-                                    {{($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful') ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['total_amount'],2) : 'NA'}}
+                                    {{($mailData['data']['registrationData']['payment']['total_paid'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful') ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['total_paid'],2) : 'NA'}}
                                 </th>
                             </tr>
 
