@@ -896,21 +896,23 @@ return $data;
                     'status'=>'successful',
                 ]);
 
-                foreach($data['memb'] as $membership){
-                    $reward =  UserReward::create([
-                        'event_id' =>$data['eventId'],
-                        'user_id' => $user->id,
-                        'reward_id'=>$membership['reward'],
-                        'size'=>$membership['size']??null,
-                        'payment_id'=>$payment->id,
-                        'quantity'=>$membership['quantity'],
-                        'amount'=>(str_replace(',','',$membership['rewardPrice']))*$membership['quantity'],
-                        'discount'=>$membership['discountedPrice']??0,
-                        'currency'=>$data['currency']
-                    ]);
-
+                if(isset($data['memb'])){
+                    foreach($data['memb'] as $membership){
+                        $reward =  UserReward::create([
+                            'event_id' =>$data['eventId'],
+                            'user_id' => $user->id,
+                            'reward_id'=>$membership['reward'],
+                            'size'=>$membership['size']??null,
+                            'payment_id'=>$payment->id,
+                            'quantity'=>$membership['quantity'],
+                            'amount'=>(str_replace(',','',$membership['rewardPrice']))*$membership['quantity'],
+                            'discount'=>$membership['discountedPrice']??0,
+                            'currency'=>$data['currency']
+                        ]);
+    
+                    }
                 }
-
+                
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
 
@@ -1418,6 +1420,11 @@ return $data;
                     $eventUser->blk=$data['address']['blk']??null;
                     $eventUser->save();
                 }
+
+                // changing status to upgraded 
+                $eventUser->has_upgraded = 1;
+                $eventUser->save();
+
                 $payment =  Payment::create([
                     'event_id' =>$data['eventId'],
                     'user_id' => $user->id,
