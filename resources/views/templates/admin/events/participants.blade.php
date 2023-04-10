@@ -243,9 +243,9 @@
                             <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
                        </span>&emsp;Processing ..."
                 },
-                "order": [
-                    [1, "desc"]
-                ],
+                
+                columnDefs: [ { type: 'date', 'targets': [0] } ],
+                order: [[ 0, 'desc' ]],
                 ajax: "{{ route('admin.events.participantsManager', $id) }}",
                 columns: [{
                         data: 'id',
@@ -317,7 +317,7 @@
                 ],
                 "fnRowCallback": function(nRow, aData, iDisplayIndex) {
 
-                    $("td:first", nRow).html(aData.DT_RowIndex);
+                   $("td:first", nRow).html(aData.DT_RowIndex);
                     return nRow;
                 },
                 "sDom": '<"top"<"actions">lfi<"clear">><"clear">rt<"bottom" <"actions"> lip>',
