@@ -1140,7 +1140,7 @@ return $data;
                 ->with(['rewards' => function ($query) {
                     $query->select('id', 'user_id','event_id','reward_id','payment_id','quantity');
                 }])
-                ->select(['event_users.id','event_users.user_id','event_users.event_id','event_users.referral_code','event_users.remarks','event_users.country','event_users.created_at','event_users.dob']);
+                ->select(['event_users.id','event_users.user_id','event_users.event_id','event_users.referral_code','event_users.remarks','event_users.country','event_users.created_at','event_users.dob','event_users.address','event_users.blk','event_users.city','event_users.state','event_users.subdistrict','event_users.postal_code']);
 
                 $query_data->leftJoin('users', 'users.id', '=', 'event_users.user_id');
 
@@ -1148,6 +1148,12 @@ return $data;
                     $join->on('event_users.user_id', '=', 'payments.user_id');
                     $join->on('event_users.event_id', '=', 'payments.event_id');
                     $join->where("payments.status","successful");
+                });
+
+                $query_data->leftJoin('user_rewards', function ($join) {
+                    $join->on('event_users.user_id', '=', 'user_rewards.user_id');
+                    $join->on('event_users.event_id', '=', 'user_rewards.event_id');
+                    $join->on('payments.id', '=', 'user_rewards.payment_id');
                 });
                  
                 $query_data->leftJoin('team_users', 'team_users.user_id', '=', 'event_users.user_id');
@@ -1177,10 +1183,10 @@ return $data;
                     $query_data->orderBy('event_users.id',$sortOrder);
 
                 }else if($sortColumn=='total_paid'){
-                    //$query_data->orderBy('payment.total_paid',$sortOrder);
+                    $query_data->orderBy('payments.total_paid',$sortOrder);
 
                 }else if($sortColumn=='total_sku'){
-                   // $query_data->orderBy('rewards.total_paid',$sortOrder);
+                    $query_data->orderByRaw("SUM(user_rewards.quantity) $sortOrder");
                 }else if($sortColumn=='user_id'){
                     $query_data->orderBy('event_users.user_id',$sortOrder);
 
@@ -1191,7 +1197,7 @@ return $data;
                     $query_data->orderBy('users.fullname',$sortOrder);
 
                 }else if($sortColumn=='dob'){
-                    $query_data->orderBy('event_users.fullname',$sortOrder);
+                    $query_data->orderBy('event_users.dob',$sortOrder);
 
                 }else if($sortColumn=='email'){
                     $query_data->orderBy('users.email',$sortOrder);

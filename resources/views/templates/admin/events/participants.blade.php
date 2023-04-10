@@ -236,7 +236,6 @@
                 scrollCollapse: true,
                 pageLength: 20,
                 lengthChange: false,
-                paging:true,
                 language: {
                     search: '',
                     searchPlaceholder: " Search by username,  first name, last name, user id, team name, email, coupon/referral code, strava ID",
@@ -249,7 +248,7 @@
                 order: [[ 0, 'desc' ]],
                 ajax: "{{ route('admin.events.participantsManager', $id) }}",
                 columns: [{
-                        data: 'id',
+                        data: 'no',
                         name: 'id'
                     },
                     {
