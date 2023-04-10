@@ -168,16 +168,46 @@ class EventsController extends Controller
 
     public function participants_manager(Request $request, $eventId){
 
-        //$data = $this->eventRepository->getEventUsersList($eventId);
-        //dd($data);
+       /*  $draw = $request->draw;
+        $start = $request->start;
+        $per_page = $request->length;
+
+        $count = $this->eventRepository->getEventUsersListCount($eventId);
+
+        $data = $this->eventRepository->getEventUsersList($eventId, 0,20);
+        */
 
         if ($request->ajax()) {
 
-            //DB::enableQueryLog(); // Enable query log
-            $data = $this->eventRepository->getEventUsersList($eventId);
-            //dd(DB::getQueryLog()); // Show results of log
+            $draw = $request->draw;
+            $start = $request->start;
+            $per_page = $request->length;
+            $search = $request->input("search.value");
+    
+            $columnIndex_arr = $request->get('order');
+            $columnName_arr = $request->get('columns');
+            $order_arr = $request->get('order');
+            $search_arr = $request->get('search');
+    
+            $columnIndex = $columnIndex_arr[0]['column']; // Column index
+            $columnName = $columnName_arr[$columnIndex]['data']; // Column name
+            $columnSortOrder = $order_arr[0]['dir']; // asc or desc
+            $searchValue = $search_arr['value']; // Search value
+           
+            $count = $this->eventRepository->getEventUsersListCount($eventId, "");
 
+            $filter_count = $this->eventRepository->getEventUsersListCount($eventId, $search);
+    
+            //dd(DB::getQueryLog()); // Show results of log
+            //DB::enableQueryLog();
+            $data = $this->eventRepository->getEventUsersList($eventId, $start, $per_page, $columnName,$columnSortOrder, $search);
+
+            //dd(DB::getQueryLog()); // Show results of log
+           // dd($data);
+
+            /*
             $dataTable = Datatables::of($data)
+                ->setOffset($start)
                 ->addIndexColumn()
                 ->addColumn('total_paid', function($row){
                     //getting payment information
@@ -281,11 +311,101 @@ class EventsController extends Controller
                     ->addColumn('id', function($row){
                         return $row->id;
                     })
+                ->with([ 
+                    "recordsTotal" => $count,
+                    "recordsFiltered" => $count
+                ])
                 ->rawColumns(['action','total_paid','created_at'])
                 ->make(true);
+
+            */
+
+             $participant_data = $data->map(function ($item)  {
+
+                $payment = $item->payment->where('user_id',$item->user_id)->where('event_id',$item->event_id)->where("status","successful")->last();
+                    $currency = $payment->currency ?? '';
+                    $status = $payment->status ?? '';
+
+                    if(isset($payment->total_paid)){
+                        $amount = number_format($payment->total_paid,2);
+                    } else{
+                        $amount = 0;
+                    }
+
+                    if($amount==0){
+                        $currency = '';
+                        $amount = 0;
+                    }
+
+                    if($status == 'successful' || $status == 'processing'){
+
+                        $total_paid = $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($item->event_id,$item->user_id); return true;'>PaymentHistory</span>";
+
+                    }else if($status!=''){
+                        $total_paid = $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: red;'> $payment->status</span>";
+                    }
+                    else{
+                        $total_paid = $currency." ".$amount."<p><span  class='text-xs cursor-pointer' style='color: #06C281;' onclick='openPurchaseHistory($item->event_id,$item->user_id); return true;'>PaymentHistory</span>";
+
+                    }
+                
+                $created_at_date = Carbon::parse($item->created_at)->format('D M d, Y H:i:s ');
+                $created_at_wt_date = Carbon::parse($item->created_at)->format('YmdHis');
+                //return $created_at;
+
+                $created_at = "<span data-search='".$created_at_date."' data-order=".$created_at_wt_date.">    ".$created_at_date."</span>";
+
+                $total_sku = $item->rewards->where('user_id',$item->user_id)->where('event_id',$item->event_id)->sum('quantity');
+
+                if($item->team_user){
+                    $team_name = $item->team_user->team->team_name ;
+                    $team_name .= $item->team_user->is_owner ==0 ?' - Team Member':' - Team Leader';
+                } else{
+                    $team_name='';
+                }
+
+                $payment_coupon = $item->payment->where('user_id',$item->user_id)->where('event_id',$item->event_id)->where("status","successful")->last();
+                        $coupon_code = '';
+                        if(isset($payment_coupon)){
+                            $coupon_code = $payment_coupon->coupon_code;
+                        }
+                       // return $coupon_code;
+                      
+                return [
+                    'id' => $item->id,
+                    'total_paid' => $total_paid,
+                    'created_at' => $created_at,
+                    'total_sku' => $total_sku,
+                    'user_id' => $item->user->tgp_userid,
+                    'username'=> $item->user->username,
+                    'fullname'=> $item->user->fullname,
+                    'email' => $item->user->email,
+                    'address' => $item->country,
+                    'team_name' => $team_name,
+                    'strava' => $item->user->strava_id, 
+                    'referral_code' => $item->referral_code,
+                    'coupon_code' => $coupon_code,
+                    'remarks' => $item->remarks,
+                    'dob' => $item->dob,
+                    'country' =>$item->country,
+                    'action' => ' <i class="fa fa-trash fa-lg text-danger" aria-hidden="true" onclick="removeUser('. $item->user_id.',\'' .$item->event_id .'\'); return true;" title="Remove User"></i>',
+                
+                ];
+            }); 
+            
+
             //dd( $dataTable);
 
-            return  $dataTable;
+            $response = array(
+                'draw' => intval($draw),
+                "iTotalRecords" => $count,
+                "iTotalDisplayRecords" => $filter_count,
+                "data" => $participant_data
+            );
+           // dd($dataTable);
+            //return  $dataTable;
+
+            return response()->json($response);
         }
         $eventData = Events::findOrFail($eventId);
 

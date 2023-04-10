@@ -236,6 +236,7 @@
                 scrollCollapse: true,
                 pageLength: 20,
                 lengthChange: false,
+                paging:true,
                 language: {
                     search: '',
                     searchPlaceholder: " Search by username,  first name, last name, user id, team name, email, coupon/referral code, strava ID",
