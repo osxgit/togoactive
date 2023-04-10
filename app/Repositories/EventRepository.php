@@ -888,13 +888,28 @@ return $data;
                     'payment_type'=>'registration',
                     'payment_method'=>'Free',
                     'payment_intent'=>'Free_'.$eventUser->id,
-                    'total_amount'=>'0.00',
-                    'discount'=>'0.00',
-                    'total_paid'=>'0.00',
                     'currency'=>$data['currency'],
-                    'coupon_code'=>'',
+                    'total_amount'=>$data['totalPrice'] ?? 0,
+                    'discount'=>$data['discountAmount'] ?? 0,
+                    'total_paid'=>$data['priceToPay'] ?? 0,
+                    'coupon_code'=>$data['coupon_code'] ?? '',
                     'status'=>'successful',
                 ]);
+
+                foreach($data['memb'] as $membership){
+                    $reward =  UserReward::create([
+                        'event_id' =>$data['eventId'],
+                        'user_id' => $user->id,
+                        'reward_id'=>$membership['reward'],
+                        'size'=>$membership['size']??null,
+                        'payment_id'=>$payment->id,
+                        'quantity'=>$membership['quantity'],
+                        'amount'=>(str_replace(',','',$membership['rewardPrice']))*$membership['quantity'],
+                        'discount'=>$membership['discountedPrice']??0,
+                        'currency'=>$data['currency']
+                    ]);
+
+                }
 
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
@@ -1385,6 +1400,57 @@ return $data;
                 }
 
                 return $payment;
+            }
+
+            public function processFreeUpgradeEvent($data){
+                $user = User::where('tgp_userid',$data['userId'])->first();
+
+                // get event user details
+                $eventUser = EventUser::where('event_id',$data['eventId'])->where('user_id', $user->id)->first();
+                if($eventUser->address_id == 0){
+                    $eventUser->address_id=$data['address_id']??0;
+                    $eventUser->postal_code=$data['address']['postal_code']??null;
+                    $eventUser->country=$data['country']??null;
+                    $eventUser->city=$data['address']['city']??null;
+                    $eventUser->state=$data['address']['state']??null;
+                    $eventUser->subdistrict=$data['address']['subdistrict']??null;
+                    $eventUser->address=$data['address']['address']??null;
+                    $eventUser->blk=$data['address']['blk']??null;
+                    $eventUser->save();
+                }
+                $payment =  Payment::create([
+                    'event_id' =>$data['eventId'],
+                    'user_id' => $user->id,
+                    'payment_type'=>'upgrade',
+                    'payment_method'=>'Stripe',
+                    'payment_intent'=>'Free_'.$eventUser->id,
+                    'total_amount'=>$data['totalPrice'] ?? 0,
+                    'discount'=>$data['discountAmount'] ?? 0,
+                    'total_paid'=>$data['priceToPay'] ?? 0,
+                    'currency'=>$data['currency'],
+                    'coupon_code'=>$data['coupon_code']??'',
+                    'status'=>'successful',
+                ]);
+
+                foreach($data['memb'] as $membership){
+                    if(isset($membership['reward']) && $membership['reward'] > 0){
+                        $reward =  UserReward::create([
+                            'event_id' =>$data['eventId'],
+                            'user_id' => $user->id,
+                            'reward_id'=>$membership['reward'],
+                            'size'=>$membership['size']??null,
+                            'payment_id'=>$payment->id,
+                            'quantity'=>$membership['quantity'],
+                            'amount'=>$membership['rewardPrice']*$membership['quantity'],
+                            'discount'=>$membership['discountedPrice']??0,
+                            'currency'=>$data['currency']
+                        ]);
+                    }
+
+                }
+
+                return (['event_user'=>$eventUser , 'payment'=>$payment]);
+
             }
 
 }
