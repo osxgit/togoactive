@@ -8,11 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
     <meta name="supported-color-schemes" content="light dark">
-
 </head>
 
 <body>
-
+    <div style="display:none !important;">
+        <p >
+            @if (!isset($mailData['data']['upgrade']) || $mailData['data']['upgrade'] == false)
+                <?php echo $mailData['data']['successPage']['email_body'] ?>
+            @else
+                <p>Dear {{$mailData['data']['registrationData']['event_user']['user']['fullname']}},</p>
+                <p>Thank You for Upgrading Your #{{$mailData['data']['event_object']['hashtag']}} Rewards!</p>
+            @endif
+        </p>
+    </div>
     <table style="max-width: 700px;width: 100%;margin: auto;">
         <thead>
             <tr>
