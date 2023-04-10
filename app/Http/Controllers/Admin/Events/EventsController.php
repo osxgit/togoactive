@@ -259,7 +259,12 @@ class EventsController extends Controller
                         return $referral_code;
                     })
                     ->addColumn('coupon_code', function($row){
-                        $coupon_code = $row->coupon_code;
+                        //getting payment information
+                        $payment_coupon = $row->payment->where('user_id',$row->user_id)->where('event_id',$row->event_id)->where("status","successful")->last();
+                        $coupon_code = '';
+                        if(isset($payment_coupon)){
+                            $coupon_code = $payment_coupon->coupon_code;
+                        }
                         return $coupon_code;
                     })
                     ->addColumn('remarks', function($row){
