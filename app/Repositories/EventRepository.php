@@ -1356,6 +1356,17 @@ return $data;
 
                 if (isset($payment->status) && $payment->status!='successful') {
 
+                    $event = Events::where('id',$payment->event_id)->first();
+                    $payment->transaction_id = $event->slug.''.$payment->id;
+
+                    $event_user = EventUser::where('event_id',$payment->event_id)->where('user_id', $payment->user_id)->first();
+                    $event_user->has_upgraded = 1;
+                    $event_user->save();
+
+                    $payment->payment_intent = $data['payment_intent'];
+                    $payment->payment_id = $data['payment_intent'];
+                    $payment->address_id = $event_user->address_id;
+
                     $payment->status  =  "successful";
                     $payment->save();
 

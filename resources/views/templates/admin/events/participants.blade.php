@@ -363,9 +363,12 @@
                         },
                         success: function(data) {
                             console.log(data);
-                            $('.data-table').dataTable().fnClearTable();
-                            $('.data-table').dataTable().fnDestroy();
-                            getdatatable();
+
+                            setTimeout(() => {
+                              //  getdatatable();
+                              $('.data-table').DataTable().clear().draw();
+                            }, 500);
+
                         }
                     });
 
