@@ -209,8 +209,11 @@ class EventsController extends Controller
                     }
                 })
                 ->addColumn('created_at', function($row){
-                    $created_at = Carbon::parse($row->created_at)->format('D M d, Y H:i:s ');
-                    return $created_at;
+                    $created_at_date = Carbon::parse($row->created_at)->format('D M d, Y H:i:s ');
+                    $created_at_wt_date = Carbon::parse($row->created_at)->format('YmdHis');
+                    //return $created_at;
+
+                    return "<span data-search='".$created_at_date."' data-order=".$created_at_wt_date.">    ".$created_at_date."</span>";
                 })
                 ->addColumn('total_sku', function($row){
                     // getting rewards detail
@@ -275,7 +278,10 @@ class EventsController extends Controller
                         $action = ' <i class="fa fa-trash fa-lg text-danger" aria-hidden="true" onclick="removeUser('. $row->user_id.',\'' .$row->event_id .'\'); return true;" title="Remove User"></i>';
                         return $action;
                     })
-                ->rawColumns(['action','total_paid'])
+                    ->addColumn('id', function($row){
+                        return $row->id;
+                    })
+                ->rawColumns(['action','total_paid','created_at'])
                 ->make(true);
             //dd( $dataTable);
 
