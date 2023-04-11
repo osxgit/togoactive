@@ -113,7 +113,7 @@
                                     {{\Carbon\Carbon::Parse($mailData['data']['registrationData']['payment']['created_at'])->timezone($mailData['data']['event_object']['timezone'])->isoFormat('LLLL')}} (GMT {{$mailData['data']['event_object']['timezone']}})
 
                                 </p>
-                                @if (($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful' && isset($mailData['data']['registrationData']['payment']['user_reward']) && 0 != count($mailData['data']['registrationData']['payment']['user_reward']) ))
+                                @if (($mailData['data']['registrationData']['payment']['status'] == 'successful' && isset($mailData['data']['registrationData']['payment']['user_reward']) && 0 != count($mailData['data']['registrationData']['payment']['user_reward']) ))
                                     <p style="margin: 2px 0;font-family: arial;font-size: 14px;font-weight: 200;color: #252424;">
                                         Txn ID: {{$mailData['data']['registrationData']['payment']['transaction_id']}}
                                     </p>
@@ -193,10 +193,10 @@
                             <tr>
                                 <th style="padding: 10px;width: 50%;">Total</th>
                                 <th style="padding: 10px;width: 50%;">
-                                    {{($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful' && isset($mailData['data']['registrationData']['payment']['user_reward']) && 0 != count($mailData['data']['registrationData']['payment']['user_reward']) ) ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['total_paid'],2) : 'NA'}}
+                                    {{( $mailData['data']['registrationData']['payment']['status'] == 'successful' && isset($mailData['data']['registrationData']['payment']['user_reward']) && 0 != count($mailData['data']['registrationData']['payment']['user_reward']) ) ? $mailData['data']['registrationData']['payment']['currency'] .' '. number_format((float)$mailData['data']['registrationData']['payment']['total_paid'],2) : 'NA'}}
                                 </th>
                             </tr>
-                            @if (($mailData['data']['registrationData']['payment']['total_amount'] > 0 && $mailData['data']['registrationData']['payment']['status'] == 'successful' && isset($mailData['data']['registrationData']['payment']['user_reward']) && 0 != count($mailData['data']['registrationData']['payment']['user_reward'])))
+                            @if (( $mailData['data']['registrationData']['payment']['status'] == 'successful' && isset($mailData['data']['registrationData']['payment']['user_reward']) && 0 != count($mailData['data']['registrationData']['payment']['user_reward'])))
                                 <tr>
                                     <th colspan="2" style="width: 100%;border-top: 3px solid #e5e7eb;"></th>
                                 </tr>
