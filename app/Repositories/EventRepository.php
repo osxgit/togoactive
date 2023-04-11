@@ -1490,14 +1490,20 @@ return $data;
             public function updatePyamentResponse($data){
 
                 $payment = Payment::Where('id',$data['paymentId'])->first();
-
-                if (isset($payment->status) && $payment->status!='successful') {
+                $log_array = array(
+                    'message' => "Payment data data ",
+                    'payment' => $payment,
+                    'payment_status' => $payment->status,
+                );
+                Log::channel('single')->info($log_array);
+                if (isset($payment->status)) {
 
                     $event = Events::where('id',$payment->event_id)->first();
                     $payment->transaction_id = $event->slug.''.$payment->id;
 
                     $event_user = EventUser::where('event_id',$payment->event_id)->where('user_id', $payment->user_id)->first();
                     $event_user->has_upgraded = 1;
+                    $event_user->is_paid_user = 1;
                     $event_user->save();
 
                     $payment->payment_intent = $data['payment_intent'];
@@ -1514,9 +1520,22 @@ return $data;
                     $eventUserId    = $data['eventUserId'];
 
                     $eventData = ['paymentId'=>$eventPayment,'userId'=>$eventUser,'eventId'=>$eventId,'eventUserId'=>$eventUserId];
-                    if($payment->payment_type=='upgrade'){
+                    $log_array = array(
+                        'message' => "Payment type ",
+                        'payment_type' => $payment->payment_type,
+                    );
+                    Log::channel('single')->info($log_array);
+                    if($payment->payment_type == 'upgrade'){
                         $eventData['upgrade']=true;
                     }
+
+                    $log_array = array(
+                        'message' => "Event upgrade data ",
+                        'eventData' => $eventData,
+                        'payment' => $payment,
+                       
+                    );
+                    Log::channel('single')->info($log_array);
 
                     event(new EventRegistration($eventData,$data));
                 }
