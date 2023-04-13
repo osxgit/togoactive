@@ -204,13 +204,19 @@
                                 <tr>
                                     <th colspan="2" style="padding: 10px;width: 50%;">
                                         <h5 style="margin: 0 0 10px;">Address :</h5>
-                                        <p style="margin: 5px 0">{{$mailData['data']['registrationData']['event_user']['address'] ?? ''."
-                                            ".$mailData['data']['registrationData']['event_user']['blk'] ?? ''."
-                                            ".$mailData['data']['registrationData']['event_user']['city'] ?? ''."
-                                            ".$mailData['data']['registrationData']['event_user']['state'] ?? ''."
-                                            ".$mailData['data']['registrationData']['event_user']['subdistrict'] ?? ''."
-                                            ".$mailData['data']['registrationData']['event_user']['country'] ?? ''."
-                                            ".$mailData['data']['registrationData']['event_user']['postal_code'] ?? '' }}</p>
+                                        <p style="margin: 5px 0">
+                                            <?php
+                                                $address = [];
+                                                $address[] = $mailData['data']['registrationData']['event_user']['address'];
+                                                $address[] = $mailData['data']['registrationData']['event_user']['blk'];
+                                                $address[] = $mailData['data']['registrationData']['event_user']['city'];
+                                                $address[] = $mailData['data']['registrationData']['event_user']['state'];
+                                                $address[] = $mailData['data']['registrationData']['event_user']['subdistrict'];
+                                                $address[] = $mailData['data']['registrationData']['event_user']['country'];
+                                                $address[] = $mailData['data']['registrationData']['event_user']['postal_code'];
+                                            ?>
+                                            {{ implode(", ",array_filter($address))}}
+                                        </p>
                                     </th>
                                 </tr>
                             @endif
