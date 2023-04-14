@@ -909,10 +909,8 @@ return $data;
                             'discount'=>$membership['discountedPrice']??0,
                             'currency'=>$data['currency']
                         ]);
-    
                     }
                 }
-                
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
             }
 
@@ -1155,13 +1153,13 @@ return $data;
                     $join->on('event_users.event_id', '=', 'user_rewards.event_id');
                     $join->on('payments.id', '=', 'user_rewards.payment_id');
                 });
-                 
+
                 $query_data->leftJoin('team_users', 'team_users.user_id', '=', 'event_users.user_id');
                 $query_data->leftJoin('teams', 'teams.id', '=', 'team_users.team_id');
 
                 if(isset($search) && $search!=null){
                     $query_data->where(function  ($query) use($search) {
-                        
+
                         $query->Where('users.email', 'like', '%' .$search . '%')
                                 ->orWhere('users.fullname', 'like', '%' .$search . '%')
                                 ->orWhere('users.username', 'like', '%' .$search . '%')
@@ -1174,7 +1172,7 @@ return $data;
                 }
 
                 $query_data->groupBy("event_users.id");
-                
+
 
                 if($sortColumn=='id'){
                     $query_data->orderBy('event_users.id',$sortOrder);
@@ -1206,15 +1204,15 @@ return $data;
                     $query_data->orderBy('event_users.country',$sortOrder);
 
                 }else if($sortColumn=='team_name'){
-                   
+
                     $query_data->orderBy("teams.team_name", $sortOrder);
 
                 }else if($sortColumn=='strava'){
-                   
+
                     $query_data->orderBy("users.strava_id", $sortOrder);
 
                 }else if($sortColumn=='coupon_code'){
-                    
+
                     $query_data->orderBy("payments.coupon_code", $sortOrder);
 
                 }else if($sortColumn=='referral_code'){
@@ -1222,11 +1220,11 @@ return $data;
 
                 }else{
                     $query_data->orderBy('event_users.id','DESC');
-                } 
-               
+                }
+
                 $query_data->skip($start);
                 $query_data->take($perPage);
-                 
+
                 $response = $query_data->get();
                 return $response;
             }
@@ -1242,13 +1240,13 @@ return $data;
                     $join->on('event_users.event_id', '=', 'payments.event_id');
                     $join->where("payments.status","successful");
                 });
-                 
+
                 $query_data->leftJoin('team_users', 'team_users.user_id', '=', 'event_users.user_id');
                 $query_data->leftJoin('teams', 'teams.id', '=', 'team_users.team_id');
 
                 if(isset($search) && $search!=null){
                     $query_data->where(function  ($query) use($search) {
-                        
+
                         $query->Where('users.email', 'like', '%' .$search . '%')
                                 ->orWhere('users.fullname', 'like', '%' .$search . '%')
                                 ->orWhere('users.username', 'like', '%' .$search . '%')
@@ -1458,7 +1456,7 @@ return $data;
 
             public function getEventDataForTGP($data){
                 $eventId=$data['eventId'];
-                $user= User::select('id')->where('tgp_userid',$data['userId'])->first();
+                $user= User::select('id')->where('strava_id',$data['strava_id'])->first();
                 if($user){
                     $userId= $user->id;
                 }else{
@@ -1469,7 +1467,7 @@ return $data;
                 $event_user_count = EventUser::where('event_id',$eventId)->count();
                 $event_achievement_count =Achievements::where('event_id',$eventId)->count();
                 if($userId > 0){
-                    $event_user = EventUser::where('event_id',$eventId)->where('user_id',  $userId)->first();
+                    $event_user = EventUser::where('user_id',$user->id)->where('event_id', $eventId)->with('user', 'event','team_user','team_user.team')->first();
                     if($event_user){
                         $response['usersJoinedStatus']=1;
                         $response['usersFinisherStatus']=$event_user->is_finisher;
@@ -1483,7 +1481,7 @@ return $data;
                 }
                 $response['usersCount']=$event_user_count;
                 $response['achievementsCount']= $event_achievement_count;
-
+                $response['eventUser'] = $event_user;
                 return $response;
             }
 
@@ -1533,7 +1531,7 @@ return $data;
                         'message' => "Event upgrade data ",
                         'eventData' => $eventData,
                         'payment' => $payment,
-                       
+
                     );
                     Log::channel('single')->info($log_array);
 
@@ -1560,7 +1558,7 @@ return $data;
                     $eventUser->save();
                 }
 
-                // changing status to upgraded 
+                // changing status to upgraded
                 $eventUser->has_upgraded = 1;
                 $eventUser->save();
 
