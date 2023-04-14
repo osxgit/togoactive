@@ -43,6 +43,9 @@ class EventUser extends Model
         return $this->belongsTo(TeamUser::class,'user_id','user_id');
     }
 
+    public function stravaAccount() {
+        return $this->belongsTo(\App\Models\Users\StravaAccounts::class, 'user_id','userid');
+    }
 
     public function user()
     {
