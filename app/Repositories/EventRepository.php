@@ -1467,7 +1467,7 @@ return $data;
                 $event_user_count = EventUser::where('event_id',$eventId)->count();
                 $event_achievement_count =Achievements::where('event_id',$eventId)->count();
                 if($userId > 0){
-                    $event_user = EventUser::where('user_id',$user->id)->where('event_id', $eventId)->with('user', 'event','team_user','team_user.team')->first();
+                    $event_user = EventUser::where('user_id',$user->id)->where('event_id', $eventId)->with('user', 'event', 'stravaAccount','team_user','team_user.team')->first();
                     if($event_user){
                         $response['usersJoinedStatus']=1;
                         $response['usersFinisherStatus']=$event_user->is_finisher;
@@ -1481,7 +1481,7 @@ return $data;
                 }
                 $response['usersCount']=$event_user_count;
                 $response['achievementsCount']= $event_achievement_count;
-                $response['eventUser'] = $event_user;
+                $response['eventUser'] = $event_user??null;
                 return $response;
             }
 
