@@ -1231,7 +1231,7 @@ return $data;
 
             public function getEventUsersListCount($eventId, $search){
 
-                $query_data= EventUser::where('event_users.event_id',$eventId);
+                $query_data= EventUser::selectRaw('count(*) as total_records, event_users.user_id, event_users.event_id')->where('event_users.event_id',$eventId);
 
                 $query_data->leftJoin('users', 'users.id', '=', 'event_users.user_id');
 
@@ -1258,8 +1258,10 @@ return $data;
                     });
                 }
 
+                $query_data->groupBy(["event_users.event_id","event_users.user_id"]);
+                
+                $response = $query_data->get()->count();
 
-                $response = $query_data->count();
                 return $response;
             }
 
