@@ -1,11 +1,11 @@
 {
-  "public/fonts/poppins/Poppins-Regular.ttf": {
-    "file": "assets/Poppins-Regular.707fdc5c.ttf",
-    "src": "public/fonts/poppins/Poppins-Regular.ttf"
-  },
   "public/fonts/poppins/Poppins-Bold.ttf": {
     "file": "assets/Poppins-Bold.7219547e.ttf",
     "src": "public/fonts/poppins/Poppins-Bold.ttf"
+  },
+  "public/fonts/poppins/Poppins-Regular.ttf": {
+    "file": "assets/Poppins-Regular.707fdc5c.ttf",
+    "src": "public/fonts/poppins/Poppins-Regular.ttf"
   },
   "public/fonts/poppins/Poppins-SemiBold.ttf": {
     "file": "assets/Poppins-SemiBold.248c0244.ttf",

@@ -15,12 +15,9 @@ return new class extends Migration
     {
         Schema::create('challenge_achievement_winners', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('event_id');
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('achievement_id');
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('event_id')->references('id')->on('events');
-            $table->foreign('achievement_id')->references('id')->on('achievements');
+            $table->unsignedBigInteger('event_id')->index();
+            $table->unsignedBigInteger('user_id')->index();
+            $table->unsignedBigInteger('achievement_id')->index();
             $table->string('team',255)->nullable();
             $table->tinyInteger('notified')->index()->default(0);
             $table->timestamps();

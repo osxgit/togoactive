@@ -11,14 +11,15 @@ class ChallengeAchievementWinner extends Model
 
     protected $table = 'challenge_achievement_winners';
     
-    public $timestamps = false;
+    public $timestamps = true;
 
     protected $fillable = [
         'user_id',
         'event_id',
         'achievement_id',
         'team',
-        'notified'
+        'notified',
+        'created_at'
     ];
 
     public function event() {
