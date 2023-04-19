@@ -1468,8 +1468,16 @@ return $data;
 
                 $event_user_count = EventUser::where('event_id',$eventId)->count();
                 $event_achievement_count =Achievements::where('event_id',$eventId)->count();
+                $eventDate= EventsDate::Where('event_id',$eventId)->first();
+                $event_user_data= EventUser::inRandomOrder()->select('user_id')->where('event_id',$eventId)->limit(5)->get();
+                 $userImg=array();
+                foreach( $event_user_data as $userid){
+                    $userImg[]= UserMedia::where('user_id', $userid->user_id)->where('image_type','profile_image')->select('path')->first();
+                }
+//                 $event_user_images= EventUser::inRandomOrder()->where('event_id',$eventId)->with('user','user.user_media')->get();
+
                 if($userId > 0){
-                    $event_user = EventUser::where('event_id',$eventId)->where('user_id', $userId)->first();
+                     $event_user = EventUser::where('event_id',$eventId)->where('user_id', $userId)->first();
                     if($event_user){
                         $response['usersJoinedStatus']=1;
                         $response['usersFinisherStatus']=$event_user->is_finisher;
@@ -1483,6 +1491,9 @@ return $data;
                 }
                 $response['usersCount']=$event_user_count;
                 $response['achievementsCount']= $event_achievement_count;
+                $response['eventDates']= $eventDate;
+                $response['userProfile']= $userImg;
+
                 // $response['eventUser'] = $event_user??null;
                 return $response;
             }
