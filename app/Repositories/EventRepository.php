@@ -1642,7 +1642,7 @@ return $data;
             }
 
             public function getEventUsersTgpId($eventId){
-                $event_user = EventUser::where('event_id',$eventId)->select('user_id')->get();
+                $event_user = EventUser::where('event_id',$eventId)->select('user_id','users.tgp_userid')->Join('users', 'users.id', '=', 'event_users.user_id')->get();
                 return $event_user ;
             }
 
