@@ -360,4 +360,10 @@ class EventsController extends Controller
                 
                 return $this->sendAPIResponse();
             }
+
+            public function getEventUsersTgpId(Request $request){
+                $response = $this->eventRepository->getEventUsersTgpId($request->eventId);
+                $this->setResponseData(array( 'data' => array('success' => true, 'data'=>$response) ));
+                return $this->sendAPIResponse();
+            }
     }
