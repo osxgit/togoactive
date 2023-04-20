@@ -19,6 +19,8 @@ use App\Events\EventRegistration;
 use Carbon\Carbon;
 use Log;
 use App\Mail\sendEventRegistrationSuccessMail;
+use App\Models\Events\ChallengeAchievementWinner;
+use App\Mail\challengeNotificationEmail;
 
 class EventSuccessPageController extends Controller
 {
@@ -346,5 +348,37 @@ class EventSuccessPageController extends Controller
 
             $response = Mail::to($email)->send(new sendEventRegistrationSuccessMail($mailData));
             die('test');
+    }
+
+    /*
+     THis function is used to check email template for challenge notification
+    */
+    public function previewChallengeNotificationEmailTemplate(){
+
+        $winner_id = 2;
+
+        $achievement_winner_data = ChallengeAchievementWinner::with(['event','event.images','user','achievement'])->where('id',$winner_id)->first()->toArray();
+    
+       // $event_data = $achievement_winner_data['event'];
+        //$achievement_data = $achievement_winner_data['achievement'];
+        //$user_data = $achievement_winner_data['user'];
+
+        //dd($event_data, $achievement_data, $user_data);
+        //$data = [];
+        //dd($mailData);
+        $subject        = 'test email ';
+        $email          = 'sanjay.khatri@togoparts.com';
+        $challenge_url  =  "https://events.togoparts.com/".$achievement_winner_data['event']['slug']."/achievements";
+
+        $mailData = [
+            'title'   => $subject,
+            'subject' => $subject,
+            'data'    => $achievement_winner_data,
+            'body'    => '',
+            'challenge_url' => $challenge_url
+        ];
+        $response = Mail::to($email)->send(new challengeNotificationEmail($mailData));
+      
+        //return view('templates.emails.challengeNotificationEmail',['data'=>$achievement_winner_data,'challenge_url'=>$challenge_url]);
     }
 }

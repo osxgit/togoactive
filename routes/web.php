@@ -126,6 +126,7 @@ Route::middleware('auth')->group(function () {
 });
     Route::get('/admin/event/{id}/unlayer', [EventsController::class, 'unlayer'])->name('admin.events.unlayer');
 
+    Route::get('/admin/event/email-template-preview-new', [EventSuccessPageController::class, 'previewChallengeNotificationEmailTemplate'])->name('admin.events.event-template-preview');
 
 require __DIR__.'/auth.php';
 require __DIR__.'/ajax.php';
