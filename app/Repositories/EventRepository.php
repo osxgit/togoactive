@@ -23,7 +23,6 @@ use App\Models\Events\EventSuccessPage;
 use App\Models\Events\EventsFaq;
 use App\Models\Events\Achievements;
 use App\Models\Users\UserMedia;
-
 use App\Helpers\CountryHelper;
 use Carbon\Carbon;
 use App\Repositories\Interfaces\EventRepositoryInterface;
