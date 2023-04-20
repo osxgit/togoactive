@@ -45,8 +45,6 @@ class TogoecoCron extends Command
 
         $achUser = []; 
 
-       // dd($event_details);
-
         #Plant-a-Tree
         // manual entry 
 
@@ -73,14 +71,19 @@ class TogoecoCron extends Command
          
             foreach($finisher_arr as $users){
 
-                $data = DB::table('challenge_achievement_winners as caw')->select('event_id')
-                ->where('caw.event_id', $event_id)
-                ->where('caw.user_id', $users->userid)
-                ->where('achievement_id',$achievement_id)
+                $data = DB::table('users')->select('id')
+                ->where('tgp_userid',$users->userid)
+                ->whereNotExists(function ( $query) use($achievement_id, $event_id) {
+                    $query->select(DB::raw(1))
+                          ->from('challenge_achievement_winners as caw')
+                          ->where('caw.event_id', $event_id)
+                          ->whereColumn('caw.user_id', 'users.id')
+                          ->where('achievement_id',$achievement_id);
+                })
                 ->first();
-
-                if($data->count()==0){
-                    $achUser[] = array("user_id" => $users->userid,"team" => '', "achievement_id" => $achievement_id);
+                
+                if($data != null){
+                    $achUser[] = array("user_id" => $data->id,"team" => '', "achievement_id" => $achievement_id);
                 }
                
             }
@@ -162,32 +165,35 @@ class TogoecoCron extends Command
 
         #Sprint Runner
         $achievement_id = 3;
-      
+
         $sprint_runner = DB::connection('mysql_tgp')->table("challenge_strava_activities")
-        ->selectRaw('SUM(distance * 0.001) as total_distance, userid')
-        ->where('cid',$challenge_id)
-        ->whereIn('type',['Run'])
+        ->select('userid')
+        ->whereIn('type',['Run','VirtualRun'])
         ->where("exclude","!=",1) 
         ->where('start_date_local','>=', $conf_start_date)
         ->where('end_date_local','<=', $conf_end_date)
-        ->where('end_date_local','>=', $conf_start_date)
-        ->where('moving_time','<', 90)
+        ->whereRaw('(distance * 0.001) >= ?', [7])
+        ->whereRaw('(moving_time/60) <= ?', [90])
         ->groupBy('userid')
-        ->having('total_distance', '>', 7)
         ->get();
 
         if($sprint_runner->count() > 0)  {
          
             foreach($sprint_runner as $users){
 
-                $data = DB::table('challenge_achievement_winners as caw')->select('event_id')
-                ->where('caw.event_id', $event_id)
-                ->where('caw.user_id', $users->userid)
-                ->where('achievement_id',$achievement_id)
+                $data = DB::table('users')->select('id')
+                ->where('tgp_userid',$users->userid)
+                ->whereNotExists(function ( $query) use($achievement_id, $event_id) {
+                    $query->select(DB::raw(1))
+                          ->from('challenge_achievement_winners as caw')
+                          ->where('caw.event_id', $event_id)
+                          ->whereColumn('caw.user_id', 'users.id')
+                          ->where('achievement_id',$achievement_id);
+                })
                 ->first();
 
-                if($data->count()==0){
-                    $achUser[] = array("user_id" => $users->userid,"team" => '', "achievement_id" => $achievement_id);
+                if($data != null){
+                    $achUser[] = array("user_id" => $data->id,"team" => '', "achievement_id" => $achievement_id);
                 }
                
             }
@@ -212,14 +218,19 @@ class TogoecoCron extends Command
          
             foreach($sweat_of_fitri as $users){
 
-                $data = DB::table('challenge_achievement_winners as caw')->select('event_id')
-                ->where('caw.event_id', $event_id)
-                ->where('caw.user_id', $users->userid)
-                ->where('achievement_id',$achievement_id)
+                $data = DB::table('users')->select('id')
+                ->where('tgp_userid',$users->userid)
+                ->whereNotExists(function ( $query) use($achievement_id, $event_id) {
+                    $query->select(DB::raw(1))
+                          ->from('challenge_achievement_winners as caw')
+                          ->where('caw.event_id', $event_id)
+                          ->whereColumn('caw.user_id', 'users.id')
+                          ->where('achievement_id',$achievement_id);
+                })
                 ->first();
 
-                if($data->count()==0){
-                    $achUser[] = array("user_id" => $users->userid,"team" => '', "achievement_id" => $achievement_id);
+                if($data != null){
+                    $achUser[] = array("user_id" => $data->id,"team" => '', "achievement_id" => $achievement_id);
                 }
                
             }
@@ -229,30 +240,36 @@ class TogoecoCron extends Command
 
         $achievement_id = 4;
       
+
         $speed_cyclist = DB::connection('mysql_tgp')->table("challenge_strava_activities")
-        ->selectRaw('SUM(distance * 0.001) as total_distance, userid')
+        ->select('userid')
         ->where('cid',$challenge_id)
         ->whereIn('type',['Ride','VirtualRide'])
         ->where("exclude","!=",1) 
         ->where('start_date_local','>=', $conf_start_date)
         ->where('end_date_local','<=', $conf_end_date)
-        ->where('end_date_local','>=', $conf_start_date)
+        ->whereRaw('(distance * 0.001) >= ?', [23])
+        ->whereRaw('(moving_time/60) <= ?', [90])
         ->groupBy('userid')
-        ->having('total_distance', '>', 23)
         ->get();
 
         if($speed_cyclist->count() > 0)  {
          
             foreach($speed_cyclist as $users){
 
-                $data = DB::table('challenge_achievement_winners as caw')->select('event_id')
-                ->where('caw.event_id', $event_id)
-                ->where('caw.user_id', $users->userid)
-                ->where('achievement_id',$achievement_id)
+                $data = DB::table('users')->select('id')
+                ->where('tgp_userid',$users->userid)
+                ->whereNotExists(function ( $query) use($achievement_id, $event_id) {
+                    $query->select(DB::raw(1))
+                          ->from('challenge_achievement_winners as caw')
+                          ->where('caw.event_id', $event_id)
+                          ->whereColumn('caw.user_id', 'users.id')
+                          ->where('achievement_id',$achievement_id);
+                })
                 ->first();
 
-                if($data->count()==0){
-                    $achUser[] = array("user_id" => $users->userid,"team" => '', "achievement_id" => $achievement_id);
+                if($data != null){
+                    $achUser[] = array("user_id" => $data->id,"team" => '', "achievement_id" => $achievement_id);
                 }
                
             }
@@ -264,7 +281,7 @@ class TogoecoCron extends Command
         $finisher_arr = DB::connection('mysql_tgp')->table("challenge_strava_activities")
         ->selectRaw('SUM(distance * 0.001) as total_distance, userid')
         ->where('cid',$challenge_id)
-        ->whereIn('type',['Ride','VirtualRide','Run'])
+        ->whereIn('type',['Ride','VirtualRide','Run','VirtualRun'])
         ->where("exclude","!=",1) 
         ->where('start_date_local','>=', $conf_start_date)
         ->where('end_date_local','<=', $conf_end_date)
@@ -277,14 +294,19 @@ class TogoecoCron extends Command
          
             foreach($finisher_arr as $users){
 
-                $data = DB::table('challenge_achievement_winners as caw')->select('event_id')
-                ->where('caw.event_id', $event_id)
-                ->where('caw.user_id', $users->userid)
-                ->where('achievement_id',$achievement_id)
+                $data = DB::table('users')->select('id')
+                ->where('tgp_userid',$users->userid)
+                ->whereNotExists(function ( $query) use($achievement_id, $event_id) {
+                    $query->select(DB::raw(1))
+                          ->from('challenge_achievement_winners as caw')
+                          ->where('caw.event_id', $event_id)
+                          ->whereColumn('caw.user_id', 'users.id')
+                          ->where('achievement_id',$achievement_id);
+                })
                 ->first();
 
-                if($data->count()==0){
-                    $achUser[] = array("user_id" => $users->userid,"team" => '', "achievement_id" => $achievement_id);
+                if($data != null){
+                    $achUser[] = array("user_id" => $data->id,"team" => '', "achievement_id" => $achievement_id);
                 }
                
             }
@@ -293,47 +315,65 @@ class TogoecoCron extends Command
         #Eco-Active Squad
         $achievement_id = 9;
         
-        $team_arr = DB::connection('mysql_tgp')->table("challenge_team_leaderboard")
-        ->selectRaw('team_name')
-        ->where('cid',$challenge_id)
-        ->where("total_users",">=",2) 
-        ->where("team_type","=","")
-        ->where('team_name','!=', '')
-        ->groupBy('team_name')
+        $team_arr = DB::table("team_users")
+        ->leftJoin('teams', function ($join) use($challenge_id) {
+            $join->on('teams.id', '=', 'team_users.team_id');
+        })
+        ->where('event_id',$event_id)
+        ->groupBy('team_id')
+        ->havingRaw('count(user_id) >= ?', [2])
         ->get();
+
+        // get users using team id 
 
         if($team_arr->count() > 0)  {
          
             foreach($team_arr as $teams){
 
-                $team_user_arr = DB::connection('mysql_tgp')->table("challenge_users")
-                ->selectRaw('SUM(distance * 0.001) as total_distance, challenge_users.userid')
-                ->leftJoin('challenge_strava_activities as csa', function ($join) use($challenge_id) {
-                    $join->on('csa.userid', '=', 'challenge_users.userid');
-                    $join->where('csa.cid',$challenge_id);
+                // users data 
+                $users_arr = DB::table("team_users")
+                ->select(['user_id','team_id','users.tgp_userid'])
+                ->leftJoin('users', function ($join) use($challenge_id) {
+                    $join->on('users.id', '=', 'team_users.user_id');
                 })
-                ->where('challenge_users.cid',$challenge_id)
-                ->where("team_name",$teams->team_name) 
+                ->where('team_id',$teams->team_id)
+                ->whereNotExists(function ( $query) use($achievement_id, $event_id) {
+                    $query->select(DB::raw(1))
+                          ->from('challenge_achievement_winners as caw')
+                          ->whereColumn('caw.user_id', 'team_users.user_id')
+                          ->where('caw.event_id', $event_id)
+                          ->where('achievement_id',$achievement_id);
+                })
+                ->get();
+              
+
+                // create array of userid and startva userid 
+                // this will help to insert which is qualify from starva 
+                $tgp_userid_arr = [];
+                $userid_from_tgp_usersid_arr = [];
+                foreach($users_arr as $users){
+                    $tgp_userid_arr[] = $users->tgp_userid;
+                    $userid_from_tgp_usersid_arr[$users->tgp_userid] = $users->user_id;
+                }
+
+                $activity_user_arr = DB::connection('mysql_tgp')->table("challenge_strava_activities")
+                ->selectRaw('SUM(distance * 0.001) as total_distance, userid')
+                ->where('cid',$challenge_id)
+                ->whereIn('userid', $tgp_userid_arr)
                 ->where('start_date_local','>=', '2023-04-22 00:00')
                 ->where('end_date_local','<=', '2023-04-22 23:59')
-                ->where('end_date_local','>=', '2023-04-22 00:00') 
-                ->groupBy('challenge_users.userid')
+                ->groupBy('userid')
                 ->having('total_distance', '>', 5)
                 ->get();
 
-                if($team_user_arr->count() > 0)  {
+    
+                if($activity_user_arr->count() > 0)  {
          
-                    foreach($team_user_arr as $users){
+                    foreach($activity_user_arr as $users){
 
-                        $winner_data = DB::table('challenge_achievement_winners as caw')->select('event_id')
-                        ->where('caw.event_id', $event_id)
-                        ->where('caw.user_id', $users->userid)
-                        ->where('achievement_id',$achievement_id)
-                        ->first();
-
-                        if($winner_data->count()==0){
-                            $achUser[] = array("user_id" => $users->userid,"team" => '', "achievement_id" => $achievement_id);
-                        }
+                        $user_id = $userid_from_tgp_usersid_arr[$users->userid];
+                        $achUser[] = array("user_id" => $user_id,"team" => $teams->team_name, "achievement_id" => $achievement_id);
+                        
                     }
                 }
                
@@ -343,48 +383,67 @@ class TogoecoCron extends Command
         #Eco-Challenge Conquerors
         $achievement_id = 10;
 
-        $eco_team_arr = DB::connection('mysql_tgp')->table("challenge_team_leaderboard")
-        ->selectRaw('team_name')
-        ->where('cid',$challenge_id)
-        ->where("total_users",">=",2) 
-        ->where("team_type","=","")
-        ->where('team_name','!=', '')
-        ->groupBy('team_name')
+        $team_arr = DB::table("team_users")
+        ->leftJoin('teams', function ($join) use($challenge_id) {
+            $join->on('teams.id', '=', 'team_users.team_id');
+        })
+        ->where('event_id',$event_id)
+        ->groupBy('team_id')
+        ->havingRaw('count(user_id) >= ?', [2])
         ->get();
 
-        if($eco_team_arr->count() > 0)  {
-         
-            foreach($eco_team_arr as $teams){
+        // get users using team id 
 
-                $team_user_arr = DB::connection('mysql_tgp')->table("challenge_users")
-                ->selectRaw('SUM(distance * 0.001) as total_distance, challenge_users.userid')
-                ->leftJoin('challenge_strava_activities as csa', function ($join) use($challenge_id) {
-                    $join->on('csa.userid', '=', 'challenge_users.userid');
-                    $join->where('csa.cid',$challenge_id);
+        if($team_arr->count() > 0)  {
+         
+            foreach($team_arr as $teams){
+
+                // users data 
+                $users_arr = DB::table("team_users")
+                ->select(['user_id','team_id','users.tgp_userid'])
+                ->leftJoin('users', function ($join) use($challenge_id) {
+                    $join->on('users.id', '=', 'team_users.user_id');
                 })
-                ->where('challenge_users.cid',$challenge_id)
-                ->where("team_name",$teams->team_name) 
+                ->where('team_id',$teams->team_id)
+                ->whereNotExists(function ( $query) use($achievement_id, $event_id) {
+                    $query->select(DB::raw(1))
+                          ->from('challenge_achievement_winners as caw')
+                          ->whereColumn('caw.user_id', 'team_users.user_id')
+                          ->where('caw.event_id', $event_id)
+                          ->where('achievement_id',$achievement_id);
+                })
+                ->get();
+              
+
+                // create array of userid and startva userid 
+                // this will help to insert which is qualify from starva 
+                $tgp_userid_arr = [];
+                $userid_from_tgp_usersid_arr = [];
+                foreach($users_arr as $users){
+                    $tgp_userid_arr[] = $users->tgp_userid;
+                    $userid_from_tgp_usersid_arr[$users->tgp_userid] = $users->user_id;
+                }
+
+                $activity_user_arr = DB::connection('mysql_tgp')->table("challenge_strava_activities")
+                ->selectRaw('SUM(distance * 0.001) as total_distance, userid')
+                ->where('cid',$challenge_id)
+                ->whereIn('userid', $tgp_userid_arr)
+                ->whereIn('type',['Ride','VirtualRide','Run','VirtualRun'])
                 ->where('start_date_local','>=', $conf_start_date)
                 ->where('end_date_local','<=', $conf_end_date)
-                ->where('end_date_local','>=', $conf_start_date)
-                ->whereIn('csa.type',['Ride','VirtualRide','Run'])
-                ->groupBy('challenge_users.userid')
+                ->groupBy('userid')
+               
                 ->having('total_distance', '>', 53)
                 ->get();
 
-                if($team_user_arr->count() > 0)  {
+    
+                if($activity_user_arr->count() > 0)  {
          
-                    foreach($team_user_arr as $users){
+                    foreach($activity_user_arr as $users){
 
-                        $winner_data = DB::table('challenge_achievement_winners as caw')->select('event_id')
-                        ->where('caw.event_id', $event_id)
-                        ->where('caw.user_id', $users->userid)
-                        ->where('achievement_id',$achievement_id)
-                        ->first();
-
-                        if($winner_data->count()==0){
-                            $achUser[] = array("user_id" => $users->userid,"team" => '', "achievement_id" => $achievement_id);
-                        }
+                        $user_id = $userid_from_tgp_usersid_arr[$users->userid];
+                        $achUser[] = array("user_id" => $user_id,"team" => $teams->team_name, "achievement_id" => $achievement_id);
+                        
                     }
                 }
                
@@ -397,7 +456,7 @@ class TogoecoCron extends Command
         $elite_finisher_arr = DB::connection('mysql_tgp')->table("challenge_strava_activities")
         ->selectRaw('SUM(distance * 0.001) as total_distance, userid')
         ->where('cid',$challenge_id)
-        ->whereIn('type',['Ride','VirtualRide','Run'])
+        ->whereIn('type',['Ride','VirtualRide','Run','VirtualRun'])
         ->where("exclude","!=",1) 
         ->where('start_date_local','>=', $conf_start_date)
         ->where('end_date_local','<=', $conf_end_date)
@@ -410,14 +469,19 @@ class TogoecoCron extends Command
          
             foreach($elite_finisher_arr as $users){
 
-                $data = DB::table('challenge_achievement_winners as caw')->select('event_id')
-                ->where('caw.event_id', $event_id)
-                ->where('caw.user_id', $users->userid)
-                ->where('achievement_id',$achievement_id)
+                $data = DB::table('users')->select('id')
+                ->where('tgp_userid',$users->userid)
+                ->whereNotExists(function ( $query) use($achievement_id, $event_id) {
+                    $query->select(DB::raw(1))
+                          ->from('challenge_achievement_winners as caw')
+                          ->where('caw.event_id', $event_id)
+                          ->whereColumn('caw.user_id', 'users.id')
+                          ->where('achievement_id',$achievement_id);
+                })
                 ->first();
 
-                if($data->count()==0){
-                    $achUser[] = array("user_id" => $users->userid,"team" => '', "achievement_id" => $achievement_id);
+                if($data!=null){
+                    $achUser[] = array("user_id" => $data->id,"team" => '', "achievement_id" => $achievement_id);
                 }
                
             }
@@ -433,7 +497,6 @@ class TogoecoCron extends Command
                 $achUser[$key]['team'] = $auser['team'] ?? '';
                 $achUser[$key]['notified'] = 0;
                 $achUser[$key]['created_at'] = date("Y-m-d H:i:s");
-
             }
             ChallengeAchievementWinner::insert($achUser);
         }
