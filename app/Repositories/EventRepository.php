@@ -22,7 +22,7 @@ use App\Models\Events\EventUser;
 use App\Models\Events\EventSuccessPage;
 use App\Models\Events\EventsFaq;
 use App\Models\Events\Achievements;
-
+use App\Models\Users\UserMedia;
 use App\Helpers\CountryHelper;
 use Carbon\Carbon;
 use App\Repositories\Interfaces\EventRepositoryInterface;
@@ -1458,6 +1458,48 @@ return $data;
 
             public function getEventDataForTGP($data){
                 $eventId=$data['eventId'];
+                $user= User::select('id')->where('tgp_userid',$data['userId'])->first();
+                if($user){
+                    $userId= $user->id;
+                }else{
+                    $userId= 0;
+                }
+
+
+                $event_user_count = EventUser::where('event_id',$eventId)->count();
+                $event_achievement_count =Achievements::where('event_id',$eventId)->count();
+                $eventDate= EventsDate::Where('event_id',$eventId)->first();
+                $event_user_data= EventUser::inRandomOrder()->select('user_id')->where('event_id',$eventId)->limit(5)->get();
+                 $userImg=array();
+                foreach( $event_user_data as $userid){
+                    $userImg[]= UserMedia::where('user_id', $userid->user_id)->where('image_type','profile_image')->select('path')->first();
+                }
+//                 $event_user_images= EventUser::inRandomOrder()->where('event_id',$eventId)->with('user','user.user_media')->get();
+
+                if($userId > 0){
+                     $event_user = EventUser::where('event_id',$eventId)->where('user_id', $userId)->first();
+                    if($event_user){
+                        $response['usersJoinedStatus']=1;
+                        $response['usersFinisherStatus']=$event_user->is_finisher;
+                    } else{
+                        $response['usersJoinedStatus']=0;
+                        $response['usersFinisherStatus']=0;
+                    }
+                } else{
+                    $response['usersJoinedStatus']=0;
+                    $response['usersFinisherStatus']=0;
+                }
+                $response['usersCount']=$event_user_count;
+                $response['achievementsCount']= $event_achievement_count;
+                $response['eventDates']= $eventDate;
+                $response['userProfile']= $userImg;
+
+                // $response['eventUser'] = $event_user??null;
+                return $response;
+            }
+
+            public function getEventDataForTGPCron($data){
+                $eventId=$data['eventId'];
                 $user= User::select('id')->where('strava_id',$data['strava_id'])->first();
                 if($user){
                     $userId= $user->id;
@@ -1597,6 +1639,11 @@ return $data;
 
                 return (['event_user'=>$eventUser , 'payment'=>$payment]);
 
+            }
+
+            public function getEventUsersTgpId($eventId){
+                $event_user = EventUser::where('event_id',$eventId)->select('user_id','users.tgp_userid')->Join('users', 'users.id', '=', 'event_users.user_id')->get();
+                return $event_user ;
             }
 
 }

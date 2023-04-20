@@ -173,4 +173,6 @@ interface EventRepositoryInterface
     public function processFreeUpgradeEvent($data);
 
     public function getEventUsersListCount($eventId, $search);
+
+    public function getEventUsersTgpId($eventId);
 };
