@@ -44,6 +44,7 @@ class ChallengeNotification extends Command
      */
     public function handle()
     {
+
         $challenge_id = 81; // this is used for togoparts 
 
         $slug = 'togoeco2023'; // this is used for togoactive
@@ -58,7 +59,7 @@ class ChallengeNotification extends Command
                 $data  = array('userid'=> $achievement_winner->user->tgp_userid,
                                 'title' => $achievement_winner->achievement->notification_title,
                                 'icon' =>  $achievement_winner->achievement->icon,
-                                'img' => url('https://static.togoactive.com/'.$achievement_winner->event->images->icon),
+                                'img' => url('https://static.togoactive.com/'.$achievement_winner->event->images->notification),
                                 'message' => $achievement_winner->achievement->notification_description,
                                 'slug' => $achievement_winner->event->slug,
                                 'winner_notification_id' => $achievement_winner->id
@@ -103,7 +104,6 @@ class ChallengeNotification extends Command
     */
     public function sendRequest($data){
        
-
         $this->clientId = env('TGP_CLIENT_ID');
         $this->secret_token = env('TGP_CLIENT_SECRET_TOKEN');
         $this->url = env('TGP_API_URL');
