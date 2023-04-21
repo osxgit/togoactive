@@ -54,15 +54,17 @@ class ChallengeNotification extends Command
         if($achievement_winner_data!=null && $achievement_winner_data->count() > 0){
             foreach($achievement_winner_data as $achievement_winner){
                 
+               
                 $data  = array('userid'=> $achievement_winner->user->tgp_userid,
                                 'title' => $achievement_winner->achievement->notification_title,
-                                'icon' => $achievement_winner->achievement->icon,
-                                'img' => $achievement_winner->achievement->icon,
+                                'icon' =>  $achievement_winner->achievement->icon,
+                                'img' => url('https://static.togoactive.com/'.$achievement_winner->event->images->icon),
                                 'message' => $achievement_winner->achievement->notification_description,
-                                'slug' => $slug,
+                                'slug' => $achievement_winner->event->slug,
                                 'winner_notification_id' => $achievement_winner->id
                                 );
 
+                        
                 // sending notification  
                 $this->sendRequest($data);
 
@@ -119,6 +121,7 @@ class ChallengeNotification extends Command
             'img' => $data['img'],
             'message' => $data['message'],
             'slug' => $data['slug'],
+            'image_icon_tga' => 'Yes'
         ]);
 
 		if ($response->successful()) {
