@@ -111,6 +111,8 @@ class ChallengeNotification extends Command
         $token = rand(11111111111,99999999999);
         $hashed_token = sha1_multiple($this->clientId,$this->secret_token,$token);
 
+        $see_all_achievement_url  =  "https://events.togoparts.com/".$data['slug']."/achievements";
+        
         $response = Http::asForm()->post($this->url .'api.php', [
 			'hashed_token' => $hashed_token,
             'token' => $token,
@@ -121,7 +123,8 @@ class ChallengeNotification extends Command
             'img' => $data['img'],
             'message' => $data['message'],
             'slug' => $data['slug'],
-            'image_icon_tga' => 'Yes'
+            'image_icon_tga' => 'Yes',
+            'see_all_achievement_url' => $see_all_achievement_url
         ]);
 
 		if ($response->successful()) {
