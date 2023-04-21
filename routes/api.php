@@ -87,3 +87,5 @@ Route::post('getEventDataForTGPCron', [EventsController::class, 'getEventDataFor
 
 Route::post('updatePyamentResponse', [EventsController::class, 'updatePyamentResponse'])->name('updatePyamentResponse');
 Route::post('processFreeUpgradeEvent', [EventsController::class, 'processFreeUpgradeEvent'])->name('processFreeUpgradeEvent');
+
+Route::post('getEventUsersTgpId', [EventsController::class, 'getEventUsersTgpId'])->name('getEventUsersTgpId');
