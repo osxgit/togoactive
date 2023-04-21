@@ -46,7 +46,7 @@
                                                                     <div style="margin:10px 0 10px 20px;">
                                                                         <a href="{{$mailData['challenge_url']}}" target="_blank">
 
-                                                                            <img src="{{url('https://static.togoactive.com/'.$mailData['data']['event']['images']['icon'])}}" border="0" width="216" style="display:block;height:auto;">
+                                                                            <img src="{{$mailData['data']['event']['images']['icon']}}" border="0" width="216" style="display:block;height:auto;">
                                                                         </a>
                                                                     </div>
                                                                 </td>
@@ -121,7 +121,7 @@
                                                                                                                                                                     <div style="float:left;width:100%;text-align:center;margin-top:20px;">
                                                                                                                                                                         <div style="float:left;text-align:center; border-radius: 5px;border: 1px solid #f2f2f2; padding: 32px 32px;margin-bottom: 32px;" class="w-full border-2 border-gray-300 rounded-lg flex flex-col px-10 py-8 mb-4 justify-center items-center" bis_skin_checked="1">
                                                                                                                                                                             <div style="height: 128px;width: 128px;align-items: center; justify-content: center;  padding: 1.25rem;background-color: #F2F2F2; border-radius: 9999px; margin: 0 auto;" bis_skin_checked="1">
-                                                                                                                                                                                <img class="achicon" src="{{url('https://static.togoactive.com/'.$mailData['data']['achievement']['icon'])}}" alt="" style="height: 128px;">
+                                                                                                                                                                                <img class="achicon" src="{{$mailData['data']['achievement']['icon']}}" alt="" style="height: 128px;">
                                                                                                                                                                             </div>
                                                                                                                                                                             <h2 style="float:left;width:100%;text-align:center;margin:0;font-size: 22px; margin-top: 32px;">
                                                                                                                                                                                 <span class="chName">
