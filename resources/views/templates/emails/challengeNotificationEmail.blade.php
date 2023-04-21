@@ -46,7 +46,7 @@
                                                                     <div style="margin:10px 0 10px 20px;">
                                                                         <a href="{{$mailData['challenge_url']}}" target="_blank">
 
-                                                                            <img src="{{$mailData['data']['event']['images']['icon']}}" border="0" width="216" style="display:block;height:auto;">
+                                                                            <img src="{{url('https://static.togoactive.com/'.$mailData['data']['event']['images']['icon'])}}" border="0" width="216" style="display:block;height:auto;">
                                                                         </a>
                                                                     </div>
                                                                 </td>
