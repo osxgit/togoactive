@@ -23,7 +23,7 @@ class ChallengeAchievementWinner extends Model
     ];
 
     public function event() {
-        return $this->belongsTo(Events::class,'event_id','id')->with('dates');
+        return $this->belongsTo(Events::class,'event_id','id');
     }
 
     public function user() {
