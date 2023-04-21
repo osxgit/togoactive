@@ -1259,7 +1259,7 @@ return $data;
                 }
 
                 $query_data->groupBy(["event_users.event_id","event_users.user_id"]);
-                
+
                 $response = $query_data->get()->count();
 
                 return $response;

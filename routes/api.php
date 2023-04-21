@@ -83,5 +83,7 @@ Route::post('updateUpgradeEventPayment', [EventsController::class, 'updateUpgrad
 Route::post('getEventRewardQuantity', [EventsController::class, 'getEventRewardQuantity'])->name('getEventRewardQuantity');
 
 Route::post('getEventDataForTGP', [EventsController::class, 'getEventDataForTGP'])->name('getEventDataForTGP');
+Route::post('getEventDataForTGPCron', [EventsController::class, 'getEventDataForTGPCron'])->name('getEventDataForTGPCron');
+
 Route::post('updatePyamentResponse', [EventsController::class, 'updatePyamentResponse'])->name('updatePyamentResponse');
 Route::post('processFreeUpgradeEvent', [EventsController::class, 'processFreeUpgradeEvent'])->name('processFreeUpgradeEvent');
